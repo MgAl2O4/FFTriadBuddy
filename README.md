@@ -9,14 +9,13 @@ Features:
 * prepare deck for given npc
 * all game rules are supported
 
-----
 ## Instructions
 1. Download latest release
 2. Unpack and run. 
 
-----
+Program will attempt to auto update on startup from this repository.
+
 ## Changelog
 * v11: public release
 
-----
 Contact: MgAl2O4@protonmail.com
