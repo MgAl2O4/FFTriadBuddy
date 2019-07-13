@@ -16,6 +16,7 @@ Features:
 Program will attempt to auto update on startup from this repository.
 
 ## Changelog
+* v12: updated for 5.0
 * v11: public release
 
 Contact: MgAl2O4@protonmail.com
