@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <card id="1" name="Dodo" icon="082501.png" rarity="Common" type="None" up="4" lt="2" dn="3" rt="4" />
+  <card id="2" name="Tonberry" icon="082502.png" rarity="Common" type="None" up="2" lt="2" dn="7" rt="2" />
+  <card id="3" name="Sabotender" icon="082503.png" rarity="Common" type="None" up="4" lt="3" dn="3" rt="3" />
+  <card id="4" name="Spriggan" icon="082504.png" rarity="Common" type="None" up="2" lt="3" dn="4" rt="4" />
+  <card id="5" name="Pudding" icon="082505.png" rarity="Common" type="None" up="2" lt="4" dn="3" rt="5" />
+  <card id="6" name="Bomb" icon="082506.png" rarity="Common" type="None" up="3" lt="4" dn="3" rt="3" />
+  <card id="7" name="Mandragora" icon="082507.png" rarity="Common" type="None" up="4" lt="2" dn="5" rt="3" />
+  <card id="8" name="Coblyn" icon="082508.png" rarity="Common" type="None" up="3" lt="3" dn="3" rt="4" />
+  <card id="9" name="Morbol" icon="082509.png" rarity="Common" type="None" up="5" lt="2" dn="5" rt="2" />
+  <card id="10" name="Coeurl" icon="082510.png" rarity="Common" type="None" up="2" lt="5" dn="2" rt="5" />
+  <card id="11" name="Ahriman" icon="082511.png" rarity="Common" type="None" up="5" lt="5" dn="2" rt="2" />
+  <card id="12" name="Goobbue" icon="082512.png" rarity="Common" type="None" up="2" lt="5" dn="5" rt="2" />
+  <card id="13" name="Chocobo" icon="082513.png" rarity="Common" type="None" up="3" lt="7" dn="2" rt="1" />
+  <card id="14" name="Amalj'aa" icon="082514.png" rarity="Common" type="Beastman" up="1" lt="4" dn="7" rt="1" />
+  <card id="15" name="Ixal" icon="082515.png" rarity="Common" type="Beastman" up="6" lt="1" dn="3" rt="4" />
+  <card id="16" name="Sylph" icon="082516.png" rarity="Common" type="Beastman" up="2" lt="4" dn="5" rt="4" />
+  <card id="17" name="Kobold" icon="082517.png" rarity="Common" type="Beastman" up="2" lt="2" dn="4" rt="6" />
+  <card id="18" name="Sahagin" icon="082518.png" rarity="Common" type="Beastman" up="4" lt="5" dn="3" rt="3" />
+  <card id="19" name="Tataru Taru" icon="082519.png" rarity="Common" type="Scion" up="7" lt="2" dn="3" rt="2" />
+  <card id="20" name="Moogle" icon="082520.png" rarity="Common" type="Beastman" up="2" lt="1" dn="3" rt="7" />
+  <card id="21" name="Siren" icon="082521.png" rarity="Uncommon" type="None" up="3" lt="6" dn="7" rt="2" />
+  <card id="22" name="Ultros &amp; Typhon" icon="082522.png" rarity="Uncommon" type="None" up="2" lt="3" dn="6" rt="7" />
+  <card id="23" name="Demon Wall" icon="082523.png" rarity="Uncommon" type="None" up="6" lt="7" dn="2" rt="3" />
+  <card id="24" name="Succubus" icon="082524.png" rarity="Uncommon" type="None" up="7" lt="3" dn="2" rt="6" />
+  <card id="25" name="Chimera" icon="082525.png" rarity="Uncommon" type="None" up="7" lt="7" dn="2" rt="2" />
+  <card id="26" name="Blue Dragon" icon="082526.png" rarity="Uncommon" type="None" up="2" lt="2" dn="7" rt="7" />
+  <card id="27" name="Scarface Bugaal Ja" icon="082527.png" rarity="Uncommon" type="Beastman" up="6" lt="6" dn="2" rt="6" />
+  <card id="28" name="Momodi Modi" icon="082528.png" rarity="Uncommon" type="None" up="7" lt="5" dn="5" rt="3" />
+  <card id="29" name="Baderon Tenfingers" icon="082529.png" rarity="Uncommon" type="None" up="3" lt="7" dn="5" rt="5" />
+  <card id="30" name="Mother Miounne" icon="082530.png" rarity="Uncommon" type="None" up="5" lt="5" dn="3" rt="7" />
+  <card id="31" name="Livia sas Junius" icon="082531.png" rarity="Uncommon" type="Garlean" up="3" lt="7" dn="7" rt="1" />
+  <card id="32" name="Rhitahtyn sas Arvina" icon="082532.png" rarity="Uncommon" type="Garlean" up="7" lt="1" dn="3" rt="7" />
+  <card id="33" name="Biggs &amp; Wedge" icon="082533.png" rarity="Uncommon" type="None" up="5" lt="3" dn="7" rt="5" />
+  <card id="34" name="Gerolt" icon="082534.png" rarity="Uncommon" type="None" up="1" lt="7" dn="3" rt="7" />
+  <card id="35" name="Frixio" icon="082535.png" rarity="Uncommon" type="Beastman" up="6" lt="2" dn="6" rt="6" />
+  <card id="36" name="Mutamix Bubblypots" icon="082536.png" rarity="Uncommon" type="Beastman" up="2" lt="6" dn="6" rt="6" />
+  <card id="37" name="Memeroon" icon="082537.png" rarity="Uncommon" type="Beastman" up="6" lt="6" dn="6" rt="2" />
+  <card id="38" name="Behemoth" icon="082538.png" rarity="Rare" type="None" up="7" lt="8" dn="4" rt="2" />
+  <card id="39" name="Gilgamesh &amp; Enkidu" icon="082539.png" rarity="Rare" type="None" up="8" lt="3" dn="7" rt="3" />
+  <card id="40" name="Ifrit" icon="082540.png" rarity="Rare" type="Primal" up="7" lt="1" dn="6" rt="7" />
+  <card id="41" name="Titan" icon="082541.png" rarity="Rare" type="Primal" up="1" lt="7" dn="7" rt="6" />
+  <card id="42" name="Garuda" icon="082542.png" rarity="Rare" type="Primal" up="7" lt="6" dn="1" rt="7" />
+  <card id="43" name="Good King Moggle Mog XII" icon="082543.png" rarity="Rare" type="Primal" up="7" lt="6" dn="7" rt="1" />
+  <card id="44" name="Raya-O-Senna &amp; A-Ruhn-Senna" icon="082544.png" rarity="Rare" type="None" up="5" lt="6" dn="6" rt="6" />
+  <card id="45" name="Godbert Manderville" icon="082545.png" rarity="Rare" type="None" up="6" lt="6" dn="5" rt="6" />
+  <card id="46" name="Thancred" icon="082546.png" rarity="Rare" type="Scion" up="2" lt="3" dn="8" rt="7" />
+  <card id="47" name="Nero tol Scaeva" icon="082547.png" rarity="Rare" type="Garlean" up="4" lt="1" dn="8" rt="7" />
+  <card id="48" name="Papalymo &amp; Yda" icon="082548.png" rarity="Rare" type="Scion" up="3" lt="7" dn="8" rt="2" />
+  <card id="49" name="Y'shtola" icon="082549.png" rarity="Rare" type="Scion" up="7" lt="8" dn="1" rt="4" />
+  <card id="50" name="Urianger" icon="082550.png" rarity="Rare" type="Scion" up="8" lt="1" dn="4" rt="7" />
+  <card id="51" name="Ultima Weapon" icon="082551.png" rarity="Epic" type="Garlean" up="7" lt="8" dn="9" rt="1" />
+  <card id="52" name="Odin" icon="082552.png" rarity="Epic" type="Primal" up="8" lt="8" dn="1" rt="8" />
+  <card id="53" name="Ramuh" icon="082553.png" rarity="Epic" type="Primal" up="8" lt="1" dn="8" rt="8" />
+  <card id="54" name="Leviathan" icon="082554.png" rarity="Epic" type="Primal" up="8" lt="8" dn="8" rt="1" />
+  <card id="55" name="Shiva" icon="082555.png" rarity="Epic" type="Primal" up="1" lt="8" dn="8" rt="8" />
+  <card id="56" name="Minfilia" icon="082556.png" rarity="Epic" type="Scion" up="9" lt="8" dn="3" rt="5" />
+  <card id="57" name="Lahabrea" icon="082557.png" rarity="Epic" type="None" up="4" lt="9" dn="4" rt="8" />
+  <card id="58" name="Cid Garlond" icon="082558.png" rarity="Epic" type="None" up="5" lt="9" dn="9" rt="2" />
+  <card id="59" name="Alphinaud &amp; Alisaie" icon="082559.png" rarity="Epic" type="Scion" up="9" lt="3" dn="3" rt="9" />
+  <card id="60" name="Louisoix Leveilleur" icon="082560.png" rarity="Epic" type="Scion" up="9" lt="4" dn="9" rt="3" />
+  <card id="61" name="Bahamut" icon="082561.png" rarity="Legendary" type="Primal" up="9" lt="5" dn="9" rt="6" />
+  <card id="62" name="Hildibrand &amp; Nashu Mhakaracca" icon="082562.png" rarity="Legendary" type="None" up="1" lt="8" dn="10" rt="8" />
+  <card id="63" name="Nanamo Ul Namo" icon="082563.png" rarity="Legendary" type="None" up="10" lt="6" dn="4" rt="8" />
+  <card id="64" name="Gaius van Baelsar" icon="082564.png" rarity="Legendary" type="Garlean" up="4" lt="10" dn="5" rt="9" />
+  <card id="65" name="Merlwyb Bloefhiswyn" icon="082565.png" rarity="Legendary" type="None" up="5" lt="9" dn="10" rt="3" />
+  <card id="66" name="Kan-E-Senna" icon="082566.png" rarity="Legendary" type="None" up="9" lt="10" dn="1" rt="7" />
+  <card id="67" name="Raubahn Aldynn" icon="082567.png" rarity="Legendary" type="None" up="6" lt="2" dn="9" rt="10" />
+  <card id="68" name="Warrior of Light" icon="082568.png" rarity="Legendary" type="None" up="10" lt="2" dn="5" rt="10" />
+  <card id="69" name="Firion" icon="082569.png" rarity="Legendary" type="None" up="10" lt="5" dn="10" rt="1" />
+  <card id="70" name="Onion Knight" icon="082570.png" rarity="Legendary" type="None" up="8" lt="2" dn="8" rt="10" />
+  <card id="71" name="Cecil Harvey" icon="082571.png" rarity="Legendary" type="None" up="4" lt="10" dn="4" rt="10" />
+  <card id="72" name="Bartz Klauser" icon="082572.png" rarity="Legendary" type="None" up="4" lt="4" dn="10" rt="10" />
+  <card id="73" name="Terra Branford" icon="082573.png" rarity="Legendary" type="None" up="10" lt="10" dn="2" rt="5" />
+  <card id="74" name="Cloud Strife" icon="082574.png" rarity="Legendary" type="None" up="9" lt="3" dn="9" rt="8" />
+  <card id="75" name="Squall Leonhart" icon="082575.png" rarity="Legendary" type="None" up="6" lt="10" dn="10" rt="1" />
+  <card id="76" name="Zidane Tribal" icon="082576.png" rarity="Legendary" type="None" up="5" lt="10" dn="6" rt="8" />
+  <card id="77" name="Tidus" icon="082577.png" rarity="Legendary" type="None" up="10" lt="7" dn="1" rt="9" />
+  <card id="78" name="Shantotto" icon="082578.png" rarity="Legendary" type="None" up="4" lt="9" dn="7" rt="9" />
+  <card id="79" name="Vaan" icon="082579.png" rarity="Legendary" type="None" up="1" lt="7" dn="10" rt="9" />
+  <card id="80" name="Lightning" icon="082580.png" rarity="Legendary" type="None" up="9" lt="1" dn="7" rt="10" />
+  <card id="81" name="Gaelicat" icon="082581.png" rarity="Common" type="None" up="4" lt="1" dn="1" rt="7" />
+  <card id="82" name="Vanu Vanu" icon="082582.png" rarity="Uncommon" type="Beastman" up="2" lt="6" dn="4" rt="7" />
+  <card id="83" name="Gnath" icon="082583.png" rarity="Uncommon" type="Beastman" up="6" lt="3" dn="7" rt="3" />
+  <card id="84" name="Yugiri Mistwalker" icon="082584.png" rarity="Uncommon" type="None" up="7" lt="7" dn="1" rt="3" />
+  <card id="85" name="Fat Chocobo" icon="082585.png" rarity="Uncommon" type="None" up="5" lt="5" dn="5" rt="5" />
+  <card id="86" name="Griffin" icon="082586.png" rarity="Rare" type="None" up="5" lt="1" dn="7" rt="8" />
+  <card id="87" name="Tioman" icon="082587.png" rarity="Rare" type="None" up="1" lt="5" dn="8" rt="7" />
+  <card id="88" name="Estinien" icon="082588.png" rarity="Rare" type="None" up="8" lt="8" dn="2" rt="3" />
+  <card id="89" name="Lucia goe Junius" icon="082589.png" rarity="Rare" type="None" up="8" lt="2" dn="3" rt="8" />
+  <card id="90" name="Ysayle" icon="082590.png" rarity="Rare" type="None" up="4" lt="8" dn="8" rt="1" />
+  <card id="91" name="Hilda" icon="082591.png" rarity="Rare" type="None" up="1" lt="4" dn="8" rt="8" />
+  <card id="92" name="Matoya" icon="082592.png" rarity="Rare" type="None" up="8" lt="3" dn="8" rt="1" />
+  <card id="93" name="Count Edmont de Fortemps" icon="082593.png" rarity="Rare" type="None" up="1" lt="8" dn="3" rt="8" />
+  <card id="94" name="Byblos" icon="082594.png" rarity="Rare" type="None" up="8" lt="4" dn="1" rt="7" />
+  <card id="95" name="Haurchefant" icon="082595.png" rarity="Rare" type="None" up="7" lt="1" dn="5" rt="8" />
+  <card id="96" name="Aymeric" icon="082596.png" rarity="Epic" type="None" up="1" lt="5" dn="9" rt="9" />
+  <card id="97" name="Ravana" icon="082597.png" rarity="Epic" type="Primal" up="9" lt="7" dn="8" rt="1" />
+  <card id="98" name="Bismarck" icon="082598.png" rarity="Epic" type="Primal" up="1" lt="9" dn="7" rt="8" />
+  <card id="99" name="Nidhogg" icon="082599.png" rarity="Legendary" type="None" up="10" lt="7" dn="3" rt="8" />
+  <card id="100" name="Midgardsormr" icon="082600.png" rarity="Legendary" type="None" up="3" lt="8" dn="10" rt="7" />
+  <card id="101" name="Deepeye" icon="082601.png" rarity="Common" type="None" up="1" lt="3" dn="7" rt="2" />
+  <card id="102" name="Archaeornis" icon="082602.png" rarity="Uncommon" type="None" up="5" lt="4" dn="6" rt="5" />
+  <card id="103" name="Paissa" icon="082603.png" rarity="Uncommon" type="None" up="4" lt="6" dn="3" rt="6" />
+  <card id="104" name="Dhalmel" icon="082604.png" rarity="Uncommon" type="None" up="6" lt="5" dn="3" rt="5" />
+  <card id="105" name="Bandersnatch" icon="082605.png" rarity="Uncommon" type="None" up="6" lt="6" dn="3" rt="4" />
+  <card id="106" name="Crawler" icon="082606.png" rarity="Uncommon" type="None" up="7" lt="7" dn="3" rt="2" />
+  <card id="107" name="Poroggo" icon="082607.png" rarity="Uncommon" type="None" up="6" lt="3" dn="7" rt="3" />
+  <card id="108" name="Vedrfolnir" icon="082608.png" rarity="Rare" type="None" up="8" lt="2" dn="7" rt="4" />
+  <card id="109" name="Coeurlregina" icon="082609.png" rarity="Rare" type="None" up="5" lt="5" dn="5" rt="8" />
+  <card id="110" name="Progenitrix" icon="082610.png" rarity="Rare" type="None" up="6" lt="6" dn="3" rt="6" />
+  <card id="111" name="Belladonna" icon="082611.png" rarity="Rare" type="None" up="3" lt="7" dn="3" rt="7" />
+  <card id="112" name="Echidna" icon="082612.png" rarity="Rare" type="None" up="6" lt="4" dn="7" rt="4" />
+  <card id="113" name="Pipin Tarupin" icon="082613.png" rarity="Rare" type="None" up="6" lt="5" dn="6" rt="6" />
+  <card id="114" name="Julyan Manderville" icon="082614.png" rarity="Rare" type="None" up="6" lt="6" dn="5" rt="7" />
+  <card id="115" name="Moglin" icon="082615.png" rarity="Rare" type="Beastman" up="8" lt="5" dn="4" rt="5" />
+  <card id="116" name="Charibert" icon="082616.png" rarity="Rare" type="None" up="7" lt="8" dn="4" rt="3" />
+  <card id="117" name="Roundrox" icon="082617.png" rarity="Rare" type="Beastman" up="2" lt="2" dn="8" rt="8" />
+  <card id="118" name="Senor Sabotender" icon="082618.png" rarity="Epic" type="None" up="9" lt="5" dn="7" rt="6" />
+  <card id="119" name="Regula van Hydrus" icon="082619.png" rarity="Legendary" type="Garlean" up="8" lt="8" dn="6" rt="8" />
+  <card id="120" name="Archbishop Thordan VII" icon="082620.png" rarity="Legendary" type="None" up="7" lt="1" dn="10" rt="9" />
+  <card id="121" name="Honoroit" icon="082621.png" rarity="Uncommon" type="None" up="7" lt="2" dn="7" rt="2" />
+  <card id="122" name="Hoary Boulder &amp; Coultenet" icon="082622.png" rarity="Uncommon" type="Scion" up="2" lt="7" dn="2" rt="7" />
+  <card id="123" name="Brachiosaur" icon="082623.png" rarity="Rare" type="None" up="8" lt="4" dn="5" rt="4" />
+  <card id="124" name="Darkscale" icon="082624.png" rarity="Rare" type="None" up="2" lt="8" dn="4" rt="7" />
+  <card id="125" name="Fenrir" icon="082625.png" rarity="Rare" type="None" up="7" lt="3" dn="6" rt="4" />
+  <card id="126" name="Kraken" icon="082626.png" rarity="Rare" type="None" up="3" lt="6" dn="6" rt="6" />
+  <card id="127" name="Vicegerent to the Warden" icon="082627.png" rarity="Rare" type="None" up="7" lt="1" dn="7" rt="5" />
+  <card id="128" name="Manxome Molaa Ja Ja" icon="082628.png" rarity="Rare" type="Beastman" up="3" lt="7" dn="2" rt="8" />
+  <card id="129" name="Ferdiad" icon="082629.png" rarity="Rare" type="None" up="4" lt="6" dn="8" rt="4" />
+  <card id="130" name="Calcabrina" icon="082630.png" rarity="Rare" type="None" up="6" lt="6" dn="6" rt="3" />
+  <card id="131" name="Kuribu" icon="082631.png" rarity="Rare" type="None" up="8" lt="3" dn="2" rt="7" />
+  <card id="132" name="Phlegethon" icon="082632.png" rarity="Rare" type="None" up="1" lt="7" dn="6" rt="7" />
+  <card id="133" name="Artoirel de Fortemps" icon="082633.png" rarity="Rare" type="None" up="4" lt="7" dn="3" rt="7" />
+  <card id="134" name="Emmanellain de Fortemps" icon="082634.png" rarity="Rare" type="None" up="7" lt="4" dn="7" rt="3" />
+  <card id="135" name="Xande" icon="082635.png" rarity="Epic" type="None" up="9" lt="4" dn="6" rt="7" />
+  <card id="136" name="Brute Justice" icon="082636.png" rarity="Epic" type="None" up="7" lt="7" dn="7" rt="7" />
+  <card id="137" name="Sephirot" icon="082637.png" rarity="Epic" type="Primal" up="6" lt="8" dn="8" rt="6" />
+  <card id="138" name="F'lhaminn" icon="082638.png" rarity="Epic" type="Scion" up="9" lt="7" dn="3" rt="7" />
+  <card id="139" name="Vidofnir" icon="082639.png" rarity="Epic" type="None" up="8" lt="6" dn="8" rt="6" />
+  <card id="140" name="Cloud of Darkness" icon="082640.png" rarity="Legendary" type="None" up="7" lt="10" dn="7" rt="6" />
+  <card id="141" name="Lolorito Nanarito" icon="082641.png" rarity="Uncommon" type="None" up="4" lt="3" dn="7" rt="3" />
+  <card id="142" name="Gibrillont" icon="082642.png" rarity="Uncommon" type="None" up="2" lt="6" dn="3" rt="6" />
+  <card id="143" name="Laniaitte de Haillenarte" icon="082643.png" rarity="Uncommon" type="None" up="7" lt="6" dn="3" rt="3" />
+  <card id="144" name="Rhoswen" icon="082644.png" rarity="Uncommon" type="None" up="5" lt="6" dn="4" rt="6" />
+  <card id="145" name="Carvallain de Gorgagne" icon="082645.png" rarity="Uncommon" type="None" up="2" lt="7" dn="7" rt="2" />
+  <card id="146" name="Kal Myhk" icon="082646.png" rarity="Rare" type="None" up="1" lt="8" dn="4" rt="8" />
+  <card id="147" name="Waukkeon" icon="082647.png" rarity="Rare" type="None" up="1" lt="6" dn="7" rt="7" />
+  <card id="148" name="Curator" icon="082648.png" rarity="Rare" type="None" up="4" lt="6" dn="4" rt="7" />
+  <card id="149" name="Mistbeard" icon="082649.png" rarity="Rare" type="None" up="5" lt="6" dn="7" rt="6" />
+  <card id="150" name="Unei &amp; Doga" icon="082650.png" rarity="Epic" type="None" up="6" lt="8" dn="6" rt="8" />
+  <card id="151" name="Tiamat" icon="082651.png" rarity="Epic" type="None" up="9" lt="6" dn="5" rt="6" />
+  <card id="152" name="Calofisteri" icon="082652.png" rarity="Epic" type="None" up="5" lt="8" dn="7" rt="8" />
+  <card id="153" name="Hraesvelgr" icon="082653.png" rarity="Legendary" type="None" up="7" lt="7" dn="10" rt="6" />
+  <card id="154" name="Apkallu" icon="082654.png" rarity="Common" type="None" up="3" lt="4" dn="4" rt="1" />
+  <card id="155" name="Colibri" icon="082655.png" rarity="Common" type="None" up="6" lt="1" dn="4" rt="1" />
+  <card id="156" name="Magitek Death Claw" icon="082656.png" rarity="Common" type="Garlean" up="4" lt="3" dn="2" rt="3" />
+  <card id="157" name="Liquid Flame" icon="082657.png" rarity="Uncommon" type="None" up="4" lt="3" dn="6" rt="6" />
+  <card id="158" name="Lost Lamb" icon="082658.png" rarity="Uncommon" type="None" up="7" lt="3" dn="4" rt="5" />
+  <card id="159" name="Delivery Moogle" icon="082659.png" rarity="Uncommon" type="Beastman" up="5" lt="5" dn="6" rt="3" />
+  <card id="160" name="Magitek Colossus" icon="082660.png" rarity="Uncommon" type="Garlean" up="6" lt="3" dn="6" rt="3" />
+  <card id="161" name="Strix" icon="082661.png" rarity="Rare" type="None" up="5" lt="7" dn="1" rt="7" />
+  <card id="162" name="Tozol Huatotl" icon="082662.png" rarity="Rare" type="Beastman" up="7" lt="6" dn="6" rt="2" />
+  <card id="163" name="Alexander Prime" icon="082663.png" rarity="Rare" type="Primal" up="7" lt="3" dn="2" rt="8" />
+  <card id="164" name="Brendt, Brennan, &amp; Bremondt" icon="082664.png" rarity="Rare" type="None" up="4" lt="7" dn="6" rt="5" />
+  <card id="165" name="Heavensward Thancred" icon="082665.png" rarity="Epic" type="Scion" up="8" lt="1" dn="7" rt="9" />
+  <card id="166" name="Heavensward Y'shtola" icon="082666.png" rarity="Epic" type="Scion" up="9" lt="9" dn="2" rt="5" />
+  <card id="167" name="Nael van Darnus" icon="082667.png" rarity="Epic" type="Garlean" up="3" lt="9" dn="3" rt="9" />
+  <card id="168" name="Sophia" icon="082668.png" rarity="Legendary" type="Primal" up="10" lt="8" dn="5" rt="6" />
+  <card id="169" name="Opo-opo" icon="082669.png" rarity="Common" type="None" up="1" lt="4" dn="2" rt="6" />
+  <card id="170" name="Adamantoise" icon="082670.png" rarity="Uncommon" type="None" up="5" lt="7" dn="4" rt="4" />
+  <card id="171" name="Magitek Vanguard" icon="082671.png" rarity="Uncommon" type="Garlean" up="3" lt="5" dn="4" rt="7" />
+  <card id="172" name="Magitek Gunship" icon="082672.png" rarity="Uncommon" type="Garlean" up="3" lt="5" dn="5" rt="5" />
+  <card id="173" name="Gold Saucer Attendant" icon="082673.png" rarity="Uncommon" type="None" up="4" lt="7" dn="1" rt="6" />
+  <card id="174" name="Lava Scorpion" icon="082674.png" rarity="Rare" type="None" up="3" lt="8" dn="5" rt="5" />
+  <card id="175" name="Magitek Predator" icon="082675.png" rarity="Rare" type="Garlean" up="5" lt="7" dn="4" rt="5" />
+  <card id="176" name="Magitek Sky Armor" icon="082676.png" rarity="Rare" type="Garlean" up="6" lt="2" dn="6" rt="7" />
+  <card id="177" name="The Griffin" icon="082677.png" rarity="Rare" type="None" up="8" lt="8" dn="4" rt="1" />
+  <card id="178" name="Roland" icon="082678.png" rarity="Rare" type="None" up="2" lt="7" dn="8" rt="3" />
+  <card id="179" name="Diabolos Hollow" icon="082679.png" rarity="Epic" type="None" up="4" lt="4" dn="8" rt="9" />
+  <card id="180" name="Armored Weapon" icon="082680.png" rarity="Epic" type="Garlean" up="3" lt="5" dn="9" rt="7" />
+  <card id="181" name="Gigi" icon="082681.png" rarity="Epic" type="None" up="6" lt="8" dn="4" rt="7" />
+  <card id="182" name="Zurvan" icon="082682.png" rarity="Legendary" type="Primal" up="3" lt="7" dn="8" rt="10" />
+  <card id="183" name="Namazu" icon="082683.png" rarity="Common" type="Beastman" up="1" lt="6" dn="1" rt="5" />
+  <card id="184" name="Kojin" icon="082684.png" rarity="Uncommon" type="Beastman" up="4" lt="5" dn="5" rt="4" />
+  <card id="185" name="Ananta" icon="082685.png" rarity="Uncommon" type="Beastman" up="3" lt="7" dn="5" rt="2" />
+  <card id="186" name="M'naago" icon="082686.png" rarity="Uncommon" type="None" up="4" lt="1" dn="4" rt="7" />
+  <card id="187" name="Kotokaze" icon="082687.png" rarity="Uncommon" type="None" up="5" lt="6" dn="2" rt="6" />
+  <card id="188" name="Mammoth" icon="082688.png" rarity="Rare" type="None" up="6" lt="3" dn="8" rt="3" />
+  <card id="189" name="Phoebad" icon="082689.png" rarity="Rare" type="None" up="8" lt="8" dn="3" rt="1" />
+  <card id="190" name="Susano" icon="082690.png" rarity="Rare" type="Primal" up="2" lt="8" dn="3" rt="8" />
+  <card id="191" name="Lakshmi" icon="082691.png" rarity="Rare" type="Primal" up="3" lt="7" dn="7" rt="5" />
+  <card id="192" name="Grynewaht" icon="082692.png" rarity="Rare" type="Garlean" up="7" lt="4" dn="7" rt="4" />
+  <card id="193" name="Rasho" icon="082693.png" rarity="Rare" type="None" up="4" lt="7" dn="8" rt="2" />
+  <card id="194" name="Cirina" icon="082694.png" rarity="Rare" type="None" up="3" lt="5" dn="6" rt="8" />
+  <card id="195" name="Magnai" icon="082695.png" rarity="Rare" type="None" up="6" lt="7" dn="4" rt="4" />
+  <card id="196" name="Sadu" icon="082696.png" rarity="Rare" type="None" up="6" lt="6" dn="7" rt="4" />
+  <card id="197" name="Shinryu" icon="082697.png" rarity="Epic" type="Primal" up="7" lt="8" dn="8" rt="2" />
+  <card id="198" name="Yotsuyu" icon="082698.png" rarity="Epic" type="Garlean" up="9" lt="2" dn="8" rt="6" />
+  <card id="199" name="Krile" icon="082699.png" rarity="Epic" type="Scion" up="2" lt="8" dn="8" rt="7" />
+  <card id="200" name="Lyse" icon="082700.png" rarity="Epic" type="Scion" up="6" lt="9" dn="1" rt="8" />
+  <card id="201" name="Zenos yae Galvus" icon="082701.png" rarity="Legendary" type="Garlean" up="6" lt="6" dn="7" rt="10" />
+  <card id="202" name="Hien" icon="082702.png" rarity="Legendary" type="None" up="2" lt="10" dn="5" rt="10" />
+  <card id="203" name="mossling" icon="082703.png" rarity="Common" type="None" up="5" lt="2" dn="5" rt="1" />
+  <card id="204" name="chapuli" icon="082704.png" rarity="Uncommon" type="None" up="7" lt="2" dn="2" rt="6" />
+  <card id="205" name="Qiqirn Meateater" icon="082705.png" rarity="Uncommon" type="Beastman" up="1" lt="5" dn="7" rt="5" />
+  <card id="206" name="Hrodric Poisontongue" icon="082706.png" rarity="Rare" type="None" up="2" lt="7" dn="6" rt="7" />
+  <card id="207" name="Fordola rem Lupis" icon="082707.png" rarity="Rare" type="None" up="5" lt="8" dn="6" rt="3" />
+  <card id="208" name="Rofocale" icon="082708.png" rarity="Rare" type="None" up="4" lt="7" dn="1" rt="8" />
+  <card id="209" name="Argath Thadalfus" icon="082709.png" rarity="Epic" type="None" up="9" lt="2" dn="5" rt="8" />
+  <card id="210" name="Raubahn &amp; Pipin" icon="082710.png" rarity="Legendary" type="None" up="1" lt="10" dn="10" rt="6" />
+  <card id="211" name="Koja" icon="082711.png" rarity="Common" type="None" up="3" lt="2" dn="1" rt="6" />
+  <card id="212" name="Ango" icon="082712.png" rarity="Uncommon" type="None" up="4" lt="2" dn="7" rt="4" />
+  <card id="213" name="Guidance Node" icon="082713.png" rarity="Uncommon" type="None" up="6" lt="4" dn="4" rt="4" />
+  <card id="214" name="Tansui" icon="082714.png" rarity="Uncommon" type="None" up="6" lt="2" dn="3" rt="7" />
+  <card id="215" name="Genbu" icon="082715.png" rarity="Rare" type="None" up="7" lt="7" dn="1" rt="7" />
+  <card id="216" name="Byakko" icon="082716.png" rarity="Rare" type="None" up="7" lt="1" dn="7" rt="7" />
+  <card id="217" name="Arenvald Lentinus" icon="082717.png" rarity="Rare" type="Scion" up="8" lt="4" dn="8" rt="2" />
+  <card id="218" name="Lupin" icon="082718.png" rarity="Rare" type="Beastman" up="3" lt="3" dn="8" rt="7" />
+  <card id="219" name="Hancock" icon="082719.png" rarity="Epic" type="None" up="8" lt="9" dn="1" rt="7" />
+  <card id="220" name="Hisui &amp; Kurenai" icon="082720.png" rarity="Legendary" type="None" up="10" lt="2" dn="7" rt="9" />
+  <card id="221" name="Wanyudo &amp; Katasharin" icon="082721.png" rarity="Common" type="None" up="6" lt="1" dn="1" rt="5" />
+  <card id="222" name="Hatamoto" icon="082722.png" rarity="Uncommon" type="None" up="2" lt="7" dn="5" rt="6" />
+  <card id="223" name="Yukinko" icon="082723.png" rarity="Uncommon" type="None" up="3" lt="7" dn="3" rt="5" />
+  <card id="224" name="Qitian Dasheng" icon="082724.png" rarity="Rare" type="None" up="3" lt="8" dn="4" rt="8" />
+  <card id="225" name="Hiruko" icon="082725.png" rarity="Rare" type="None" up="4" lt="7" dn="5" rt="7" />
+  <card id="226" name="Happy Bunny" icon="082726.png" rarity="Rare" type="None" up="3" lt="8" dn="7" rt="3" />
+  <card id="227" name="Louhi" icon="082727.png" rarity="Rare" type="None" up="5" lt="8" dn="2" rt="7" />
+  <card id="228" name="Tsukuyomi" icon="082728.png" rarity="Epic" type="Primal" up="2" lt="7" dn="7" rt="8" />
+  <card id="229" name="Yiazmat" icon="082729.png" rarity="Legendary" type="None" up="7" lt="6" dn="10" rt="7" />
+  <card id="230" name="Gosetsu" icon="082730.png" rarity="Legendary" type="None" up="10" lt="5" dn="10" rt="2" />
+  <card id="231" name="Karakuri Hanya" icon="082731.png" rarity="Common" type="None" up="7" lt="1" dn="1" rt="4" />
+  <card id="232" name="Muud Suud" icon="082732.png" rarity="Uncommon" type="None" up="3" lt="7" dn="1" rt="7" />
+  <card id="233" name="Tokkapchi" icon="082733.png" rarity="Rare" type="None" up="2" lt="6" dn="6" rt="7" />
+  <card id="234" name="Mist Dragon" icon="082734.png" rarity="Rare" type="None" up="5" lt="8" dn="5" rt="5" />
+  <card id="235" name="Suzaku" icon="082735.png" rarity="Rare" type="None" up="1" lt="7" dn="7" rt="7" />
+  <card id="236" name="Pazuzu" icon="082736.png" rarity="Rare" type="None" up="4" lt="8" dn="4" rt="7" />
+  <card id="237" name="Penthesilea" icon="082737.png" rarity="Rare" type="None" up="7" lt="2" dn="8" rt="5" />
+  <card id="238" name="Asahi sas Brutus" icon="082738.png" rarity="Rare" type="Garlean" up="8" lt="4" dn="1" rt="8" />
+  <card id="239" name="Yojimbo &amp; Daigoro" icon="082739.png" rarity="Legendary" type="None" up="10" lt="8" dn="1" rt="8" />
+  <card id="240" name="Omega" icon="082740.png" rarity="Legendary" type="None" up="6" lt="9" dn="3" rt="10" />
+  <card id="241" name="Stormblood Tataru Taru" icon="082741.png" rarity="Common" type="Scion" up="1" lt="4" dn="1" rt="7" />
+  <card id="242" name="Dvergr" icon="082742.png" rarity="Uncommon" type="None" up="4" lt="5" dn="3" rt="7" />
+  <card id="243" name="Ejika Tsunjika" icon="082743.png" rarity="Uncommon" type="None" up="7" lt="1" dn="1" rt="7" />
+  <card id="244" name="Prometheus" icon="082744.png" rarity="Rare" type="Garlean" up="6" lt="5" dn="8" rt="3" />
+  <card id="245" name="Provenance Watcher" icon="082745.png" rarity="Rare" type="None" up="7" lt="4" dn="4" rt="8" />
+  <card id="246" name="Seiryu" icon="082746.png" rarity="Rare" type="None" up="7" lt="7" dn="7" rt="1" />
+  <card id="247" name="Alpha" icon="082747.png" rarity="Rare" type="None" up="6" lt="6" dn="6" rt="6" />
+  <card id="248" name="Great Gold Whisker" icon="082748.png" rarity="Epic" type="Beastman" up="6" lt="9" dn="6" rt="7" />
+  <card id="249" name="Stormblood Gilgamesh" icon="082749.png" rarity="Epic" type="None" up="9" lt="4" dn="8" rt="4" />
+  <card id="250" name="Ultima, the High Seraph" icon="082750.png" rarity="Legendary" type="None" up="6" lt="10" dn="7" rt="7" />
+  <card id="251" name="Stormblood Alphinaud &amp; Alisaie" icon="082751.png" rarity="Legendary" type="Scion" up="6" lt="8" dn="8" rt="8" />
+  <card id="252" name="Noctis Lucis Caelum" icon="082752.png" rarity="Legendary" type="None" up="7" lt="10" dn="9" rt="1" />
+  <card id="253" name="Amaro" icon="082753.png" rarity="Common" type="None" up="1" lt="7" dn="2" rt="3" />
+  <card id="254" name="Evil Weapon" icon="082754.png" rarity="Common" type="None" up="7" lt="2" dn="2" rt="2" />
+  <card id="255" name="Lord and Lady Chai" icon="082755.png" rarity="Common" type="None" up="5" lt="1" dn="6" rt="1" />
+  <card id="256" name="Gigantender" icon="082756.png" rarity="Uncommon" type="None" up="7" lt="4" dn="4" rt="4" />
+  <card id="257" name="Feo Ul" icon="082757.png" rarity="Uncommon" type="Beastman" up="7" lt="5" dn="5" rt="1" />
+  <card id="258" name="Runar" icon="082758.png" rarity="Uncommon" type="None" up="6" lt="4" dn="7" rt="1" />
+  <card id="259" name="Grenoldt" icon="082759.png" rarity="Uncommon" type="None" up="1" lt="3" dn="7" rt="7" />
+  <card id="260" name="Philia" icon="082760.png" rarity="Rare" type="None" up="2" lt="6" dn="8" rt="6" />
+  <card id="261" name="Titania" icon="082761.png" rarity="Rare" type="None" up="8" lt="6" dn="6" rt="2" />
+  <card id="262" name="Eros" icon="082762.png" rarity="Rare" type="None" up="6" lt="2" dn="6" rt="8" />
+  <card id="263" name="Storge" icon="082763.png" rarity="Rare" type="None" up="6" lt="8" dn="2" rt="6" />
+  <card id="264" name="Formidable" icon="082764.png" rarity="Rare" type="None" up="8" lt="5" dn="5" rt="5" />
+  <card id="265" name="Lyna" icon="082765.png" rarity="Rare" type="None" up="1" lt="8" dn="8" rt="3" />
+  <card id="266" name="Jongleurs of Eulmore" icon="082766.png" rarity="Rare" type="None" up="4" lt="4" dn="7" rt="6" />
+  <card id="267" name="Innocence" icon="082767.png" rarity="Epic" type="None" up="8" lt="3" dn="8" rt="8" />
+  <card id="268" name="Shadowbringers Y'shtola" icon="082768.png" rarity="Epic" type="Scion" up="2" lt="9" dn="5" rt="9" />
+  <card id="269" name="Shadowbringers Urianger" icon="082769.png" rarity="Epic" type="Scion" up="9" lt="2" dn="5" rt="9" />
+  <card id="270" name="Ran'jit" icon="082770.png" rarity="Epic" type="None" up="1" lt="9" dn="9" rt="5" />
+  <card id="271" name="Hades" icon="082771.png" rarity="Legendary" type="None" up="8" lt="6" dn="6" rt="10" />
+  <card id="272" name="Ardbert" icon="082772.png" rarity="Legendary" type="None" up="1" lt="9" dn="9" rt="9" />
+</root>

@@ -1,5 +1,6 @@
 # FFTriadBuddy
 Helper program for Triple Triad minigame in [Final Fantasy XIV](https://www.finalfantasyxiv.com/), NPC matches only.
+(All used icons are property of SQUARE-ENIX Ltd. All rights reserved)
 
 Features:
 
@@ -10,13 +11,9 @@ Features:
 * all game rules are supported
 
 ## Instructions
-1. Download latest release
+1. Download [latest release](https://github.com/MgAl2O4/FFTriadBuddy/releases/latest)
 2. Unpack and run. 
 
 Program will attempt to auto update on startup from this repository.
-
-## Changelog
-* v12: updated for 5.0
-* v11: public release
 
 Contact: MgAl2O4@protonmail.com
