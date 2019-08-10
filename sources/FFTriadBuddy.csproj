@@ -139,6 +139,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -169,4 +170,51 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild">
+    <Delete Files="$(ProjectDir)\assets.zip" />
+    <ZipDir ZipFileName="$(ProjectDir)\assets.zip" DirectoryName="$(SolutionDir)\assets" />
+  </Target>
+  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+        <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo"/>
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+        <Pattern>(\d+)</Pattern>
+        <In>%(myAssemblyInfo.Version)</In>
+        <MajorVersion>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</MajorVersion>
+        <ReleaseZipPath>$(SolutionDir)\releases\release-v$(MajorVersion).zip</ReleaseZipPath>
+        <ReleaseZipTemp>$(SolutionDir)\releases\temp</ReleaseZipTemp>
+    </PropertyGroup>
+    
+    <MakeDir Directories="$(ReleaseZipTemp)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseZipTemp)" />
+    <Delete Files="$(ReleaseZipPath)" />
+    <ZipDir ZipFileName="$(ReleaseZipPath)" DirectoryName="$(ReleaseZipTemp)" />
+    <RemoveDir Directories="$(ReleaseZipTemp)" />
+    <Message Text="Created $(ReleaseZipPath)" Importance="high" />    
+  </Target>
+  
+  <UsingTask TaskName="ZipDir" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+  <ParameterGroup>
+    <ZipFileName ParameterType="System.String" Required="true" />
+    <DirectoryName ParameterType="System.String" Required="true" />
+  </ParameterGroup>
+  <Task>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Using Namespace="System.IO.Compression" />
+    <Code Type="Fragment" Language="cs"><![CDATA[
+      try
+      {
+        Log.LogMessage(string.Format("Zipping Directory {0} to {1}", DirectoryName, ZipFileName));
+        ZipFile.CreateFromDirectory( DirectoryName, ZipFileName );
+        return true;
+      }
+      catch(Exception ex)
+      {
+        Log.LogErrorFromException(ex);
+        return false;
+      }
+    ]]></Code>
+  </Task>
+  </UsingTask>
 </Project>

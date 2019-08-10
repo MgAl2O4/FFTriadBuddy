@@ -39,7 +39,7 @@ namespace FFTriadBuddy
             }
             else
             {
-                MessageBox.Show("Failed to initialize! Make sure that " + AssetManager.Get().DBRelativePath + " is next to executable.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Failed to initialize resources!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
     }

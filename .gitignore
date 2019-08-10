@@ -1,6 +1,6 @@
 player.xml
 *.lnk
-*.pkg
+sources/assets.zip
 test/*
 datasource/*
 releases/*

@@ -11,18 +11,10 @@ namespace FFTriadBuddy
 {
     public class AssetManager
     {
-        public string DBRelativePath;
-        private string DBPath;
         private ZipArchive assetArchive;
+        private Stream resourceReader;
 
         private static AssetManager instance = new AssetManager();
-
-        public AssetManager()
-        {
-            AssemblyTitleAttribute attributes = (AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false);
-            DBRelativePath = attributes.Title + ".pkg";
-            DBPath = CreateFilePath(DBRelativePath);
-        }
 
         public static AssetManager Get()
         {
@@ -32,16 +24,16 @@ namespace FFTriadBuddy
         public bool Init()
         {
             bool bResult = false;
-            if (File.Exists(DBPath))
+            try
             {
-                try
-                {
-                    assetArchive = ZipFile.OpenRead(DBPath);
-                    bResult = true;
-                }
-                catch (Exception)
-                {
-                }
+                byte[] zipContent = Properties.Resources.assets;
+                resourceReader = new MemoryStream(zipContent);
+                assetArchive = new ZipArchive(resourceReader);
+                bResult = assetArchive.Entries.Count > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Can't access embedded assets! " + ex);
             }
 
             return bResult;
@@ -56,7 +48,7 @@ namespace FFTriadBuddy
         public string CreateFilePath(string relativeFilePath)
         {
             string currentDirName = Environment.CurrentDirectory;
-            string[] devIgnorePatterns = new string[] { @"bin\Debug", @"bin\Release" };
+            string[] devIgnorePatterns = new string[] { @"sources\bin\Debug", @"sources\bin\Release" };
             foreach (string pattern in devIgnorePatterns)
             {
                 if (currentDirName.EndsWith(pattern))
@@ -72,6 +64,7 @@ namespace FFTriadBuddy
 
         public Stream GetAsset(string path)
         {
+            path = path.Replace("/", "\\");
             foreach (ZipArchiveEntry entry in assetArchive.Entries)
             {
                 if (entry.FullName.Equals(path, StringComparison.InvariantCultureIgnoreCase))

@@ -138,12 +138,9 @@ namespace FFTriadBuddy
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            string imagePath = "";
+            string imagePath = AssetManager.Get().CreateFilePath("test/");
             bool bUseTestScreenshot = false;
             bDebugMode = (mode & EMode.Debug) != EMode.None;
-#if DEBUG          
-            imagePath = "test/";
-#endif
 
             Stopwatch stopwatchInner = new Stopwatch();
             stopwatchInner.Start();
@@ -178,7 +175,7 @@ namespace FFTriadBuddy
 
                 if (cachedScreenshot != null && bDebugMode)
                 {
-                    cachedScreenshot.Save(AssetManager.Get().CreateFilePath(imagePath + "screenshot-source.jpg"));
+                    cachedScreenshot.Save(imagePath + "screenshot-source.jpg");
                 }
             }
 
@@ -314,7 +311,7 @@ namespace FFTriadBuddy
                                 if (currentState != EState.FailedCardMatching && Logger.IsActive() && !bDebugMode)
                                 {
                                     string screenshotName = "screenshot_failed_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                                    cachedScreenshot.Save(AssetManager.Get().CreateFilePath(imagePath + screenshotName + ".jpg"));
+                                    cachedScreenshot.Save(imagePath + screenshotName + ".jpg");
 
                                     List<Rectangle> debugBounds = new List<Rectangle>();
                                     if (cachedGridCoord.Width > 0) { debugBounds.Add(cachedGridCoord); }
@@ -507,8 +504,7 @@ namespace FFTriadBuddy
 
         private Bitmap LoadTestScreenshot(string path)
         {
-            string absPath = AssetManager.Get().CreateFilePath(path);
-            return File.Exists(absPath) ? new Bitmap(absPath) : null;
+            return File.Exists(path) ? new Bitmap(path) : null;
         }
 
         private Rectangle FindGridCoords(FastBitmapHSV bitmap)
