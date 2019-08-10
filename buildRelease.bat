@@ -5,7 +5,7 @@ set ZipTool="%ProgramFiles%/7-Zip/7z.exe"
 if not exist %ZipTool% goto MISSING_ZIP
 
 set version=1
-findstr /c:"AssemblyFileVersion(" Properties\AssemblyInfo.cs > version.txt
+findstr /c:"AssemblyFileVersion(" sources\Properties\AssemblyInfo.cs > version.txt
 for /f tokens^=2^ delims^=^". %%G IN (version.txt) DO set version=%%G
 del /q version.txt > nul
 echo Version: [%version%]
@@ -18,7 +18,7 @@ move /y assets\FFTriadBuddy.zip FFTriadBuddy.pkg > nul
 mkdir releases > nul
 
 copy /y FFTriadBuddy.pkg releases\FFTriadBuddy.pkg > nul
-copy /y bin\Release\FFTriadBuddy.exe releases\FFTriadBuddy.exe > nul
+copy /y sources\bin\Release\FFTriadBuddy.exe releases\FFTriadBuddy.exe > nul
 pushd releases
 %ZipTool% a -r -tZip -bb0 release-v%version%.zip FFTriadBuddy.pkg FFTriadBuddy.exe
 del /q FFTriadBuddy.* > nul

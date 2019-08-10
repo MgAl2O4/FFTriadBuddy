@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFTriadBuddy", "FFTriadBuddy.csproj", "{4FE48C06-9E9C-46C9-A53E-CFE06EFDCBDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFTriadBuddy", "sources\FFTriadBuddy.csproj", "{4FE48C06-9E9C-46C9-A53E-CFE06EFDCBDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
