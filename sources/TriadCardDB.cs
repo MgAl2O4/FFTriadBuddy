@@ -18,7 +18,7 @@ namespace FFTriadBuddy
         {
             DBPath = "data/cards.xml";
             cards = new List<TriadCard>();
-            hiddenCard = new TriadCard(0, "(hidden)", null, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0);
+            hiddenCard = new TriadCard(0, "(hidden)", null, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0);
             sameNumberMap = new Dictionary<int, List<TriadCard>>();
         }
 
@@ -60,7 +60,8 @@ namespace FFTriadBuddy
                                     ParseCardSideNum(cardElem.GetAttribute("up")),
                                     ParseCardSideNum(cardElem.GetAttribute("dn")),
                                     ParseCardSideNum(cardElem.GetAttribute("lt")),
-                                    ParseCardSideNum(cardElem.GetAttribute("rt")));
+                                    ParseCardSideNum(cardElem.GetAttribute("rt")),
+                                    int.Parse(cardElem.GetAttribute("sort")));
 
                                 if (newCard.IsValid())
                                 {
@@ -174,6 +175,7 @@ namespace FFTriadBuddy
                         xmlWriter.WriteAttributeString("lt", card.Sides[(int)ETriadGameSide.Left].ToString());
                         xmlWriter.WriteAttributeString("dn", card.Sides[(int)ETriadGameSide.Down].ToString());
                         xmlWriter.WriteAttributeString("rt", card.Sides[(int)ETriadGameSide.Right].ToString());
+                        xmlWriter.WriteAttributeString("sort", card.SortKey.ToString());
                         xmlWriter.WriteEndElement();
                     }
                 }

@@ -43,7 +43,7 @@ namespace FFTriadBuddy
         public void Run()
         {
 #if DEBUG
-            string folderPath = @"..\..\datasource\export\exd\";
+            string folderPath = @"..\..\..\datasource\export\exd\";
 
             Logger.WriteLine("Parsing card data...");
             Dictionary<int, TriadCard> triadCards = ParseCards(folderPath);
@@ -283,7 +283,8 @@ namespace FFTriadBuddy
                         int.Parse(cardData[Idx][2]),
                         int.Parse(cardData[Idx][3]),
                         int.Parse(cardData[Idx][5]),
-                        int.Parse(cardData[Idx][4]));
+                        int.Parse(cardData[Idx][4]),
+                        int.Parse(cardData[Idx][9]));
 
                     if (cardOb.IsValid())
                     {
