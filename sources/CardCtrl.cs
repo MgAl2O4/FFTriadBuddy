@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace FFTriadBuddy
@@ -22,6 +23,7 @@ namespace FFTriadBuddy
         public bool bBlinkHighlighted;
         public bool bEnableHitTest;
         public bool bIsLocked;
+        public bool bIsTransparent;
         public ECardDrawMode drawMode;
 
         private Font drawFont;
@@ -49,6 +51,7 @@ namespace FFTriadBuddy
             SetCard(null);
             bIsLocked = false;
             bIsHighlighted = false;
+            bIsTransparent = false;
             bDrawHighlighted = false;
             bBlinkHighlighted = true;
             bEnableHitTest = true;
@@ -158,16 +161,30 @@ namespace FFTriadBuddy
             if (cardData != null)
             {
                 int cardDrawOffset = (drawMode == ECardDrawMode.ImageOnly) ? 0 : 5;
+                Rectangle destImageRect = new Rectangle(cardDrawOffset, cardDrawOffset, e.ClipRectangle.Width - (cardDrawOffset * 2), e.ClipRectangle.Height - (cardDrawOffset * 2));
 
                 if (cardData.card.Id != 0)
                 {
                     Image cardImage = cardIcons.Images[cardData.card.Id];
-                    e.Graphics.DrawImage(cardImage, cardDrawOffset, cardDrawOffset, e.ClipRectangle.Width - (cardDrawOffset * 2), e.ClipRectangle.Height - (cardDrawOffset * 2));
+                    if (bIsTransparent)
+                    {
+                        ColorMatrix colormatrix = new ColorMatrix();
+                        colormatrix.Matrix33 = 0.4f;
+                        ImageAttributes imgAttribute = new ImageAttributes();
+                        imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                        e.Graphics.DrawImage(cardImage, destImageRect, 0, 0, cardImage.Width, cardImage.Height, GraphicsUnit.Pixel, imgAttribute);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawImage(cardImage, destImageRect, 0, 0, cardImage.Width, cardImage.Height, GraphicsUnit.Pixel);
+                    }
                 }
                 else
                 {
-                    Brush hiddenCard = new SolidBrush(Color.DarkGoldenrod);
-                    e.Graphics.FillRectangle(hiddenCard, cardDrawOffset, cardDrawOffset, e.ClipRectangle.Width - (cardDrawOffset * 2), e.ClipRectangle.Height - (cardDrawOffset * 2));
+                    Color hiddenCardColor = bIsTransparent ? Color.FromArgb(127, Color.DarkGoldenrod) : Color.DarkGoldenrod;
+                    Brush hiddenCard = new SolidBrush(hiddenCardColor);
+                    e.Graphics.FillRectangle(hiddenCard, destImageRect);
                 }
 
                 if (drawMode == ECardDrawMode.Detailed)

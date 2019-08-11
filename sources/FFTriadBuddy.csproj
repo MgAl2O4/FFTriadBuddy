@@ -75,6 +75,12 @@
     <Compile Include="CardCtrl.Designer.cs">
       <DependentUpon>CardCtrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CardGridCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CardGridCtrl.Designer.cs">
+      <DependentUpon>CardGridCtrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataCoverter.cs" />
     <Compile Include="DeckCtrl.cs">
       <SubType>UserControl</SubType>
@@ -121,6 +127,9 @@
     <Compile Include="TriadNpcDB.cs" />
     <EmbeddedResource Include="CardCtrl.resx">
       <DependentUpon>CardCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CardGridCtrl.resx">
+      <DependentUpon>CardGridCtrl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DeckCtrl.resx">
       <DependentUpon>DeckCtrl.cs</DependentUpon>
@@ -176,33 +185,31 @@
   </Target>
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-        <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo"/>
+      <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
     </GetAssemblyIdentity>
     <PropertyGroup>
-        <Pattern>(\d+)</Pattern>
-        <In>%(myAssemblyInfo.Version)</In>
-        <MajorVersion>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</MajorVersion>
-        <ReleaseZipPath>$(SolutionDir)\releases\release-v$(MajorVersion).zip</ReleaseZipPath>
-        <ReleaseZipTemp>$(SolutionDir)\releases\temp</ReleaseZipTemp>
+      <Pattern>(\d+)</Pattern>
+      <In>%(myAssemblyInfo.Version)</In>
+      <MajorVersion>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</MajorVersion>
+      <ReleaseZipPath>$(SolutionDir)\releases\release-v$(MajorVersion).zip</ReleaseZipPath>
+      <ReleaseZipTemp>$(SolutionDir)\releases\temp</ReleaseZipTemp>
     </PropertyGroup>
-    
     <MakeDir Directories="$(ReleaseZipTemp)" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseZipTemp)" />
     <Delete Files="$(ReleaseZipPath)" />
     <ZipDir ZipFileName="$(ReleaseZipPath)" DirectoryName="$(ReleaseZipTemp)" />
     <RemoveDir Directories="$(ReleaseZipTemp)" />
-    <Message Text="Created $(ReleaseZipPath)" Importance="high" />    
+    <Message Text="Created $(ReleaseZipPath)" Importance="high" />
   </Target>
-  
   <UsingTask TaskName="ZipDir" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
-  <ParameterGroup>
-    <ZipFileName ParameterType="System.String" Required="true" />
-    <DirectoryName ParameterType="System.String" Required="true" />
-  </ParameterGroup>
-  <Task>
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Using Namespace="System.IO.Compression" />
-    <Code Type="Fragment" Language="cs"><![CDATA[
+    <ParameterGroup>
+      <ZipFileName ParameterType="System.String" Required="true" />
+      <DirectoryName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.IO.Compression.FileSystem" />
+      <Using Namespace="System.IO.Compression" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
       try
       {
         Log.LogMessage(string.Format("Zipping Directory {0} to {1}", DirectoryName, ZipFileName));
@@ -215,6 +222,6 @@
         return false;
       }
     ]]></Code>
-  </Task>
+    </Task>
   </UsingTask>
 </Project>

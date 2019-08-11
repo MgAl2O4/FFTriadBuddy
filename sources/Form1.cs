@@ -12,6 +12,7 @@ namespace FFTriadBuddy
         private CardCtrl[] boardControls;
         private CardCtrl[] deckBlueControls;
         private CardCtrl highlightedCard;
+        private CardGridCtrl[] cardGridControls;
         private static ImageList cardIconImages;
         private ListViewColumnSorter cardViewSorter;
         private ListViewColumnSorter npcViewSorter;
@@ -106,6 +107,7 @@ namespace FFTriadBuddy
                 deckCtrlRandom.allowRearrange = true;
                 deckCtrlRandom.clickAction = EDeckCtrlAction.Pick;
             }
+            CreateCardViewGrids();
 
             deckOptimizer = new TriadDeckOptimizer();
             deckOptimizer.OnFoundDeck += DeckOptimizer_OnFoundDeck;
@@ -655,12 +657,15 @@ namespace FFTriadBuddy
             {
                 TriadCard card = (TriadCard)e.Item.Tag;
 
-                PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
-                playerDB.ownedCards.Remove(card);
-
-                if (e.Item.Checked)
+                if (!TabControlNoTabs.bIsRoutingCreateMesage)
                 {
-                    playerDB.ownedCards.Add(card);
+                    PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+                    playerDB.ownedCards.Remove(card);
+
+                    if (e.Item.Checked)
+                    {
+                        playerDB.ownedCards.Add(card);
+                    }
                 }
 
                 bSuspendCardContextUpdates = true;
@@ -684,6 +689,11 @@ namespace FFTriadBuddy
 
                     break;
                 }
+            }
+
+            if (!TabControlNoTabs.bIsRoutingCreateMesage)
+            {
+                UpdateOwnedCardInGrids(card, bIsOwned);
             }
 
             labelNumOwned.Text = playerDB.ownedCards.Count.ToString();
@@ -720,6 +730,105 @@ namespace FFTriadBuddy
             if (e.KeyCode == Keys.Return)
             {
                 contextMenuStripFindCard.Hide();
+            }
+        }
+
+        private void labelCardListMode_Click(object sender, EventArgs e)
+        {
+            bool bWantsIcons = (tabControlCardsView.SelectedTab == tabPageCardsList);
+            tabControlCardsView.SelectedTab = bWantsIcons ? tabPageCardsIcons : tabPageCardsList;
+            labelCardListMode.Text = "View mode: " + (bWantsIcons ? "icons" : "list") + " (click to switch)";
+        }
+
+        private void checkBoxCardGridOnlyOwned_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateCardViewGrids();
+        }
+
+        private void CreateCardViewGrids()
+        {
+            TriadCardDB cardDB = TriadCardDB.Get();
+            int numCards = cardDB.cards.Count;
+            int numGrids = (numCards + 24) / 25;
+
+            cardGridControls = new CardGridCtrl[numGrids];
+            for (int GridIdx = 0; GridIdx < numGrids; GridIdx++)
+            {
+                CardGridCtrl gridCtrl = new CardGridCtrl();
+                gridCtrl.cardIcons = cardIconImages;
+                gridCtrl.Tag = GridIdx;
+                gridCtrl.InitCardControls();
+                gridCtrl.OnCardClicked += GridCtrl_OnCardClicked;
+                cardGridControls[GridIdx] = gridCtrl;
+            }
+
+            UpdateCardViewGrids();
+        }
+
+        private void GridCtrl_OnCardClicked(TriadCard card)
+        {
+            if (!bSuspendCardContextUpdates)
+            {
+                PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+                bool bWasOwned = playerDB.ownedCards.Contains(card);
+                if (bWasOwned)
+                {
+                    playerDB.ownedCards.Remove(card);
+                }
+                else
+                {
+                    playerDB.ownedCards.Add(card);
+                }
+
+                bSuspendCardContextUpdates = true;
+                updateOwnedCards(card);
+                bSuspendCardContextUpdates = false;
+            }
+        }
+
+        private void UpdateCardViewGrids()
+        {
+            bool bOnlyOwned = checkBoxCardGridOnlyOwned.Checked;
+
+            List<TriadCard> cardList = new List<TriadCard>();
+            cardList.AddRange(bOnlyOwned ? PlayerSettingsDB.Get().ownedCards : TriadCardDB.Get().cards);
+            cardList.RemoveAll(x => (x == null || !x.IsValid()));
+            cardList.Sort((c1, c2) =>
+            {
+                return (c1.SortKey == c2.SortKey) ? c1.Id.CompareTo(c2.Id) : c1.SortKey.CompareTo(c2.SortKey);
+            });
+
+            flowLayoutPanelCardGrids.Controls.Clear();
+            int GridIdx = -1;
+
+            for (int CardIdx = 0; CardIdx < cardList.Count; CardIdx++)
+            {
+                if ((CardIdx % 25) == 0)
+                {
+                    GridIdx++;
+                    flowLayoutPanelCardGrids.Controls.Add(cardGridControls[GridIdx]);
+                    cardGridControls[GridIdx].Clear();
+                }
+
+                bool bIsCardOwned = bOnlyOwned ? true : PlayerSettingsDB.Get().ownedCards.Contains(cardList[CardIdx]);
+                cardGridControls[GridIdx].SetCard(CardIdx % 25, cardList[CardIdx], bIsCardOwned);
+            }
+        }
+
+        private void UpdateOwnedCardInGrids(TriadCard card, bool bOwned)
+        {
+            bool bOnlyOwned = checkBoxCardGridOnlyOwned.Checked;
+            if (bOnlyOwned)
+            {
+                // full rebuild required
+                UpdateCardViewGrids();
+            }
+            else
+            {
+                foreach (CardGridCtrl gridCtrl in cardGridControls)
+                {
+                    gridCtrl.UpdateOwnedCard(card, bOwned);
+                }
             }
         }
 
