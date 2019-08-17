@@ -404,10 +404,7 @@ namespace FFTriadBuddy
             {
                 for (int Idx = 0; Idx < lockFlags.Length; Idx++)
                 {
-                    if (lockFlags[Idx])
-                    {
-                        cards.Add(deck.GetCard(Idx));
-                    }
+                    cards.Add(lockFlags[Idx] ? deck.GetCard(Idx) : null);
                 }
             }
 
