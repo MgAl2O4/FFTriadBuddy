@@ -162,9 +162,38 @@ namespace FFTriadBuddy
 
         private void UpdatePossibleDeckCount(int numRare, int numCommon, List<TriadCard> lockedCards, bool bIsOrderImportant)
         {
-            ETriadCardRarity rareThreshold = GetRareThreshold(PlayerSettingsDB.Get().ownedCards);
-            ECardSlotState[] cardSlots = BuildCardSlots(lockedCards, numRare, numCommon, rareThreshold, bIsOrderImportant);
-            UpdatePossibleDeckCount(numRare, numCommon, cardSlots, bIsOrderImportant);
+            int numLocked = 0;
+            foreach (TriadCard card in lockedCards)
+            {
+                if (card != null)
+                {
+                    numLocked++;
+                }
+            }
+
+            if (numLocked > 0)
+            {
+                ETriadCardRarity rareThreshold = GetRareThreshold(PlayerSettingsDB.Get().ownedCards);
+                ECardSlotState[] cardSlots = BuildCardSlots(lockedCards, numRare, numCommon, rareThreshold, bIsOrderImportant);
+                UpdatePossibleDeckCount(numRare, numCommon, cardSlots, bIsOrderImportant);
+            }
+            else
+            {
+                // num possible decks: numRare * (num 4 element combinations from numCommon set)
+                // num 4 elem: numCommon! / (4! * (numCommon - 4)!)
+
+                numPossibleDecks = numRare;
+                for (int Idx = 0; Idx < 4; Idx++)
+                {
+                    numPossibleDecks *= (numCommon - Idx);
+                }
+
+                int Fact4 = (4 * 3 * 2 * 1);
+                if (!bIsOrderImportant || !bAllowPermutationChecks)
+                {
+                    numPossibleDecks /= Fact4;
+                }
+            }
         }
 
         private void UpdatePossibleDeckCount(int numRare, int numCommon, ECardSlotState[] slots, bool bIsOrderImportant)
@@ -472,115 +501,181 @@ namespace FFTriadBuddy
 
             ETriadCardRarity rareThreshold = GetRareThreshold(playerDB.ownedCards);
             ECardSlotState[] cardSlots = BuildCardSlots(lockedCards, rareList.Count, commonList.Count, rareThreshold, bIsOrderImportant);
-            UpdatePossibleDeckCount(rareList.Count, commonList.Count, cardSlots, bIsOrderImportant);
 
             object lockOb = new object();
             int bestScore = 0;
             TriadDeck bestDeck = new TriadDeck(PlayerSettingsDB.Get().starterCards);
 
             List<TriadCard>[] slotLists = new List<TriadCard>[cardSlots.Length];
+            int numLocked = 0;
             for (int Idx = 0; Idx < slotLists.Length; Idx++)
             {
                 switch (cardSlots[Idx])
                 {
                     case ECardSlotState.Common: slotLists[Idx] = commonList; break;
                     case ECardSlotState.Rare: slotLists[Idx] = rareList; break;
-                    default:  slotLists[Idx] = new List<TriadCard>() { lockedCards[Idx] }; break;
+                    default:
+                        slotLists[Idx] = new List<TriadCard>() { lockedCards[Idx] };
+                        numLocked++;
+                        break;
                 }
             }
 
-            //for (int IdxS0 = 0; IdxS0 < slotLists[0].Count; IdxS0++)
-            Parallel.For(0, slotLists[0].Count, IdxS0 =>
+            if (numLocked > 0)
             {
-                if (!bAbort)
+                // slower when ran for all 5 slots
+                UpdatePossibleDeckCount(rareList.Count, commonList.Count, cardSlots, bIsOrderImportant);
+
+                //for (int IdxS0 = 0; IdxS0 < slotLists[0].Count; IdxS0++)
+                Parallel.For(0, slotLists[0].Count, IdxS0 =>
                 {
+                    if (!bAbort)
+                    {
                     //for (int IdxS1 = 0; IdxS1 < slotLists[1].Count; IdxS1++)
                     Parallel.For(0, slotLists[1].Count, IdxS1 =>
-                    {
-                        if (!bAbort)
                         {
+                            if (!bAbort)
+                            {
                             //for (int IdxS2 = 0; IdxS2 < slotLists[2].Count; IdxS2++)
                             Parallel.For(0, slotLists[2].Count, IdxS2 =>
-                            {
-                                if (!bAbort)
                                 {
+                                    if (!bAbort)
+                                    {
                                     //for (int IdxS3 = 0; IdxS3 < slotLists[3].Count; IdxS3++)
                                     Parallel.For(0, slotLists[3].Count, IdxS3 =>
-                                    {
-                                        if (!bAbort)
                                         {
+                                            if (!bAbort)
+                                            {
                                             //for (int IdxS4 = 0; IdxS4 < slotLists[4].Count; IdxS4++)
                                             Parallel.For(0, slotLists[4].Count, IdxS4 =>
-                                            {
-                                                if (!bAbort)
                                                 {
-                                                    TriadCard[] testDeckCards = new TriadCard[] { slotLists[0][IdxS0], slotLists[1][IdxS1], slotLists[2][IdxS2], slotLists[3][IdxS3], slotLists[4][IdxS4] };
-                                                    if (testDeckCards[0] != testDeckCards[1] &&
-                                                        testDeckCards[0] != testDeckCards[2] &&
-                                                        testDeckCards[0] != testDeckCards[3] &&
-                                                        testDeckCards[0] != testDeckCards[4] &&
-                                                        testDeckCards[1] != testDeckCards[2] &&
-                                                        testDeckCards[1] != testDeckCards[3] &&
-                                                        testDeckCards[1] != testDeckCards[4] &&
-                                                        testDeckCards[2] != testDeckCards[3] &&
-                                                        testDeckCards[2] != testDeckCards[4] &&
-                                                        testDeckCards[3] != testDeckCards[4])
+                                                    if (!bAbort)
                                                     {
-                                                        Random randomGen = GetRandomStream(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4);
-
-                                                        if (bIsOrderImportant && bAllowPermutationChecks)
+                                                        TriadCard[] testDeckCards = new TriadCard[] { slotLists[0][IdxS0], slotLists[1][IdxS1], slotLists[2][IdxS2], slotLists[3][IdxS3], slotLists[4][IdxS4] };
+                                                        if (testDeckCards[0] != testDeckCards[1] &&
+                                                            testDeckCards[0] != testDeckCards[2] &&
+                                                            testDeckCards[0] != testDeckCards[3] &&
+                                                            testDeckCards[0] != testDeckCards[4] &&
+                                                            testDeckCards[1] != testDeckCards[2] &&
+                                                            testDeckCards[1] != testDeckCards[3] &&
+                                                            testDeckCards[1] != testDeckCards[4] &&
+                                                            testDeckCards[2] != testDeckCards[3] &&
+                                                            testDeckCards[2] != testDeckCards[4] &&
+                                                            testDeckCards[3] != testDeckCards[4])
                                                         {
-                                                            // TODO: custom permutation lookup
-                                                            // not important right now, since permutations are disabled
-                                                            /*
-                                                            for (int IdxP = 0; IdxP < permutationList.Length; IdxP++)
-                                                            {
-                                                                int[] UseOrder = permutationList[IdxP];
-                                                                TriadCard[] permDeckCards = new TriadCard[] { testDeckCards[UseOrder[0]], testDeckCards[UseOrder[1]], testDeckCards[UseOrder[2]], testDeckCards[UseOrder[3]], testDeckCards[UseOrder[4]] };
-                                                                TriadDeck permDeck = new TriadDeck(permDeckCards);
-
-                                                                int testScore = GetDeckScore(solver, permDeck, randomGen, 10);
+                                                            Random randomGen = GetRandomStream(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4);
+                                                        // TODO: custom permutation lookup
+                                                        {
+                                                                TriadDeck testDeck = new TriadDeck(testDeckCards);
+                                                                int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
                                                                 if (testScore > bestScore)
                                                                 {
                                                                     lock (lockOb)
                                                                     {
                                                                         bestScore = testScore;
-                                                                        bestDeck = permDeck;
-                                                                        OnFoundDeck.Invoke(permDeck);
+                                                                        bestDeck = testDeck;
+                                                                        OnFoundDeck.Invoke(testDeck);
                                                                     }
-                                                                }
-                                                            }*/
-                                                        }
-
-                                                        {
-                                                            TriadDeck testDeck = new TriadDeck(testDeckCards);
-                                                            int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
-                                                            if (testScore > bestScore)
-                                                            {
-                                                                lock (lockOb)
-                                                                {
-                                                                    bestScore = testScore;
-                                                                    bestDeck = testDeck;
-                                                                    OnFoundDeck.Invoke(testDeck);
                                                                 }
                                                             }
                                                         }
-                                                    }
 
-                                                    lock (lockOb)
+                                                        lock (lockOb)
+                                                        {
+                                                            numTestedDecks++;
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            else
+            {
+                // faster loops when nothing is locked
+                UpdatePossibleDeckCount(rareList.Count, commonList.Count, lockedCards, bIsOrderImportant);
+
+                Parallel.For(0, rareList.Count, IdxR0 =>
+                {
+                    if (!bAbort)
+                    {
+                        Parallel.For(0, commonList.Count, IdxC1 =>
+                        {
+                            if (!bAbort)
+                            {
+                                for (int IdxC2 = IdxC1 + 1; IdxC2 < commonList.Count; IdxC2++)
+                                {
+                                    for (int IdxC3 = IdxC2 + 1; IdxC3 < commonList.Count; IdxC3++)
+                                    {
+                                        for (int IdxC4 = IdxC3 + 1; IdxC4 < commonList.Count; IdxC4++)
+                                        {
+                                            TriadCard[] testDeckCards = new TriadCard[] { rareList[IdxR0], commonList[IdxC1], commonList[IdxC2], commonList[IdxC3], commonList[IdxC4] };
+                                            Random randomGen = GetRandomStream(IdxR0, IdxC1, IdxC2, IdxC3, IdxC4);
+
+                                            if (bIsOrderImportant)
+                                            {
+                                                if (bAllowPermutationChecks)
+                                                {
+                                                    for (int IdxP = 0; IdxP < permutationList.Length; IdxP++)
                                                     {
-                                                        numTestedDecks++;
+                                                        int[] UseOrder = permutationList[IdxP];
+                                                        TriadCard[] permDeckCards = new TriadCard[] { testDeckCards[UseOrder[0]], testDeckCards[UseOrder[1]], testDeckCards[UseOrder[2]], testDeckCards[UseOrder[3]], testDeckCards[UseOrder[4]] };
+                                                        TriadDeck permDeck = new TriadDeck(permDeckCards);
+                                                        int testScore = GetDeckScore(solver, permDeck, randomGen, 10);
+                                                        if (testScore > bestScore)
+                                                        {
+                                                            lock (lockOb)
+                                                            {
+                                                                bestScore = testScore;
+                                                                bestDeck = permDeck;
+                                                                OnFoundDeck.Invoke(permDeck);
+                                                            }
+                                                        }
                                                     }
                                                 }
-                                            });
+                                                else
+                                                {
+                                                    testDeckCards = new TriadCard[] { commonList[IdxC1], rareList[IdxR0], commonList[IdxC2], commonList[IdxC3], commonList[IdxC4] };
+                                                }
+                                            }
+
+                                            {
+                                                TriadDeck testDeck = new TriadDeck(testDeckCards);
+                                                int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
+                                                if (testScore > bestScore)
+                                                {
+                                                    lock (lockOb)
+                                                    {
+                                                        bestScore = testScore;
+                                                        bestDeck = testDeck;
+                                                        OnFoundDeck.Invoke(testDeck);
+                                                    }
+                                                }
+                                            }
+
+                                            lock (lockOb)
+                                            {
+                                                numTestedDecks++;
+                                                if (bAbort)
+                                                {
+                                                    IdxC2 = commonList.Count;
+                                                    IdxC3 = commonList.Count;
+                                                    IdxC4 = commonList.Count;
+                                                }
+                                            }
                                         }
-                                    });
+                                    }
                                 }
-                            });
-                        }
-                    });
-                }
-            });
+                            }
+                        });
+                    }
+                });
+            }
 
             stopwatch.Stop();
             Logger.WriteLine("Building list of decks: " + stopwatch.ElapsedMilliseconds + "ms, num:" + numPossibleDecks);
