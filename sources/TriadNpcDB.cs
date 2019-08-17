@@ -253,5 +253,19 @@ namespace FFTriadBuddy
 
             return null;
         }
+
+        public List<TriadNpc> FindByReward(TriadCard card)
+        {
+            List<TriadNpc> result = new List<TriadNpc>();
+            foreach (TriadNpc testNpc in npcs)
+            {
+                if (testNpc != null && testNpc.Rewards.Contains(card))
+                {
+                    result.Add(testNpc);
+                }
+            }
+
+            return result;
+        }
     }
 }

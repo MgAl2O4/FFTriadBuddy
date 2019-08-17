@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -33,6 +34,7 @@ namespace FFTriadBuddy
         private TriadDeckOptimizer deckOptimizer;
         private ScreenshotAnalyzer screenReader;
         private FormOverlay overlayForm;
+        private MessageFilter scrollFilter;
 
         private static Color gameHintLabelColor = Color.FromArgb(255, 193, 186);
         private static Color gameHintLabelHighlightColor = Color.FromArgb(0xce, 0x15, 0x00);
@@ -122,6 +124,41 @@ namespace FFTriadBuddy
             InitializeNpcUI();
             InitializeScreenshotUI();
             RunUpdateCheck();
+        }
+
+        public class MessageFilter : IMessageFilter
+        {
+            private const int WM_MOUSEWHEEL = 0x020A;
+            private const int WM_MOUSEHWHEEL = 0x020E;
+
+            [DllImport("user32.dll")]
+            static extern IntPtr WindowFromPoint(Point p);
+            [DllImport("user32.dll", CharSet = CharSet.Auto)]
+            static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+
+            public bool PreFilterMessage(ref Message m)
+            {
+                switch (m.Msg)
+                {
+                    case WM_MOUSEWHEEL:
+                    case WM_MOUSEHWHEEL:
+                        IntPtr hControlUnderMouse = WindowFromPoint(new Point((int)m.LParam));
+                        if (hControlUnderMouse == m.HWnd)
+                        {
+                            //Do nothing because it's already headed for the right control
+                            return false;
+                        }
+                        else
+                        {
+                            //Send the scroll message to the control under the mouse
+                            uint u = Convert.ToUInt32(m.Msg);
+                            SendMessage(hControlUnderMouse, u, m.WParam, m.LParam);
+                            return true;
+                        }
+                    default:
+                        return false;
+                }
+            }
         }
 
         private void RunUpdateCheck()
@@ -232,6 +269,18 @@ namespace FFTriadBuddy
                     tabControlGameRules.SelectedTab = tabPageSubScreenshot;
                 }
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            scrollFilter = new MessageFilter();
+            Application.AddMessageFilter(scrollFilter);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.RemoveMessageFilter(scrollFilter);
+            scrollFilter = null;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -825,6 +874,68 @@ namespace FFTriadBuddy
                 {
                     gridCtrl.UpdateOwnedCard(card, bOwned);
                 }
+            }
+        }
+
+        private void contextMenuStripCardInfo_Opened(object sender, EventArgs e)
+        {
+            ListViewItem selectedCardItem = (listViewCards.SelectedItems.Count > 0) ? listViewCards.SelectedItems[0] : null;
+            if (selectedCardItem != null)
+            {
+                TriadCard contextCard = (TriadCard)selectedCardItem.Tag;
+                contextMenuStripCardInfo.Tag = contextCard;
+
+                int LastIdxToRemove = contextMenuStripCardInfo.Items.Count - 3;
+                for (int Idx = LastIdxToRemove; Idx >= 1; Idx--)
+                {
+                    contextMenuStripCardInfo.Items.RemoveAt(Idx);
+                }
+
+                List<TriadNpc> rewardNpc = TriadNpcDB.Get().FindByReward(contextCard);
+                if (rewardNpc.Count > 0)
+                {
+                    foreach (TriadNpc npc in rewardNpc)
+                    {
+                        ToolStripMenuItem npcDescItem = new ToolStripMenuItem(npc.Name);
+                        npcDescItem.Tag = npc;
+                        npcDescItem.Click += OnCardInfoNpcClicked;
+
+                        contextMenuStripCardInfo.Items.Insert(contextMenuStripCardInfo.Items.Count - 2, npcDescItem);
+                    }
+                }
+                else
+                {
+                    ToolStripMenuItem npcDescItem = new ToolStripMenuItem("(none)");
+                    npcDescItem.Enabled = false;
+
+                    contextMenuStripCardInfo.Items.Insert(contextMenuStripCardInfo.Items.Count - 2, npcDescItem);
+                }
+            }
+        }
+
+        private void OnCardInfoNpcClicked(object sender, EventArgs e)
+        {
+            ToolStripMenuItem senderMenuItem = (ToolStripMenuItem)sender;
+            tabControl1.SelectedTab = tabPageNpcs;
+
+            for (int Idx = 0; Idx < listViewNpcs.Items.Count; Idx++)
+            {
+                if (listViewNpcs.Items[Idx].Tag == senderMenuItem.Tag)
+                {
+                    listViewNpcs.SelectedIndices.Clear();
+                    listViewNpcs.Items[Idx].Selected = true;
+                    listViewNpcs.EnsureVisible(Idx);
+                    break;
+                }
+            }
+        }
+
+        private void toolStripMenuFindCardOnline_Click(object sender, EventArgs e)
+        {
+            TriadCard contextCard = (TriadCard)contextMenuStripCardInfo.Tag;
+            if (contextCard != null)
+            {
+                System.Diagnostics.Process.Start("https://triad.raelys.com/cards/" + contextCard.Id);
             }
         }
 

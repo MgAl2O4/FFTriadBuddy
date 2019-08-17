@@ -154,6 +154,8 @@
             this.columnHeaderP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStripCardInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageCardsIcons = new System.Windows.Forms.TabPage();
             this.checkBoxCardGridOnlyOwned = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanelCardGrids = new System.Windows.Forms.FlowLayoutPanel();
@@ -199,6 +201,8 @@
             this.toolStripMenuItemCardParseConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.timerOptimizationDeckUpdate = new System.Windows.Forms.Timer(this.components);
             this.labelUpdateNotify = new System.Windows.Forms.Label();
+            this.toolStripMenuFindCardOnline = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -222,6 +226,7 @@
             this.tabPageCards.SuspendLayout();
             this.tabControlCardsView.SuspendLayout();
             this.tabPageCardsList.SuspendLayout();
+            this.contextMenuStripCardInfo.SuspendLayout();
             this.tabPageCardsIcons.SuspendLayout();
             this.tabPageNpcs.SuspendLayout();
             this.contextMenuStripSelectNpc.SuspendLayout();
@@ -1572,6 +1577,7 @@
             this.columnHeaderP,
             this.columnHeaderT,
             this.columnHeaderO});
+            this.listViewCards.ContextMenuStrip = this.contextMenuStripCardInfo;
             this.listViewCards.FullRowSelect = true;
             this.listViewCards.HideSelection = false;
             this.listViewCards.Location = new System.Drawing.Point(0, 0);
@@ -1609,6 +1615,23 @@
             // 
             this.columnHeaderO.Text = "Owned";
             this.columnHeaderO.Width = 52;
+            // 
+            // contextMenuStripCardInfo
+            // 
+            this.contextMenuStripCardInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem4,
+            this.toolStripSeparator4,
+            this.toolStripMenuFindCardOnline});
+            this.contextMenuStripCardInfo.Name = "contextMenuStripCardInfo";
+            this.contextMenuStripCardInfo.Size = new System.Drawing.Size(139, 54);
+            this.contextMenuStripCardInfo.Opened += new System.EventHandler(this.contextMenuStripCardInfo_Opened);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Enabled = false;
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem4.Text = "Npc reward:";
             // 
             // tabPageCardsIcons
             // 
@@ -2005,6 +2028,18 @@
             this.labelUpdateNotify.Visible = false;
             this.labelUpdateNotify.Click += new System.EventHandler(this.labelUpdateNotify_Click);
             // 
+            // toolStripMenuFindCardOnline
+            // 
+            this.toolStripMenuFindCardOnline.Name = "toolStripMenuFindCardOnline";
+            this.toolStripMenuFindCardOnline.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuFindCardOnline.Text = "Find online";
+            this.toolStripMenuFindCardOnline.Click += new System.EventHandler(this.toolStripMenuFindCardOnline_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2018,7 +2053,9 @@
             this.MinimumSize = new System.Drawing.Size(684, 305);
             this.Name = "Form1";
             this.Text = "FF Triad Buddy";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageSetup.ResumeLayout(false);
@@ -2055,6 +2092,7 @@
             this.tabPageCards.PerformLayout();
             this.tabControlCardsView.ResumeLayout(false);
             this.tabPageCardsList.ResumeLayout(false);
+            this.contextMenuStripCardInfo.ResumeLayout(false);
             this.tabPageCardsIcons.ResumeLayout(false);
             this.tabPageCardsIcons.PerformLayout();
             this.tabPageNpcs.ResumeLayout(false);
@@ -2240,6 +2278,10 @@
         private System.Windows.Forms.Label labelCardListMode;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelCardGrids;
         private System.Windows.Forms.CheckBox checkBoxCardGridOnlyOwned;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripCardInfo;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuFindCardOnline;
     }
 }
 
