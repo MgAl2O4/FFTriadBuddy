@@ -13,6 +13,7 @@ namespace FFTriadBuddy
         public List<ImagePatternDigit> customDigits;
         public TriadCard[] starterCards;
         public Dictionary<TriadNpc, TriadDeck> lastDeck;
+        public bool useAutoScan;
         public string DBPath;
         private List<ImageHashData> lockedHashes;
         private static PlayerSettingsDB instance = new PlayerSettingsDB();
@@ -27,6 +28,7 @@ namespace FFTriadBuddy
             customHashes = new List<ImageHashData>();
             customDigits = new List<ImagePatternDigit>();
             lockedHashes = new List<ImageHashData>();
+            useAutoScan = false;
         }
 
         public static PlayerSettingsDB Get()
@@ -52,7 +54,12 @@ namespace FFTriadBuddy
                         try
                         {
                             XmlElement testElem = (XmlElement)testNode;
-                            if (testElem != null && testElem.Name == "card")
+                            if (testElem != null && testElem.Name == "ui")
+                            {
+                                int autoScanNum = int.Parse(testElem.GetAttribute("autoScan"));
+                                useAutoScan = (autoScanNum == 1);
+                            }
+                            else if (testElem != null && testElem.Name == "card")
                             {
                                 int cardId = int.Parse(testElem.GetAttribute("id"));
                                 ownedCards.Add(cardDB.cards[cardId]);
@@ -145,6 +152,12 @@ namespace FFTriadBuddy
                 XmlWriter xmlWriter = XmlWriter.Create(FilePath, writerSettings);
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement("root");
+
+                {
+                    xmlWriter.WriteStartElement("ui");
+                    xmlWriter.WriteAttributeString("autoScan", useAutoScan ? "1" : "0");
+                    xmlWriter.WriteEndElement();
+                }
 
                 List<int> ownedIds = new List<int>();
                 foreach (TriadCard card in ownedCards)

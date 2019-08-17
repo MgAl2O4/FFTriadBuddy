@@ -265,6 +265,64 @@ namespace FFTriadBuddy
             return result;
         }
 
+        public static Bitmap CreateBitmapWithShapes(FastBitmapHSV bitmap, List<Rectangle> listBounds, List<FastBitmapHash> listHashes)
+        {
+            Bitmap bmp = new Bitmap(bitmap.Width, bitmap.Height);
+            unsafe
+            {
+                BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, bmp.PixelFormat);
+                int bytesPerPixel = Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int bytesPerRow = bitmapData.Width * bytesPerPixel;
+
+                for (int IdxY = 0; IdxY < bmp.Height; IdxY++)
+                {
+                    byte* pixels = (byte*)bitmapData.Scan0 + (IdxY * bitmapData.Stride);
+                    for (int IdxByte = 0; IdxByte < bytesPerRow; IdxByte += bytesPerPixel)
+                    {
+                        FastPixelHSV writePx = bitmap.GetPixel(IdxByte / bytesPerPixel, IdxY);
+                        Color writeColor = Color.FromArgb(writePx.Monochrome, writePx.Monochrome, writePx.Monochrome);
+                        pixels[IdxByte + 3] = writeColor.A;
+                        pixels[IdxByte + 2] = writeColor.R;
+                        pixels[IdxByte + 1] = writeColor.G;
+                        pixels[IdxByte + 0] = writeColor.B;
+                    }
+                }
+
+                bmp.UnlockBits(bitmapData);
+            }
+
+            using (Graphics gBmp = Graphics.FromImage(bmp))
+            {
+                if (listBounds.Count > 0)
+                {
+                    Pen boundsPen = new Pen(Color.Cyan);
+                    gBmp.DrawRectangles(boundsPen, listBounds.ToArray());
+                }
+
+                Pen hashPen = new Pen(Color.Magenta);
+                foreach (FastBitmapHash hashData in listHashes)
+                {
+                    gBmp.DrawRectangle(hashPen, hashData.SourceBounds);
+
+                    if (hashData.Pixels != null)
+                    {
+                        for (int HashX = 0; HashX < hashData.Width; HashX++)
+                        {
+                            for (int HashY = 0; HashY < hashData.Height; HashY++)
+                            {
+                                byte writeValue = hashData.Pixels[HashX + (HashY * hashData.Width)];
+                                int writeValueInt = Math.Min(255, writeValue * 16);
+                                Color writeColor = Color.FromArgb(writeValueInt, 0, 0);
+                                bmp.SetPixel(HashX + hashData.DrawPos.X, HashY + hashData.DrawPos.Y, writeColor);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return bmp;
+        }
+
         public static void SaveBitmapWithShapes(FastBitmapHSV bitmap, List<Rectangle> listBounds, List<FastBitmapHash> listHashes, string fileName)
         {
             if (File.Exists(fileName))
@@ -272,60 +330,8 @@ namespace FFTriadBuddy
                 File.Delete(fileName);
             }
 
-            using (Bitmap bmp = new Bitmap(bitmap.Width, bitmap.Height))
+            using (Bitmap bmp = CreateBitmapWithShapes(bitmap, listBounds, listHashes))
             {
-                unsafe
-                {
-                    BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, bmp.PixelFormat);
-                    int bytesPerPixel = Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
-                    int bytesPerRow = bitmapData.Width * bytesPerPixel;
-
-                    for (int IdxY = 0; IdxY < bmp.Height; IdxY++)
-                    {
-                        byte* pixels = (byte*)bitmapData.Scan0 + (IdxY * bitmapData.Stride);
-                        for (int IdxByte = 0; IdxByte < bytesPerRow; IdxByte += bytesPerPixel)
-                        {
-                            FastPixelHSV writePx = bitmap.GetPixel(IdxByte / bytesPerPixel, IdxY);
-                            Color writeColor = Color.FromArgb(writePx.Monochrome, writePx.Monochrome, writePx.Monochrome);
-                            pixels[IdxByte + 3] = writeColor.A;
-                            pixels[IdxByte + 2] = writeColor.R;
-                            pixels[IdxByte + 1] = writeColor.G;
-                            pixels[IdxByte + 0] = writeColor.B;
-                        }
-                    }
-
-                    bmp.UnlockBits(bitmapData);
-                }
-
-                using (Graphics gBmp = Graphics.FromImage(bmp))
-                {
-                    if (listBounds.Count > 0)
-                    {
-                        Pen boundsPen = new Pen(Color.Cyan);
-                        gBmp.DrawRectangles(boundsPen, listBounds.ToArray());
-                    }
-
-                    Pen hashPen = new Pen(Color.Magenta);
-                    foreach (FastBitmapHash hashData in listHashes)
-                    {
-                        gBmp.DrawRectangle(hashPen, hashData.SourceBounds);
-
-                        if (hashData.Pixels != null)
-                        {
-                            for (int HashX = 0; HashX < hashData.Width; HashX++)
-                            {
-                                for (int HashY = 0; HashY < hashData.Height; HashY++)
-                                {
-                                    byte writeValue = hashData.Pixels[HashX + (HashY * hashData.Width)];
-                                    int writeValueInt = Math.Min(255, writeValue * 16);
-                                    Color writeColor = Color.FromArgb(writeValueInt, 0, 0);
-                                    bmp.SetPixel(HashX + hashData.DrawPos.X, HashY + hashData.DrawPos.Y, writeColor);
-                                }
-                            }
-                        }
-                    }
-                }
-
                 bmp.Save(AssetManager.Get().CreateFilePath(fileName), ImageFormat.Png);
             }
         }

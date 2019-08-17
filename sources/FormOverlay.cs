@@ -15,13 +15,19 @@ namespace FFTriadBuddy
         private ImageList cardImages;
         private CardCtrl[] boardControls;
         private bool bHasValidMarkers;
+        private bool bCanDrawCaptureMarker;
+        private bool bCanAdjustSummaryLocation;
+        private bool bCanStopTurnScan;
+        private bool bCanAutoCapture;
+        private int dashAnimOffset;
+        private Point summaryMovePt;
 
         private TriadGameSession gameSession;
         private TriadGameData gameState;
         private TriadDeckInstanceScreen blueDeck;
         private TriadDeckInstanceScreen redDeck;
         public ScreenshotAnalyzer screenReader;
-        public TriadNpc npc;
+        private TriadNpc npc;
 
         public delegate void UpdateStateDelegate();
         public event UpdateStateDelegate OnUpdateState;
@@ -43,7 +49,20 @@ namespace FFTriadBuddy
 
             panelMarkerBoard.Visible = false;
             panelMarkerDeck.Visible = false;
+            panelDetails.Visible = false;
+            panelBoard.Visible = false;
+            panelDebug.Visible = false;
+            labelStatus.Focus();
+
             bHasValidMarkers = false;
+            bCanAdjustSummaryLocation = false;
+            bCanStopTurnScan = true;
+            bCanAutoCapture = false;
+            dashAnimOffset = 0;
+
+            UpdateOverlayLocation(10, 10);
+            UpdateAutoCaptureMarker();
+            UpdateStatusDescription();
 
             gameSession = new TriadGameSession();
             gameState = new TriadGameData();
@@ -72,15 +91,9 @@ namespace FFTriadBuddy
             deckCtrlRed.clickAction = EDeckCtrlAction.None;
             deckCtrlBlue.deckOwner = ETriadCardOwner.Blue;
             deckCtrlRed.deckOwner = ETriadCardOwner.Red;
+
+            checkBoxAutoScan.Checked = PlayerSettingsDB.Get().useAutoScan;
         }
-        /*
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg == HitInvisConst.WM_NCHITTEST)
-                m.Result = (IntPtr)HitInvisConst.HTTRANSPARENT;
-            else
-                base.WndProc(ref m);
-        }*/
 
         public void UpdateScreenState(ScreenshotAnalyzer screenReader, bool bDebugMode = false)
         {
@@ -88,11 +101,9 @@ namespace FFTriadBuddy
             {
                 Logger.WriteLine("Capture failed: " + screenReader.GetCurrentState());
                 bHasValidMarkers = false;
-                button1.Text = "Failed! Check details in screenshot tab";
+                UpdateStatusDescription();
                 return;
             }
-
-            button1.Text = "Capture";
 
             bool bModsChanged = (gameSession.modifiers.Count != screenReader.currentGame.mods.Count) || !gameSession.modifiers.All(screenReader.currentGame.mods.Contains);
             if (bModsChanged)
@@ -109,7 +120,6 @@ namespace FFTriadBuddy
                 labelRules.Text = "Rules: " + ((desc.Length > 2) ? desc.Remove(desc.Length - 2, 2) : "unknown");
             }
 
-            labelNpc.Text = "NPC: " + ((npc != null) ? npc.ToString() : "unknown");
             gameSession.forcedBlueCard = screenReader.currentGame.forcedBlueCard;
     
             gameState.numCardsPlaced = 0;
@@ -190,16 +200,16 @@ namespace FFTriadBuddy
             Rectangle gameWindowRect = screenReader.GetGameWindowRect();            
             if (gameWindowRect.Width > 0)
             {
-                Top = gameWindowRect.Top;
-                Left = gameWindowRect.Left;
-                Width = gameWindowRect.Width + 100;
-                Height = gameWindowRect.Height + 100;
-
                 Rectangle gridRect = screenReader.GetGridRect();
+
                 if (gridRect.Width > 0)
                 {
-                    panelSummary.Top = gridRect.Bottom + 50;
-                    panelSummary.Left = ((gridRect.Left + gridRect.Right) / 2) - (panelSummary.Width / 2);
+                    // one time only, give user ability to move it if needed
+                    if (bCanAdjustSummaryLocation)
+                    {
+                        bCanAdjustSummaryLocation = false;
+                        UpdateOverlayLocation(gameWindowRect.Left + ((gridRect.Left + gridRect.Right) / 2) - (panelSummary.Width / 2), gameWindowRect.Top + gridRect.Bottom + 50);
+                    }
 
                     if (bAnythingChanged)
                     {
@@ -213,13 +223,13 @@ namespace FFTriadBuddy
                                 rectDeckPos.Inflate(10, 10);
                                 rectBoardPos.Inflate(10, 10);
 
-                                panelMarkerDeck.Top = rectDeckPos.Top;
-                                panelMarkerDeck.Left = rectDeckPos.Left;
+                                panelMarkerDeck.Top = rectDeckPos.Top + gameWindowRect.Top;
+                                panelMarkerDeck.Left = rectDeckPos.Left + gameWindowRect.Left;
                                 panelMarkerDeck.Width = rectDeckPos.Width;
                                 panelMarkerDeck.Height = rectDeckPos.Height;
 
-                                panelMarkerBoard.Top = rectBoardPos.Top;
-                                panelMarkerBoard.Left = rectBoardPos.Left;
+                                panelMarkerBoard.Top = rectBoardPos.Top + gameWindowRect.Top;
+                                panelMarkerBoard.Left = rectBoardPos.Left + gameWindowRect.Left;
                                 panelMarkerBoard.Width = rectBoardPos.Width;
                                 panelMarkerBoard.Height = rectBoardPos.Height;
                                 panelMarkerBoard.BackColor =
@@ -235,9 +245,15 @@ namespace FFTriadBuddy
                 }
             }
 
-            timer1.Enabled = bHasValidMarkers;
+            bCanStopTurnScan = false;
+            bCanAutoCapture = false;
+
+            timerFadeMarkers.Enabled = bHasValidMarkers;
             panelMarkerDeck.Visible = bHasValidMarkers;
             panelMarkerBoard.Visible = bHasValidMarkers;
+
+            timerTurnScan.Enabled = true;
+            timerTurnScan_Tick(null, null);
         }
 
         private void FindNextMove(out int blueCardIdx, out int boardCardIdx, out TriadGameResultChance bestChance)
@@ -263,18 +279,210 @@ namespace FFTriadBuddy
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonCapture_Click(object sender, EventArgs e)
         {
             screenReader.DoWork(ScreenshotAnalyzer.EMode.All);
             UpdateScreenState(screenReader);
             OnUpdateState.Invoke();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void timerFadeMarkers_Tick(object sender, EventArgs e)
         {
             panelMarkerDeck.Visible = false;
             panelMarkerBoard.Visible = false;
-            timer1.Enabled = false;
+            timerFadeMarkers.Enabled = false;
+        }
+
+        private void checkBoxDetails_CheckedChanged(object sender, EventArgs e)
+        {
+            panelDetails.Visible = checkBoxDetails.Checked;
+            panelBoard.Visible = checkBoxDetails.Checked;
+        }
+
+        public bool IsUsingAutoScan()
+        {
+            return checkBoxAutoScan.Checked;
+        }
+
+        public void SetNpc(TriadNpc inNpc)
+        {
+            npc = inNpc;
+
+            UpdateStatusDescription();
+            labelNpc.Text = "NPC: " + ((npc != null) ? npc.ToString() : "unknown");
+        }
+
+        public void UpdateOverlayLocation(int screenX, int screenY)
+        {
+            panelSummary.Location = new Point(screenX, screenY);
+
+            panelDetails.Location = new Point(screenX - panelDetails.Width - 10, screenY);
+            panelBoard.Location = new Point(screenX + panelSummary.Width + 10, screenY);
+            panelDebug.Location = new Point(screenX, screenY + panelSummary.Height + 10);
+        }
+
+        public void InitOverlayLocation()
+        {
+            panelSummary.Left = (Width - panelSummary.Width) / 2;
+            panelSummary.Top = Bottom - panelSummary.Height - 10;
+
+            // allow one time auto placement on successful scan
+            bCanAdjustSummaryLocation = true;
+        }
+
+        private void SetStatusText(string statusText, Icon statusIcon)
+        {
+            labelStatus.Text = statusText;
+            hitInvisibleLabel1.Image = statusIcon.ToBitmap();
+        }
+
+        private void UpdateStatusDescription()
+        {
+            ScreenshotAnalyzer.EState showState = (screenReader != null) ? screenReader.GetCurrentState() : ScreenshotAnalyzer.EState.NoErrors;
+            ScreenshotAnalyzer.ETurnState timerState = (screenReader != null) ? screenReader.GetCurrentTurnState() : ScreenshotAnalyzer.ETurnState.MissingTimer;
+
+            switch (showState)
+            {
+                case ScreenshotAnalyzer.EState.MissingGameProcess: SetStatusText("Game is not running", SystemIcons.Error); break;
+                case ScreenshotAnalyzer.EState.MissingGameWindow: SetStatusText("Can't find game window", SystemIcons.Error); break;
+                case ScreenshotAnalyzer.EState.MissingGrid: SetStatusText("Can't find board", SystemIcons.Error); break;
+                case ScreenshotAnalyzer.EState.MissingCards: SetStatusText("Can't find blue deck", SystemIcons.Error); break;
+                case ScreenshotAnalyzer.EState.FailedCardMatching: SetStatusText("Unknown cards! Check Play:Screenshot for details", SystemIcons.Warning); break;
+                case ScreenshotAnalyzer.EState.UnknownHash: SetStatusText("Unknown pattern! Check Play:Screenshot for details", SystemIcons.Warning); break;
+                default:
+                    string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
+                    switch (timerState)
+                    {
+                        case ScreenshotAnalyzer.ETurnState.MissingTimer: SetStatusText(npcDesc + "Ready", SystemIcons.Information); break;
+                        case ScreenshotAnalyzer.ETurnState.Waiting: SetStatusText(npcDesc + "Waiting for blue turn", SystemIcons.Shield); break;
+                        case ScreenshotAnalyzer.ETurnState.Active:
+                            bool bIsMouseOverGrid = (screenReader != null) && screenReader.IsInScanArea(Cursor.Position);
+                            if (bIsMouseOverGrid && IsUsingAutoScan())
+                            {
+                                SetStatusText("Move cursor away from scan zone!", SystemIcons.Warning);
+                            }
+                            else
+                            {
+                                SetStatusText(npcDesc + "Ready (active turn!)", SystemIcons.Information);
+                            }
+                            break;
+                    }
+
+                    break;
+            }
+        }
+
+        private void panelSummary_MouseDown(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) != 0)
+            {
+                summaryMovePt = e.Location;
+                Cursor = Cursors.SizeAll;
+            }
+        }
+
+        private void panelSummary_MouseUp(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) != 0)
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void panelSummary_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) != 0)
+            {
+                UpdateOverlayLocation(panelSummary.Left + e.Location.X - summaryMovePt.X, panelSummary.Top + e.Location.Y - summaryMovePt.Y);
+            }
+        }
+
+        private void timerTurnScan_Tick(object sender, EventArgs e)
+        {
+            bool bDebugMode = false;
+            UpdateAutoCaptureMarker();
+
+            if ((screenReader == null) ||
+                (bCanStopTurnScan && screenReader.GetCurrentTurnState() == ScreenshotAnalyzer.ETurnState.MissingTimer))
+            {
+                timerTurnScan.Stop();
+                bCanAutoCapture = false;
+            }
+            else
+            {
+                screenReader.DoWork(ScreenshotAnalyzer.EMode.TurnTimerOnly | (bDebugMode ? ScreenshotAnalyzer.EMode.DebugTimerDetails : ScreenshotAnalyzer.EMode.None));
+                bCanStopTurnScan = true;
+            }
+
+            UpdateStatusDescription();
+            if (bDebugMode) { UpdateDebugDetails(); }
+
+            if (screenReader != null && IsUsingAutoScan())
+            {
+                if (screenReader.GetCurrentTurnState() == ScreenshotAnalyzer.ETurnState.Waiting)
+                {
+                    bCanAutoCapture = true;
+                }
+                else if (screenReader.GetCurrentTurnState() == ScreenshotAnalyzer.ETurnState.Active)
+                {
+                    bool bIsMouseOverGrid = screenReader.IsInScanArea(Cursor.Position);
+                    if (bCanAutoCapture && !bIsMouseOverGrid)
+                    {
+                        bCanAutoCapture = false;
+                        buttonCapture_Click(null, null);
+                    }
+                }
+            }
+        }
+
+        private void UpdateDebugDetails()
+        {
+#if DEBUG
+            if (screenReader != null)
+            {
+                panelDebug.Visible = true;
+                labelDebugTime.Text = DateTime.Now.ToString("HH:mm:ss.ff");
+                labelDebugDesc.Text = "Status: " + screenReader.GetCurrentTurnState();
+                pictureDebugScreen.Image = screenReader.GetDebugScreenshot();
+            }
+#endif // DEBUG
+        }
+
+        private void UpdateAutoCaptureMarker()
+        {
+            bool bCanShow = IsUsingAutoScan() && (screenReader != null) && (screenReader.GetCurrentTurnState() != ScreenshotAnalyzer.ETurnState.MissingTimer);
+            if (bCanShow != bCanDrawCaptureMarker)
+            {
+                bCanDrawCaptureMarker = bCanShow;
+                timerDashAnim.Enabled = checkBoxAutoScan.Checked;
+                buttonCapture.Invalidate();
+            }
+        }
+
+        private void checkBoxAutoScan_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAutoCaptureMarker();
+        }
+
+        private void buttonCapture_Paint(object sender, PaintEventArgs e)
+        {
+            if (bCanDrawCaptureMarker)
+            {
+                Pen markerPen = new Pen(SystemColors.HotTrack, 2);
+                markerPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                markerPen.DashOffset = dashAnimOffset;
+                int drawOffset = 6;
+
+                e.Graphics.DrawRectangle(markerPen,
+                    e.ClipRectangle.X + drawOffset, e.ClipRectangle.Y + drawOffset,
+                    e.ClipRectangle.Width - (2 * drawOffset), e.ClipRectangle.Height - (2 * drawOffset));
+            }
+        }
+
+        private void timerDashAnim_Tick(object sender, EventArgs e)
+        {
+            dashAnimOffset = (dashAnimOffset + 1) % 32;
+            buttonCapture.Invalidate();
         }
     }
 }

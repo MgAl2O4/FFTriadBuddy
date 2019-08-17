@@ -187,7 +187,6 @@
             this.contextMenuStripFindNpc = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripFindNpcText = new System.Windows.Forms.ToolStripTextBox();
-            this.timerScreenshot = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStripCardParser = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemCardParseTitle = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -1872,11 +1871,6 @@
             this.toolStripFindNpcText.Size = new System.Drawing.Size(100, 23);
             this.toolStripFindNpcText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindNpcText_KeyDown);
             // 
-            // timerScreenshot
-            // 
-            this.timerScreenshot.Interval = 500;
-            this.timerScreenshot.Tick += new System.EventHandler(this.timerScreenshot_Tick);
-            // 
             // contextMenuStripCardParser
             // 
             this.contextMenuStripCardParser.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2191,7 +2185,6 @@
         private System.Windows.Forms.TabPage tabPageScreenshot;
         private System.Windows.Forms.CheckBox checkBoxUseScreenshots;
         private System.Windows.Forms.Label labelScreenshotState;
-        private System.Windows.Forms.Timer timerScreenshot;
         private System.Windows.Forms.Panel panelScreenshotState;
         private System.Windows.Forms.Button buttonLocalHashRemove;
         private System.Windows.Forms.Label label21;

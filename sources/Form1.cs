@@ -21,10 +21,7 @@ namespace FFTriadBuddy
         private bool bSuspendSetupUpdates;
         private bool bSuspendNpcContextUpdates;
         private bool bSuspendCardContextUpdates;
-        private bool bLockScreenUpdates;
         private bool bUseScreenReader;
-        private bool bPendingHashDBClear;
-        private bool bPendingDebugSnapshot;
         
         private TriadNpc currentNpc;
         private TriadDeck playerDeck;
@@ -119,8 +116,6 @@ namespace FFTriadBuddy
             overlayForm.OnUpdateState += OverlayForm_OnUpdateState;
 
             bUseScreenReader = false;
-            bPendingHashDBClear = false;
-            bPendingDebugSnapshot = false;
 
             InitializeSetupUI();
             InitializeCardsUI();
@@ -263,6 +258,7 @@ namespace FFTriadBuddy
                 }
             }
 
+            playerDB.useAutoScan = (overlayForm != null) && overlayForm.IsUsingAutoScan();
             playerDB.Save();
         }
 
@@ -379,7 +375,7 @@ namespace FFTriadBuddy
                 }
 
                 currentNpc = newSelectedNpc;
-                overlayForm.npc = newSelectedNpc;
+                overlayForm.SetNpc(newSelectedNpc);
 
                 if (playerDB.lastDeck.ContainsKey(currentNpc))
                 {
@@ -1201,25 +1197,19 @@ namespace FFTriadBuddy
 
         private void buttonConfirmRuleScreenshot_Click(object sender, EventArgs e)
         {
-            if (bLockScreenUpdates)
+            ScreenshotAnalyzer.EMode screenshotFlags = ScreenshotAnalyzer.EMode.Debug;
+            if (checkBoxDebugScreenshotForceCached.Checked)
             {
-                bPendingDebugSnapshot = true;
+                screenshotFlags |= ScreenshotAnalyzer.EMode.DebugForceCached;
             }
-            else
-            {
-                ScreenshotAnalyzer.EMode screenshotFlags = ScreenshotAnalyzer.EMode.All | ScreenshotAnalyzer.EMode.Debug;
-                if (checkBoxDebugScreenshotForceCached.Checked)
-                {
-                    screenshotFlags |= ScreenshotAnalyzer.EMode.DebugForceCached;
-                }
 
-                bPendingDebugSnapshot = false;
-                screenReader.DoWork(screenshotFlags);
-                overlayForm.UpdateScreenState(screenReader, true);
+            screenReader.DoWork(screenshotFlags | ScreenshotAnalyzer.EMode.All);
+            screenReader.DoWork(screenshotFlags | ScreenshotAnalyzer.EMode.TurnTimerOnly);
 
-                ShowScreenshotState();
-                ShowGameData(gameState);
-            }
+            overlayForm.UpdateScreenState(screenReader, true);
+
+            ShowScreenshotState();
+            ShowGameData(gameState);
         }
 
         private void deckCtrlSwap_OnCardSelected(TriadCardInstance cardInst, int slotIdx)
@@ -1635,7 +1625,6 @@ namespace FFTriadBuddy
                     case ScreenshotAnalyzer.EState.MissingGrid: labelScreenshotState.Text = "Can't find board! Try resetting UI position, turning off reshade, etc..."; break;
                     case ScreenshotAnalyzer.EState.MissingCards: labelScreenshotState.Text = "Can't find blue deck! Try resetting UI position, turning off reshade, etc..."; break;
                     case ScreenshotAnalyzer.EState.FailedCardMatching: labelScreenshotState.Text = "Failed to recognize some of cards! Game state won't be accurate"; break;
-                    case ScreenshotAnalyzer.EState.WaitingForTurn: labelScreenshotState.Text = "Active, waiting for blue turn"; break;
                     case ScreenshotAnalyzer.EState.UnknownHash: labelScreenshotState.Text = "Can't recognize pattern! See details below"; useBackColor = screenshotStateWaitingColor; break;
                     default: labelScreenshotState.Text = "??"; break; 
                 }
@@ -1730,7 +1719,6 @@ namespace FFTriadBuddy
 
             buttonLocalHashRemove.Enabled = PlayerSettingsDB.Get().customHashes.Count > 0;
             labelDeleteLastHint.Text = 
-                (timerScreenshot.Enabled || bLockScreenUpdates) ? "^ Disable updates to remove entries" :
                 (listViewDetectionHashes.Items.Count > 0) ? "^ Delete entry to learn again" : 
                 "";
         }
@@ -1742,7 +1730,7 @@ namespace FFTriadBuddy
 
             if (bUseScreenReader)
             {
-                overlayForm.Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - overlayForm.Width, Screen.PrimaryScreen.WorkingArea.Bottom - overlayForm.Height);
+                overlayForm.InitOverlayLocation();
                 gameState.resolvedSpecial = gameSession.specialRules;
             }
 
@@ -1750,72 +1738,11 @@ namespace FFTriadBuddy
             ShowGameData(gameState);
         }
 
-        private void timerScreenshot_Tick(object sender, EventArgs e)
-        {
-            if (!bLockScreenUpdates)
-            {
-                bool bShouldPause = (screenReader.GetCurrentState() == ScreenshotAnalyzer.EState.UnknownHash);
-                if (!bShouldPause)
-                {
-                    bLockScreenUpdates = true;
-
-                    Task.Run(() =>
-                    {
-                        screenReader.DoWork(ScreenshotAnalyzer.EMode.All);
-                        try
-                        {
-                            Invoke((MethodInvoker)delegate
-                            {
-                                bLockScreenUpdates = false;
-
-                                if (bPendingHashDBClear)
-                                {
-                                    buttonRemoveLocalHashes_Click(null, null);
-                                }
-                                else if (bPendingDebugSnapshot)
-                                {
-                                    buttonConfirmRuleScreenshot_Click(null, null);
-                                }
-                                else if (bUseScreenReader)
-                                {
-                                    ShowScreenshotState();
-                                    overlayForm.UpdateScreenState(screenReader, true);
-                                }
-
-                                Console.WriteLine("tick! finished" +
-                                    (bPendingHashDBClear ? " bPendingHashDBClear!" : "") +
-                                    (bPendingDebugSnapshot ? " bPendingDebugSnapshot!" : "") +
-                                    (bUseScreenReader ? (" bUseScreenReader:" + screenReader.GetCurrentState()) : ""));
-                            });
-                        }
-                        catch (Exception) { }
-                    });
-                }
-                else
-                {
-                    Console.WriteLine("tick! unresolved hash");
-                }
-            }
-            else
-            {
-                Console.WriteLine("tick! screen updates still locked");
-            }
-        }
-
         private void buttonRemoveLocalHashes_Click(object sender, EventArgs e)
         {
-            if (bLockScreenUpdates)
-            {
-                // schedule for next timer cycle
-                bPendingHashDBClear = true;
-            }
-            else
-            {
-                PlayerSettingsDB.Get().customHashes.Clear();
-                screenReader.currentHashDetections.Clear();
-                ShowScreenshotState();
-                bPendingHashDBClear = false;
-            }
+            PlayerSettingsDB.Get().customHashes.Clear();
+            screenReader.currentHashDetections.Clear();
+            ShowScreenshotState();
         }
 
         private void comboBoxLocalHash_SelectedIndexChanged(object sender, EventArgs e)
@@ -1841,11 +1768,6 @@ namespace FFTriadBuddy
 
         private void listViewDetectionHistory_KeyDown(object sender, KeyEventArgs e)
         {
-            if (timerScreenshot.Enabled || bLockScreenUpdates)
-            {
-                return;
-            }
-
             if ((e.KeyCode == Keys.Delete) && listViewDetectionHashes.SelectedIndices.Count == 1)
             {
                 screenReader.RemoveKnownHash(listViewDetectionHashes.SelectedItems[0].Tag as FastBitmapHash);

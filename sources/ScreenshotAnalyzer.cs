@@ -19,6 +19,8 @@ namespace FFTriadBuddy
             Board = 4,
             Debug = 8,
             DebugForceCached = 16,
+            DebugTimerDetails = 32,
+            TurnTimerOnly = 64,
             All = Decks | Rules | Board,
         }
 
@@ -40,8 +42,14 @@ namespace FFTriadBuddy
             MissingGrid,
             MissingCards,
             FailedCardMatching,
-            WaitingForTurn,
             UnknownHash,
+        }
+
+        public enum ETurnState
+        {
+            MissingTimer,
+            Waiting,
+            Active,
         }
 
         public class GameState
@@ -94,15 +102,18 @@ namespace FFTriadBuddy
         private FastPixelMatch colorMatchCardOwnerRed1 = new FastPixelMatchHSV(0, 10, 30, 60, 20, 60);
         private FastPixelMatch colorMatchCardOwnerRed2 = new FastPixelMatchHSV(350, 360, 30, 60, 20, 60);
         private FastPixelMatch colorMatchCardOwnerBlue = new FastPixelMatchHSV(190, 260, 20, 60, 20, 60);
-        private FastPixelMatch colorMatchTimerBox = new FastPixelMatchMono(0, 70);
+        private FastPixelMatch colorMatchTimerBox = new FastPixelMatchHSV(40, 60, 10, 40, 0, 100);
         private FastPixelMatch colorMatchTimerActive = new FastPixelMatchMono(80, 255);
 
         private Process cachedProcess;
         private Rectangle cachedGameWindow;
         private Bitmap cachedScreenshot;
+        private Bitmap debugScreenshot;
         private Rectangle cachedGridCoord;
+        private Rectangle cachedScanAreaBox;
         private Rectangle cachedRuleBox;
         private Rectangle cachedTimerBox;
+        private Rectangle cachedTimerScanBox;
         private Rectangle[] cachedBlueCards;
         private Rectangle[] cachedRedCards;
         private Rectangle[] cachedBoardCards;
@@ -114,6 +125,7 @@ namespace FFTriadBuddy
         private TriadCard failedMatchCard = new TriadCard(-1, "failedMatch", "", ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0);
 
         private EState currentState = EState.NoErrors;
+        private ETurnState currentTurnState = ETurnState.MissingTimer;
         public GameState currentGame = new GameState();
         public Dictionary<FastBitmapHash, int> currentHashDetections = new Dictionary<FastBitmapHash, int>();
         public List<ImageHashUnknown> unknownHashes = new List<ImageHashUnknown>();
@@ -135,10 +147,17 @@ namespace FFTriadBuddy
 
         public void DoWork(EMode mode)
         {
+            if ((mode & EMode.TurnTimerOnly) != EMode.None && cachedTimerScanBox.Width <= 0)
+            {
+                currentTurnState = ETurnState.MissingTimer;
+                return;
+            }
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            string imagePath = AssetManager.Get().CreateFilePath("test/");
+            bool bTurnTimerOnly = (mode & EMode.TurnTimerOnly) != EMode.None;
+            string imagePath = AssetManager.Get().CreateFilePath("test/" + (bTurnTimerOnly ? "timer-" : ""));
             bool bUseTestScreenshot = false;
             bDebugMode = (mode & EMode.Debug) != EMode.None;
 
@@ -152,16 +171,23 @@ namespace FFTriadBuddy
             if (bUseTestScreenshot)
             {
                 if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
-                //cachedScreenshot = LoadTestScreenshot(imagePath + "test-open.jpg");
-                //cachedScreenshot = LoadTestScreenshot(imagePath + "test-reshade.jpg");
-                //cachedScreenshot = LoadTestScreenshot(imagePath + "test-hidden.jpg");
-                //cachedScreenshot = LoadTestScreenshot(imagePath + "test-order.jpg");
-                //cachedScreenshot = LoadTestScreenshot(imagePath + "test-inprogress.jpg");
-                //cachedScreenshot = LoadTestScreenshot(imagePath + "test-chaos.jpg");
-                //cachedScreenshot = LoadTestScreenshot(imagePath + "test-lost.jpg");
-                cachedScreenshot = LoadTestScreenshot(imagePath + "test-4rules.jpg");
+                if (bTurnTimerOnly)
+                {
+                    cachedScreenshot = LoadTestScreenshot(imagePath + "test.jpg");
+                }
+                else
+                {
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-open.jpg");
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-reshade.jpg");
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-hidden.jpg");
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-order.jpg");
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-inprogress.jpg");
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-chaos.jpg");
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-lost.jpg");
+                    cachedScreenshot = LoadTestScreenshot(imagePath + "test-4rules.jpg");
 
-                cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
+                    cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
+                }
             }
             else
             {
@@ -171,7 +197,7 @@ namespace FFTriadBuddy
                 }
 
                 if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
-                cachedScreenshot = TakeScreenshot(windowHandle);
+                cachedScreenshot = bTurnTimerOnly ? TakeScreenshotPartial(windowHandle, cachedTimerScanBox) : TakeScreenshot(windowHandle);
 
                 if (cachedScreenshot != null && bDebugMode)
                 {
@@ -191,65 +217,97 @@ namespace FFTriadBuddy
 
                 debugShapes.Clear();
 
-                // update cached data if needed
-                bool bFoundCachedData = false;
-                if (!bHasCachedData ||
-                    cachedGridCoord.Width <= 0 ||
-                    !HasGridMatch(fastBitmap, cachedGridCoord.Left, cachedGridCoord.Top, cachedGridCoord.Width / 3))
+                if (bTurnTimerOnly)
                 {
-                    cachedBlueCards = null;
-                    cachedRedCards = null;
-                    cachedBoardCards = null;
-
-                    cachedGridCoord = FindGridCoords(fastBitmap);
-                    if (cachedGridCoord.Width > 0)
+                    Rectangle fastTimerBox = FindTimerBox(fastBitmap, cachedTimerScanBox);
+                    if (fastTimerBox.Width > 0)
                     {
-                        cachedRuleBox = FindRuleBoxCoords(fastBitmap, cachedGridCoord);
-                        cachedTimerBox = FindTimerBox(fastBitmap, cachedGridCoord, cachedRuleBox);
+                        debugShapes.Add(fastTimerBox);
 
-                        cachedBlueCards = FindBlueCardCoords(fastBitmap, cachedGridCoord);
-                        if (cachedBlueCards != null && cachedBlueCards.Length == 5)
-                        {
-                            cachedRedCards = FindRedCardCoords(cachedGridCoord, cachedBlueCards);
-                            cachedBoardCards = FindBoardCardCoords(cachedGridCoord, cachedBlueCards);
-                            bFoundCachedData = true;
-                        }
-                        else
-                        {
-                            currentState = EState.MissingCards;
-                        }
+                        bool bHasActiveTimer = ParseTimer(fastBitmap, fastTimerBox);
+                        currentTurnState = bHasActiveTimer ? ETurnState.Active : ETurnState.Waiting;
                     }
                     else
                     {
-                        currentState = EState.MissingGrid;
+                        currentTurnState = ETurnState.MissingTimer;
+                    }
+
+                    if ((mode & EMode.DebugTimerDetails) != EMode.None)
+                    {
+                        debugScreenshot = ScreenshotUtilities.CreateBitmapWithShapes(fastBitmap, debugShapes, new List<FastBitmapHash>());
+                    }
+
+                    // debug markup
+                    if (bDebugMode)
+                    {
+                        stopwatchInner.Restart();
+                        ScreenshotUtilities.SaveBitmapWithShapes(fastBitmap, debugShapes, new List<FastBitmapHash>(), imagePath + "screenshot-markup.png");
+                        stopwatchInner.Stop();
+                        if (bDebugMode) { Logger.WriteLine("Screenshot save: " + stopwatchInner.ElapsedMilliseconds + "ms"); }
                     }
                 }
                 else
                 {
-                    bFoundCachedData = true;
-                }
-
-                debugHashes.Clear();
-                unknownHashes.Clear();
-                currentHashDetections.Clear();
-
-                if (bFoundCachedData)
-                {
-                    // analyze cards and rules
-                    if ((mode & EMode.Rules) != EMode.None)
+                    // update cached data if needed
+                    bool bFoundCachedData = false;
+                    if (!bHasCachedData ||
+                        cachedGridCoord.Width <= 0 ||
+                        !HasGridMatch(fastBitmap, cachedGridCoord.Left, cachedGridCoord.Top, cachedGridCoord.Width / 3))
                     {
-                        ParseRules(fastBitmap, cachedRuleBox, currentGame.mods);
+                        cachedBlueCards = null;
+                        cachedRedCards = null;
+                        cachedBoardCards = null;
+
+                        cachedGridCoord = FindGridCoords(fastBitmap);
+                        if (cachedGridCoord.Width > 0)
+                        {
+                            cachedRuleBox = FindRuleBoxCoords(fastBitmap, cachedGridCoord);
+                            cachedTimerBox = FindTimerBox(fastBitmap, cachedGridCoord, cachedRuleBox);
+                            cachedTimerScanBox = new Rectangle(cachedTimerBox.X, cachedTimerBox.Y - 20, cachedTimerBox.Width, cachedTimerBox.Height + 40);
+                            cachedScanAreaBox = new Rectangle(cachedGridCoord.Left - (cachedGridCoord.Width * 85 / 100), 
+                                cachedGridCoord.Top - (cachedGridCoord.Height * 5 /100), 
+                                cachedGridCoord.Width * 270 / 100, 
+                                cachedGridCoord.Height * 110 / 100);
+
+                            cachedBlueCards = FindBlueCardCoords(fastBitmap, cachedGridCoord);
+                            if (cachedBlueCards != null && cachedBlueCards.Length == 5)
+                            {
+                                cachedRedCards = FindRedCardCoords(cachedGridCoord, cachedBlueCards);
+                                cachedBoardCards = FindBoardCardCoords(cachedGridCoord, cachedBlueCards);
+                                bFoundCachedData = true;
+                            }
+                            else
+                            {
+                                currentState = EState.MissingCards;
+                            }
+                        }
+                        else
+                        {
+                            currentState = EState.MissingGrid;
+                        }
+                    }
+                    else
+                    {
+                        bFoundCachedData = true;
                     }
 
-                    bool bCanContinue = currentState != EState.UnknownHash;
-                    if (bCanContinue)
-                    {
-                        bool bHasFailedCardMatch = false;
+                    debugHashes.Clear();
+                    unknownHashes.Clear();
+                    currentHashDetections.Clear();
 
-                        bool bShouldWaitForTimer = ((mode & EMode.Debug) == EMode.None);
-                        bool bIsTimerActive = true;// ParseTimer(fastBitmap, cachedTimerBox);
-                        if (!bShouldWaitForTimer || bIsTimerActive)
+                    if (bFoundCachedData)
+                    {
+                        // analyze cards and rules
+                        if ((mode & EMode.Rules) != EMode.None)
                         {
+                            ParseRules(fastBitmap, cachedRuleBox, currentGame.mods);
+                        }
+
+                        bool bCanContinue = currentState != EState.UnknownHash;
+                        if (bCanContinue)
+                        {
+                            bool bHasFailedCardMatch = false;
+
                             currentState = EState.NoErrors;
                             currentCardState.Clear();
 
@@ -328,34 +386,32 @@ namespace FFTriadBuddy
                                 currentState = EState.FailedCardMatching;
                             }
                         }
-                        else
-                        {
-                            currentState = EState.WaitingForTurn;
-                        }
                     }
-                }
 
-                // debug markup
-                if (bDebugMode)
-                {
-                    List<Rectangle> debugBounds = new List<Rectangle>();
-                    if (cachedGridCoord.Width > 0) { debugBounds.Add(cachedGridCoord); }
-                    if (cachedRuleBox.Width > 0) { debugBounds.Add(cachedRuleBox); }
-                    if (cachedTimerBox.Width > 0) { debugBounds.Add(cachedTimerBox); }
-                    if (cachedBlueCards != null) { debugBounds.AddRange(cachedBlueCards); }
-                    if (cachedRedCards != null) { debugBounds.AddRange(cachedRedCards); }
-                    if (cachedBoardCards != null) { debugBounds.AddRange(cachedBoardCards); }
-                    debugBounds.AddRange(debugShapes);
+                    // debug markup
+                    if (bDebugMode)
+                    {
+                        List<Rectangle> debugBounds = new List<Rectangle>();
+                        if (cachedScanAreaBox.Width > 0) { debugBounds.Add(cachedScanAreaBox); }
+                        if (cachedGridCoord.Width > 0) { debugBounds.Add(cachedGridCoord); }
+                        if (cachedRuleBox.Width > 0) { debugBounds.Add(cachedRuleBox); }
+                        if (cachedTimerBox.Width > 0) { debugBounds.Add(cachedTimerBox); }
+                        if (cachedBlueCards != null) { debugBounds.AddRange(cachedBlueCards); }
+                        if (cachedRedCards != null) { debugBounds.AddRange(cachedRedCards); }
+                        if (cachedBoardCards != null) { debugBounds.AddRange(cachedBoardCards); }
+                        debugBounds.AddRange(debugShapes);
 
-                    stopwatchInner.Restart();
-                    ScreenshotUtilities.SaveBitmapWithShapes(fastBitmap, debugBounds, debugHashes, imagePath + "screenshot-markup.png");
-                    stopwatchInner.Stop();
-                    if (bDebugMode) { Logger.WriteLine("Screenshot save: " + stopwatchInner.ElapsedMilliseconds + "ms"); }
+                        stopwatchInner.Restart();
+                        ScreenshotUtilities.SaveBitmapWithShapes(fastBitmap, debugBounds, debugHashes, imagePath + "screenshot-markup.png");
+                        stopwatchInner.Stop();
+                        if (bDebugMode) { Logger.WriteLine("Screenshot save: " + stopwatchInner.ElapsedMilliseconds + "ms"); }
+                    }
                 }
             }
             else
             {
                 currentState = EState.MissingGameWindow;
+                currentTurnState = ETurnState.MissingTimer;
             }
 
             stopwatch.Stop();
@@ -365,6 +421,11 @@ namespace FFTriadBuddy
         public EState GetCurrentState()
         {
             return currentState;
+        }
+
+        public ETurnState GetCurrentTurnState()
+        {
+            return currentTurnState;
         }
 
         public Rectangle GetGameWindowRect()
@@ -385,6 +446,16 @@ namespace FFTriadBuddy
         public Rectangle GetBoardCardRect(int Idx)
         {
             return cachedBoardCards[Idx];
+        }
+
+        public Image GetDebugScreenshot()
+        {
+            return debugScreenshot;
+        }
+
+        public bool IsInScanArea(Point testPt)
+        {
+            return cachedScanAreaBox.Contains(testPt.X - cachedGameWindow.Left, testPt.Y - cachedGameWindow.Top);
         }
 
         public void PopUnknownHash()
@@ -492,6 +563,28 @@ namespace FFTriadBuddy
                         PrintWindow(WindowHandle.Handle, hdcBitmap, 0);
                         g.ReleaseHdc(hdcBitmap);
                     }
+                }
+            }
+            else
+            {
+                currentState = EState.MissingGameWindow;
+            }
+
+            return bitmap;
+        }
+
+        private Bitmap TakeScreenshotPartial(HandleRef WindowHandle, Rectangle innerBounds)
+        {
+            Bitmap bitmap = null;
+            if (innerBounds.Width > 0 && GetWindowRect(WindowHandle, out RECT windowRectApi))
+            {
+                bitmap = new Bitmap(innerBounds.Width, innerBounds.Height, PixelFormat.Format32bppArgb);
+
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+                    // copy entire screen - will capture all windows on top of game too
+                    Point copyPt = new Point(windowRectApi.Left + innerBounds.Left, windowRectApi.Top + innerBounds.Top);
+                    g.CopyFromScreen(copyPt, Point.Empty, innerBounds.Size);
                 }
             }
             else
@@ -717,7 +810,7 @@ namespace FFTriadBuddy
                 bShouldRetry = false;
                 AttemptIdx++;
 
-                List<int> segPosH = ScreenshotUtilities.TraceLineSegments(bitmap, traceStart, traceY, 1, 0, traceEnd - traceStart, colorMatchRuleBox, 20, 2, true);
+                List<int> segPosH = ScreenshotUtilities.TraceLineSegments(bitmap, traceStart, traceY, 1, 0, traceEnd - traceStart, colorMatchRuleBox, 20, 2);
                 if (segPosH.Count == 2)
                 {
                     int traceEndY0 = gridRect.Top - (gridRect.Height / 15);
@@ -772,6 +865,23 @@ namespace FFTriadBuddy
                     int boxRight = gridMidX - (ruleRect.Left - gridMidX);
                     int boxWidth = ruleRect.Width * 80 / 100;
                     result = new Rectangle(boxRight - boxWidth, hitTop.Y + 1, boxWidth, hitBottom.Y - hitTop.Y - 2);
+                }
+            }
+
+            return result;
+        }
+
+        private Rectangle FindTimerBox(FastBitmapHSV bitmap, Rectangle timerScanRect)
+        {
+            Rectangle result = new Rectangle();
+            int traceStartX = timerScanRect.Width / 2;
+            bool bHasTop = ScreenshotUtilities.TraceLine(bitmap, traceStartX, 0, 0, 1, timerScanRect.Height * 2 / 3, colorMatchTimerBox, out Point hitTop);
+            if (bHasTop)
+            {
+                bool bHasBottom = ScreenshotUtilities.TraceLine(bitmap, traceStartX, hitTop.Y + 10, 0, -1, 10, colorMatchTimerBox, out Point hitBottom);
+                if (bHasBottom)
+                {
+                    result = new Rectangle(0, hitTop.Y, timerScanRect.Width, hitBottom.Y - hitTop.Y);
                 }
             }
 
@@ -1123,7 +1233,8 @@ namespace FFTriadBuddy
 
         private bool ParseTimer(FastBitmapHSV bitmap, Rectangle timerRect)
         {
-            bool bHasActiveTimer = ScreenshotUtilities.TraceLine(bitmap, timerRect.Left, timerRect.Top + 1, 1, 0, timerRect.Width, colorMatchTimerActive, out Point dummyHit);
+            int scanY = (timerRect.Top + timerRect.Bottom) / 2;
+            bool bHasActiveTimer = ScreenshotUtilities.TraceLine(bitmap, timerRect.Left, scanY, 1, 0, timerRect.Width, colorMatchTimerActive, out Point dummyHit);
             if (bDebugMode) { Logger.WriteLine("ParseTimer: " + (bHasActiveTimer ? "blue turn" : "waiting...")); }
             return bHasActiveTimer;
         }
