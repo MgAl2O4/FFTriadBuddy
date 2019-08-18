@@ -14,12 +14,15 @@ namespace FFTriadBuddy
     {
         private ImageList cardImages;
         private CardCtrl[] boardControls;
+        private CardCtrl[] redDeckKnownCards;
+        private CardCtrl[] redDeckUnknownCards;
         private bool bHasValidMarkers;
         private bool bCanDrawCaptureMarker;
         private bool bCanAdjustSummaryLocation;
         private bool bCanStopTurnScan;
         private bool bCanAutoCapture;
         private int dashAnimOffset;
+        private int scanId;
         private Point summaryMovePt;
 
         private TriadGameSession gameSession;
@@ -47,6 +50,25 @@ namespace FFTriadBuddy
                 boardControls[Idx].Tag = Idx;
             }
 
+            redDeckKnownCards = new CardCtrl[5] { cardCtrlRedKnown0, cardCtrlRedKnown1, cardCtrlRedKnown2, cardCtrlRedKnown3, cardCtrlRedKnown4 };
+            redDeckUnknownCards = new CardCtrl[5] { cardCtrlRedVar0, cardCtrlRedVar1, cardCtrlRedVar2, cardCtrlRedVar3, cardCtrlRedVar4 };
+            for (int Idx = 0; Idx < redDeckKnownCards.Length; Idx++)
+            {
+                redDeckKnownCards[Idx].defaultBackColor = panelDeckDetails.BackColor;
+                redDeckKnownCards[Idx].drawMode = ECardDrawMode.ImageOnly;
+                redDeckKnownCards[Idx].bBlinkHighlighted = false;
+                redDeckKnownCards[Idx].bEnableHitTest = false;
+                redDeckKnownCards[Idx].SetCard(null);
+                redDeckKnownCards[Idx].Tag = Idx;
+
+                redDeckUnknownCards[Idx].defaultBackColor = panelDeckDetails.BackColor;
+                redDeckUnknownCards[Idx].drawMode = ECardDrawMode.ImageOnly;
+                redDeckUnknownCards[Idx].bBlinkHighlighted = false;
+                redDeckUnknownCards[Idx].bEnableHitTest = false;
+                redDeckUnknownCards[Idx].SetCard(null);
+                redDeckUnknownCards[Idx].Tag = Idx;
+            }
+
             panelMarkerBoard.Visible = false;
             panelMarkerDeck.Visible = false;
             panelDetails.Visible = false;
@@ -59,6 +81,7 @@ namespace FFTriadBuddy
             bCanStopTurnScan = true;
             bCanAutoCapture = false;
             dashAnimOffset = 0;
+            scanId = 0;
 
             Location = Screen.PrimaryScreen.Bounds.Location;
             Size = Screen.PrimaryScreen.Bounds.Size;
@@ -79,6 +102,11 @@ namespace FFTriadBuddy
             for (int Idx = 0; Idx < boardControls.Length; Idx++)
             {
                 boardControls[Idx].cardIcons = cardImages;
+            }
+            for (int Idx = 0; Idx < redDeckKnownCards.Length; Idx++)
+            {
+                redDeckKnownCards[Idx].cardIcons = cardImages;
+                redDeckUnknownCards[Idx].cardIcons = cardImages;
             }
 
             deckCtrlBlue.cardIcons = cardImages;
@@ -107,6 +135,33 @@ namespace FFTriadBuddy
                 return;
             }
 
+            scanId++;
+            labelScanId.Text = "Scan Id: " + scanId;
+            Logger.WriteLine("Capture " + labelScanId.Text);
+
+            // is current state a continuation of last one?
+            // ideally each blue turn is a capture until game resets = any card disappears from board
+            // guess work for adding sense of persistence to screen decks
+            bool bContinuesPrevState = (redDeck.deck == npc.Deck);
+            if (bContinuesPrevState)
+            {
+                for (int Idx = 0; Idx < gameState.board.Length; Idx++)
+                {
+                    bool bWasNull = gameState.board[Idx] == null;
+                    bool bIsNull = screenReader.currentGame.board[Idx] == null;
+
+                    if (!bWasNull && bIsNull)
+                    {
+                        bContinuesPrevState = false;
+                        Logger.WriteLine("Can't continue previous state: board[" + Idx + "] disappeared ");
+                    }
+                }
+            }
+            else
+            {
+                Logger.WriteLine("Can't continue previous state: red deck changed");
+            }
+
             bool bModsChanged = (gameSession.modifiers.Count != screenReader.currentGame.mods.Count) || !gameSession.modifiers.All(screenReader.currentGame.mods.Contains);
             if (bModsChanged)
             {
@@ -122,6 +177,26 @@ namespace FFTriadBuddy
                 }
 
                 labelRules.Text = "Rules: " + ((desc.Length > 2) ? desc.Remove(desc.Length - 2, 2) : "unknown");
+                bContinuesPrevState = false;
+                Logger.WriteLine("Can't continue previous state: modifiers changed");
+            }
+
+            bool bRedDeckChanged = !deckCtrlBlue.IsMatching(screenReader.currentGame.redDeck) || (redDeck.deck != npc.Deck);
+            if (bRedDeckChanged)
+            {
+                redDeck.deck = npc.Deck;
+                redDeck.UpdateAvailableCardsNpc(screenReader.currentGame.redDeck, screenReader.currentGame.blueDeck,
+                    screenReader.currentGame.board, blueDeck.cards, gameState.board, bContinuesPrevState);
+
+                deckCtrlRed.SetDeck(screenReader.currentGame.redDeck);
+                UpdateRedDeckDetails(redDeck);
+            }
+
+            bool bBlueDeckChanged = !deckCtrlBlue.IsMatching(screenReader.currentGame.blueDeck);
+            if (bBlueDeckChanged)
+            {
+                blueDeck.UpdateAvailableCardsPlayer(screenReader.currentGame.blueDeck);
+                deckCtrlBlue.SetDeck(screenReader.currentGame.blueDeck);
             }
 
             gameSession.forcedBlueCard = screenReader.currentGame.forcedBlueCard;
@@ -168,29 +243,13 @@ namespace FFTriadBuddy
                 }
             }
 
-            bool bBlueDeckChanged = !deckCtrlBlue.IsMatching(screenReader.currentGame.blueDeck);
-            if (bBlueDeckChanged)
-            {
-                blueDeck.cards = screenReader.currentGame.blueDeck;
-                blueDeck.UpdateAvailableCards();
-                deckCtrlBlue.SetDeck(screenReader.currentGame.blueDeck);
-            }
-
-            bool bRedDeckChanged = !deckCtrlBlue.IsMatching(screenReader.currentGame.redDeck) || (redDeck.npcDeck != npc.Deck);
-            if (bRedDeckChanged)
-            {
-                redDeck.cards = screenReader.currentGame.redDeck;
-                redDeck.npcDeck = npc.Deck;
-                redDeck.UpdateAvailableCards();
-                deckCtrlRed.SetDeck(screenReader.currentGame.redDeck);
-            }
-
             bool bAnythingChanged = bBoardChanged || bBlueDeckChanged || bRedDeckChanged || bModsChanged;
             Logger.WriteLine("UpdateScreenState> board:" + (bBoardChanged ? "changed" : "same") +
                 ", blue:" + (bBlueDeckChanged ? "changed" : "same") +
                 ", red:" + (bRedDeckChanged ? "changed" : "same") +
                 ", mods:" + (bModsChanged ? "changed" : "same") +
                 ", state:" + screenReader.GetCurrentState() +
+                ", continuePrev:" + bContinuesPrevState +
                 " => " + (bAnythingChanged ? "UPDATE" : "skip"));
 
             int markerDeckPos = -1;
@@ -202,7 +261,8 @@ namespace FFTriadBuddy
                 FindNextMove(out markerDeckPos, out markerBoardPos, out TriadGameResultChance bestChance);
                 expectedResult = bestChance.expectedResult;
 
-                Logger.WriteLine("  suggested move: [" + markerBoardPos + "] " + ETriadCardOwner.Blue + " " + blueDeck.GetCard(markerDeckPos).Name + " (expected: " + expectedResult + ")");
+                TriadCard suggestedCard = blueDeck.GetCard(markerDeckPos);
+                Logger.WriteLine("  suggested move: [" + markerBoardPos + "] " + ETriadCardOwner.Blue + " " + (suggestedCard != null ? suggestedCard.Name : "??") + " (expected: " + expectedResult + ")");
             }
 
             // update overlay locations
@@ -363,8 +423,7 @@ namespace FFTriadBuddy
                 Size = gameScreenBounds.Size;
             }
 
-            panelSummary.Left = (Width - panelSummary.Width) / 2;
-            panelSummary.Top = Bottom - panelSummary.Height - 10;
+            UpdateOverlayLocation((Width - panelSummary.Width) / 2, Bottom - panelSummary.Height - 10);
 
             // allow one time auto placement on successful scan
             bCanAdjustSummaryLocation = true;
@@ -486,6 +545,59 @@ namespace FFTriadBuddy
                 pictureDebugScreen.Image = screenReader.GetDebugScreenshot();
             }
 #endif // DEBUG
+        }
+
+        private void UpdateRedDeckDetails(TriadDeckInstanceScreen deck)
+        {
+            string NumPlacedPrefix = "All placed: ";
+            string VarPlacedPrefix = "Var placed: ";
+
+            if (deck == null || deck.deck == null)
+            {
+                for (int Idx = 0; Idx < redDeckKnownCards.Length; Idx++)
+                {
+                    redDeckKnownCards[Idx].Visible = false;
+                    redDeckUnknownCards[Idx].Visible = false;
+                    deckCtrlRed.SetTransparent(Idx, false);
+                }
+
+                labelNumPlaced.Text = NumPlacedPrefix + "0";
+                labelUnknownPlaced.Text = VarPlacedPrefix + "0";
+            }
+            else
+            {
+                int firstKnownIdx = deck.cards.Length;
+                int firstUnknownIdx = deck.cards.Length + deck.deck.knownCards.Count;
+                for (int Idx = 0; Idx < redDeckKnownCards.Length; Idx++)
+                {
+                    bool bIsValidKnownCard = Idx < deck.deck.knownCards.Count;
+                    redDeckKnownCards[Idx].Visible = bIsValidKnownCard;
+                    if (bIsValidKnownCard)
+                    {
+                        bool bIsUsed = deck.IsPlaced(firstKnownIdx + Idx);
+                        redDeckKnownCards[Idx].bIsTransparent = bIsUsed;
+                        redDeckKnownCards[Idx].SetCard(new TriadCardInstance(deck.deck.knownCards[Idx], ETriadCardOwner.Red));
+                    }
+
+                    bool bIsValidUnknownCard = Idx < deck.deck.unknownCardPool.Count;
+                    redDeckUnknownCards[Idx].Visible = bIsValidUnknownCard;
+                    if (bIsValidUnknownCard)
+                    {
+                        bool bIsUsed = deck.IsPlaced(firstUnknownIdx + Idx);
+                        redDeckUnknownCards[Idx].bIsTransparent = bIsUsed;
+                        redDeckUnknownCards[Idx].SetCard(new TriadCardInstance(deck.deck.unknownCardPool[Idx], ETriadCardOwner.Red));
+                    }
+                }
+
+                for (int Idx = 0; Idx < deck.cards.Length; Idx++)
+                {
+                    bool bIsUsed = deck.IsPlaced(Idx);
+                    deckCtrlRed.SetTransparent(Idx, bIsUsed);
+                }
+
+                labelNumPlaced.Text = NumPlacedPrefix + deck.numPlaced;
+                labelUnknownPlaced.Text = VarPlacedPrefix + deck.numUnknownPlaced; 
+            }
         }
 
         private void UpdateAutoCaptureMarker()

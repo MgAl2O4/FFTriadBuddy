@@ -264,8 +264,15 @@ namespace FFTriadBuddy
         public abstract int GetCardIndex(TriadCard card);
         public abstract TriadDeckInstance CreateCopy();
 
+        public TriadDeck deck;
         public int availableCardMask;
-        public const int maxAvailableCards = 10;
+        public int numUnknownPlaced;
+        public int numPlaced;
+
+        // manual, player = 5
+        // manual, npc = (up to 5 fixed) + (up to 5 variable)
+        // screen, npc = (up to 5 hidden) + (up to 5 fixed) + (up to 5 variable)
+        public const int maxAvailableCards = 15;
 
         public bool IsPlaced(int cardIdx)
         {
@@ -297,10 +304,6 @@ namespace FFTriadBuddy
 
     public class TriadDeckInstanceManual : TriadDeckInstance
     {
-        public readonly TriadDeck deck;
-        public int numUnknownPlaced;
-        public int numPlaced;
-
         public TriadDeckInstanceManual(TriadDeck deck)
         {
             this.deck = deck;
@@ -401,14 +404,15 @@ namespace FFTriadBuddy
     public class TriadDeckInstanceScreen : TriadDeckInstance
     {
         public TriadCard[] cards;
-        public TriadDeck npcDeck;
-        public int numHidden;
+        public int unknownPoolMask;
 
         public TriadDeckInstanceScreen()
         {
             cards = new TriadCard[5];
             availableCardMask = 0;
-            numHidden = 0;
+            unknownPoolMask = 0;
+            numUnknownPlaced = 0;
+            numPlaced = 0;
         }
 
         public TriadDeckInstanceScreen(TriadDeckInstanceScreen copyFrom)
@@ -419,9 +423,11 @@ namespace FFTriadBuddy
                 cards[Idx] = copyFrom.cards[Idx];
             }
 
-            npcDeck = copyFrom.npcDeck;
+            deck = copyFrom.deck;
+            numUnknownPlaced = copyFrom.numUnknownPlaced;
+            numPlaced = copyFrom.numPlaced;
             availableCardMask = copyFrom.availableCardMask;
-            numHidden = copyFrom.numHidden;
+            unknownPoolMask = copyFrom.unknownPoolMask;
         }
 
         public override TriadDeckInstance CreateCopy()
@@ -444,69 +450,303 @@ namespace FFTriadBuddy
             return -1;
         }
 
-        public void UpdateAvailableCards()
+        public void UpdateAvailableCardsPlayer(TriadCard[] screenCards)
         {
-            int hiddenCardId = TriadCardDB.Get().hiddenCard.Id;
-
             availableCardMask = 0;
-            numHidden = 0;
+            numPlaced = 0;
+            cards = screenCards;
 
             for (int Idx = 0; Idx < cards.Length; Idx++)
             {
                 if (cards[Idx] != null)
                 {
-                    if (cards[Idx].Id == hiddenCardId)
+                    availableCardMask |= (1 << Idx);
+                }
+                else
+                {
+                    numPlaced++;
+                }
+            }
+        }
+
+        public void UpdateAvailableCardsNpc(TriadCard[] screenCards, TriadCard[] screenCardsOther, TriadCard[] screenBoard,
+            TriadCard[] prevCardsOther, TriadCardInstance[] prevBoard, bool bContinuePrevState, bool bDebugMode = false)
+        {
+            int hiddenCardId = TriadCardDB.Get().hiddenCard.Id;
+
+            numPlaced = 0;
+            if (!bContinuePrevState)
+            {
+                numUnknownPlaced = 0;
+            }
+
+            int maxUnknownToUse = cards.Length - deck.knownCards.Count;
+            int firstUnknownPoolIdx = cards.Length + deck.knownCards.Count;
+            if (deck.unknownCardPool.Count > 0)
+            {
+                unknownPoolMask = ((1 << deck.unknownCardPool.Count) - 1) << firstUnknownPoolIdx;
+
+                for (int Idx = 0; Idx < screenCards.Length; Idx++)
+                {
+                    if ((screenCards[Idx] != null) && (screenCards[Idx].Id != hiddenCardId) && deck.unknownCardPool.Contains(screenCards[Idx]))
                     {
-                        numHidden++;
-                    }
-                    else
-                    {
-                        availableCardMask |= (1 << Idx);
+                        unknownPoolMask |= (1 << Idx);
                     }
                 }
             }
 
-            if (npcDeck != null && (numHidden > 0))
+            int allDeckAvailableMask = ((1 << (deck.knownCards.Count + deck.unknownCardPool.Count)) - 1) << cards.Length;
+
+            bool bCanCompareWithPrevData = (screenCards.Length == cards.Length) && (screenCardsOther.Length == prevCardsOther.Length) && (screenBoard.Length == prevBoard.Length);
+            if (bCanCompareWithPrevData && !bContinuePrevState)
             {
-                int unknownPoolMask = (1 << npcDeck.unknownCardPool.Count) - 1;
-                availableCardMask |= unknownPoolMask << cards.Length;
+                // special case: 1st turn
+
+                int numCardsOnBoard = 0;
+                for (int Idx = 0; Idx < screenBoard.Length; Idx++)
+                {
+                    if (screenBoard[Idx] != null)
+                    {
+                        numCardsOnBoard++;
+                    }
+                }
+
+                if (numCardsOnBoard <= 1)
+                {
+                    bCanCompareWithPrevData = true;
+                    prevBoard = new TriadCardInstance[screenBoard.Length];
+                    prevCardsOther = new TriadCard[cards.Length];
+                    cards = new TriadCard[cards.Length];
+                    availableCardMask = allDeckAvailableMask;
+                    numPlaced = 0;
+                    numUnknownPlaced = 0;
+                }
+                else
+                {
+                    bCanCompareWithPrevData = false;
+                }
+            }
+
+            if (bDebugMode)
+            {
+                Logger.WriteLine("Red deck update, diff mode check... " +
+                    "bContinuePrevState:" + bContinuePrevState +
+                    ", cards(screen:" + screenCards.Length + ", prev:" + cards.Length + ")=" + ((screenCards.Length == cards.Length) ? "ok" : "nope") +
+                    ", other(screen:" + screenCardsOther.Length + ", prev:" + prevCardsOther.Length + ")=" + ((screenCardsOther.Length == prevCardsOther.Length) ? "ok" : "nope") +
+                    ", board(screen:" + screenBoard.Length + ", prev:" + prevBoard.Length + ")=" + ((screenBoard.Length == prevBoard.Length) ? "ok" : "nope"));
+            }
+
+            if (bCanCompareWithPrevData)
+            {
+                // create diffs, hopefully prev state comes from last turn and is just 2 cards away
+                List<int> usedCardsIndices = new List<int>();
+                List<TriadCard> usedCardsOther = new List<TriadCard>();
+
+                int numKnownOnHand = 0;
+                int numUnknownOnHand = 0;
+                int numHidden = 0;
+                int numOnHand = 0;
+                for (int Idx = 0; Idx < cards.Length; Idx++)
+                {
+                    if (screenCards[Idx] == null)
+                    {
+                        TriadCard prevCard = cards[Idx];
+                        if ((prevCard != null) && (prevCard.Id != hiddenCardId))
+                        {
+                            if (bDebugMode) { Logger.WriteLine("  card[" + Idx + "]:" + prevCard.Name + " => mark as used, disappeared from prev state"); }
+                            usedCardsIndices.Add(Idx);
+                        }
+
+                        availableCardMask &= ~(1 << Idx);
+                        numPlaced++;
+                    }
+                    else
+                    {
+                        if (screenCards[Idx].Id != hiddenCardId)
+                        {
+                            bool bIsUnknown = (unknownPoolMask & (1 << Idx)) != 0;
+                            numUnknownOnHand += bIsUnknown ? 1 : 0;
+                            numKnownOnHand += bIsUnknown ? 0 : 1;
+                            numOnHand++;
+                            availableCardMask |= (1 << Idx);
+
+                            int knownCardIdx = deck.knownCards.IndexOf(screenCards[Idx]);
+                            int unknownCardIdx = deck.unknownCardPool.IndexOf(screenCards[Idx]);
+                            if (knownCardIdx >= 0)
+                            {
+                                availableCardMask &= ~(1 << (knownCardIdx + cards.Length));
+                            }
+                            else if (unknownCardIdx >= 0)
+                            {
+                                availableCardMask &= ~(1 << (unknownCardIdx + cards.Length + deck.knownCards.Count));
+                            }
+
+                            if (bDebugMode)
+                            {
+                                TriadCard cardOb = screenCards[Idx];
+                                Logger.WriteLine(" card[" + Idx + "]:" + (cardOb != null ? cardOb.Name : "??") + 
+                                    " => numUnknown:" + numUnknownOnHand + ", numKnown:" + numKnownOnHand + ", numHidden:" + numHidden);
+                            }
+                        }
+                        else
+                        {
+                            numHidden++;
+                        }
+                    }
+                }
+
+                for (int Idx = 0; Idx < prevCardsOther.Length; Idx++)
+                {
+                    if ((prevCardsOther[Idx] != null) && (screenCardsOther[Idx] == null))
+                    {
+                        usedCardsOther.Add(prevCardsOther[Idx]);
+                        if (bDebugMode) { Logger.WriteLine("  blue[" + Idx + "]:" + prevCardsOther[Idx].Name + " => mark as used"); }
+                    }
+                }
+
+                for (int Idx = 0; Idx < prevBoard.Length; Idx++)
+                {
+                    TriadCard testCard = screenBoard[Idx];
+                    if ((prevBoard[Idx] == null || prevBoard[Idx].card == null) && (testCard != null))
+                    {
+                        int testCardIdx = GetCardIndex(testCard);
+                        if (!usedCardsOther.Contains(testCard) && (testCardIdx >= 0))
+                        {
+                            usedCardsIndices.Add(testCardIdx);
+                            if (bDebugMode) { Logger.WriteLine("  card[" + testCardIdx + "]:" + testCard.Name + " => mark as used, appeared on board[" + Idx + "], not used by blue"); }
+                        }
+                    }
+                }
+
+                cards = screenCards;              
+
+                for (int Idx = 0; Idx < usedCardsIndices.Count; Idx++)
+                {
+                    int cardMask = 1 << usedCardsIndices[Idx];
+                    availableCardMask &= ~cardMask;
+
+                    bool bIsUnknownPool = (unknownPoolMask & cardMask) != 0;
+                    if (bIsUnknownPool)
+                    {
+                        numUnknownPlaced++;
+                    }
+
+                    if (bDebugMode)
+                    {
+                        TriadCard cardOb = GetCard(usedCardsIndices[Idx]);
+                        Logger.WriteLine(" card[" + usedCardsIndices[Idx] + "]:" + (cardOb != null ? cardOb.Name : "??") + " => used");
+                    }
+                }
+
+                if ((numHidden == 0) && (numOnHand == 5))
+                {
+                    availableCardMask &= (1 << cards.Length) - 1;
+                    if (bDebugMode) { Logger.WriteLine("   all cards are on hand and visible"); }
+                }
+                else if ((numUnknownPlaced + numUnknownOnHand) >= maxUnknownToUse ||
+                    ((numKnownOnHand >= (cards.Length - maxUnknownToUse)) && (numHidden == 0)))
+                {
+                    availableCardMask &= (1 << (cards.Length + deck.knownCards.Count)) - 1;
+
+                    if (bDebugMode)
+                    {
+                        Logger.WriteLine("   removing all unknown cards, numUnknownPlaced:" + numUnknownPlaced +
+                            ", numUnknownOnHand:" + numUnknownOnHand + ", numKnownOnHand:" + numKnownOnHand +
+                            ", numHidden:" + numHidden + ", maxUnknownToUse:" + maxUnknownToUse);
+                    }
+                }
+            }
+            else
+            {
+                // TriadDeckInstanceScreen is mostly stateless (created from scratch on screen capture)
+                // this makes guessing which cards were placed hard, especially when there's no good
+                // history data to compare with. 
+                // Ignore board data here, cards could be placed by blue and are still available for red deck
+
+                numUnknownPlaced = 0;
+                cards = screenCards;
+                
+                for (int Idx = 0; Idx < cards.Length; Idx++)
+                {
+                    if (cards[Idx] != null)
+                    {
+                        if (cards[Idx].Id != hiddenCardId)
+                        {
+                            availableCardMask |= (1 << Idx);
+                        }
+                    }
+                    else
+                    {
+                        numPlaced++;
+                    }
+                }
+
+                // mark everything in pools as available (see comment above about board)
+                availableCardMask = allDeckAvailableMask;
+            }
+
+            if (bDebugMode)
+            {
+                Logger.WriteLine("Red deck updated, bCanCompareWithPrevData:" + bCanCompareWithPrevData + ", numPlaced:" + numPlaced + ", numUnknownPlaced:" + numUnknownPlaced);
+                for (int Idx = 0; Idx < maxAvailableCards; Idx++)
+                {
+                    bool bIsAvailable = (availableCardMask & (1 << Idx)) != 0;
+                    bool bIsUnknown = (unknownPoolMask & (1 << Idx)) != 0;
+                    TriadCard card = GetCard(Idx);
+
+                    Logger.WriteLine("   [" + Idx + "]:" + (card != null ? card.Name : "??") +
+                        (bIsUnknown ? " (U)" : "") + " => " + (bIsAvailable ? "available" : "nope"));
+                }
             }
         }
 
         public override void OnCardPlacedFast(int cardIdx)
         {
-            availableCardMask &= ~(1 << cardIdx);
+            int cardMask = (1 << cardIdx);
+            availableCardMask &= ~cardMask;
 
-            if ((npcDeck != null) && (numHidden > 0))
+            if (deck != null)
             {
-                int numHiddenPlaced = 0;
-                for (int Idx = 0; Idx < npcDeck.unknownCardPool.Count; Idx++)
+                bool bIsUnknown = (unknownPoolMask & cardMask) != 0;
+                if (bIsUnknown)
                 {
-                    bool bIsAvailable = (availableCardMask & (1 << (Idx + cards.Length))) != 0;
-                    numHiddenPlaced += bIsAvailable ? 0 : 1;
-                }
+                    numUnknownPlaced++;
 
-                if (numHiddenPlaced >= numHidden)
-                {
-                    numHidden = 0;
-                    availableCardMask &= (1 << cards.Length) - 1;
+                    int maxUnknownToUse = cards.Length - deck.knownCards.Count;
+                    if (numUnknownPlaced >= maxUnknownToUse)
+                    {
+                        availableCardMask &= ~unknownPoolMask;
+                    }
                 }
             }
         }
 
         public override TriadCard GetCard(int Idx)
         {
-            return (Idx < cards.Length) ? cards[Idx] : 
-                (npcDeck != null) ? npcDeck.unknownCardPool[Idx - cards.Length] : 
+            return (Idx < 0) ? null :
+                (Idx < cards.Length) ? cards[Idx] : 
+                (deck != null) ? deck.GetCard(Idx - cards.Length) :
                 null;
         }
 
         public override int GetCardIndex(TriadCard card)
         {
             int cardIdx = Array.IndexOf(cards, card);
-            if (cardIdx < 0 && npcDeck != null)
+            if (cardIdx < 0 && deck != null)
             {
-                cardIdx = npcDeck.unknownCardPool.IndexOf(card) + cards.Length;
+                cardIdx = deck.knownCards.IndexOf(card);
+                if (cardIdx < 0)
+                {
+                    cardIdx = deck.unknownCardPool.IndexOf(card);
+                    if (cardIdx >= 0)
+                    {
+                        cardIdx += deck.knownCards.Count + cards.Length;
+                    }
+                }
+                else
+                {
+                    cardIdx += cards.Length;
+                }
             }
 
             return cardIdx;
@@ -524,7 +764,7 @@ namespace FFTriadBuddy
                     if (bIsAvailable)
                     {
                         TriadCard card = GetCard(Idx);
-                        desc += card.ToShortString() + ", ";
+                        desc += (card != null ? card.Name : "") + ", ";
                     }
                 }
 
@@ -535,12 +775,12 @@ namespace FFTriadBuddy
                 desc += "none";
             }
 
-            int knownCardsMask = (cards != null) ? ((1 << cards.Length) - 1) : 0;
-            bool hasHiddenCards = (availableCardMask & ~knownCardsMask) != 0;
+            int visibleCardsMask = (cards != null) ? ((1 << cards.Length) - 1) : 0;
+            bool hasHiddenCards = (availableCardMask & ~visibleCardsMask) != 0;
             if (hasHiddenCards)
             {
                 desc += ", Unknown: ";
-                if (npcDeck != null)
+                if (deck != null)
                 {
                     for (int Idx = cards.Length; Idx < maxAvailableCards; Idx++)
                     {
@@ -548,7 +788,8 @@ namespace FFTriadBuddy
                         if (bIsAvailable)
                         {
                             TriadCard card = GetCard(Idx);
-                            desc += card.ToShortString() + ", ";
+                            bool bIsKnownPool = (Idx - cards.Length) < deck.knownCards.Count;
+                            desc += card.ToShortString() + ":" + Idx + ":" + (bIsKnownPool ? "K" : "U") + ", ";
                         }
                     }
 

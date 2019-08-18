@@ -437,5 +437,13 @@ namespace FFTriadBuddy
 
             return NumMisses == 0;
         }
+
+        public void SetTransparent(int slotIdx, bool bTransparent)
+        {
+            if (slotIdx >= 0 && slotIdx < cardCtrls.Length)
+            {
+                cardCtrls[slotIdx].bIsTransparent = bTransparent;
+            }
+        }
     }
 }
