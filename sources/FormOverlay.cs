@@ -110,10 +110,12 @@ namespace FFTriadBuddy
             {
                 gameSession.modifiers = screenReader.currentGame.mods;
                 gameSession.specialRules = ETriadGameSpecialMod.None;
+                gameSession.modFeatures = TriadGameModifier.EFeature.None;
 
                 string desc = "";
                 foreach (TriadGameModifier mod in gameSession.modifiers)
                 {
+                    gameSession.modFeatures |= mod.GetFeatures();
                     desc += mod.ToString() + ", ";
                 }
 
