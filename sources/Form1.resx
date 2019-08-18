@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>Rules:
+- game must be in Windowed or Borderless Windowed mode
+- set UI scale to 100%
+- use dark UI scheme
+- npc must be selected
+- capture during Blue turn, after all card animations finished (!!!)
+
+Multi monitor setup notes:
+- moving overlay between monitors can cause it to disappear, toggle off and on again to restore
+- overlay will position itself every time it's shown (if game is already running) or capturing</value>
+  </data>
   <metadata name="contextMenuStripCardInfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>646, 56</value>
   </metadata>
@@ -131,7 +143,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAC6
-        KAAAAk1TRnQBSQFMAgEBBQEAARgBCAEYAQgBGwEAARoBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFs
+        KAAAAk1TRnQBSQFMAgEBBQEAASABCAEgAQgBGwEAARoBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFs
         AwABNAMAAQEBAAEgBQABwAFXJgADCgENAzoBYgNSAaYDUgGmA0cBgwNIAYYDUgGmA0gBhgMqAUEDAgED
         AwoBDQM6AWIDUgGmA1IBpgNHAYMDSAGGA1IBpgNIAYYDKgFBAwIBA/8AYQADDwEUAU8CUwGlA10B7QNU
         Ae4DWQHJA1gBxgJdAWEB4gEAAYoBnAH/AT8CQAFuAwIBAwMPARQBTwJTAaUDXQHtA1QB7gNZAckDWAHG
@@ -315,7 +327,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAK
-        GAAAAk1TRnQBSQFMAgEBBAEAARgBCAEYAQgBFAEAARQBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFQ
+        GAAAAk1TRnQBSQFMAgEBBAEAASABCAEgAQgBFAEAARQBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFQ
         AwABKAMAAQEBAAEgBgABMv8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A
         /wD/AP8A9wADAgEDBAADDQERBAADAgEDMAADBQEHAw8BFAMXASADHAEoAxwBKAMcASgDHAEoAxwBKAMX
         ASADDwEUAwUBByQAAyMBMwMjATMDIwEzOAADDAEQAwwBEAMMARADDAEQWAADAgEDAyIBMgNMAZIDIgEy

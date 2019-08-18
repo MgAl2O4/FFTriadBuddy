@@ -60,6 +60,8 @@ namespace FFTriadBuddy
             bCanAutoCapture = false;
             dashAnimOffset = 0;
 
+            Location = Screen.PrimaryScreen.Bounds.Location;
+            Size = Screen.PrimaryScreen.Bounds.Size;
             UpdateOverlayLocation(10, 10);
             UpdateAutoCaptureMarker();
             UpdateStatusDescription();
@@ -137,6 +139,7 @@ namespace FFTriadBuddy
                 {
                     bBoardChanged = true;
                     gameState.board[Idx] = new TriadCardInstance(screenReader.currentGame.board[Idx], screenReader.currentGame.boardOwner[Idx]);
+                    Logger.WriteLine("  board update: [" + Idx + "] " + gameState.board[Idx].owner + ": " + gameState.board[Idx].card.Name);
                 }
                 else if (!bWasNull && bIsNull)
                 {
@@ -198,6 +201,8 @@ namespace FFTriadBuddy
             {
                 FindNextMove(out markerDeckPos, out markerBoardPos, out TriadGameResultChance bestChance);
                 expectedResult = bestChance.expectedResult;
+
+                Logger.WriteLine("  suggested move: [" + markerBoardPos + "] " + ETriadCardOwner.Blue + " " + blueDeck.GetCard(markerDeckPos).Name + " (expected: " + expectedResult + ")");
             }
 
             // update overlay locations
@@ -205,9 +210,18 @@ namespace FFTriadBuddy
             if (gameWindowRect.Width > 0)
             {
                 Rectangle gridRect = screenReader.GetGridRect();
-
                 if (gridRect.Width > 0)
                 {
+                    // multi monitor setup: make sure that overlay and game and on the same monitor
+                    Rectangle gameScreenBounds = Screen.GetBounds(gameWindowRect);
+                    Point centerPt = new Point((Left + Right) / 2, (Top + Bottom) / 2);
+                    if (!gameScreenBounds.Contains(centerPt))
+                    {
+                        Location = gameScreenBounds.Location;
+                        Size = gameScreenBounds.Size;
+                        bCanAdjustSummaryLocation = true;
+                    }
+
                     // one time only, give user ability to move it if needed
                     if (bCanAdjustSummaryLocation)
                     {
@@ -318,6 +332,9 @@ namespace FFTriadBuddy
 
         public void UpdateOverlayLocation(int screenX, int screenY)
         {
+            screenX = Math.Min(Math.Max(screenX, 0), Size.Width - panelSummary.Width);
+            screenY = Math.Min(Math.Max(screenY, 0), Size.Height - panelSummary.Height);
+
             panelSummary.Location = new Point(screenX, screenY);
 
             panelDetails.Location = new Point(screenX - panelDetails.Width - 10, screenY);
@@ -325,8 +342,27 @@ namespace FFTriadBuddy
             panelDebug.Location = new Point(screenX, screenY + panelSummary.Height + 10);
         }
 
-        public void InitOverlayLocation()
+        public void InitOverlayLocation(Rectangle mainWindowBounds)
         {
+            // multi monitor setup: make sure that overlay and game and on the same monitor
+            Rectangle gameWindowBounds = mainWindowBounds;
+            if (screenReader != null)
+            {
+                Rectangle testBounds = screenReader.FindGameWindowBounds();
+                if (testBounds.Width > 0)
+                {
+                    gameWindowBounds = testBounds;
+                }
+            }
+
+            Rectangle gameScreenBounds = Screen.GetBounds(gameWindowBounds);
+            Point myCenterPt = new Point((Left + Right) / 2, (Top + Bottom) / 2);
+            if (!gameScreenBounds.Contains(myCenterPt))
+            {
+                Location = gameScreenBounds.Location;
+                Size = gameScreenBounds.Size;
+            }
+
             panelSummary.Left = (Width - panelSummary.Width) / 2;
             panelSummary.Top = Bottom - panelSummary.Height - 10;
 

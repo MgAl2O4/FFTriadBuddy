@@ -528,6 +528,23 @@ namespace FFTriadBuddy
             return WindowHandle;
         }
 
+        public Rectangle FindGameWindowBounds()
+        {
+            Rectangle result = new Rectangle(0, 0, 0, 0);
+
+            HandleRef windowHandle = FindGameWindow();
+            bool bHasWindow = windowHandle.Handle.ToInt64() != 0;
+            if (bHasWindow)
+            {
+                if (GetWindowRect(windowHandle, out RECT windowRectApi))
+                {
+                    result = new Rectangle(windowRectApi.Left, windowRectApi.Top, windowRectApi.Right - windowRectApi.Left, windowRectApi.Bottom - windowRectApi.Top);
+                }
+            }
+
+            return result;
+        }
+
         private Bitmap TakeScreenshot(HandleRef WindowHandle)
         {
             Bitmap bitmap = null;

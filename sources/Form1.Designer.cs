@@ -156,6 +156,8 @@
             this.columnHeaderO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripCardInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuFindCardOnline = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageCardsIcons = new System.Windows.Forms.TabPage();
             this.checkBoxCardGridOnlyOwned = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanelCardGrids = new System.Windows.Forms.FlowLayoutPanel();
@@ -201,8 +203,6 @@
             this.toolStripMenuItemCardParseConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.timerOptimizationDeckUpdate = new System.Windows.Forms.Timer(this.components);
             this.labelUpdateNotify = new System.Windows.Forms.Label();
-            this.toolStripMenuFindCardOnline = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -894,9 +894,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(640, 131);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "Rules:\r\n- game must be in Windowed or Borderless Windowed mode\r\n- set UI scale to" +
-    " 100%\r\n- use dark UI scheme\r\n\r\n- npc must be selected\r\n- capture during Blue tur" +
-    "n, after all card animations finished";
+            this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // tabPagePlay
             // 
@@ -1630,8 +1628,20 @@
             // 
             this.toolStripMenuItem4.Enabled = false;
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(138, 22);
             this.toolStripMenuItem4.Text = "Npc reward:";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(135, 6);
+            // 
+            // toolStripMenuFindCardOnline
+            // 
+            this.toolStripMenuFindCardOnline.Name = "toolStripMenuFindCardOnline";
+            this.toolStripMenuFindCardOnline.Size = new System.Drawing.Size(138, 22);
+            this.toolStripMenuFindCardOnline.Text = "Find online";
+            this.toolStripMenuFindCardOnline.Click += new System.EventHandler(this.toolStripMenuFindCardOnline_Click);
             // 
             // tabPageCardsIcons
             // 
@@ -2027,18 +2037,6 @@
             this.labelUpdateNotify.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelUpdateNotify.Visible = false;
             this.labelUpdateNotify.Click += new System.EventHandler(this.labelUpdateNotify_Click);
-            // 
-            // toolStripMenuFindCardOnline
-            // 
-            this.toolStripMenuFindCardOnline.Name = "toolStripMenuFindCardOnline";
-            this.toolStripMenuFindCardOnline.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuFindCardOnline.Text = "Find online";
-            this.toolStripMenuFindCardOnline.Click += new System.EventHandler(this.toolStripMenuFindCardOnline_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
             // 
             // Form1
             // 

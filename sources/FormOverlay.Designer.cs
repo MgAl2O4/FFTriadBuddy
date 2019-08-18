@@ -421,7 +421,6 @@
             this.Text = "FormOverlay";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.panelSummary.ResumeLayout(false);
             this.panelSummary.PerformLayout();
             this.panelDetails.ResumeLayout(false);

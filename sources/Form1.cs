@@ -1844,7 +1844,7 @@ namespace FFTriadBuddy
 
             if (bUseScreenReader)
             {
-                overlayForm.InitOverlayLocation();
+                overlayForm.InitOverlayLocation(Bounds);
                 gameState.resolvedSpecial = gameSession.specialRules;
             }
 
