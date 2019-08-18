@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FFTriadBuddy
 {
@@ -257,31 +258,63 @@ namespace FFTriadBuddy
 
     public abstract class TriadDeckInstance
     {
-        public abstract void OnCardPlaced(TriadCard card);
-        public abstract TriadCard[] GetAvailableCards();
-        public abstract TriadCard GetFirstAvailableCard();
+        public abstract void OnCardPlacedFast(int Idx);
+        public abstract int GetFirstAvailableCardFast();
+        public abstract TriadCard GetCard(int Idx);
+        public abstract int GetCardIndex(TriadCard card);
         public abstract TriadDeckInstance CreateCopy();
+
+        public int availableCardMask;
+        public const int maxAvailableCards = 10;
+
+        public bool IsPlaced(int cardIdx)
+        {
+            return (availableCardMask & (1 << cardIdx)) == 0;
+        }
+
+        public TriadCard GetFirstAvailableCard()
+        {
+            int cardIdx = GetFirstAvailableCardFast();
+            return (cardIdx < 0) ? null : GetCard(cardIdx);
+        }
+
+        public List<TriadCard> GetAvailableCards()
+        {
+            List<TriadCard> cards = new List<TriadCard>();
+            for (int Idx = 0; Idx < maxAvailableCards; Idx++)
+            {
+                bool bIsAvailable = (availableCardMask & (1 << Idx)) != 0;
+                if (bIsAvailable)
+                {
+                    TriadCard card = GetCard(Idx);
+                    cards.Add(card);
+                }
+            }
+
+            return cards;
+        }
     }
 
     public class TriadDeckInstanceManual : TriadDeckInstance
     {
         public readonly TriadDeck deck;
-        public List<TriadCard> placedCards;
         public int numUnknownPlaced;
+        public int numPlaced;
 
         public TriadDeckInstanceManual(TriadDeck deck)
         {
             this.deck = deck;
-            placedCards = new List<TriadCard>();
             numUnknownPlaced = 0;
+            numPlaced = 0;
+            availableCardMask = (1 << (deck.knownCards.Count + deck.unknownCardPool.Count)) - 1;
         }
 
         public TriadDeckInstanceManual(TriadDeckInstanceManual copyFrom)
         {
             deck = copyFrom.deck;
-            placedCards = new List<TriadCard>();
-            placedCards.AddRange(copyFrom.placedCards);
             numUnknownPlaced = copyFrom.numUnknownPlaced;
+            numPlaced = copyFrom.numPlaced;
+            availableCardMask = copyFrom.availableCardMask;
         }
 
         public override TriadDeckInstance CreateCopy()
@@ -290,66 +323,68 @@ namespace FFTriadBuddy
             return deckCopy;
         }
 
-        public override void OnCardPlaced(TriadCard card)
+        public override void OnCardPlacedFast(int cardIdx)
         {
-            placedCards.Add(card);
+            availableCardMask &= ~(1 << cardIdx);
+            numPlaced++;
 
-            if (deck.unknownCardPool.Contains(card))
+            if (cardIdx >= deck.knownCards.Count)
             {
+                const int maxCardsToPlace = ((TriadGameData.boardSize * TriadGameData.boardSize) / 2) + 1;
+                int maxUnknownToPlace = maxCardsToPlace - deck.knownCards.Count;
+
                 numUnknownPlaced++;
+                if (numUnknownPlaced >= maxUnknownToPlace)
+                {
+                    availableCardMask &= ((1 << deck.knownCards.Count) - 1);
+                }
             }
         }
 
-        public override TriadCard[] GetAvailableCards()
+        public override int GetFirstAvailableCardFast()
         {
-            List<TriadCard> result = new List<TriadCard>();
-            foreach (TriadCard card in deck.knownCards)
+            for (int Idx = 0; Idx < deck.knownCards.Count; Idx++)
             {
-                result.Add(card);
-            }
-
-            int maxCardsToPlace = ((TriadGameData.boardSize * TriadGameData.boardSize) / 2) + 1;
-            int maxUnknownToPlace = maxCardsToPlace - deck.knownCards.Count;
-            int numUnknownToPlace = maxUnknownToPlace - numUnknownPlaced;
-            if (numUnknownToPlace > 0)
-            {
-                foreach (TriadCard card in deck.unknownCardPool)
+                bool bIsAvailable = (availableCardMask & (1 << Idx)) != 0;
+                if (bIsAvailable)
                 {
-                    result.Add(card);
+                    return Idx;
                 }
             }
 
-            foreach (TriadCard card in placedCards)
-            {
-                result.Remove(card);
-            }
-
-            return (result.Count > 0) ? result.ToArray() : null;
+            return -1;
         }
 
-        public override TriadCard GetFirstAvailableCard()
+        public override TriadCard GetCard(int Idx)
         {
-            foreach (TriadCard card in deck.knownCards)
+            return deck.GetCard(Idx);
+        }
+
+        public override int GetCardIndex(TriadCard card)
+        {
+            int cardIdx = deck.knownCards.IndexOf(card);
+            if (cardIdx < 0)
             {
-                if (!placedCards.Contains(card))
-                {
-                    return card;
-                }
+                cardIdx = deck.unknownCardPool.IndexOf(card) + deck.knownCards.Count;
             }
 
-            return null;
+            return cardIdx;
         }
 
         public override string ToString()
         {
-            string desc = "Placed: " + placedCards.Count + ", Available: ";
+            string desc = "Placed: " + numPlaced + ", Available: ";
 
-            TriadCard[] availCards = GetAvailableCards();
-            if (availCards != null)
+            if (availableCardMask > 0)
             {
-                foreach (TriadCard card in availCards)
+                for (int Idx = 0; Idx < maxAvailableCards; Idx++)
                 {
-                    desc += card.ToShortString() + ", ";
+                    bool bIsAvailable = (availableCardMask & (1 << Idx)) != 0;
+                    if (bIsAvailable)
+                    {
+                        TriadCard card = GetCard(Idx);
+                        desc += card.ToShortString() + ", ";
+                    }
                 }
 
                 desc = desc.Remove(desc.Length - 2, 2);
@@ -367,10 +402,13 @@ namespace FFTriadBuddy
     {
         public TriadCard[] cards;
         public TriadDeck npcDeck;
+        public int numHidden;
 
         public TriadDeckInstanceScreen()
         {
             cards = new TriadCard[5];
+            availableCardMask = 0;
+            numHidden = 0;
         }
 
         public TriadDeckInstanceScreen(TriadDeckInstanceScreen copyFrom)
@@ -382,6 +420,8 @@ namespace FFTriadBuddy
             }
 
             npcDeck = copyFrom.npcDeck;
+            availableCardMask = copyFrom.availableCardMask;
+            numHidden = copyFrom.numHidden;
         }
 
         public override TriadDeckInstance CreateCopy()
@@ -390,104 +430,133 @@ namespace FFTriadBuddy
             return deckCopy;
         }
 
-        public override TriadCard[] GetAvailableCards()
+        public override int GetFirstAvailableCardFast()
+        {
+            for (int Idx = 0; Idx < cards.Length; Idx++)
+            {
+                bool bIsAvailable = (availableCardMask & (1 << Idx)) != 0;
+                if (bIsAvailable)
+                {
+                    return Idx;
+                }
+            }
+
+            return -1;
+        }
+
+        public void UpdateAvailableCards()
         {
             int hiddenCardId = TriadCardDB.Get().hiddenCard.Id;
-            int numHidden = 0;
 
-            List<TriadCard> cardList = new List<TriadCard>();
-            foreach (TriadCard card in cards)
+            availableCardMask = 0;
+            numHidden = 0;
+
+            for (int Idx = 0; Idx < cards.Length; Idx++)
             {
-                if (card != null)
+                if (cards[Idx] != null)
                 {
-                    if (card.Id == hiddenCardId)
+                    if (cards[Idx].Id == hiddenCardId)
                     {
                         numHidden++;
                     }
                     else
                     {
-                        cardList.Add(card);
+                        availableCardMask |= (1 << Idx);
                     }
                 }
             }
 
-            if ((numHidden > 0) && (npcDeck != null))
+            if (npcDeck != null && (numHidden > 0))
             {
-                cardList.AddRange(npcDeck.unknownCardPool);
+                int unknownPoolMask = (1 << npcDeck.unknownCardPool.Count) - 1;
+                availableCardMask |= unknownPoolMask << cards.Length;
             }
-
-            return cardList.ToArray();
         }
 
-        public override TriadCard GetFirstAvailableCard()
+        public override void OnCardPlacedFast(int cardIdx)
         {
-            foreach (TriadCard card in cards)
+            availableCardMask &= ~(1 << cardIdx);
+
+            if ((npcDeck != null) && (numHidden > 0))
             {
-                if (card != null)
+                int numHiddenPlaced = 0;
+                for (int Idx = 0; Idx < npcDeck.unknownCardPool.Count; Idx++)
                 {
-                    return card;
+                    bool bIsAvailable = (availableCardMask & (1 << (Idx + cards.Length))) != 0;
+                    numHiddenPlaced += bIsAvailable ? 0 : 1;
+                }
+
+                if (numHiddenPlaced >= numHidden)
+                {
+                    numHidden = 0;
+                    availableCardMask &= (1 << cards.Length) - 1;
                 }
             }
-
-            return null;
         }
 
-        public override void OnCardPlaced(TriadCard card)
+        public override TriadCard GetCard(int Idx)
         {
-            for (int Idx = 0; Idx < cards.Length; Idx++)
+            return (Idx < cards.Length) ? cards[Idx] : 
+                (npcDeck != null) ? npcDeck.unknownCardPool[Idx - cards.Length] : 
+                null;
+        }
+
+        public override int GetCardIndex(TriadCard card)
+        {
+            int cardIdx = Array.IndexOf(cards, card);
+            if (cardIdx < 0 && npcDeck != null)
             {
-                if (cards[Idx] == card)
-                {
-                    cards[Idx] = null;
-                    break;
-                }
+                cardIdx = npcDeck.unknownCardPool.IndexOf(card) + cards.Length;
             }
+
+            return cardIdx;
         }
 
         public override string ToString()
         {
             string desc = "[SCREEN] Available: ";
 
-            int numAvail = 0;
-            int numHidden = 0;
-            if (cards != null)
+            if (availableCardMask > 0)
             {
-                int hiddenCardId = TriadCardDB.Get().hiddenCard.Id;
-                foreach (TriadCard card in cards)
+                for (int Idx = 0; Idx < cards.Length; Idx++)
                 {
-                    if (card != null)
+                    bool bIsAvailable = (availableCardMask & (1 << Idx)) != 0;
+                    if (bIsAvailable)
                     {
+                        TriadCard card = GetCard(Idx);
                         desc += card.ToShortString() + ", ";
-                        numAvail++;
-                        numHidden += (card.Id == hiddenCardId) ? 1 : 0;
                     }
                 }
-            }
 
-            if (numAvail == 0)
-            {
-                desc += "none";
+                desc = desc.Remove(desc.Length - 2, 2);
             }
             else
             {
-                desc = desc.Remove(desc.Length - 2, 2);
+                desc += "none";
             }
 
-            if (numHidden > 0)
+            int knownCardsMask = (cards != null) ? ((1 << cards.Length) - 1) : 0;
+            bool hasHiddenCards = (availableCardMask & ~knownCardsMask) != 0;
+            if (hasHiddenCards)
             {
                 desc += ", Unknown: ";
-                if (npcDeck != null && npcDeck.unknownCardPool.Count > 0)
+                if (npcDeck != null)
                 {
-                    foreach (TriadCard card in npcDeck.unknownCardPool)
+                    for (int Idx = cards.Length; Idx < maxAvailableCards; Idx++)
                     {
-                        desc += card.ToShortString() + ", ";
+                        bool bIsAvailable = (availableCardMask & (1 << Idx)) != 0;
+                        if (bIsAvailable)
+                        {
+                            TriadCard card = GetCard(Idx);
+                            desc += card.ToShortString() + ", ";
+                        }
                     }
 
                     desc = desc.Remove(desc.Length - 2, 2);
                 }
                 else
                 {
-                    desc += "none";
+                    desc += "(missing deck!)";
                 }
             }
 

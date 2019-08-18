@@ -513,7 +513,7 @@ namespace FFTriadBuddy
             progressBarDeck.Visible = false;
             timerOptimizeDeck.Enabled = false;
             labelOptProgress.Text = deckOptimizer.IsAborted() ? ("aborted at " + deckOptimizer.GetProgress() + "%") : "100%";
-            labelOptTimeLeft.Text = string.Format("{0:D2}h:{1:D2}m:{2:D2}s", 0, 0, 0);
+            labelOptTimeLeft.Text = "--";
 
             playerDeck = deckOptimizer.optimizedDeck;
 
@@ -539,7 +539,18 @@ namespace FFTriadBuddy
 
             int secondsRemaining = deckOptimizer.GetSecondsRemaining(timerOptimizeDeck.Interval);
             TimeSpan tspan = TimeSpan.FromSeconds(secondsRemaining);
-            labelOptTimeLeft.Text = string.Format("{0:D2}h:{1:D2}m:{2:D2}s", tspan.Hours, tspan.Minutes, tspan.Seconds);
+            if (tspan.Hours > 0 || tspan.Minutes > 55)
+            {
+                labelOptTimeLeft.Text = string.Format("{0:D2}h:{1:D2}m:{2:D2}s", tspan.Hours, tspan.Minutes, tspan.Seconds);
+            }
+            else if (tspan.Minutes > 0 || tspan.Seconds > 55)
+            {
+                labelOptTimeLeft.Text = string.Format("{0:D2}m:{1:D2}s", tspan.Minutes, tspan.Seconds);
+            }
+            else
+            {
+                labelOptTimeLeft.Text = string.Format("{0:D2}s", tspan.Seconds);
+            }
         }
 
         private void comboBoxRegionRule1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1376,12 +1387,8 @@ namespace FFTriadBuddy
             {
                 for (int Idx = 0; Idx < deckBlueControls.Length; Idx++)
                 {
-                    TriadCard blueCardToShow = null;
-                    if (Idx < blueDeckEx.deck.knownCards.Count &&
-                        !blueDeckEx.placedCards.Contains(blueDeckEx.deck.knownCards[Idx]))
-                    {
-                        blueCardToShow = blueDeckEx.deck.knownCards[Idx];
-                    }
+                    bool bIsPlaced = blueDeckEx.IsPlaced(Idx);
+                    TriadCard blueCardToShow = (!bIsPlaced && (Idx < blueDeckEx.deck.knownCards.Count)) ? blueDeckEx.deck.knownCards[Idx] : null;
 
                     if (deckBlueControls[Idx].GetCard() != blueCardToShow)
                     {
@@ -1393,19 +1400,16 @@ namespace FFTriadBuddy
             listViewRedDeck.Items.Clear();
             listViewRedDeck.SmallImageList = cardIconImages;
 
-            TriadCard[] redCards = gameData.deckRed.GetAvailableCards();
-            if (redCards != null)
+            List<TriadCard> redCards = gameData.deckRed.GetAvailableCards();
+            foreach (TriadCard card in redCards)
             {
-                foreach (TriadCard card in redCards)
+                ListViewItem cardListItem = new ListViewItem(card.Name, card.Id)
                 {
-                    ListViewItem cardListItem = new ListViewItem(card.Name, card.Id)
-                    {
-                        ToolTipText = card.Name,
-                        Tag = card
-                    };
+                    ToolTipText = card.Name,
+                    Tag = card
+                };
 
-                    listViewRedDeck.Items.Add(cardListItem);
-                }
+                listViewRedDeck.Items.Add(cardListItem);
             }
 
             buttonReset.Text = (gameData.numCardsPlaced == 0) ? "Blue starts" : "Reset";
@@ -1547,8 +1551,7 @@ namespace FFTriadBuddy
                     int deckSlotIdx = (int)(((CardCtrl)sender).Tag);
                     TriadCard newForcedCard = blueDeckEx.deck.knownCards[deckSlotIdx];
 
-                    if (gameSession.forcedBlueCard != newForcedCard &&
-                        !blueDeckEx.placedCards.Contains(newForcedCard))
+                    if (gameSession.forcedBlueCard != newForcedCard && !blueDeckEx.IsPlaced(deckSlotIdx))
                     {
                         Logger.WriteLine("Force blue card: " + newForcedCard.Name);
                         gameSession.forcedBlueCard = newForcedCard;

@@ -18,16 +18,31 @@ namespace FFTriadBuddy
 
     public class TriadGameModifier : IComparable
     {
+        [Flags]
+        public enum EFeature
+        {
+            None = 0,
+            CardPlaced = 1,
+            CaptureNei = 2,
+            CaptureWeights = 4,
+            CaptureMath = 8,
+            PostCapture = 16,
+            AllPlaced = 32,
+            FilterNext = 64,
+        }
+
         protected string RuleName;
         protected bool bAllowCombo = false;
         protected bool bIsDeckOrderImportant = false;
         protected bool bHasLastRedReminder = false;
         protected ETriadGameSpecialMod SpecialMod = ETriadGameSpecialMod.None;
+        protected EFeature Features = EFeature.None;
 
         public virtual string GetName() { return RuleName; }
         public virtual bool AllowsCombo() { return bAllowCombo; }
         public virtual bool IsDeckOrderImportant() { return bIsDeckOrderImportant; }
         public virtual ETriadGameSpecialMod GetSpecialRules() { return SpecialMod; }
+        public virtual EFeature GetFeatures() { return Features; }
         public virtual bool HasLastRedReminder() { return bHasLastRedReminder; }
         public override string ToString() { return GetName(); }
 
@@ -38,7 +53,7 @@ namespace FFTriadBuddy
         public virtual void OnPostCaptures(TriadGameData gameData, int boardPos) { }
         public virtual void OnScreenUpdate(TriadGameData gameData) { }
         public virtual void OnAllCardsPlaced(TriadGameData gameData) { }
-        public virtual void OnFilterNextCards(TriadGameData gameData, ref TriadCard[] allowedCards) { }
+        public virtual void OnFilterNextCards(TriadGameData gameData, ref int allowedCardsMask) { }
         public virtual void OnMatchInit() { }
         public virtual void OnScoreCard(TriadCard card, ref float score) { }
 
@@ -63,6 +78,7 @@ namespace FFTriadBuddy
         public override bool AllowsCombo() { return (RuleInst != null) ? RuleInst.AllowsCombo() : base.AllowsCombo(); }
         public override bool IsDeckOrderImportant() { return (RuleInst != null) ? RuleInst.IsDeckOrderImportant() : base.IsDeckOrderImportant(); }
         public override ETriadGameSpecialMod GetSpecialRules() { return base.GetSpecialRules() | ((RuleInst != null) ? RuleInst.GetSpecialRules() : ETriadGameSpecialMod.None); }
+        public override EFeature GetFeatures() { return (RuleInst != null) ? RuleInst.GetFeatures() : EFeature.None; }
         public override bool HasLastRedReminder() { return (RuleInst != null) ? RuleInst.HasLastRedReminder() : base.HasLastRedReminder(); }
 
         public override void OnCardPlaced(TriadGameData gameData, int boardPos)
@@ -95,9 +111,9 @@ namespace FFTriadBuddy
             if (RuleInst != null) { RuleInst.OnAllCardsPlaced(gameData); }
         }
 
-        public override void OnFilterNextCards(TriadGameData gameData, ref TriadCard[] allowedCards)
+        public override void OnFilterNextCards(TriadGameData gameData, ref int allowedCardsMask)
         {
-            if (RuleInst != null) { RuleInst.OnFilterNextCards(gameData, ref allowedCards); }
+            if (RuleInst != null) { RuleInst.OnFilterNextCards(gameData, ref allowedCardsMask); }
         }
 
         public override void OnMatchInit()
@@ -131,7 +147,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierSuddenDeath : TriadGameModifier
     {
-        public TriadGameModifierSuddenDeath() { RuleName = "Sudden Death"; bHasLastRedReminder = true; }
+        public TriadGameModifierSuddenDeath() { RuleName = "Sudden Death"; bHasLastRedReminder = true; Features = EFeature.AllPlaced; }
 
         public override void OnAllCardsPlaced(TriadGameData gameData)
         {
@@ -147,14 +163,15 @@ namespace FFTriadBuddy
                     List<TriadCard> redUnknownCards = new List<TriadCard>();
                     string redCardsDebug = "";
 
-                    if (deckBlueEx.placedCards.Count < deckRedEx.placedCards.Count)
+                    if (deckBlueEx.numPlaced < deckRedEx.numPlaced)
                     {
-                        // blue has cards on hard, all known
-                        foreach (TriadCard testCard in deckBlueEx.deck.knownCards)
+                        // blue has cards on hand, all known
+                        for (int Idx = 0; Idx < deckBlueEx.deck.knownCards.Count; Idx++)
                         {
-                            if (!deckBlueEx.placedCards.Contains(testCard))
+                            bool bIsAvailable = !deckBlueEx.IsPlaced(Idx);
+                            if (bIsAvailable)
                             {
-                                blueCards.Add(testCard);
+                                blueCards.Add(deckBlueEx.deck.knownCards[Idx]);
                                 break;
                             }
                         }
@@ -163,25 +180,28 @@ namespace FFTriadBuddy
                     }
                     else
                     {
-                        // red has cards on hard, check known vs unknown
-                        foreach (TriadCard testCard in deckRedEx.deck.knownCards)
+                        // red has cards on hand, check known vs unknown
+                        for (int Idx = 0; Idx < deckRedEx.deck.knownCards.Count; Idx++)
                         {
-                            if (!deckRedEx.placedCards.Contains(testCard))
+                            bool bIsAvailable = !deckRedEx.IsPlaced(Idx);
+                            if (bIsAvailable)
                             {
-                                redCardsDebug += testCard.Name + ":K, ";
-                                redCards.Add(testCard);
+                                redCards.Add(deckRedEx.deck.knownCards[Idx]);
+                                redCardsDebug += deckRedEx.deck.knownCards[Idx].Name + ":K, ";
                                 break;
                             }
                         }
 
                         if (redCards.Count < blueCards.Count)
                         {
-                            foreach (TriadCard testCard in deckRedEx.deck.unknownCardPool)
+                            for (int Idx = 0; Idx < deckRedEx.deck.unknownCardPool.Count; Idx++)
                             {
-                                if (!deckRedEx.placedCards.Contains(testCard))
+                                int cardIdx = Idx + deckRedEx.deck.knownCards.Count;
+                                bool bIsAvailable = !deckRedEx.IsPlaced(cardIdx);
+                                if (bIsAvailable)
                                 {
-                                    redCardsDebug += testCard.Name + ":U, ";
-                                    redUnknownCards.Add(testCard);
+                                    redUnknownCards.Add(deckRedEx.deck.unknownCardPool[Idx]);
+                                    redCardsDebug += deckRedEx.deck.unknownCardPool[Idx].Name + ":U, ";
                                     break;
                                 }
                             }
@@ -227,7 +247,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierReverse : TriadGameModifier
     {
-        public TriadGameModifierReverse() { RuleName = "Reverse"; }
+        public TriadGameModifierReverse() { RuleName = "Reverse"; Features = EFeature.CaptureMath; }
 
         public override void OnCheckCaptureCardMath(TriadGameData gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured)
         {
@@ -243,7 +263,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierFallenAce : TriadGameModifier
     {
-        public TriadGameModifierFallenAce() { RuleName = "Fallen Ace"; }
+        public TriadGameModifierFallenAce() { RuleName = "Fallen Ace"; Features = EFeature.CaptureWeights; }
 
         public override void OnCheckCaptureCardWeights(TriadGameData gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
         {
@@ -260,7 +280,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierSame : TriadGameModifier
     {
-        public TriadGameModifierSame() { RuleName = "Same"; bAllowCombo = true; }
+        public TriadGameModifierSame() { RuleName = "Same"; bAllowCombo = true; Features = EFeature.CaptureNei; }
 
         public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
@@ -308,7 +328,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierPlus : TriadGameModifier
     {
-        public TriadGameModifierPlus() { RuleName = "Plus"; bAllowCombo = true; }
+        public TriadGameModifierPlus() { RuleName = "Plus"; bAllowCombo = true; Features = EFeature.CaptureNei; }
 
         public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
@@ -373,7 +393,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierAscention : TriadGameModifier
     {
-        public TriadGameModifierAscention() { RuleName = "Ascension"; }
+        public TriadGameModifierAscention() { RuleName = "Ascension"; Features = EFeature.CardPlaced | EFeature.PostCapture; }
 
         public override void OnCardPlaced(TriadGameData gameData, int boardPos)
         {
@@ -454,7 +474,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierDescention : TriadGameModifier
     {
-        public TriadGameModifierDescention() { RuleName = "Descension"; }
+        public TriadGameModifierDescention() { RuleName = "Descension"; Features = EFeature.CardPlaced | EFeature.PostCapture; }
 
         public override void OnCardPlaced(TriadGameData gameData, int boardPos)
         {
@@ -535,26 +555,19 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierOrder : TriadGameModifier
     {
-        public TriadGameModifierOrder() { RuleName = "Order"; bIsDeckOrderImportant = true; }
+        public TriadGameModifierOrder() { RuleName = "Order"; bIsDeckOrderImportant = true; Features = EFeature.FilterNext; }
 
-        public override void OnFilterNextCards(TriadGameData gameData, ref TriadCard[] allowedCards)
+        public override void OnFilterNextCards(TriadGameData gameData, ref int allowedCardsMask)
         {
-            if ((gameData.state == ETriadGameState.InProgressBlue) && (allowedCards.Length > 0))
+            if ((gameData.state == ETriadGameState.InProgressBlue) && (allowedCardsMask != 0))
             {
-                TriadCard firstBlue = gameData.deckBlue.GetFirstAvailableCard();
-                if (firstBlue != null)
-                {
-                    allowedCards = new TriadCard[1];
-                    allowedCards[0] = firstBlue;
-                }
-                else
-                {
-                    allowedCards = null;
-                }
+                int firstBlueIdx = gameData.deckBlue.GetFirstAvailableCardFast();
+                allowedCardsMask = (firstBlueIdx < 0) ? 0 : (1 << firstBlueIdx);
 
                 if (gameData.bDebugRules)
                 {
-                    Logger.WriteLine(">> " + RuleName + "! next card: " + (allowedCards.Length > 0 ?  allowedCards[0].Name : "none"));
+                    TriadCard firstBlueCard = gameData.deckBlue.GetCard(firstBlueIdx);
+                    Logger.WriteLine(">> " + RuleName + "! next card: " + (firstBlueCard != null ? firstBlueCard.Name : "none"));
                 }
             }
         }

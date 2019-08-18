@@ -167,6 +167,7 @@ namespace FFTriadBuddy
             if (bBlueDeckChanged)
             {
                 blueDeck.cards = screenReader.currentGame.blueDeck;
+                blueDeck.UpdateAvailableCards();
                 deckCtrlBlue.SetDeck(screenReader.currentGame.blueDeck);
             }
 
@@ -175,6 +176,7 @@ namespace FFTriadBuddy
             {
                 redDeck.cards = screenReader.currentGame.redDeck;
                 redDeck.npcDeck = npc.Deck;
+                redDeck.UpdateAvailableCards();
                 deckCtrlRed.SetDeck(screenReader.currentGame.redDeck);
             }
 

@@ -30,6 +30,10 @@ namespace FFTriadBuddy
                     DataConverter converter = new DataConverter();
                     converter.Run();
                 }
+                else if (Args.Contains("-solverStress"))
+                {
+                    TriadGameSession.RunSolverStressTest();
+                }
                 else
                 {
                     Application.EnableVisualStyles();

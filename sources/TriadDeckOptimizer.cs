@@ -531,23 +531,23 @@ namespace FFTriadBuddy
                 {
                     if (!bAbort)
                     {
-                    //for (int IdxS1 = 0; IdxS1 < slotLists[1].Count; IdxS1++)
-                    Parallel.For(0, slotLists[1].Count, IdxS1 =>
+                        //for (int IdxS1 = 0; IdxS1 < slotLists[1].Count; IdxS1++)
+                        Parallel.For(0, slotLists[1].Count, IdxS1 =>
                         {
                             if (!bAbort)
                             {
-                            //for (int IdxS2 = 0; IdxS2 < slotLists[2].Count; IdxS2++)
-                            Parallel.For(0, slotLists[2].Count, IdxS2 =>
+                                //for (int IdxS2 = 0; IdxS2 < slotLists[2].Count; IdxS2++)
+                                Parallel.For(0, slotLists[2].Count, IdxS2 =>
                                 {
                                     if (!bAbort)
                                     {
-                                    //for (int IdxS3 = 0; IdxS3 < slotLists[3].Count; IdxS3++)
-                                    Parallel.For(0, slotLists[3].Count, IdxS3 =>
+                                        //for (int IdxS3 = 0; IdxS3 < slotLists[3].Count; IdxS3++)
+                                        Parallel.For(0, slotLists[3].Count, IdxS3 =>
                                         {
                                             if (!bAbort)
                                             {
-                                            //for (int IdxS4 = 0; IdxS4 < slotLists[4].Count; IdxS4++)
-                                            Parallel.For(0, slotLists[4].Count, IdxS4 =>
+                                                //for (int IdxS4 = 0; IdxS4 < slotLists[4].Count; IdxS4++)
+                                                Parallel.For(0, slotLists[4].Count, IdxS4 =>
                                                 {
                                                     if (!bAbort)
                                                     {
@@ -564,8 +564,8 @@ namespace FFTriadBuddy
                                                             testDeckCards[3] != testDeckCards[4])
                                                         {
                                                             Random randomGen = GetRandomStream(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4);
-                                                        // TODO: custom permutation lookup
-                                                        {
+                                                            // TODO: custom permutation lookup
+                                                            {
                                                                 TriadDeck testDeck = new TriadDeck(testDeckCards);
                                                                 int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
                                                                 if (testScore > bestScore)
