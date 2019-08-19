@@ -124,6 +124,7 @@
     <Compile Include="TriadDeckOptimizer.cs" />
     <Compile Include="TriadGame.cs" />
     <Compile Include="TriadGameModifier.cs" />
+    <Compile Include="TriadGameScreenMemory.cs" />
     <Compile Include="TriadNpcDB.cs" />
     <EmbeddedResource Include="CardCtrl.resx">
       <DependentUpon>CardCtrl.cs</DependentUpon>

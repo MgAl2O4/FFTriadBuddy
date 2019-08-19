@@ -25,10 +25,7 @@ namespace FFTriadBuddy
         private int scanId;
         private Point summaryMovePt;
 
-        private TriadGameSession gameSession;
-        private TriadGameData gameState;
-        private TriadDeckInstanceScreen blueDeck;
-        private TriadDeckInstanceScreen redDeck;
+        private TriadGameScreenMemory screenMemory;
         public ScreenshotAnalyzer screenReader;
         private TriadNpc npc;
 
@@ -82,17 +79,13 @@ namespace FFTriadBuddy
             bCanAutoCapture = false;
             dashAnimOffset = 0;
             scanId = 0;
+            screenMemory = new TriadGameScreenMemory();
 
             Location = Screen.PrimaryScreen.Bounds.Location;
             Size = Screen.PrimaryScreen.Bounds.Size;
             UpdateOverlayLocation(10, 10);
             UpdateAutoCaptureMarker();
             UpdateStatusDescription();
-
-            gameSession = new TriadGameSession();
-            gameState = new TriadGameData();
-            blueDeck = new TriadDeckInstanceScreen();
-            redDeck = new TriadDeckInstanceScreen();
         }
 
         public void InitializeAssets(ImageList cardImageList)
@@ -139,129 +132,19 @@ namespace FFTriadBuddy
             labelScanId.Text = "Scan Id: " + scanId;
             Logger.WriteLine("Capture " + labelScanId.Text);
 
-            // is current state a continuation of last one?
-            // ideally each blue turn is a capture until game resets = any card disappears from board
-            // guess work for adding sense of persistence to screen decks
-            bool bContinuesPrevState = (redDeck.deck == npc.Deck);
-            if (bContinuesPrevState)
-            {
-                for (int Idx = 0; Idx < gameState.board.Length; Idx++)
-                {
-                    bool bWasNull = gameState.board[Idx] == null;
-                    bool bIsNull = screenReader.currentGame.board[Idx] == null;
-
-                    if (!bWasNull && bIsNull)
-                    {
-                        bContinuesPrevState = false;
-                        Logger.WriteLine("Can't continue previous state: board[" + Idx + "] disappeared ");
-                    }
-                }
-            }
-            else
-            {
-                Logger.WriteLine("Can't continue previous state: red deck changed");
-            }
-
-            bool bModsChanged = (gameSession.modifiers.Count != screenReader.currentGame.mods.Count) || !gameSession.modifiers.All(screenReader.currentGame.mods.Contains);
-            if (bModsChanged)
-            {
-                gameSession.modifiers = screenReader.currentGame.mods;
-                gameSession.specialRules = ETriadGameSpecialMod.None;
-                gameSession.modFeatures = TriadGameModifier.EFeature.None;
-
-                string desc = "";
-                foreach (TriadGameModifier mod in gameSession.modifiers)
-                {
-                    gameSession.modFeatures |= mod.GetFeatures();
-                    desc += mod.ToString() + ", ";
-                }
-
-                labelRules.Text = "Rules: " + ((desc.Length > 2) ? desc.Remove(desc.Length - 2, 2) : "unknown");
-                bContinuesPrevState = false;
-                Logger.WriteLine("Can't continue previous state: modifiers changed");
-            }
-
-            bool bRedDeckChanged = !deckCtrlBlue.IsMatching(screenReader.currentGame.redDeck) || (redDeck.deck != npc.Deck);
-            if (bRedDeckChanged)
-            {
-                redDeck.deck = npc.Deck;
-                redDeck.UpdateAvailableCardsNpc(screenReader.currentGame.redDeck, screenReader.currentGame.blueDeck,
-                    screenReader.currentGame.board, blueDeck.cards, gameState.board, bContinuesPrevState);
-
-                deckCtrlRed.SetDeck(screenReader.currentGame.redDeck);
-                UpdateRedDeckDetails(redDeck);
-            }
-
-            bool bBlueDeckChanged = !deckCtrlBlue.IsMatching(screenReader.currentGame.blueDeck);
-            if (bBlueDeckChanged)
-            {
-                blueDeck.UpdateAvailableCardsPlayer(screenReader.currentGame.blueDeck);
-                deckCtrlBlue.SetDeck(screenReader.currentGame.blueDeck);
-            }
-
-            gameSession.forcedBlueCard = screenReader.currentGame.forcedBlueCard;
-    
-            gameState.numCardsPlaced = 0;
-            gameState.state = ETriadGameState.InProgressBlue;
-
-            bool bBoardChanged = false;
-            for (int Idx = 0; Idx < gameState.board.Length; Idx++)
-            {
-                bool bWasNull = gameState.board[Idx] == null;
-                bool bIsNull = screenReader.currentGame.board[Idx] == null;
-
-                if (bWasNull && !bIsNull)
-                {
-                    bBoardChanged = true;
-                    gameState.board[Idx] = new TriadCardInstance(screenReader.currentGame.board[Idx], screenReader.currentGame.boardOwner[Idx]);
-                    Logger.WriteLine("  board update: [" + Idx + "] " + gameState.board[Idx].owner + ": " + gameState.board[Idx].card.Name);
-                }
-                else if (!bWasNull && bIsNull)
-                {
-                    bBoardChanged = true;
-                    gameState.board[Idx] = null;
-                }
-                else if (!bWasNull && !bIsNull)
-                {
-                    if (gameState.board[Idx].owner != screenReader.currentGame.boardOwner[Idx] ||
-                        gameState.board[Idx].card != screenReader.currentGame.board[Idx])
-                    {
-                        bBoardChanged = true;
-                        gameState.board[Idx] = new TriadCardInstance(screenReader.currentGame.board[Idx], screenReader.currentGame.boardOwner[Idx]);
-                    }
-                }
-
-                gameState.numCardsPlaced += (gameState.board[Idx] != null) ? 1 : 0;
-                boardControls[Idx].SetCard(gameState.board[Idx]);
-            }
-
-            if (bBoardChanged)
-            {
-                foreach (TriadGameModifier mod in gameSession.modifiers)
-                {
-                    mod.OnScreenUpdate(gameState);
-                }
-            }
-
-            bool bAnythingChanged = bBoardChanged || bBlueDeckChanged || bRedDeckChanged || bModsChanged;
-            Logger.WriteLine("UpdateScreenState> board:" + (bBoardChanged ? "changed" : "same") +
-                ", blue:" + (bBlueDeckChanged ? "changed" : "same") +
-                ", red:" + (bRedDeckChanged ? "changed" : "same") +
-                ", mods:" + (bModsChanged ? "changed" : "same") +
-                ", state:" + screenReader.GetCurrentState() +
-                ", continuePrev:" + bContinuesPrevState +
-                " => " + (bAnythingChanged ? "UPDATE" : "skip"));
+            TriadGameScreenMemory.EUpdateFlags updateFlags = screenMemory.OnNewScan(screenReader.currentGame, npc);
 
             int markerDeckPos = -1;
             int markerBoardPos = -1;
             ETriadGameState expectedResult = ETriadGameState.BlueWins;
 
-            if (bAnythingChanged)
+            bool bNeedsHintUpdate = (updateFlags != TriadGameScreenMemory.EUpdateFlags.None);
+            if (bNeedsHintUpdate)
             {
                 FindNextMove(out markerDeckPos, out markerBoardPos, out TriadGameResultChance bestChance);
                 expectedResult = bestChance.expectedResult;
 
-                TriadCard suggestedCard = blueDeck.GetCard(markerDeckPos);
+                TriadCard suggestedCard = screenMemory.deckBlue.GetCard(markerDeckPos);
                 Logger.WriteLine("  suggested move: [" + markerBoardPos + "] " + ETriadCardOwner.Blue + " " + (suggestedCard != null ? suggestedCard.Name : "??") + " (expected: " + expectedResult + ")");
             }
 
@@ -289,7 +172,7 @@ namespace FFTriadBuddy
                         UpdateOverlayLocation(gameWindowRect.Left + ((gridRect.Left + gridRect.Right) / 2) - (panelSummary.Width / 2), gameWindowRect.Top + gridRect.Bottom + 50);
                     }
 
-                    if (bAnythingChanged)
+                    if (bNeedsHintUpdate)
                     {
                         bHasValidMarkers = false;
                         if (markerDeckPos >= 0 && markerBoardPos >= 0)
@@ -323,6 +206,37 @@ namespace FFTriadBuddy
                 }
             }
 
+            // update what's needed
+            if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.Modifiers) != TriadGameScreenMemory.EUpdateFlags.None)
+            {
+                string desc = "";
+                foreach (TriadGameModifier mod in screenMemory.gameSession.modifiers)
+                {
+                    desc += mod.ToString() + ", ";
+                }
+
+                labelRules.Text = "Rules: " + ((desc.Length > 2) ? desc.Remove(desc.Length - 2, 2) : "unknown");
+            }
+
+            if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.BlueDeck) != TriadGameScreenMemory.EUpdateFlags.None)
+            {
+                deckCtrlBlue.SetDeck(screenReader.currentGame.blueDeck);
+            }
+
+            if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.RedDeck) != TriadGameScreenMemory.EUpdateFlags.None)
+            {
+                deckCtrlRed.SetDeck(screenReader.currentGame.redDeck);
+                UpdateRedDeckDetails(screenMemory.deckRed);
+            }
+
+            if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.Board) != TriadGameScreenMemory.EUpdateFlags.None)
+            {
+                for (int Idx = 0; Idx < screenMemory.gameState.board.Length; Idx++)
+                {
+                    boardControls[Idx].SetCard(screenMemory.gameState.board[Idx]);
+                }
+            }
+
             bCanStopTurnScan = false;
             bCanAutoCapture = false;
 
@@ -339,21 +253,12 @@ namespace FFTriadBuddy
             blueCardIdx = -1;
             boardCardIdx = -1;
 
-            gameState.deckBlue = blueDeck;
-            gameState.deckRed = redDeck;
-            gameSession.SolverFindBestMove(gameState, out int solverBoardPos, out TriadCard solverTriadCard, out bestChance);
+            screenMemory.gameSession.SolverFindBestMove(screenMemory.gameState, out int solverBoardPos, out TriadCard solverTriadCard, out bestChance);
 
-            if (solverTriadCard != null)
+            blueCardIdx = screenMemory.deckBlue.GetCardIndex(solverTriadCard);
+            if (blueCardIdx >= 0)
             {
-                for (int Idx = 0; Idx < blueDeck.cards.Length; Idx++)
-                {
-                    if (blueDeck.cards[Idx] == solverTriadCard)
-                    {
-                        boardCardIdx = solverBoardPos;
-                        blueCardIdx = Idx;
-                        break;
-                    }
-                }
+                boardCardIdx = solverBoardPos;
             }
         }
 
