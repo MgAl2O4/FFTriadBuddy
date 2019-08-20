@@ -177,15 +177,7 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-open.jpg");
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-reshade.jpg");
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-hidden.jpg");
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-order.jpg");
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-inprogress.jpg");
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-chaos.jpg");
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "test-lost.jpg");
-                    cachedScreenshot = LoadTestScreenshot(imagePath + "test-4rules.jpg");
-
+                    cachedScreenshot = LoadTestScreenshot(imagePath + "test-noRules.jpg");
                     cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
                 }
             }
@@ -436,6 +428,11 @@ namespace FFTriadBuddy
         public Rectangle GetGridRect()
         {
             return cachedGridCoord;
+        }
+
+        public Rectangle GetRuleBoxRect()
+        {
+            return cachedRuleBox;
         }
 
         public Rectangle GetBlueCardRect(int Idx)
@@ -822,6 +819,7 @@ namespace FFTriadBuddy
 
             int AttemptIdx = 0;
             bool bShouldRetry = true;
+            bool bUsingLowScan = false;
             while (bShouldRetry)
             {
                 bShouldRetry = false;
@@ -830,6 +828,16 @@ namespace FFTriadBuddy
                 List<int> segPosH = ScreenshotUtilities.TraceLineSegments(bitmap, traceStart, traceY, 1, 0, traceEnd - traceStart, colorMatchRuleBox, 20, 2);
                 if (segPosH.Count == 2)
                 {
+                    int lenSegH = segPosH[1] - segPosH[0];
+                    if (lenSegH < (gridRect.Width / 3))
+                    {
+                        traceY = gridRect.Top + (gridRect.Height * 15 / 100);
+                        traceStart += 50;
+                        bShouldRetry = true;
+                        bUsingLowScan = true;
+                        continue;
+                    }
+
                     int traceEndY0 = gridRect.Top - (gridRect.Height / 15);
 
                     List<int> segPosVT = ScreenshotUtilities.TraceLineSegments(bitmap, segPosH[0] + 50, traceY, 0, -1, traceY - traceEndY0, colorMatchRuleBox, 5, 2);
@@ -838,10 +846,10 @@ namespace FFTriadBuddy
                         int traceEndY1 = gridRect.Top + (gridRect.Height / 6);
 
                         List<int> segPosVB = ScreenshotUtilities.TraceLineSegments(bitmap, segPosH[0] + 50, traceY, 0, 1, traceEndY1 - traceY, colorMatchRuleBox, 5, 2);
-                        if (segPosVB.Count == 2)
+                        if (segPosVB.Count == 2 || bUsingLowScan)
                         {
                             int ruleBoxWidth = segPosH[1] - segPosH[0];
-                            int ruleBoxHeight = segPosVB[1] - segPosVT[1];
+                            int ruleBoxHeight = (segPosVB.Count == 2 ? segPosVB[1] : traceY) - segPosVT[1];
                             float ruleBoxRatio = (float)ruleBoxWidth / ruleBoxHeight;
                             float expectedRatio = 3.15f;
                             float diff = Math.Abs(ruleBoxRatio - expectedRatio);
