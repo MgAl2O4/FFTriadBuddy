@@ -867,6 +867,18 @@ namespace FFTriadBuddy
                 }
             }
 
+            // failsafe: assume predefined location
+            // may not be accurate, but it's much better than having no rules scanned
+            if (RuleBoxRect.Width <= 0)
+            {
+                RuleBoxRect = new Rectangle(
+                    gridRect.Left + (gridRect.Width * 113 / 100),
+                    gridRect.Top - (gridRect.Height * 5 / 100),
+                    gridRect.Width * 66 / 100,
+                    gridRect.Height * 20 / 100
+                    );
+            }
+
             stopwatch.Stop();
             if (bDebugMode) { Logger.WriteLine("FindRuleBoxCoords: " + stopwatch.ElapsedMilliseconds + "ms"); }
 
