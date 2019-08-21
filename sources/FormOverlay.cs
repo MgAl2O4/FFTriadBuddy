@@ -68,10 +68,13 @@ namespace FFTriadBuddy
 
             panelMarkerBoard.Visible = false;
             panelMarkerDeck.Visible = false;
+            panelMarkerSwap.Visible = false;
             panelDetails.Visible = false;
             panelBoard.Visible = false;
             panelDebug.Visible = false;
+            panelSwapWarning.Visible = false;
             labelStatus.Focus();
+            labelSwapWarningIcon.Image = SystemIcons.Warning.ToBitmap();
 
             bHasValidMarkers = false;
             bCanAdjustSummaryLocation = false;
@@ -116,6 +119,11 @@ namespace FFTriadBuddy
             deckCtrlRed.deckOwner = ETriadCardOwner.Red;
 
             checkBoxAutoScan.Checked = PlayerSettingsDB.Get().useAutoScan;
+        }
+
+        public void UpdatePlayerDeck(TriadDeck activeDeck)
+        {
+            screenMemory.UpdatePlayerDeck(activeDeck);
         }
 
         public void UpdateScreenState(ScreenshotAnalyzer screenReader, bool bDebugMode = false)
@@ -237,10 +245,35 @@ namespace FFTriadBuddy
                 }
             }
 
+            if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.SwapWarning) != TriadGameScreenMemory.EUpdateFlags.None)
+            {
+                Rectangle ruleRect = screenReader.GetRuleBoxRect();
+                if (gameWindowRect.Width > 0 && ruleRect.Width > 0)
+                {
+                    panelSwapWarning.Top = gameWindowRect.Top + ruleRect.Top - panelSwapWarning.Height - 10;
+                    panelSwapWarning.Left = gameWindowRect.Left + ruleRect.Left;
+                    panelSwapWarning.Visible = true;
+                    timerHideSwapWarning.Stop();
+                    timerHideSwapWarning.Start();
+                }
+            }
+
+            if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.SwapHints) != TriadGameScreenMemory.EUpdateFlags.None)
+            {
+                Rectangle rectDeckPos = screenReader.GetBlueCardRect(screenMemory.swappedBlueCardIdx);
+                rectDeckPos.Inflate(-10, -10);
+
+                panelMarkerSwap.Top = rectDeckPos.Top + gameWindowRect.Top;
+                panelMarkerSwap.Left = rectDeckPos.Left + gameWindowRect.Left;
+                panelMarkerSwap.Width = rectDeckPos.Width;
+                panelMarkerSwap.Height = rectDeckPos.Height;
+                panelMarkerSwap.Visible = true;
+            }
+
             bCanStopTurnScan = false;
             bCanAutoCapture = false;
 
-            timerFadeMarkers.Enabled = bHasValidMarkers;
+            timerFadeMarkers.Enabled = bHasValidMarkers || panelMarkerSwap.Visible;
             panelMarkerDeck.Visible = bHasValidMarkers;
             panelMarkerBoard.Visible = bHasValidMarkers;
 
@@ -273,6 +306,7 @@ namespace FFTriadBuddy
         {
             panelMarkerDeck.Visible = false;
             panelMarkerBoard.Visible = false;
+            panelMarkerSwap.Visible = false;
             timerFadeMarkers.Enabled = false;
         }
 
@@ -481,7 +515,8 @@ namespace FFTriadBuddy
                     {
                         bool bIsUsed = deck.IsPlaced(firstKnownIdx + Idx);
                         redDeckKnownCards[Idx].bIsTransparent = bIsUsed;
-                        redDeckKnownCards[Idx].SetCard(new TriadCardInstance(deck.deck.knownCards[Idx], ETriadCardOwner.Red));
+                        TriadCard showCard = (deck.swappedCardIdx == (firstKnownIdx + Idx)) ? deck.swappedCard : deck.deck.knownCards[Idx];
+                        redDeckKnownCards[Idx].SetCard(new TriadCardInstance(showCard, ETriadCardOwner.Red));
                     }
 
                     bool bIsValidUnknownCard = Idx < deck.deck.unknownCardPool.Count;
@@ -490,7 +525,8 @@ namespace FFTriadBuddy
                     {
                         bool bIsUsed = deck.IsPlaced(firstUnknownIdx + Idx);
                         redDeckUnknownCards[Idx].bIsTransparent = bIsUsed;
-                        redDeckUnknownCards[Idx].SetCard(new TriadCardInstance(deck.deck.unknownCardPool[Idx], ETriadCardOwner.Red));
+                        TriadCard showCard = (deck.swappedCardIdx == (firstUnknownIdx + Idx)) ? deck.swappedCard : deck.deck.unknownCardPool[Idx];
+                        redDeckUnknownCards[Idx].SetCard(new TriadCardInstance(showCard, ETriadCardOwner.Red));
                     }
                 }
 
@@ -540,6 +576,11 @@ namespace FFTriadBuddy
         {
             dashAnimOffset = (dashAnimOffset + 1) % 32;
             buttonCapture.Invalidate();
+        }
+
+        private void timerHideSwapWarning_Tick(object sender, EventArgs e)
+        {
+            panelSwapWarning.Visible = false;
         }
     }
 }

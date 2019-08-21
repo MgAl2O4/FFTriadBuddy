@@ -151,6 +151,23 @@ namespace FFTriadBuddy
             return null;
         }
 
+        public int GetCardIndex(TriadCard card)
+        {
+            int cardIdx = knownCards.IndexOf(card);
+            if (cardIdx >= 0)
+            {
+                return cardIdx;
+            }
+
+            cardIdx = unknownCardPool.IndexOf(card);
+            if (cardIdx >= 0)
+            {
+                return cardIdx + knownCards.Count;
+            }
+
+            return -1;
+        }
+
         public bool SetCard(int Idx, TriadCard card)
         {
             bool bResult = false;
@@ -404,7 +421,9 @@ namespace FFTriadBuddy
     public class TriadDeckInstanceScreen : TriadDeckInstance
     {
         public TriadCard[] cards;
+        public TriadCard swappedCard;
         public int unknownPoolMask;
+        public int swappedCardIdx;
 
         public TriadDeckInstanceScreen()
         {
@@ -413,6 +432,8 @@ namespace FFTriadBuddy
             unknownPoolMask = 0;
             numUnknownPlaced = 0;
             numPlaced = 0;
+            swappedCardIdx = -1;
+            swappedCard = null;
         }
 
         public TriadDeckInstanceScreen(TriadDeckInstanceScreen copyFrom)
@@ -428,6 +449,8 @@ namespace FFTriadBuddy
             numPlaced = copyFrom.numPlaced;
             availableCardMask = copyFrom.availableCardMask;
             unknownPoolMask = copyFrom.unknownPoolMask;
+            swappedCardIdx = copyFrom.swappedCardIdx;
+            swappedCard = copyFrom.swappedCard;
         }
 
         public override TriadDeckInstance CreateCopy()
@@ -455,7 +478,8 @@ namespace FFTriadBuddy
             availableCardMask = 0;
             numPlaced = 0;
             numUnknownPlaced = 0;
-            cards = screenCards;
+
+            Array.Copy(screenCards, cards, 5);
 
             int hiddenCardId = TriadCardDB.Get().hiddenCard.Id;
             for (int Idx = 0; Idx < cards.Length; Idx++)
@@ -472,6 +496,13 @@ namespace FFTriadBuddy
                     numPlaced++;
                 }
             }
+        }
+
+        public void SetSwappedCard(TriadCard swappedCard, int swappedCardIdx)
+        {
+            this.swappedCard = swappedCard;
+            this.swappedCardIdx = swappedCardIdx;
+            unknownPoolMask &= ~(1 << swappedCardIdx);
         }
 
         public override void OnCardPlacedFast(int cardIdx)
@@ -498,6 +529,7 @@ namespace FFTriadBuddy
         public override TriadCard GetCard(int Idx)
         {
             return (Idx < 0) ? null :
+                (Idx == swappedCardIdx) ? swappedCard :
                 (Idx < cards.Length) ? cards[Idx] : 
                 (deck != null) ? deck.GetCard(Idx - cards.Length) :
                 null;
@@ -505,19 +537,16 @@ namespace FFTriadBuddy
 
         public override int GetCardIndex(TriadCard card)
         {
+            if (card == swappedCard)
+            {
+                return swappedCardIdx;
+            }
+
             int cardIdx = Array.IndexOf(cards, card);
             if (cardIdx < 0 && deck != null)
             {
-                cardIdx = deck.knownCards.IndexOf(card);
-                if (cardIdx < 0)
-                {
-                    cardIdx = deck.unknownCardPool.IndexOf(card);
-                    if (cardIdx >= 0)
-                    {
-                        cardIdx += deck.knownCards.Count + cards.Length;
-                    }
-                }
-                else
+                cardIdx = deck.GetCardIndex(card);
+                if (cardIdx >= 0)
                 {
                     cardIdx += cards.Length;
                 }
@@ -538,7 +567,7 @@ namespace FFTriadBuddy
                     if (bIsAvailable)
                     {
                         TriadCard card = GetCard(Idx);
-                        desc += (card != null ? card.Name : "") + ", ";
+                        desc += (card != null ? card.Name : "") + (Idx == swappedCardIdx ? ":SWAP" : "") +  ", ";
                     }
                 }
 
@@ -562,8 +591,8 @@ namespace FFTriadBuddy
                         if (bIsAvailable)
                         {
                             TriadCard card = GetCard(Idx);
-                            bool bIsKnownPool = (Idx - cards.Length) < deck.knownCards.Count;
-                            desc += card.ToShortString() + ":" + Idx + ":" + (bIsKnownPool ? "K" : "U") + ", ";
+                            bool bIsKnownPool = (unknownPoolMask & (1 << Idx)) == 0;
+                            desc += card.ToShortString() + ":" + Idx + ":" + (bIsKnownPool ? "K" : "U") + (Idx == swappedCardIdx ? ":SWAP" : "") + ", ";
                         }
                     }
 
@@ -588,7 +617,8 @@ namespace FFTriadBuddy
                 TriadCard card = GetCard(Idx);
 
                 Logger.WriteLine("   [" + Idx + "]:" + (card != null ? card.Name : "??") +
-                    (bIsUnknown ? " (U)" : "") + " => " + (bIsAvailable ? "available" : "nope"));
+                    (Idx == swappedCardIdx ? " (SWAP)" : bIsUnknown ? " (U)" : "") + 
+                    " => " + (bIsAvailable ? "available" : "nope"));
             }
         }
     }

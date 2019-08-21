@@ -461,6 +461,7 @@ namespace FFTriadBuddy
         private void updateGameUIAfterDeckChange()
         {
             InitializeGameUI();
+            overlayForm.UpdatePlayerDeck(playerDeck);
 
             string ruleDesc = "";
             foreach (TriadGameModifier mod in currentNpc.Rules)

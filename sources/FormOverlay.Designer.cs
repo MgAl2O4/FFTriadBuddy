@@ -43,12 +43,12 @@
             this.labelDebugDesc = new FFTriadBuddy.HitInvisibleLabel();
             this.labelDebugTime = new FFTriadBuddy.HitInvisibleLabel();
             this.panelDetails = new FFTriadBuddy.HitInvisiblePanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.labelScanId = new System.Windows.Forms.Label();
-            this.labelUnknownPlaced = new System.Windows.Forms.Label();
-            this.labelNumPlaced = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panelDeckDetails = new System.Windows.Forms.Panel();
+            this.label2 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelScanId = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelUnknownPlaced = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelNumPlaced = new FFTriadBuddy.HitInvisibleLabel();
+            this.label1 = new FFTriadBuddy.HitInvisibleLabel();
+            this.panelDeckDetails = new FFTriadBuddy.HitInvisiblePanel();
             this.cardCtrlRedVar4 = new FFTriadBuddy.CardCtrl();
             this.cardCtrlRedVar3 = new FFTriadBuddy.CardCtrl();
             this.cardCtrlRedVar2 = new FFTriadBuddy.CardCtrl();
@@ -77,6 +77,12 @@
             this.cardCtrl1 = new FFTriadBuddy.CardCtrl();
             this.panelMarkerDeck = new FFTriadBuddy.HitInvisiblePanel();
             this.panel1 = new FFTriadBuddy.HitInvisiblePanel();
+            this.panelSwapWarning = new FFTriadBuddy.HitInvisiblePanel();
+            this.labelSwapWarningIcon = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelSwapWarningText = new FFTriadBuddy.HitInvisibleLabel();
+            this.panelMarkerSwap = new FFTriadBuddy.HitInvisiblePanel();
+            this.hitInvisibleLabel2 = new FFTriadBuddy.HitInvisibleLabel();
+            this.timerHideSwapWarning = new System.Windows.Forms.Timer(this.components);
             this.panelSummary.SuspendLayout();
             this.panelDebug.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureDebugScreen)).BeginInit();
@@ -85,6 +91,8 @@
             this.panelMarkerBoard.SuspendLayout();
             this.panelBoard.SuspendLayout();
             this.panelMarkerDeck.SuspendLayout();
+            this.panelSwapWarning.SuspendLayout();
+            this.panelMarkerSwap.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerFadeMarkers
@@ -95,6 +103,7 @@
             // panelSummary
             // 
             this.panelSummary.BackColor = System.Drawing.SystemColors.Control;
+            this.panelSummary.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelSummary.Controls.Add(this.checkBoxAutoScan);
             this.panelSummary.Controls.Add(this.hitInvisibleLabel1);
             this.panelSummary.Controls.Add(this.labelStatus);
@@ -215,6 +224,7 @@
             // panelDetails
             // 
             this.panelDetails.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.panelDetails.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelDetails.Controls.Add(this.label2);
             this.panelDetails.Controls.Add(this.labelScanId);
             this.panelDetails.Controls.Add(this.labelUnknownPlaced);
@@ -388,7 +398,7 @@
             // 
             this.deckCtrlBlue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(166)))));
             this.deckCtrlBlue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.deckCtrlBlue.Location = new System.Drawing.Point(182, 4);
+            this.deckCtrlBlue.Location = new System.Drawing.Point(181, 3);
             this.deckCtrlBlue.Name = "deckCtrlBlue";
             this.deckCtrlBlue.Size = new System.Drawing.Size(280, 51);
             this.deckCtrlBlue.TabIndex = 0;
@@ -397,7 +407,7 @@
             // 
             this.deckCtrlRed.BackColor = System.Drawing.Color.LightCoral;
             this.deckCtrlRed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.deckCtrlRed.Location = new System.Drawing.Point(182, 107);
+            this.deckCtrlRed.Location = new System.Drawing.Point(181, 107);
             this.deckCtrlRed.Name = "deckCtrlRed";
             this.deckCtrlRed.Size = new System.Drawing.Size(280, 51);
             this.deckCtrlRed.TabIndex = 1;
@@ -577,13 +587,74 @@
             this.panel1.Size = new System.Drawing.Size(48, 40);
             this.panel1.TabIndex = 0;
             // 
+            // panelSwapWarning
+            // 
+            this.panelSwapWarning.BackColor = System.Drawing.SystemColors.Control;
+            this.panelSwapWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSwapWarning.Controls.Add(this.labelSwapWarningIcon);
+            this.panelSwapWarning.Controls.Add(this.labelSwapWarningText);
+            this.panelSwapWarning.Location = new System.Drawing.Point(240, 68);
+            this.panelSwapWarning.Name = "panelSwapWarning";
+            this.panelSwapWarning.Size = new System.Drawing.Size(245, 55);
+            this.panelSwapWarning.TabIndex = 11;
+            // 
+            // labelSwapWarningIcon
+            // 
+            this.labelSwapWarningIcon.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelSwapWarningIcon.Location = new System.Drawing.Point(3, 4);
+            this.labelSwapWarningIcon.Name = "labelSwapWarningIcon";
+            this.labelSwapWarningIcon.Size = new System.Drawing.Size(39, 46);
+            this.labelSwapWarningIcon.TabIndex = 11;
+            this.labelSwapWarningIcon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelSwapWarningText
+            // 
+            this.labelSwapWarningText.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelSwapWarningText.Location = new System.Drawing.Point(50, 4);
+            this.labelSwapWarningText.Name = "labelSwapWarningText";
+            this.labelSwapWarningText.Size = new System.Drawing.Size(192, 46);
+            this.labelSwapWarningText.TabIndex = 10;
+            this.labelSwapWarningText.Text = "Blue deck is not matching Setup page! Solver needs to observe a few games to gues" +
+    "s correct one.";
+            this.labelSwapWarningText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panelMarkerSwap
+            // 
+            this.panelMarkerSwap.BackColor = System.Drawing.Color.Fuchsia;
+            this.panelMarkerSwap.Controls.Add(this.hitInvisibleLabel2);
+            this.panelMarkerSwap.Location = new System.Drawing.Point(509, 12);
+            this.panelMarkerSwap.Name = "panelMarkerSwap";
+            this.panelMarkerSwap.Padding = new System.Windows.Forms.Padding(5);
+            this.panelMarkerSwap.Size = new System.Drawing.Size(94, 113);
+            this.panelMarkerSwap.TabIndex = 8;
+            // 
+            // hitInvisibleLabel2
+            // 
+            this.hitInvisibleLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.hitInvisibleLabel2.BackColor = System.Drawing.Color.LightCoral;
+            this.hitInvisibleLabel2.Location = new System.Drawing.Point(0, 30);
+            this.hitInvisibleLabel2.Name = "hitInvisibleLabel2";
+            this.hitInvisibleLabel2.Size = new System.Drawing.Size(94, 20);
+            this.hitInvisibleLabel2.TabIndex = 11;
+            this.hitInvisibleLabel2.Text = "SWAPPED";
+            this.hitInvisibleLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timerHideSwapWarning
+            // 
+            this.timerHideSwapWarning.Interval = 8000;
+            this.timerHideSwapWarning.Tick += new System.EventHandler(this.timerHideSwapWarning_Tick);
+            // 
             // FormOverlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Fuchsia;
-            this.ClientSize = new System.Drawing.Size(713, 473);
+            this.ClientSize = new System.Drawing.Size(1064, 473);
             this.ControlBox = false;
+            this.Controls.Add(this.panelMarkerSwap);
+            this.Controls.Add(this.panelSwapWarning);
             this.Controls.Add(this.panelDebug);
             this.Controls.Add(this.panelDetails);
             this.Controls.Add(this.panelMarkerBoard);
@@ -609,6 +680,8 @@
             this.panelMarkerBoard.ResumeLayout(false);
             this.panelBoard.ResumeLayout(false);
             this.panelMarkerDeck.ResumeLayout(false);
+            this.panelSwapWarning.ResumeLayout(false);
+            this.panelMarkerSwap.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -647,10 +720,10 @@
         private HitInvisibleLabel labelDebugTime;
         private System.Windows.Forms.PictureBox pictureDebugScreen;
         private System.Windows.Forms.Timer timerDashAnim;
-        private System.Windows.Forms.Label labelUnknownPlaced;
-        private System.Windows.Forms.Label labelNumPlaced;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panelDeckDetails;
+        private HitInvisibleLabel labelUnknownPlaced;
+        private HitInvisibleLabel labelNumPlaced;
+        private HitInvisibleLabel label1;
+        private HitInvisiblePanel panelDeckDetails;
         private CardCtrl cardCtrlRedVar4;
         private CardCtrl cardCtrlRedVar3;
         private CardCtrl cardCtrlRedVar2;
@@ -661,7 +734,13 @@
         private CardCtrl cardCtrlRedKnown2;
         private CardCtrl cardCtrlRedKnown1;
         private CardCtrl cardCtrlRedKnown0;
-        private System.Windows.Forms.Label labelScanId;
-        private System.Windows.Forms.Label label2;
+        private HitInvisibleLabel labelScanId;
+        private HitInvisibleLabel label2;
+        private HitInvisiblePanel panelSwapWarning;
+        private HitInvisibleLabel labelSwapWarningIcon;
+        private HitInvisibleLabel labelSwapWarningText;
+        private HitInvisiblePanel panelMarkerSwap;
+        private System.Windows.Forms.Timer timerHideSwapWarning;
+        private HitInvisibleLabel hitInvisibleLabel2;
     }
 }

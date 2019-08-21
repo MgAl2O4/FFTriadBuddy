@@ -16,12 +16,18 @@ namespace FFTriadBuddy
             Board = 2,
             RedDeck = 4,
             BlueDeck = 8,
+            SwapWarning = 16,
+            SwapHints = 32,
         }
 
         public TriadGameData gameState;
         public TriadGameSession gameSession;
         public TriadDeckInstanceScreen deckBlue;
         public TriadDeckInstanceScreen deckRed;
+        private List<TriadCard[]> blueDeckHistory;
+        private TriadCard[] playerDeckPattern;
+        private bool bHasSwapRule;
+        public int swappedBlueCardIdx;
 
         public TriadGameScreenMemory()
         {
@@ -29,6 +35,9 @@ namespace FFTriadBuddy
             gameState = new TriadGameData();
             deckBlue = new TriadDeckInstanceScreen();
             deckRed = new TriadDeckInstanceScreen();
+            blueDeckHistory = new List<TriadCard[]>();
+            bHasSwapRule = false;
+            swappedBlueCardIdx = -1;
         }
 
         public EUpdateFlags OnNewScan(ScreenshotAnalyzer.GameState screenGame, TriadNpc selectedNpc)
@@ -62,17 +71,28 @@ namespace FFTriadBuddy
             bool bModsChanged = (gameSession.modifiers.Count != screenGame.mods.Count) || !gameSession.modifiers.All(screenGame.mods.Contains);
             if (bModsChanged)
             {
+                bHasSwapRule = false;
                 gameSession.modifiers = screenGame.mods;
                 gameSession.specialRules = ETriadGameSpecialMod.None;
                 gameSession.modFeatures = TriadGameModifier.EFeature.None;
                 foreach (TriadGameModifier mod in gameSession.modifiers)
                 {
                     gameSession.modFeatures |= mod.GetFeatures();
+
+                    // swap rule is bad for screenshot based analysis, no good way of telling what is out of place
+                    if (mod is TriadGameModifierSwap)
+                    {
+                        bHasSwapRule = true;
+                    }
                 }
 
                 updateFlags |= EUpdateFlags.Modifiers;
                 bContinuesPrevState = false;
                 Logger.WriteLine("Can't continue previous state: modifiers changed");
+
+                deckRed.SetSwappedCard(null, -1);
+                blueDeckHistory.Clear();
+                if (bHasSwapRule) { Logger.WriteLine("Blue deck history cleared"); }
             }
 
             bool bRedDeckChanged = !IsDeckMatching(deckRed, screenGame.redDeck) || (deckRed.deck != selectedNpc.Deck);
@@ -139,12 +159,18 @@ namespace FFTriadBuddy
                 }
             }
 
+            // start of game, do additional checks when swap rule is active
+            if (bHasSwapRule && gameState.numCardsPlaced <= 1)
+            {
+                updateFlags |= DetectSwapOnGameStart();
+            }
+
             Logger.WriteLine("OnNewScan> board:" + (bBoardChanged ? "changed" : "same") +
                 ", blue:" + (bBlueDeckChanged ? "changed" : "same") +
                 ", red:" + (bRedDeckChanged ? "changed" : "same") +
                 ", mods:" + (bModsChanged ? "changed" : "same") +
                 ", continuePrev:" + bContinuesPrevState +
-                " => " + ((updateFlags != EUpdateFlags.None) ? "UPDATE" : "skip"));
+                " => " + ((updateFlags != EUpdateFlags.None) ? ("UPDATE[" + updateFlags + "]") : "skip"));
 
             return updateFlags;
         }
@@ -316,7 +342,7 @@ namespace FFTriadBuddy
                     }
                 }
 
-                deckRed.cards = screenCardsRed;
+                Array.Copy(screenCardsRed, deckRed.cards, 5);
 
                 for (int Idx = 0; Idx < usedCardsIndices.Count; Idx++)
                 {
@@ -341,7 +367,7 @@ namespace FFTriadBuddy
                     deckRed.availableCardMask &= (1 << numVisibleCards) - 1;
                     if (bDebugMode) { Logger.WriteLine("   all cards are on hand and visible"); }
                 }
-                else if ((deckRed.numUnknownPlaced + numUnknownOnHand) >= maxUnknownToUse ||
+                else if ((deckRed.numUnknownPlaced + numUnknownOnHand) >= maxUnknownToUse || 
                     ((numKnownOnHand >= (numVisibleCards - maxUnknownToUse)) && (numHidden == 0)))
                 {
                     deckRed.availableCardMask &= (1 << (numVisibleCards + deckRed.deck.knownCards.Count)) - 1;
@@ -369,6 +395,216 @@ namespace FFTriadBuddy
             {
                 redDeck.LogAvailableCards("Red deck");
             }
-        }        
+        }
+
+        public void UpdatePlayerDeck(TriadDeck playerDeck)
+        {
+            playerDeckPattern = playerDeck.knownCards.ToArray();
+        }
+
+        private bool FindSwappedCard(TriadCard[] screenCards, TriadCard[] expectedCards, TriadDeckInstanceScreen otherDeck, out int swappedCardIdx, out int swappedOtherIdx, out TriadCard swappedCard)
+        {
+            swappedCardIdx = -1;
+            swappedOtherIdx = -1;
+            swappedCard = null;
+
+            int numDiffs = 0;
+            int numPotentialSwaps = 0;
+            for (int Idx = 0; Idx < screenCards.Length; Idx++)
+            {
+                if (screenCards[Idx] != expectedCards[Idx])
+                {
+                    numDiffs++;
+                    swappedCardIdx = Idx;
+                    swappedOtherIdx = otherDeck.GetCardIndex(screenCards[Idx]);
+                    swappedCard = expectedCards[Idx];
+                    Logger.WriteLine("FindSwappedCard[" + Idx + "]: screen:" + screenCards[Idx].Name + ", expected:" + expectedCards[Idx].Name + ", redIdxScreen:" + swappedOtherIdx);
+
+                    if (swappedOtherIdx >= 0)
+                    {
+                        numPotentialSwaps++;
+                    }
+                }
+            }
+
+            bool bHasSwapped = (numDiffs == 1) && (numPotentialSwaps == 1);
+            Logger.WriteLine("FindSwappedCard: blue[" + swappedCardIdx + "]:" + screenCards[swappedCardIdx].Name + 
+                " <=> red[" + swappedOtherIdx + "]:" + (swappedCard != null ? swappedCard.Name : "??") +
+                ", diffs:" + numDiffs + ", potentialSwaps:" + numPotentialSwaps +
+                " => " + (bHasSwapped ? "SWAP" : "ignore"));
+
+            return bHasSwapped;
+        }
+
+        private bool FindSwappedCardVisible(TriadCard[] screenCards, TriadCardInstance[] board, TriadDeckInstanceScreen otherDeck, out int swappedCardIdx, out int swappedOtherIdx, out TriadCard swappedCard)
+        {
+            swappedCardIdx = -1;
+            swappedOtherIdx = -1;
+            swappedCard = null;
+
+            int numDiffs = 0;
+            int numOnHand = 0;
+
+            int hiddenCardId = TriadCardDB.Get().hiddenCard.Id;
+            for (int Idx = 0; Idx < otherDeck.cards.Length; Idx++)
+            {
+                if (otherDeck.cards[Idx] != null && otherDeck.cards[Idx].Id != hiddenCardId)
+                {
+                    // find in source deck, not in instance
+                    int cardIdx = otherDeck.deck.GetCardIndex(otherDeck.cards[Idx]);
+                    if (cardIdx < 0)
+                    {
+                        swappedOtherIdx = Idx;
+                        swappedCard = otherDeck.cards[Idx];
+                        for (int ScreenIdx = 0; ScreenIdx < screenCards.Length; ScreenIdx++)
+                        {
+                            cardIdx = otherDeck.deck.GetCardIndex(screenCards[ScreenIdx]);
+                            if (cardIdx >= 0)
+                            {
+                                swappedCardIdx = ScreenIdx;
+                                numDiffs++;
+                            }
+                        }
+                    }
+                }
+
+                numOnHand += (otherDeck.cards[Idx] != null) ? 1 : 0;
+            }
+
+            bool bBoardMode = false;
+            if (numOnHand < screenCards.Length)
+            {
+                for (int Idx = 0; Idx < board.Length; Idx++)
+                {
+                    if (board[Idx] != null && board[Idx].owner == ETriadCardOwner.Red)
+                    {
+                        // find in source deck, not in instance
+                        int cardIdx = otherDeck.deck.GetCardIndex(board[Idx].card);
+                        if (cardIdx < 0)
+                        {
+                            swappedCard = board[Idx].card;
+                            swappedOtherIdx = 100;                  // something way outside, it's not going to be used directly as card was already placed
+
+                            for (int ScreenIdx = 0; ScreenIdx < screenCards.Length; ScreenIdx++)
+                            {
+                                cardIdx = otherDeck.deck.GetCardIndex(screenCards[ScreenIdx]);
+                                if (cardIdx >= 0)
+                                {
+                                    swappedCardIdx = ScreenIdx;
+                                    bBoardMode = true;
+                                    numDiffs++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            bool bHasSwapped = (numDiffs == 1);
+            Logger.WriteLine("FindSwappedCardVisible: blue[" + swappedCardIdx + "]:" + (swappedCardIdx >= 0 ? screenCards[swappedCardIdx].Name : "??") +
+                " <=> red[" + swappedOtherIdx + "]:" + (swappedCard != null ? swappedCard.Name : "??") +
+                ", boardMode:" + bBoardMode + ", diffs:" + numDiffs + " => " + (bHasSwapped ? "SWAP" : "ignore"));
+
+            return bHasSwapped;
+        }
+
+        private TriadCard[] FindCommonCards(List<TriadCard[]> deckHistory)
+        {
+            TriadCard[] result = null;
+            if (deckHistory.Count > 1)
+            {
+                result = new TriadCard[deckHistory[0].Length];
+                for (int SlotIdx = 0; SlotIdx < result.Length; SlotIdx++)
+                {
+                    Dictionary<TriadCard, int> slotCounter = new Dictionary<TriadCard, int>();
+                    TriadCard bestSlotCard = null;
+                    int bestSlotCount = 0;                
+
+                    for (int HistoryIdx = 0; HistoryIdx < deckHistory.Count; HistoryIdx++)
+                    {
+                        TriadCard testCard = deckHistory[HistoryIdx][SlotIdx];
+                        if (slotCounter.ContainsKey(testCard))
+                        {
+                            slotCounter[testCard] += 1;
+                        }
+                        else
+                        {
+                            slotCounter.Add(testCard, 1);
+                        }
+
+                        if (slotCounter[testCard] > bestSlotCount)
+                        {
+                            bestSlotCount = slotCounter[testCard];
+                            bestSlotCard = testCard;
+                        }
+                    }
+
+                    Logger.WriteLine("FindCommonCards[" + SlotIdx + "]: " + bestSlotCard.Name + " x" + bestSlotCount + (bestSlotCount < 2 ? " => not enough to decide!" : ""));
+                    if (bestSlotCount >= 2)
+                    {
+                        result[SlotIdx] = bestSlotCard;
+                    }
+                    else
+                    { 
+                        result = null;
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private EUpdateFlags DetectSwapOnGameStart()
+        {
+            EUpdateFlags updateFlags = EUpdateFlags.None;
+
+            deckRed.SetSwappedCard(null, -1);
+            {
+                if (blueDeckHistory.Count > 10)
+                {
+                    blueDeckHistory.RemoveAt(0);
+                }
+
+                TriadCard[] copyCards = new TriadCard[deckBlue.cards.Length];
+                Array.Copy(deckBlue.cards, copyCards, copyCards.Length);
+
+                blueDeckHistory.Add(copyCards);
+                Logger.WriteLine("Storing blue deck at[" + blueDeckHistory.Count + "]: " + deckBlue);
+            }
+
+            int blueSwappedCardIdx = -1;
+            int redSwappedCardIdx = -1;
+            TriadCard blueSwappedCard = null;
+            bool bHasSwappedCard = FindSwappedCard(deckBlue.cards, playerDeckPattern, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
+            if (!bHasSwappedCard)
+            {
+                TriadCard[] commonCards = FindCommonCards(blueDeckHistory);
+                if (commonCards != null)
+                {
+                    bHasSwappedCard = FindSwappedCard(deckBlue.cards, commonCards, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
+                    if (!bHasSwappedCard)
+                    {
+                        bHasSwappedCard = FindSwappedCardVisible(deckBlue.cards, gameState.board, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
+                    }
+                }
+            }
+
+            if (bHasSwappedCard)
+            {
+                // deck blue doesn't need updates, it already has all cards visible
+                // deck red needs to know which card is not longer available and which one is new
+                deckRed.SetSwappedCard(blueSwappedCard, redSwappedCardIdx);
+                swappedBlueCardIdx = blueSwappedCardIdx;
+                updateFlags |= EUpdateFlags.SwapHints;
+            }
+            else
+            {
+                swappedBlueCardIdx = -1;
+                updateFlags |= EUpdateFlags.SwapWarning;
+            }
+
+            return updateFlags;
+        }
     }
 }
