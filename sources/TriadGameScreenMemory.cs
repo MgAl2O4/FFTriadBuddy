@@ -27,6 +27,8 @@ namespace FFTriadBuddy
         private List<TriadCard[]> blueDeckHistory;
         private TriadCard[] playerDeckPattern;
         private bool bHasSwapRule;
+        private bool bHasRestartRule;
+        private bool bHasOpenRule;
         public int swappedBlueCardIdx;
 
         public TriadGameScreenMemory()
@@ -72,6 +74,8 @@ namespace FFTriadBuddy
             if (bModsChanged)
             {
                 bHasSwapRule = false;
+                bHasRestartRule = false;
+                bHasOpenRule = false;
                 gameSession.modifiers = screenGame.mods;
                 gameSession.specialRules = ETriadGameSpecialMod.None;
                 gameSession.modFeatures = TriadGameModifier.EFeature.None;
@@ -83,6 +87,14 @@ namespace FFTriadBuddy
                     if (mod is TriadGameModifierSwap)
                     {
                         bHasSwapRule = true;
+                    }
+                    else if (mod is TriadGameModifierSuddenDeath)
+                    {
+                        bHasRestartRule = true;
+                    }
+                    else if (mod is TriadGameModifierAllOpen)
+                    {
+                        bHasOpenRule = true;
                     }
                 }
 
@@ -407,16 +419,18 @@ namespace FFTriadBuddy
             swappedCardIdx = -1;
             swappedOtherIdx = -1;
             swappedCard = null;
+            TriadCard swappedBlueCard = null;
 
             int numDiffs = 0;
             int numPotentialSwaps = 0;
             for (int Idx = 0; Idx < screenCards.Length; Idx++)
             {
-                if (screenCards[Idx] != expectedCards[Idx])
+                if ((screenCards[Idx] != expectedCards[Idx]) && (screenCards[Idx] != null))
                 {
                     numDiffs++;
                     swappedCardIdx = Idx;
                     swappedOtherIdx = otherDeck.GetCardIndex(screenCards[Idx]);
+                    swappedBlueCard = screenCards[Idx];
                     swappedCard = expectedCards[Idx];
                     Logger.WriteLine("FindSwappedCard[" + Idx + "]: screen:" + screenCards[Idx].Name + ", expected:" + expectedCards[Idx].Name + ", redIdxScreen:" + swappedOtherIdx);
 
@@ -428,7 +442,7 @@ namespace FFTriadBuddy
             }
 
             bool bHasSwapped = (numDiffs == 1) && (numPotentialSwaps == 1);
-            Logger.WriteLine("FindSwappedCard: blue[" + swappedCardIdx + "]:" + screenCards[swappedCardIdx].Name + 
+            Logger.WriteLine("FindSwappedCard: blue[" + swappedCardIdx + "]:" + (swappedBlueCard != null ? swappedBlueCard.Name : "??") +
                 " <=> red[" + swappedOtherIdx + "]:" + (swappedCard != null ? swappedCard.Name : "??") +
                 ", diffs:" + numDiffs + ", potentialSwaps:" + numPotentialSwaps +
                 " => " + (bHasSwapped ? "SWAP" : "ignore"));
@@ -560,6 +574,24 @@ namespace FFTriadBuddy
             EUpdateFlags updateFlags = EUpdateFlags.None;
 
             deckRed.SetSwappedCard(null, -1);
+
+            for (int Idx = 0; Idx < deckBlue.cards.Length; Idx++)
+            {
+                if (deckBlue.cards[Idx] == null)
+                {
+                    Logger.WriteLine("DetectSwapOnGameStart: found empty blue card, skipping");
+                    return updateFlags;
+                }
+            }
+
+            bool bDetectedSuddenDeath = bHasRestartRule && IsSuddenDeathRestart(deckRed);
+            if (bDetectedSuddenDeath)
+            {
+                Logger.WriteLine(">> ignore swap checks");
+                return updateFlags;
+            }
+
+            // store initial blue deck
             {
                 if (blueDeckHistory.Count > 10)
                 {
@@ -605,6 +637,34 @@ namespace FFTriadBuddy
             }
 
             return updateFlags;
+        }
+
+        private bool IsSuddenDeathRestart(TriadDeckInstanceScreen deck)
+        {
+            // sudden death: all red cards visible, not matching npc deck at all
+            int numMismatchedCards = 0;
+            int numVisibleCards = 0;
+            int hiddenCardId = TriadCardDB.Get().hiddenCard.Id;
+
+            for (int Idx = 0; Idx < deck.cards.Length; Idx++)
+            {
+                int npcCardIdx = deck.deck.GetCardIndex(deck.cards[Idx]);
+                if (npcCardIdx < 0)
+                {
+                    numMismatchedCards++;
+                }
+
+                if (deck.cards[Idx] != null && deck.cards[Idx].Id != hiddenCardId)
+                {
+                    numVisibleCards++;
+                }
+            }
+
+            bool bHasOpenAndMismatched = (numVisibleCards >= 4 && numMismatchedCards > 1);
+            bool bHasOpenAndShouldnt = (numVisibleCards >= 4 && !bHasOpenRule);
+
+            Logger.WriteLine("IsSuddenDeathRestart? numMismatchedCards:" + numMismatchedCards + ", numVisibleCards:" + numVisibleCards);
+            return bHasOpenAndMismatched || bHasOpenAndShouldnt;
         }
     }
 }
