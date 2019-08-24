@@ -1,5 +1,5 @@
 # FFTriadBuddy
-Helper program for Triple Triad minigame in [Final Fantasy XIV](https://www.finalfantasyxiv.com/), NPC matches only.
+Helper program for Triple Triad minigame in [Final Fantasy XIV](https://www.finalfantasyxiv.com/), NPC matches only.  
 (All used icons are property of SQUARE-ENIX Ltd. All rights reserved)
 
 Features:
@@ -9,6 +9,7 @@ Features:
 * organize cards and npc fights
 * prepare deck for given npc
 * all game rules are supported
+* **super secret** Mini Cactpot mode for in-game overlay
 
 ## Instructions
 1. Download [latest release](https://github.com/MgAl2O4/FFTriadBuddy/releases/latest)
