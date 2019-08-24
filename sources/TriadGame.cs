@@ -47,13 +47,10 @@ namespace FFTriadBuddy
 
         public TriadGameData(TriadGameData copyFrom)
         {
-            board = new TriadCardInstance[boardSize * boardSize];
+            board = new TriadCardInstance[copyFrom.board.Length];
             for (int Idx = 0; Idx < board.Length; Idx++)
             {
-                if (copyFrom.board[Idx] != null)
-                {
-                    board[Idx] = new TriadCardInstance(copyFrom.board[Idx]);
-                }
+                board[Idx] = (copyFrom.board[Idx] == null) ? null : new TriadCardInstance(copyFrom.board[Idx]);
             }
 
             typeMods = new int[copyFrom.typeMods.Length];
@@ -68,6 +65,7 @@ namespace FFTriadBuddy
             numCardsPlaced = copyFrom.numCardsPlaced;
             numRestarts = copyFrom.numRestarts;
             resolvedSpecial = copyFrom.resolvedSpecial;
+            // bDebugRules not copied, only first step needs it
         }
     }
 
@@ -490,6 +488,7 @@ namespace FFTriadBuddy
 
             // prepare available cards data
             TriadDeckInstance useDeck = (gameData.state == ETriadGameState.InProgressBlue) ? gameData.deckBlue : gameData.deckRed;
+            ETriadCardOwner turnOwner = (gameData.state == ETriadGameState.InProgressBlue) ? ETriadCardOwner.Blue : ETriadCardOwner.Red;
             int availCardsMask = 0;
 
             if (gameData.state == ETriadGameState.InProgressBlue && forcedBlueCard != null)
@@ -543,7 +542,7 @@ namespace FFTriadBuddy
                         }
 
                         TriadGameData gameDataCopy = new TriadGameData(gameData);
-                        bool bPlaced = PlaceCard(gameDataCopy, cardIdx, useDeck, (gameDataCopy.state == ETriadGameState.InProgressBlue) ? ETriadCardOwner.Blue : ETriadCardOwner.Red, boardIdx);
+                        bool bPlaced = PlaceCard(gameDataCopy, cardIdx, useDeck, turnOwner, boardIdx);
                         if (bPlaced)
                         {
                             TriadGameResultChance gameProb = SolverFindWinningProbability(gameDataCopy);
@@ -559,12 +558,15 @@ namespace FFTriadBuddy
                 }
 
                 probabilities = bestProb;
-                Logger.WriteLine("Solver win:" + bestProb.winChance.ToString("P2") + " (draw:" + bestProb.drawChance.ToString("P2") + "), blue:" + gameData.deckBlue + ", red:" + gameData.deckRed);
+                Logger.WriteLine("Solver win:" + bestProb.winChance.ToString("P2") + " (draw:" + bestProb.drawChance.ToString("P2") + 
+                    "), blue[" + gameData.deckBlue + "], red[" + gameData.deckRed + "], turn:" + turnOwner + ", availBoard:" + numAvailBoard + 
+                    " (" + availBoardMask.ToString("x") + ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
             }
             else
             {
                 probabilities = new TriadGameResultChance(0, 0);
-                Logger.WriteLine("Can't find move!" + " availSpots:" + numAvailBoard + ", availCards:" + numAvailCards);
+                Logger.WriteLine("Can't find move! availSpots:" + numAvailBoard + " (" + availBoardMask.ToString("x") + 
+                    ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
             }
 
             return bResult;

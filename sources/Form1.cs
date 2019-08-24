@@ -118,11 +118,6 @@ namespace FFTriadBuddy
             overlayForm.OnUpdateState += OverlayForm_OnUpdateState;
 
             bUseScreenReader = false;
-
-            InitializeSetupUI();
-            InitializeCardsUI();
-            InitializeNpcUI();
-            InitializeScreenshotUI();
             RunUpdateCheck();
         }
 
@@ -275,6 +270,11 @@ namespace FFTriadBuddy
         {
             scrollFilter = new MessageFilter();
             Application.AddMessageFilter(scrollFilter);
+
+            InitializeSetupUI();
+            InitializeCardsUI();
+            InitializeNpcUI();
+            InitializeScreenshotUI();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -1523,7 +1523,7 @@ namespace FFTriadBuddy
             {
                 bool bHasMove = gameSession.SolverFindBestMove(gameState, out int bestNextPos, out TriadCard bestNextCard, out TriadGameResultChance bestChance);
 
-                Invoke((MethodInvoker)delegate 
+                Invoke((MethodInvoker)delegate
                 {
                     if (bHasMove)
                     {
@@ -1537,7 +1537,7 @@ namespace FFTriadBuddy
                     labelDescChance.Text = labelChance.Text;
 
                     ShowGameData(gameState);
-                    conditionalLockAtSetup(false);               
+                    conditionalLockAtSetup(false);
                 });
             });
         }
@@ -1578,6 +1578,25 @@ namespace FFTriadBuddy
                 gameState.bDebugRules = true;
                 bool bPlaced = gameSession.PlaceCard(gameState, card, ETriadCardOwner.Red, boardPos);
                 gameState.bDebugRules = false;
+
+                // additional debug logs
+                {
+                    int numBoardPlaced = 0;
+                    int availBoardMask = 0;
+                    for (int Idx = 0; Idx < gameState.board.Length; Idx++)
+                    {
+                        if (gameState.board[Idx] != null)
+                        {
+                            numBoardPlaced++;
+                        }
+                        else
+                        {
+                            availBoardMask |= (1 << Idx);
+                        }
+                    }
+
+                    Logger.WriteLine("  Board cards:" + numBoardPlaced + " (" + availBoardMask.ToString("x") + "), placed:" + bPlaced);
+                }
 
                 if (bPlaced)
                 {
