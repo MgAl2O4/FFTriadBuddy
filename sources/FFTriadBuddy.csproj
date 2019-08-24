@@ -99,7 +99,9 @@
     <Compile Include="ImageHashDB.cs" />
     <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="MiniCactpotGame.cs" />
     <Compile Include="PlayerSettingsDB.cs" />
+    <Compile Include="ScanLineHash.cs" />
     <Compile Include="ScreenshotAnalyzer.cs" />
     <Compile Include="ScreenshotUtilities.cs" />
     <Compile Include="TabControlNoTabs.cs">

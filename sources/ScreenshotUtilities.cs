@@ -126,6 +126,38 @@ namespace FFTriadBuddy
         }
     }
 
+    public class FastPixelMatchHueMono : FastPixelMatch
+    {
+        private short HueMin;
+        private short HueMax;
+        private byte MonoMin;
+        private byte MonoMax;
+
+        public FastPixelMatchHueMono(short hueMin, short hueMax, byte monoMin, byte monoMax)
+        {
+            HueMin = hueMin;
+            HueMax = hueMax;
+            MonoMin = monoMin;
+            MonoMax = monoMax;
+        }
+
+        public override bool IsMatching(FastPixelHSV pixel)
+        {
+            if ((pixel.Monochrome >= MonoMin) && (pixel.Monochrome <= MonoMax))
+            {
+                int Hue = pixel.GetHue();
+                return (Hue >= HueMin) && (Hue <= HueMax);
+            }
+
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return "Hue:" + HueMin + ".." + HueMax + ", Mono:" + MonoMin + ".." + MonoMax;
+        }
+    }
+
     public class FastBitmapHSV
     {
         public FastPixelHSV[] Pixels;
@@ -145,7 +177,7 @@ namespace FFTriadBuddy
 
     public class FastBitmapHash
     {
-        public TlshHash Hash;
+        public HashCollection Hash;
         public object GuideOb;
 
         public byte[] Pixels;
@@ -815,7 +847,7 @@ namespace FFTriadBuddy
             return (floodBitmap != null);
         }
 
-        public static FastBitmapHash CalculateImageHash(FastBitmapHSV bitmap, Rectangle box, Rectangle contextBox, FastPixelMatch colorMatch, int hashWidth, int hashHeight)
+        public static FastBitmapHash CalculateImageHash(FastBitmapHSV bitmap, Rectangle box, Rectangle contextBox, FastPixelMatch colorMatch, int hashWidth, int hashHeight, bool bNormalizeColors = false)
         {
             byte[] hashImage = new byte[hashWidth * hashHeight];
 
@@ -852,7 +884,7 @@ namespace FFTriadBuddy
                             if (srcX == (int)endX) { partX -= srcX + 1 - endX; }
 
                             FastPixelHSV valuePx = bitmap.GetPixel(box.Left + srcX, box.Top + srcY);
-                            float srcValueNorm = colorMatch.IsMatching(valuePx) ? (valuePx.Monochrome / 255.0f) : 0.0f;
+                            float srcValueNorm = colorMatch.IsMatching(valuePx) ? (bNormalizeColors ? 1.0f : (valuePx.Monochrome / 255.0f)) : 0.0f;
                             sum += srcValueNorm * partY * partX;
                             sumDivNum++;
                         }
@@ -865,11 +897,13 @@ namespace FFTriadBuddy
 
             TlshBuilder hashBuilder = new TlshBuilder();
             hashBuilder.Update(hashImage);
-            TlshHash hash = hashBuilder.IsValid(false) ? hashBuilder.GetHash(false) : null;
+            TlshHash complexHash = hashBuilder.IsValid(false) ? hashBuilder.GetHash(false) : null;
+            ScanLineHash simpleHash = ScanLineHash.CreateFromImage(hashImage, hashWidth, hashHeight);
+            HashCollection hashCollection = new HashCollection(complexHash, simpleHash);
 
             return new FastBitmapHash
             {
-                Hash = hash,
+                Hash = hashCollection,
                 Height = hashHeight,
                 Width = hashWidth,
                 Pixels = hashImage,
@@ -946,7 +980,7 @@ namespace FFTriadBuddy
             {
                 if (hashInfo.Type == hashType)
                 {
-                    int testDistance = hashInfo.GetDistance(hashData.Hash);
+                    bool bIsMatching = hashInfo.IsHashMatching(hashData.Hash, out int testDistance);
                     if (bDebugMode)
                     {
                         debugDesc += ((hashType == EImageHashType.Card) ? ((TriadCard)hashInfo.Owner).ToShortString() : hashInfo.Owner.ToString()) + ":" + testDistance + ", ";
@@ -958,7 +992,7 @@ namespace FFTriadBuddy
                         continue;
                     }
 
-                    if (testDistance < 20 && (bestDistance < 0 || bestDistance > testDistance))
+                    if (bIsMatching && (bestDistance < 0 || bestDistance > testDistance))
                     {
                         bestDistance = testDistance;
                         bestMatchOb = hashInfo.Owner;
@@ -972,7 +1006,7 @@ namespace FFTriadBuddy
                 {
                     if (hashInfo.Type == hashType)
                     {
-                        int testDistance = hashInfo.GetDistance(hashData.Hash);
+                        bool bIsMatching = hashInfo.IsHashMatching(hashData.Hash, out int testDistance);
                         if (bDebugMode)
                         {
                             debugDesc += ((hashType == EImageHashType.Card) ? ((TriadCard)hashInfo.Owner).ToShortString() : hashInfo.Owner.ToString()) + ":" + testDistance + ", ";
@@ -984,7 +1018,7 @@ namespace FFTriadBuddy
                             continue;
                         }
 
-                        if (testDistance < 20 && (bestDistance < 0 || bestDistance > testDistance))
+                        if (bIsMatching && (bestDistance < 0 || bestDistance > testDistance))
                         {
                             bestDistance = testDistance;
                             bestMatchOb = (TriadGameModifier)hashInfo.Owner;
@@ -1011,11 +1045,14 @@ namespace FFTriadBuddy
             bool bCanAdd = true;
             foreach (ImageHashUnknown image in unknownHashes)
             {
-                int distance = image.hashData.GetDistance(newHashToAdd.hashData);
-                if (distance < 20)
+                if (image.hashData.Type == newHashToAdd.hashData.Type)
                 {
-                    bCanAdd = false;
-                    break;
+                    bool bIsMatching = image.hashData.IsHashMatching(newHashToAdd.hashData.Hash);
+                    if (bIsMatching)
+                    {
+                        bCanAdd = false;
+                        break;
+                    }
                 }
             }
 

@@ -226,7 +226,9 @@ namespace FFTriadBuddy
             {
                 for (int Idx = 0; Idx < customHashes.Count; Idx++)
                 {
-                    int testDistance = customHashes[Idx].GetDistance(hashData);
+                    customHashes[Idx].IsHashMatching(hashData, out int testDistance);
+
+                    // exact match only
                     if (testDistance == 0)
                     {
                         customHashes.RemoveAt(Idx);
@@ -238,11 +240,13 @@ namespace FFTriadBuddy
             }
         }
 
-        public bool IsLockedHash(Palit.TLSHSharp.TlshHash hash)
+        public bool IsLockedHash(HashCollection hash)
         {
             foreach (ImageHashData testData in lockedHashes)
             {
-                int testDistance = testData.GetDistance(hash);
+                testData.IsHashMatching(hash, out int testDistance);
+
+                // exact match only
                 if (testDistance == 0)
                 {
                     return true;
@@ -261,7 +265,9 @@ namespace FFTriadBuddy
         {
             for (int Idx = 0; Idx < lockedHashes.Count; Idx++)
             {
-                int testDistance = lockedHashes[Idx].GetDistance(hashData);
+                lockedHashes[Idx].IsHashMatching(hashData, out int testDistance);
+
+                // exact match only
                 if (testDistance == 0)
                 {
                     lockedHashes.RemoveAt(Idx);

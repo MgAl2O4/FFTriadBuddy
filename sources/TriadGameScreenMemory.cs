@@ -40,7 +40,7 @@ namespace FFTriadBuddy
             swappedBlueCardIdx = -1;
         }
 
-        public EUpdateFlags OnNewScan(ScreenshotAnalyzer.GameState screenGame, TriadNpc selectedNpc)
+        public EUpdateFlags OnNewScan(ScreenshotAnalyzer.GameStateTriad screenGame, TriadNpc selectedNpc)
         {
             EUpdateFlags updateFlags = EUpdateFlags.None;
 

@@ -5,4 +5,23 @@
   <hash type="Rule" value="AAF00107EB4A4B83C42F1B3240FE0710B332C0A82B0A834320243638EE5A3D23F1209D" name="All Open" />
   <hash type="Rule" value="CCF0ECDACD218E13C4550AF9C8F200E27132149D26C4AF2F18DDBCE4A0C12B578FD4D9" name="Fallen Ace" />
   <hash type="Rule" value="E4F00507DF5A5453E86E2F37107E0B1A7720E5892F12C35725053761EC633C55F6259D" name="Same" />
+  <hash type="Cactpot" valueS="AAAAAAAFAgUBAQUCAgECAQIBAgECAQIC" id="1" />
+  <hash type="Cactpot" valueS="AQIBAQEBAgQBAQMCAwECAQEBAQABAAIF" id="2" />
+  <hash type="Cactpot" valueS="AQICAQEBAgQDAgMCAwECAQEBAgEBAQIF" id="2" />
+  <hash type="Cactpot" valueS="AgICAQABBAcDAwMCAwECAQIBAgEDAgQF" id="3" />
+  <hash type="Cactpot" valueS="AQIAAAAAAwcBAgMCAwECAQIBAgEDAgME" id="3" />
+  <hash type="Cactpot" valueS="AQIAAAEAAwcCAgMCAwECAQECAQMCAwIC" id="3" />
+  <hash type="Cactpot" valueS="AAECAgIDBQQCAgMCAwIDAgMCBAQEAQIC" id="4" />
+  <hash type="Cactpot" valueS="AQEBAQEEBAECAgECAQIBAgIBBAMDAAEB" id="4" />
+  <hash type="Cactpot" valueS="AgIBAAAAAgUFAQEAAQEFAgIBAgEDAgIB" id="5" />
+  <hash type="Cactpot" valueS="AwMDAQEBAwYFAwEBAQEEAwMBAgEDAgQF" id="5" />
+  <hash type="Cactpot" valueS="AwMAAAAAAwYBAgMCAQADAgIDAgMCAwIB" id="6" />
+  <hash type="Cactpot" valueS="AwMEAQABAwcDAgMCAwEDAwMCAwIDAgQF" id="6" />
+  <hash type="Cactpot" valueS="AAEBAgICAQIFAwIBAgABAAEAAQEBAQEB" id="7" />
+  <hash type="Cactpot" valueS="AAEBAQEBAQIFAwEBAAEAAQEAAQABAAEB" id="7" />
+  <hash type="Cactpot" valueS="AgMBAAAAAwgBAgMCAwICAQMCAwIDAgME" id="8" />
+  <hash type="Cactpot" valueS="AgMEAQABBAgDAwMCAwIDAgQCAwIDAgQF" id="8" />
+  <hash type="Cactpot" valueS="AgMDAQABAwgDAgMCAwIDAgQDAgEDAgME" id="9" />
+  <hash type="Cactpot" valueS="AQIAAAAAAwcBAgMCAwIDAgIDAQICAgIB" id="9" />
+  <hash type="Cactpot" valueS="AQIAAAAAAwcBAgMCAwIDAgMCAgECAgIC" id="9" />
 </root>

@@ -1708,6 +1708,12 @@ namespace FFTriadBuddy
                 Description = card.Name;
             }
 
+            public LocalHashComboItem(CactpotNumberHash number)
+            {
+                SourceObject = number;
+                Description = number.ToString();
+            }
+
             public LocalHashComboItem(int number)
             {
                 SourceObject = number;
@@ -1782,6 +1788,13 @@ namespace FFTriadBuddy
                         }
                         break;
 
+                    case EImageHashType.Cactpot:
+                        foreach (CactpotNumberHash number in CactpotGame.hashDB)
+                        {
+                            comboBoxLocalHash.Items.Add(new LocalHashComboItem(number));
+                        }
+                        break;
+
                     default: break;
                 }
 
@@ -1804,12 +1817,14 @@ namespace FFTriadBuddy
                 {
                     TriadGameModifier modOb = kvp.Key.GuideOb as TriadGameModifier;
                     TriadCard cardOb = kvp.Key.GuideOb as TriadCard;
+                    CactpotNumberHash cactpotOb = kvp.Key.GuideOb as CactpotNumberHash;
 
                     ListViewItem lvi = new ListViewItem(kvp.Value == 0 ? "Exact" : "Similar");
                     lvi.Tag = kvp.Key;
                     lvi.SubItems.Add(
                         (modOb != null) ? "Rule: " + modOb.GetName() :
                         (cardOb != null) ? "Card: " + cardOb.ToShortString() :
+                        (cactpotOb != null) ? "Cactpot: " + cactpotOb.ToString() :
                         "unknown type");
 
                     listViewDetectionHashes.Items.Add(lvi);

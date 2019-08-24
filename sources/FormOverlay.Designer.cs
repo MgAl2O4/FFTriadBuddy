@@ -83,6 +83,17 @@
             this.panelMarkerSwap = new FFTriadBuddy.HitInvisiblePanel();
             this.hitInvisibleLabel2 = new FFTriadBuddy.HitInvisibleLabel();
             this.timerHideSwapWarning = new System.Windows.Forms.Timer(this.components);
+            this.panelCactpot = new FFTriadBuddy.HitInvisiblePanel();
+            this.labelCactpot8 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot7 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot6 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot5 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot4 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot3 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot2 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot1 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelCactpot0 = new FFTriadBuddy.HitInvisibleLabel();
+            this.panelMarkerLine = new FFTriadBuddy.HitInvisiblePanel();
             this.panelSummary.SuspendLayout();
             this.panelDebug.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureDebugScreen)).BeginInit();
@@ -93,6 +104,7 @@
             this.panelMarkerDeck.SuspendLayout();
             this.panelSwapWarning.SuspendLayout();
             this.panelMarkerSwap.SuspendLayout();
+            this.panelCactpot.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerFadeMarkers
@@ -646,6 +658,151 @@
             this.timerHideSwapWarning.Interval = 8000;
             this.timerHideSwapWarning.Tick += new System.EventHandler(this.timerHideSwapWarning_Tick);
             // 
+            // panelCactpot
+            // 
+            this.panelCactpot.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.panelCactpot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelCactpot.Controls.Add(this.labelCactpot8);
+            this.panelCactpot.Controls.Add(this.labelCactpot7);
+            this.panelCactpot.Controls.Add(this.labelCactpot6);
+            this.panelCactpot.Controls.Add(this.labelCactpot5);
+            this.panelCactpot.Controls.Add(this.labelCactpot4);
+            this.panelCactpot.Controls.Add(this.labelCactpot3);
+            this.panelCactpot.Controls.Add(this.labelCactpot2);
+            this.panelCactpot.Controls.Add(this.labelCactpot1);
+            this.panelCactpot.Controls.Add(this.labelCactpot0);
+            this.panelCactpot.Location = new System.Drawing.Point(677, 131);
+            this.panelCactpot.Name = "panelCactpot";
+            this.panelCactpot.Size = new System.Drawing.Size(162, 162);
+            this.panelCactpot.TabIndex = 9;
+            // 
+            // labelCactpot8
+            // 
+            this.labelCactpot8.BackColor = System.Drawing.Color.White;
+            this.labelCactpot8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot8.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot8.Location = new System.Drawing.Point(107, 107);
+            this.labelCactpot8.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot8.Name = "labelCactpot8";
+            this.labelCactpot8.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot8.TabIndex = 19;
+            this.labelCactpot8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot7
+            // 
+            this.labelCactpot7.BackColor = System.Drawing.Color.White;
+            this.labelCactpot7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot7.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot7.Location = new System.Drawing.Point(55, 107);
+            this.labelCactpot7.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot7.Name = "labelCactpot7";
+            this.labelCactpot7.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot7.TabIndex = 18;
+            this.labelCactpot7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot6
+            // 
+            this.labelCactpot6.BackColor = System.Drawing.Color.White;
+            this.labelCactpot6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot6.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot6.Location = new System.Drawing.Point(3, 107);
+            this.labelCactpot6.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot6.Name = "labelCactpot6";
+            this.labelCactpot6.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot6.TabIndex = 17;
+            this.labelCactpot6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot5
+            // 
+            this.labelCactpot5.BackColor = System.Drawing.Color.White;
+            this.labelCactpot5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot5.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot5.Location = new System.Drawing.Point(107, 55);
+            this.labelCactpot5.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot5.Name = "labelCactpot5";
+            this.labelCactpot5.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot5.TabIndex = 16;
+            this.labelCactpot5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot4
+            // 
+            this.labelCactpot4.BackColor = System.Drawing.Color.White;
+            this.labelCactpot4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot4.Location = new System.Drawing.Point(55, 55);
+            this.labelCactpot4.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot4.Name = "labelCactpot4";
+            this.labelCactpot4.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot4.TabIndex = 15;
+            this.labelCactpot4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot3
+            // 
+            this.labelCactpot3.BackColor = System.Drawing.Color.White;
+            this.labelCactpot3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot3.Location = new System.Drawing.Point(3, 55);
+            this.labelCactpot3.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot3.Name = "labelCactpot3";
+            this.labelCactpot3.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot3.TabIndex = 14;
+            this.labelCactpot3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot2
+            // 
+            this.labelCactpot2.BackColor = System.Drawing.Color.White;
+            this.labelCactpot2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot2.Location = new System.Drawing.Point(107, 3);
+            this.labelCactpot2.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot2.Name = "labelCactpot2";
+            this.labelCactpot2.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot2.TabIndex = 13;
+            this.labelCactpot2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot1
+            // 
+            this.labelCactpot1.BackColor = System.Drawing.Color.White;
+            this.labelCactpot1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot1.Location = new System.Drawing.Point(55, 3);
+            this.labelCactpot1.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot1.Name = "labelCactpot1";
+            this.labelCactpot1.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot1.TabIndex = 12;
+            this.labelCactpot1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelCactpot0
+            // 
+            this.labelCactpot0.BackColor = System.Drawing.Color.White;
+            this.labelCactpot0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelCactpot0.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelCactpot0.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCactpot0.Location = new System.Drawing.Point(3, 3);
+            this.labelCactpot0.Margin = new System.Windows.Forms.Padding(1);
+            this.labelCactpot0.Name = "labelCactpot0";
+            this.labelCactpot0.Size = new System.Drawing.Size(50, 50);
+            this.labelCactpot0.TabIndex = 11;
+            this.labelCactpot0.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelMarkerLine
+            // 
+            this.panelMarkerLine.BackColor = System.Drawing.Color.Fuchsia;
+            this.panelMarkerLine.Location = new System.Drawing.Point(370, 12);
+            this.panelMarkerLine.Name = "panelMarkerLine";
+            this.panelMarkerLine.Padding = new System.Windows.Forms.Padding(5);
+            this.panelMarkerLine.Size = new System.Drawing.Size(54, 50);
+            this.panelMarkerLine.TabIndex = 12;
+            this.panelMarkerLine.Paint += new System.Windows.Forms.PaintEventHandler(this.panelMarkerLine_Paint);
+            // 
             // FormOverlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -653,6 +810,8 @@
             this.BackColor = System.Drawing.Color.Fuchsia;
             this.ClientSize = new System.Drawing.Size(1064, 473);
             this.ControlBox = false;
+            this.Controls.Add(this.panelMarkerLine);
+            this.Controls.Add(this.panelCactpot);
             this.Controls.Add(this.panelMarkerSwap);
             this.Controls.Add(this.panelSwapWarning);
             this.Controls.Add(this.panelDebug);
@@ -682,6 +841,7 @@
             this.panelMarkerDeck.ResumeLayout(false);
             this.panelSwapWarning.ResumeLayout(false);
             this.panelMarkerSwap.ResumeLayout(false);
+            this.panelCactpot.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -742,5 +902,16 @@
         private HitInvisiblePanel panelMarkerSwap;
         private System.Windows.Forms.Timer timerHideSwapWarning;
         private HitInvisibleLabel hitInvisibleLabel2;
+        private HitInvisiblePanel panelCactpot;
+        private HitInvisibleLabel labelCactpot8;
+        private HitInvisibleLabel labelCactpot7;
+        private HitInvisibleLabel labelCactpot6;
+        private HitInvisibleLabel labelCactpot5;
+        private HitInvisibleLabel labelCactpot4;
+        private HitInvisibleLabel labelCactpot3;
+        private HitInvisibleLabel labelCactpot2;
+        private HitInvisibleLabel labelCactpot1;
+        private HitInvisibleLabel labelCactpot0;
+        private HitInvisiblePanel panelMarkerLine;
     }
 }
