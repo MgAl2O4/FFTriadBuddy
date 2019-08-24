@@ -161,7 +161,7 @@ namespace FFTriadBuddy
             if (cardData != null)
             {
                 int cardDrawOffset = (drawMode == ECardDrawMode.ImageOnly) ? 0 : 5;
-                Rectangle destImageRect = new Rectangle(cardDrawOffset, cardDrawOffset, e.ClipRectangle.Width - (cardDrawOffset * 2), e.ClipRectangle.Height - (cardDrawOffset * 2));
+                Rectangle destImageRect = new Rectangle(cardDrawOffset, cardDrawOffset, ClientSize.Width - (cardDrawOffset * 2), ClientSize.Height - (cardDrawOffset * 2));
 
                 if (cardData.card.Id != 0)
                 {

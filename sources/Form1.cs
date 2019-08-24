@@ -790,13 +790,6 @@ namespace FFTriadBuddy
             }
         }
 
-        private void labelCardListMode_Click(object sender, EventArgs e)
-        {
-            bool bWantsIcons = (tabControlCardsView.SelectedTab == tabPageCardsList);
-            tabControlCardsView.SelectedTab = bWantsIcons ? tabPageCardsIcons : tabPageCardsList;
-            labelCardListMode.Text = "View mode: " + (bWantsIcons ? "icons" : "list") + " (click to switch)";
-        }
-
         private void checkBoxCardGridOnlyOwned_CheckedChanged(object sender, EventArgs e)
         {
             UpdateCardViewGrids();

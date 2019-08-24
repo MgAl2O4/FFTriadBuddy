@@ -143,10 +143,9 @@
             this.labelSpecialRules = new System.Windows.Forms.Label();
             this.labelChance = new System.Windows.Forms.Label();
             this.tabPageCards = new System.Windows.Forms.TabPage();
-            this.labelCardListMode = new System.Windows.Forms.Label();
             this.labelNumOwned = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.tabControlCardsView = new FFTriadBuddy.TabControlNoTabs();
+            this.tabControlCardsView = new System.Windows.Forms.TabControl();
             this.tabPageCardsList = new System.Windows.Forms.TabPage();
             this.listViewCards = new System.Windows.Forms.ListView();
             this.columnHeaderN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -1495,7 +1494,6 @@
             // 
             // tabPageCards
             // 
-            this.tabPageCards.Controls.Add(this.labelCardListMode);
             this.tabPageCards.Controls.Add(this.labelNumOwned);
             this.tabPageCards.Controls.Add(this.label9);
             this.tabPageCards.Controls.Add(this.tabControlCardsView);
@@ -1505,19 +1503,6 @@
             this.tabPageCards.TabIndex = 2;
             this.tabPageCards.Text = "Cards";
             this.tabPageCards.UseVisualStyleBackColor = true;
-            // 
-            // labelCardListMode
-            // 
-            this.labelCardListMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelCardListMode.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.labelCardListMode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelCardListMode.Location = new System.Drawing.Point(478, 219);
-            this.labelCardListMode.Name = "labelCardListMode";
-            this.labelCardListMode.Size = new System.Drawing.Size(182, 15);
-            this.labelCardListMode.TabIndex = 4;
-            this.labelCardListMode.Text = "View mode: list (click to switch)";
-            this.labelCardListMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelCardListMode.Click += new System.EventHandler(this.labelCardListMode_Click);
             // 
             // labelNumOwned
             // 
@@ -1607,7 +1592,7 @@
             // columnHeaderT
             // 
             this.columnHeaderT.Text = "Type";
-            this.columnHeaderT.Width = 100;
+            this.columnHeaderT.Width = 94;
             // 
             // columnHeaderO
             // 
@@ -1672,6 +1657,7 @@
             this.flowLayoutPanelCardGrids.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanelCardGrids.AutoScroll = true;
             this.flowLayoutPanelCardGrids.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanelCardGrids.Name = "flowLayoutPanelCardGrids";
             this.flowLayoutPanelCardGrids.Size = new System.Drawing.Size(653, 165);
@@ -1761,7 +1747,7 @@
             // columnHeader11
             // 
             this.columnHeader11.Text = "Reward";
-            this.columnHeader11.Width = 77;
+            this.columnHeader11.Width = 74;
             // 
             // contextMenuStripSelectNpc
             // 
@@ -2270,10 +2256,9 @@
         private System.Windows.Forms.Label labelLevelPre;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label labelUpdateNotify;
-        private TabControlNoTabs tabControlCardsView;
+        private System.Windows.Forms.TabControl tabControlCardsView;
         private System.Windows.Forms.TabPage tabPageCardsList;
         private System.Windows.Forms.TabPage tabPageCardsIcons;
-        private System.Windows.Forms.Label labelCardListMode;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelCardGrids;
         private System.Windows.Forms.CheckBox checkBoxCardGridOnlyOwned;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripCardInfo;
