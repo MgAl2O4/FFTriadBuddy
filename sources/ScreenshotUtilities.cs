@@ -1021,7 +1021,7 @@ namespace FFTriadBuddy
                         if (bIsMatching && (bestDistance < 0 || bestDistance > testDistance))
                         {
                             bestDistance = testDistance;
-                            bestMatchOb = (TriadGameModifier)hashInfo.Owner;
+                            bestMatchOb = hashInfo.Owner;
                         }
                     }
                 }
