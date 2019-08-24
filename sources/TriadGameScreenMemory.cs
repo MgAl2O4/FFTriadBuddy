@@ -26,6 +26,7 @@ namespace FFTriadBuddy
         public TriadDeckInstanceScreen deckRed;
         private List<TriadCard[]> blueDeckHistory;
         private TriadCard[] playerDeckPattern;
+        private TriadNpc lastScanNpc;
         private bool bHasSwapRule;
         private bool bHasRestartRule;
         private bool bHasOpenRule;
@@ -40,6 +41,7 @@ namespace FFTriadBuddy
             blueDeckHistory = new List<TriadCard[]>();
             bHasSwapRule = false;
             swappedBlueCardIdx = -1;
+            lastScanNpc = null;
         }
 
         public EUpdateFlags OnNewScan(ScreenshotAnalyzer.GameStateTriad screenGame, TriadNpc selectedNpc)
@@ -50,7 +52,7 @@ namespace FFTriadBuddy
             // is current state a continuation of last one?
             // ideally each blue turn is a capture until game resets = any card disappears from board
             // guess work for adding sense of persistence to screen decks
-            bool bContinuesPrevState = (deckRed.deck == selectedNpc.Deck);
+            bool bContinuesPrevState = (deckRed.deck == selectedNpc.Deck) && (lastScanNpc == selectedNpc);
             if (bContinuesPrevState)
             {
                 for (int Idx = 0; Idx < gameState.board.Length; Idx++)
@@ -67,7 +69,7 @@ namespace FFTriadBuddy
             }
             else
             {
-                Logger.WriteLine("Can't continue previous state: red deck changed");
+                Logger.WriteLine("Can't continue previous state: npc changed");
             }
 
             bool bModsChanged = (gameSession.modifiers.Count != screenGame.mods.Count) || !gameSession.modifiers.All(screenGame.mods.Contains);
@@ -76,7 +78,8 @@ namespace FFTriadBuddy
                 bHasSwapRule = false;
                 bHasRestartRule = false;
                 bHasOpenRule = false;
-                gameSession.modifiers = screenGame.mods;
+                gameSession.modifiers.Clear();
+                gameSession.modifiers.AddRange(screenGame.mods);
                 gameSession.specialRules = ETriadGameSpecialMod.None;
                 gameSession.modFeatures = TriadGameModifier.EFeature.None;
                 foreach (TriadGameModifier mod in gameSession.modifiers)
@@ -103,15 +106,22 @@ namespace FFTriadBuddy
                 Logger.WriteLine("Can't continue previous state: modifiers changed");
 
                 deckRed.SetSwappedCard(null, -1);
+            }
+
+            // wipe blue deck history when playing with new npc (or region modifiers have changed)
+            bool bRemoveBlueHistory = bModsChanged || (lastScanNpc == selectedNpc);
+            if (bRemoveBlueHistory)
+            {
                 blueDeckHistory.Clear();
                 if (bHasSwapRule) { Logger.WriteLine("Blue deck history cleared"); }
             }
 
-            bool bRedDeckChanged = !IsDeckMatching(deckRed, screenGame.redDeck) || (deckRed.deck != selectedNpc.Deck);
+            bool bRedDeckChanged = (lastScanNpc != selectedNpc) || !IsDeckMatching(deckRed, screenGame.redDeck) || (deckRed.deck != selectedNpc.Deck);
             if (bRedDeckChanged)
             {
                 updateFlags |= EUpdateFlags.RedDeck;
                 deckRed.deck = selectedNpc.Deck;
+                lastScanNpc = selectedNpc;
 
                 // needs to happen before any changed to board (gameState)
                 UpdateAvailableRedCards(deckRed, screenGame.redDeck, screenGame.blueDeck,

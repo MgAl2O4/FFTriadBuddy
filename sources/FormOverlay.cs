@@ -392,6 +392,7 @@ namespace FFTriadBuddy
 
             UpdateStatusDescription();
             labelNpc.Text = "NPC: " + ((npc != null) ? npc.ToString() : "unknown");
+            labelRules.Text = "Rules: npc changed, waiting for scan...";
         }
 
         public void UpdateOverlayLocation(int screenX, int screenY)
