@@ -476,7 +476,7 @@
             // labelDeckState
             // 
             this.labelDeckState.AutoSize = true;
-            this.labelDeckState.Location = new System.Drawing.Point(80, 124);
+            this.labelDeckState.Location = new System.Drawing.Point(185, 124);
             this.labelDeckState.Name = "labelDeckState";
             this.labelDeckState.Size = new System.Drawing.Size(0, 13);
             this.labelDeckState.TabIndex = 12;
