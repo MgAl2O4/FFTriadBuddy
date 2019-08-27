@@ -109,7 +109,7 @@ namespace FFTriadBuddy
             }
 
             // wipe blue deck history when playing with new npc (or region modifiers have changed)
-            bool bRemoveBlueHistory = bModsChanged || (lastScanNpc == selectedNpc);
+            bool bRemoveBlueHistory = bModsChanged || (lastScanNpc != selectedNpc);
             if (bRemoveBlueHistory)
             {
                 blueDeckHistory.Clear();
@@ -618,16 +618,16 @@ namespace FFTriadBuddy
             int blueSwappedCardIdx = -1;
             int redSwappedCardIdx = -1;
             TriadCard blueSwappedCard = null;
-            bool bHasSwappedCard = FindSwappedCard(deckBlue.cards, playerDeckPattern, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
+            bool bHasSwappedCard = FindSwappedCardVisible(deckBlue.cards, gameState.board, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
             if (!bHasSwappedCard)
             {
-                TriadCard[] commonCards = FindCommonCards(blueDeckHistory);
-                if (commonCards != null)
+                bHasSwappedCard = FindSwappedCard(deckBlue.cards, playerDeckPattern, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
+                if (!bHasSwappedCard)
                 {
-                    bHasSwappedCard = FindSwappedCard(deckBlue.cards, commonCards, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
-                    if (!bHasSwappedCard)
+                    TriadCard[] commonCards = FindCommonCards(blueDeckHistory);
+                    if (commonCards != null)
                     {
-                        bHasSwappedCard = FindSwappedCardVisible(deckBlue.cards, gameState.board, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
+                        bHasSwappedCard = FindSwappedCard(deckBlue.cards, commonCards, deckRed, out blueSwappedCardIdx, out redSwappedCardIdx, out blueSwappedCard);
                     }
                 }
             }
