@@ -145,7 +145,7 @@ Works with mini cactpot too :D</value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAC6
-        KAAAAk1TRnQBSQFMAgEBBQEAAUgBCAFIAQgBGwEAARoBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFs
+        KAAAAk1TRnQBSQFMAgEBBQEAAWgBCAFoAQgBGwEAARoBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFs
         AwABNAMAAQEBAAEgBQABwAFXJgADCgENAzoBYgNSAaYDUgGmA0cBgwNIAYYDUgGmA0gBhgMqAUEDAgED
         AwoBDQM6AWIDUgGmA1IBpgNHAYMDSAGGA1IBpgNIAYYDKgFBAwIBA/8AYQADDwEUAU8CUwGlA10B7QNU
         Ae4DWQHJA1gBxgJdAWEB4gEAAYoBnAH/AT8CQAFuAwIBAwMPARQBTwJTAaUDXQHtA1QB7gNZAckDWAHG
@@ -329,7 +329,7 @@ Works with mini cactpot too :D</value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAK
-        GAAAAk1TRnQBSQFMAgEBBAEAAUgBCAFIAQgBFAEAARQBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFQ
+        GAAAAk1TRnQBSQFMAgEBBAEAAWgBCAFoAQgBFAEAARQBAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFQ
         AwABKAMAAQEBAAEgBgABMv8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A
         /wD/AP8A9wADAgEDBAADDQERBAADAgEDMAADBQEHAw8BFAMXASADHAEoAxwBKAMcASgDHAEoAxwBKAMX
         ASADDwEUAwUBByQAAyMBMwMjATMDIwEzOAADDAEQAwwBEAMMARADDAEQWAADAgEDAyIBMgNMAZIDIgEy
@@ -457,6 +457,12 @@ Works with mini cactpot too :D</value>
   </metadata>
   <metadata name="timerOptimizationDeckUpdate.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>428, 56</value>
+  </metadata>
+  <metadata name="timerSetupDetails.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>842, 56</value>
+  </metadata>
+  <metadata name="timerCloudSave.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>990, 56</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

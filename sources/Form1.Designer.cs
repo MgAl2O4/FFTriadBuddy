@@ -32,13 +32,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSetup = new System.Windows.Forms.TabPage();
-            this.buttonOptimizeAbort = new System.Windows.Forms.Button();
-            this.deckCtrlSetup = new FFTriadBuddy.DeckCtrl();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboBoxRegionRule2 = new System.Windows.Forms.ComboBox();
-            this.comboBoxRegionRule1 = new System.Windows.Forms.ComboBox();
+            this.tabControlSetupDetails = new FFTriadBuddy.TabControlNoTabs();
+            this.tabPageSetupCloud = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonCloudAuth = new System.Windows.Forms.Button();
+            this.labelCloudApiResponse = new System.Windows.Forms.Label();
+            this.labelCloudApiTitle = new System.Windows.Forms.Label();
+            this.checkBoxUseCloudSaves = new System.Windows.Forms.CheckBox();
+            this.labelCloudState = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.tabPageSetupOptimizerStats = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.labelOptTimeLeft = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -50,6 +53,13 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.buttonOptimizeAbort = new System.Windows.Forms.Button();
+            this.deckCtrlSetup = new FFTriadBuddy.DeckCtrl();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBoxRegionRule2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxRegionRule1 = new System.Windows.Forms.ComboBox();
             this.progressBarDeck = new System.Windows.Forms.ProgressBar();
             this.labelDeckState = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -202,10 +212,16 @@
             this.toolStripMenuItemCardParseConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.timerOptimizationDeckUpdate = new System.Windows.Forms.Timer(this.components);
             this.labelUpdateNotify = new System.Windows.Forms.Label();
+            this.timerSetupDetails = new System.Windows.Forms.Timer(this.components);
+            this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.tabControlSetupDetails.SuspendLayout();
+            this.tabPageSetupCloud.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.tabPageSetupOptimizerStats.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.tabPageScreenshot.SuspendLayout();
             this.panelScreenshotState.SuspendLayout();
             this.tabControlScreenDetection.SuspendLayout();
@@ -251,10 +267,10 @@
             // 
             // tabPageSetup
             // 
+            this.tabPageSetup.Controls.Add(this.tabControlSetupDetails);
             this.tabPageSetup.Controls.Add(this.buttonOptimizeAbort);
             this.tabPageSetup.Controls.Add(this.deckCtrlSetup);
             this.tabPageSetup.Controls.Add(this.groupBox2);
-            this.tabPageSetup.Controls.Add(this.groupBox1);
             this.tabPageSetup.Controls.Add(this.progressBarDeck);
             this.tabPageSetup.Controls.Add(this.labelDeckState);
             this.tabPageSetup.Controls.Add(this.label8);
@@ -276,6 +292,221 @@
             this.tabPageSetup.TabIndex = 1;
             this.tabPageSetup.Text = "Setup";
             this.tabPageSetup.UseVisualStyleBackColor = true;
+            // 
+            // tabControlSetupDetails
+            // 
+            this.tabControlSetupDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControlSetupDetails.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControlSetupDetails.Controls.Add(this.tabPageSetupCloud);
+            this.tabControlSetupDetails.Controls.Add(this.tabPageSetupOptimizerStats);
+            this.tabControlSetupDetails.Location = new System.Drawing.Point(346, 120);
+            this.tabControlSetupDetails.Margin = new System.Windows.Forms.Padding(0);
+            this.tabControlSetupDetails.Name = "tabControlSetupDetails";
+            this.tabControlSetupDetails.Padding = new System.Drawing.Point(0, 0);
+            this.tabControlSetupDetails.SelectedIndex = 0;
+            this.tabControlSetupDetails.Size = new System.Drawing.Size(306, 115);
+            this.tabControlSetupDetails.TabIndex = 24;
+            // 
+            // tabPageSetupCloud
+            // 
+            this.tabPageSetupCloud.Controls.Add(this.groupBox3);
+            this.tabPageSetupCloud.Location = new System.Drawing.Point(4, 25);
+            this.tabPageSetupCloud.Margin = new System.Windows.Forms.Padding(0);
+            this.tabPageSetupCloud.Name = "tabPageSetupCloud";
+            this.tabPageSetupCloud.Size = new System.Drawing.Size(298, 86);
+            this.tabPageSetupCloud.TabIndex = 1;
+            this.tabPageSetupCloud.Text = "Cloud";
+            this.tabPageSetupCloud.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.buttonCloudAuth);
+            this.groupBox3.Controls.Add(this.labelCloudApiResponse);
+            this.groupBox3.Controls.Add(this.labelCloudApiTitle);
+            this.groupBox3.Controls.Add(this.checkBoxUseCloudSaves);
+            this.groupBox3.Controls.Add(this.labelCloudState);
+            this.groupBox3.Controls.Add(this.label25);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(298, 86);
+            this.groupBox3.TabIndex = 16;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Cloud saves";
+            // 
+            // buttonCloudAuth
+            // 
+            this.buttonCloudAuth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCloudAuth.Location = new System.Drawing.Point(168, 25);
+            this.buttonCloudAuth.Name = "buttonCloudAuth";
+            this.buttonCloudAuth.Size = new System.Drawing.Size(124, 23);
+            this.buttonCloudAuth.TabIndex = 11;
+            this.buttonCloudAuth.Text = "Authorize with Google";
+            this.buttonCloudAuth.UseVisualStyleBackColor = true;
+            this.buttonCloudAuth.Click += new System.EventHandler(this.buttonCloudAuth_Click);
+            // 
+            // labelCloudApiResponse
+            // 
+            this.labelCloudApiResponse.AutoSize = true;
+            this.labelCloudApiResponse.Location = new System.Drawing.Point(85, 70);
+            this.labelCloudApiResponse.Name = "labelCloudApiResponse";
+            this.labelCloudApiResponse.Size = new System.Drawing.Size(0, 13);
+            this.labelCloudApiResponse.TabIndex = 10;
+            // 
+            // labelCloudApiTitle
+            // 
+            this.labelCloudApiTitle.AutoSize = true;
+            this.labelCloudApiTitle.Location = new System.Drawing.Point(6, 70);
+            this.labelCloudApiTitle.Name = "labelCloudApiTitle";
+            this.labelCloudApiTitle.Size = new System.Drawing.Size(73, 13);
+            this.labelCloudApiTitle.TabIndex = 9;
+            this.labelCloudApiTitle.Text = "API response:";
+            // 
+            // checkBoxUseCloudSaves
+            // 
+            this.checkBoxUseCloudSaves.AutoSize = true;
+            this.checkBoxUseCloudSaves.Location = new System.Drawing.Point(6, 29);
+            this.checkBoxUseCloudSaves.Name = "checkBoxUseCloudSaves";
+            this.checkBoxUseCloudSaves.Size = new System.Drawing.Size(159, 17);
+            this.checkBoxUseCloudSaves.TabIndex = 8;
+            this.checkBoxUseCloudSaves.Text = "Use cloud saves for settings";
+            this.checkBoxUseCloudSaves.UseVisualStyleBackColor = true;
+            this.checkBoxUseCloudSaves.CheckedChanged += new System.EventHandler(this.checkBoxUseCloudSaves_CheckedChanged);
+            // 
+            // labelCloudState
+            // 
+            this.labelCloudState.AutoSize = true;
+            this.labelCloudState.Location = new System.Drawing.Point(85, 57);
+            this.labelCloudState.Name = "labelCloudState";
+            this.labelCloudState.Size = new System.Drawing.Size(0, 13);
+            this.labelCloudState.TabIndex = 7;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(6, 57);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(70, 13);
+            this.label25.TabIndex = 6;
+            this.label25.Text = "Current state:";
+            // 
+            // tabPageSetupOptimizerStats
+            // 
+            this.tabPageSetupOptimizerStats.Controls.Add(this.groupBox1);
+            this.tabPageSetupOptimizerStats.Location = new System.Drawing.Point(4, 25);
+            this.tabPageSetupOptimizerStats.Margin = new System.Windows.Forms.Padding(0);
+            this.tabPageSetupOptimizerStats.Name = "tabPageSetupOptimizerStats";
+            this.tabPageSetupOptimizerStats.Size = new System.Drawing.Size(298, 86);
+            this.tabPageSetupOptimizerStats.TabIndex = 0;
+            this.tabPageSetupOptimizerStats.Text = "Stats";
+            this.tabPageSetupOptimizerStats.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.labelOptTimeLeft);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.labelOptProgress);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.labelOptNumTested);
+            this.groupBox1.Controls.Add(this.labelOptNumPossible);
+            this.groupBox1.Controls.Add(this.labelOptNumOwned);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(298, 86);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Optimization stats:";
+            // 
+            // labelOptTimeLeft
+            // 
+            this.labelOptTimeLeft.Location = new System.Drawing.Point(117, 87);
+            this.labelOptTimeLeft.Name = "labelOptTimeLeft";
+            this.labelOptTimeLeft.Size = new System.Drawing.Size(150, 13);
+            this.labelOptTimeLeft.TabIndex = 9;
+            this.labelOptTimeLeft.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 87);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(50, 13);
+            this.label13.TabIndex = 8;
+            this.label13.Text = "Time left:";
+            // 
+            // labelOptProgress
+            // 
+            this.labelOptProgress.Location = new System.Drawing.Point(117, 68);
+            this.labelOptProgress.Name = "labelOptProgress";
+            this.labelOptProgress.Size = new System.Drawing.Size(150, 13);
+            this.labelOptProgress.TabIndex = 7;
+            this.labelOptProgress.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 68);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(51, 13);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "Progress:";
+            // 
+            // labelOptNumTested
+            // 
+            this.labelOptNumTested.Location = new System.Drawing.Point(117, 46);
+            this.labelOptNumTested.Name = "labelOptNumTested";
+            this.labelOptNumTested.Size = new System.Drawing.Size(150, 13);
+            this.labelOptNumTested.TabIndex = 5;
+            this.labelOptNumTested.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // labelOptNumPossible
+            // 
+            this.labelOptNumPossible.Location = new System.Drawing.Point(117, 33);
+            this.labelOptNumPossible.Name = "labelOptNumPossible";
+            this.labelOptNumPossible.Size = new System.Drawing.Size(150, 13);
+            this.labelOptNumPossible.TabIndex = 4;
+            this.labelOptNumPossible.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // labelOptNumOwned
+            // 
+            this.labelOptNumOwned.Location = new System.Drawing.Point(117, 20);
+            this.labelOptNumOwned.Name = "labelOptNumOwned";
+            this.labelOptNumOwned.Size = new System.Drawing.Size(150, 13);
+            this.labelOptNumOwned.TabIndex = 3;
+            this.labelOptNumOwned.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 46);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(96, 13);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "Num tested decks:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 33);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(105, 13);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "Num possible decks:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 20);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(96, 13);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Num owned cards:";
             // 
             // buttonOptimizeAbort
             // 
@@ -357,112 +588,6 @@
             this.comboBoxRegionRule1.Size = new System.Drawing.Size(235, 21);
             this.comboBoxRegionRule1.TabIndex = 19;
             this.comboBoxRegionRule1.SelectedIndexChanged += new System.EventHandler(this.comboBoxRegionRule1_SelectedIndexChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.labelOptTimeLeft);
-            this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.labelOptProgress);
-            this.groupBox1.Controls.Add(this.label16);
-            this.groupBox1.Controls.Add(this.labelOptNumTested);
-            this.groupBox1.Controls.Add(this.labelOptNumPossible);
-            this.groupBox1.Controls.Add(this.labelOptNumOwned);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Location = new System.Drawing.Point(346, 120);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(306, 110);
-            this.groupBox1.TabIndex = 15;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Optimization stats:";
-            // 
-            // labelOptTimeLeft
-            // 
-            this.labelOptTimeLeft.Location = new System.Drawing.Point(117, 87);
-            this.labelOptTimeLeft.Name = "labelOptTimeLeft";
-            this.labelOptTimeLeft.Size = new System.Drawing.Size(150, 13);
-            this.labelOptTimeLeft.TabIndex = 9;
-            this.labelOptTimeLeft.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 87);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(50, 13);
-            this.label13.TabIndex = 8;
-            this.label13.Text = "Time left:";
-            // 
-            // labelOptProgress
-            // 
-            this.labelOptProgress.Location = new System.Drawing.Point(117, 68);
-            this.labelOptProgress.Name = "labelOptProgress";
-            this.labelOptProgress.Size = new System.Drawing.Size(150, 13);
-            this.labelOptProgress.TabIndex = 7;
-            this.labelOptProgress.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 68);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(51, 13);
-            this.label16.TabIndex = 6;
-            this.label16.Text = "Progress:";
-            // 
-            // labelOptNumTested
-            // 
-            this.labelOptNumTested.Location = new System.Drawing.Point(117, 46);
-            this.labelOptNumTested.Name = "labelOptNumTested";
-            this.labelOptNumTested.Size = new System.Drawing.Size(140, 13);
-            this.labelOptNumTested.TabIndex = 5;
-            this.labelOptNumTested.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // labelOptNumPossible
-            // 
-            this.labelOptNumPossible.Location = new System.Drawing.Point(117, 33);
-            this.labelOptNumPossible.Name = "labelOptNumPossible";
-            this.labelOptNumPossible.Size = new System.Drawing.Size(140, 13);
-            this.labelOptNumPossible.TabIndex = 4;
-            this.labelOptNumPossible.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // labelOptNumOwned
-            // 
-            this.labelOptNumOwned.Location = new System.Drawing.Point(117, 20);
-            this.labelOptNumOwned.Name = "labelOptNumOwned";
-            this.labelOptNumOwned.Size = new System.Drawing.Size(140, 13);
-            this.labelOptNumOwned.TabIndex = 3;
-            this.labelOptNumOwned.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 46);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(96, 13);
-            this.label12.TabIndex = 2;
-            this.label12.Text = "Num tested decks:";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 33);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(105, 13);
-            this.label11.TabIndex = 1;
-            this.label11.Text = "Num possible decks:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 20);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(96, 13);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "Num owned cards:";
             // 
             // progressBarDeck
             // 
@@ -2024,6 +2149,16 @@
             this.labelUpdateNotify.Visible = false;
             this.labelUpdateNotify.Click += new System.EventHandler(this.labelUpdateNotify_Click);
             // 
+            // timerSetupDetails
+            // 
+            this.timerSetupDetails.Interval = 5000;
+            this.timerSetupDetails.Tick += new System.EventHandler(this.timerSetupDetails_Tick);
+            // 
+            // timerCloudSave
+            // 
+            this.timerCloudSave.Interval = 10000;
+            this.timerCloudSave.Tick += new System.EventHandler(this.timerCloudSave_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2044,10 +2179,15 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageSetup.ResumeLayout(false);
             this.tabPageSetup.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.tabControlSetupDetails.ResumeLayout(false);
+            this.tabPageSetupCloud.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.tabPageSetupOptimizerStats.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.tabPageScreenshot.ResumeLayout(false);
             this.tabPageScreenshot.PerformLayout();
             this.panelScreenshotState.ResumeLayout(false);
@@ -2265,6 +2405,18 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuFindCardOnline;
+        private TabControlNoTabs tabControlSetupDetails;
+        private System.Windows.Forms.TabPage tabPageSetupOptimizerStats;
+        private System.Windows.Forms.TabPage tabPageSetupCloud;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label labelCloudState;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Timer timerSetupDetails;
+        private System.Windows.Forms.CheckBox checkBoxUseCloudSaves;
+        private System.Windows.Forms.Label labelCloudApiResponse;
+        private System.Windows.Forms.Label labelCloudApiTitle;
+        private System.Windows.Forms.Button buttonCloudAuth;
+        private System.Windows.Forms.Timer timerCloudSave;
     }
 }
 

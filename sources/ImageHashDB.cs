@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using CloudStorage;
 
 namespace FFTriadBuddy
 {
@@ -234,38 +235,103 @@ namespace FFTriadBuddy
             return result;
         }
 
-        public void StoreEntry(ImagePatternDigit entry, XmlWriter xmlWriter)
+        public List<ImagePatternDigit> LoadDigitHashes(JsonParser.ArrayValue jsonArr)
         {
-            xmlWriter.WriteStartElement("digit");
-            xmlWriter.WriteAttributeString("type", entry.Value.ToString());
-            xmlWriter.WriteAttributeString("value", entry.Hash);
-            xmlWriter.WriteEndElement();
+            List<ImagePatternDigit> list = new List<ImagePatternDigit>();
+            foreach (JsonParser.Value value in jsonArr.entries)
+            {
+                JsonParser.ObjectValue jsonOb = (JsonParser.ObjectValue)value;
+                string hashValue = (JsonParser.StringValue)jsonOb["hash"];
+
+                ImagePatternDigit digitHash = new ImagePatternDigit((JsonParser.IntValue)jsonOb["id"], ImageDataDigit.FromHexString(hashValue));
+                list.Add(digitHash);
+            }
+
+            return list;
         }
 
-        public void StoreEntry(ImageHashData entry, XmlWriter xmlWriter)
+        public List<ImageHashData> LoadImageHashes(JsonParser.ObjectValue jsonOb)
         {
-            xmlWriter.WriteStartElement("hash");
-            xmlWriter.WriteAttributeString("type", entry.Type.ToString());
+            List<ImageHashData> list = new List<ImageHashData>();
 
-            // store only one of hashes
-            if (entry.Hash.ComplexHash != null)
+            string[] enumArr = Enum.GetNames(typeof(EImageHashType));
+            foreach (KeyValuePair<string, JsonParser.Value> kvp in jsonOb.entries)
             {
-                xmlWriter.WriteAttributeString("value", entry.Hash.ComplexHash.ToString());
-            }
-            else if (entry.Hash.SimpleHash != null)
-            {
-                xmlWriter.WriteAttributeString("valueS", entry.Hash.SimpleHash.ToString());
+                EImageHashType groupType = (EImageHashType)Array.IndexOf(enumArr, kvp.Key);
+                JsonParser.ArrayValue typeArr = (JsonParser.ArrayValue)kvp.Value;
+                
+                foreach (JsonParser.Value value in typeArr.entries)
+                {
+                    JsonParser.ObjectValue jsonHashOb = (JsonParser.ObjectValue)value;
+                    string idStr = jsonHashOb["id"];
+
+                    object hashOwner = null;
+                    switch (groupType)
+                    {
+                        case EImageHashType.Rule: hashOwner = ParseRule(idStr); break;
+                        case EImageHashType.Card: hashOwner = TriadCardDB.Get().cards[int.Parse(idStr)]; break;
+                        case EImageHashType.Cactpot: hashOwner = CactpotGame.hashDB[int.Parse(idStr) - 1]; break;
+                        default: break;
+                    }
+
+                    if (hashOwner != null)
+                    {
+                        HashCollection hashes = new HashCollection(jsonHashOb["hashC", JsonParser.StringValue.Empty], jsonHashOb["hashS", JsonParser.StringValue.Empty]);
+                        ImageHashData hashEntry = new ImageHashData(hashOwner, hashes, groupType);
+                        list.Add(hashEntry);
+                    }
+                }
             }
 
-            switch (entry.Type)
-            {
-                case EImageHashType.Rule: xmlWriter.WriteAttributeString("name", entry.Owner.ToString()); break;
-                case EImageHashType.Card: xmlWriter.WriteAttributeString("id", ((TriadCard)entry.Owner).Id.ToString()); break;
-                case EImageHashType.Cactpot: xmlWriter.WriteAttributeString("id", entry.Owner.ToString()); break;
-                default: break;
-            }
+            return list;
+        }
 
-            xmlWriter.WriteEndElement();
+        public void StoreDigitHashes(List<ImagePatternDigit> entries, JsonWriter jsonWriter)
+        {
+            entries.Sort();
+            foreach (ImagePatternDigit entry in entries)
+            {
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WriteInt(entry.Value, "id");
+                jsonWriter.WriteString(entry.Hash, "hash");
+                jsonWriter.WriteObjectEnd();
+            }
+        }
+
+        public void StoreImageHashes(List<ImageHashData> entries, JsonWriter jsonWriter)
+        {
+            foreach (EImageHashType subType in Enum.GetValues(typeof(EImageHashType)))
+            {
+                if (subType != EImageHashType.None)
+                {
+                    List<ImageHashData> sortedSubtypeList = entries.FindAll(x => x.Type == subType);
+                    sortedSubtypeList.Sort();
+
+                    jsonWriter.WriteArrayStart(subType.ToString());
+                    foreach (ImageHashData entry in sortedSubtypeList)
+                    {
+                        jsonWriter.WriteObjectStart();
+                        switch (subType)
+                        {
+                            case EImageHashType.Card: jsonWriter.WriteString(((TriadCard)entry.Owner).Id.ToString(), "id"); break;
+                            default: jsonWriter.WriteString(entry.Owner.ToString(), "id"); break;
+                        }
+
+                        if (entry.Hash.ComplexHash != null)
+                        {
+                            jsonWriter.WriteString(entry.Hash.ComplexHash.ToString(), "hashC");
+                        }
+
+                        if (entry.Hash.SimpleHash != null)
+                        {
+                            jsonWriter.WriteString(entry.Hash.SimpleHash.ToString(), "hashS");
+                        }
+
+                        jsonWriter.WriteObjectEnd();
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+            }
         }
 
         private TriadGameModifier ParseRule(string ruleName)

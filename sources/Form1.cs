@@ -23,6 +23,7 @@ namespace FFTriadBuddy
         private bool bSuspendNpcContextUpdates;
         private bool bSuspendCardContextUpdates;
         private bool bUseScreenReader;
+        private bool bLoadedCloudSave;
         
         private TriadNpc currentNpc;
         private TriadDeck playerDeck;
@@ -35,6 +36,8 @@ namespace FFTriadBuddy
         private ScreenshotAnalyzer screenReader;
         private FormOverlay overlayForm;
         private MessageFilter scrollFilter;
+
+        private static CloudStorage.GoogleDriveService cloudStorage;
 
         private static Color gameHintLabelColor = Color.FromArgb(255, 193, 186);
         private static Color gameHintLabelHighlightColor = Color.FromArgb(0xce, 0x15, 0x00);
@@ -215,6 +218,10 @@ namespace FFTriadBuddy
                                 cardIconImages.Images.Add(nullImg);
                             }
                         }
+
+                        cloudStorage = new CloudStorage.GoogleDriveService(
+                            CloudStorage.GoogleClientIdentifiers.Keys,
+                            new CloudStorage.GoogleOAuth2.Token() { refreshToken = PlayerSettingsDB.Get().cloudToken });
                     }
                 }
             }
@@ -275,6 +282,7 @@ namespace FFTriadBuddy
             InitializeCardsUI();
             InitializeNpcUI();
             InitializeScreenshotUI();
+            InitializeCloudStorage();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -286,29 +294,17 @@ namespace FFTriadBuddy
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
-            if (currentNpc != null && playerDeck != null)
-            {
-                bool bCanAdd = true;
-                if (playerDB.lastDeck.ContainsKey(currentNpc))
-                {
-                    if (playerDB.lastDeck[currentNpc].Equals(playerDeck))
-                    {
-                        bCanAdd = false;
-                    }
-                    else
-                    {
-                        playerDB.lastDeck.Remove(currentNpc);
-                    }
-                }
-
-                if (bCanAdd)
-                {
-                    playerDB.lastDeck.Add(currentNpc, new TriadDeck(playerDeck.knownCards));
-                }
-            }
-
+            playerDB.UpdatePlayerDeckForNpc(currentNpc, playerDeck);
             playerDB.useAutoScan = (overlayForm != null) && overlayForm.IsUsingAutoScan();
+            playerDB.cloudToken = (cloudStorage != null) ? cloudStorage.GetAuthToken().refreshToken : null;
+
+            bool bShouldSaveInCloud = playerDB.isDirty;
             playerDB.Save();
+
+            if (bShouldSaveInCloud && checkBoxUseCloudSaves.Checked && cloudStorage != null)
+            {
+                SaveCloudSettings();
+            }
         }
 
         private void labelUpdateNotify_Click(object sender, EventArgs e)
@@ -385,7 +381,6 @@ namespace FFTriadBuddy
             comboBoxNpc.SelectedItem = npcToSelect;
 
             updateDeckState();
-            groupBox1.Visible = false;
         }
 
         private void conditionalLockAtSetup(bool lockMe)
@@ -402,43 +397,28 @@ namespace FFTriadBuddy
             if (newSelectedNpc != currentNpc)
             {
                 PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
-                if (currentNpc != null && playerDeck != null)
-                {
-                    bool bCanAdd = true;
-                    if (playerDB.lastDeck.ContainsKey(currentNpc))
-                    {
-                        if (playerDB.lastDeck[currentNpc].Equals(playerDeck))
-                        {
-                            bCanAdd = false;
-                        }
-                        else
-                        {
-                            playerDB.lastDeck.Remove(currentNpc);
-                        }
-                    }
-
-                    if (bCanAdd)
-                    {
-                        playerDB.lastDeck.Add(currentNpc, new TriadDeck(playerDeck.knownCards));
-                    }
-                }
+                playerDB.UpdatePlayerDeckForNpc(currentNpc, playerDeck);
 
                 currentNpc = newSelectedNpc;
                 overlayForm.SetNpc(newSelectedNpc);
 
+                TriadCard[] cardsCopy = null;
                 if (playerDB.lastDeck.ContainsKey(currentNpc))
                 {
-                    playerDeck = PlayerSettingsDB.Get().lastDeck[currentNpc];
+                    TriadDeck savedDeck = PlayerSettingsDB.Get().lastDeck[currentNpc];
+                    if (savedDeck != null && savedDeck.knownCards.Count == 5)
+                    {
+                        cardsCopy = savedDeck.knownCards.ToArray();
+                    }
                 }
-                if (playerDeck == null)
+                if (cardsCopy == null)
                 {
-                    playerDeck = new TriadDeck(PlayerSettingsDB.Get().starterCards);
+                    cardsCopy = new TriadCard[5];
+                    Array.Copy(PlayerSettingsDB.Get().starterCards, cardsCopy, cardsCopy.Length);
                 }
 
-                if (playerDeck != null && playerDeck.knownCards.Count == 5)
-                {
-                    deckCtrlSetup.SetDeck(playerDeck);
-                }
+                playerDeck = new TriadDeck(cardsCopy);
+                deckCtrlSetup.SetDeck(playerDeck);
 
                 updateGameUIAfterDeckChange();
             }
@@ -462,6 +442,7 @@ namespace FFTriadBuddy
         {
             InitializeGameUI();
             overlayForm.UpdatePlayerDeck(playerDeck);
+            PlayerSettingsDB.Get().UpdatePlayerDeckForNpc(currentNpc, playerDeck);
 
             string ruleDesc = "";
             foreach (TriadGameModifier mod in currentNpc.Rules)
@@ -500,7 +481,7 @@ namespace FFTriadBuddy
             labelOptNumPossible.Text = numPossibleStr;
             labelOptNumTested.Text = "0";
             labelOptProgress.Text = "0%";
-            groupBox1.Visible = true;
+            tabControlSetupDetails.SelectedTab = tabPageSetupOptimizerStats;
 
             await deckOptimizer.Process(currentNpc, gameMods, lockedCards);
 
@@ -525,6 +506,13 @@ namespace FFTriadBuddy
 
             updateDeckState();
             updateGameUIAfterDeckChange();
+            timerSetupDetails.Start();
+        }
+
+        private void timerSetupDetails_Tick(object sender, EventArgs e)
+        {
+            timerSetupDetails.Stop();
+            tabControlSetupDetails.SelectedTab = tabPageSetupCloud;
         }
 
         private void buttonOptimizeAbort_Click(object sender, EventArgs e)
@@ -718,6 +706,7 @@ namespace FFTriadBuddy
                 {
                     PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
                     playerDB.ownedCards.Remove(card);
+                    playerDB.MarkDirty();
 
                     if (e.Item.Checked)
                     {
@@ -734,11 +723,22 @@ namespace FFTriadBuddy
         private void updateOwnedCards(TriadCard card)
         {
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
-            bool bIsOwned = playerDB.ownedCards.Contains(card);
+            bool bIsOwned = (card != null) && playerDB.ownedCards.Contains(card);
+
+            if (card == null) { bSuspendCardContextUpdates = true; }
 
             foreach (ListViewItem lvi in listViewCards.Items)
             {
-                if (lvi.Tag == card)
+                if (card == null)
+                {
+                    TriadCard cardTag = (TriadCard)lvi.Tag;
+                    bIsOwned = playerDB.ownedCards.Contains(cardTag);
+
+                    lvi.SubItems[4].Text = bIsOwned ? "Yes" : "";
+                    lvi.BackColor = bIsOwned ? Color.FromArgb(0xb8, 0xfc, 0xd2) : SystemColors.Window;
+                    lvi.Checked = bIsOwned;
+                }
+                else if (lvi.Tag == card)
                 {
                     lvi.SubItems[4].Text = bIsOwned ? "Yes" : "";
                     lvi.BackColor = bIsOwned ? Color.FromArgb(0xb8, 0xfc, 0xd2) : SystemColors.Window;
@@ -748,7 +748,11 @@ namespace FFTriadBuddy
                 }
             }
 
-            if (!TabControlNoTabs.bIsRoutingCreateMesage)
+            if (card == null)
+            {
+                UpdateCardViewGrids();
+            }
+            else if (!TabControlNoTabs.bIsRoutingCreateMesage)
             {
                 UpdateOwnedCardInGrids(card, bIsOwned);
             }
@@ -757,6 +761,8 @@ namespace FFTriadBuddy
 
             updateNpcRewards(card);
             updateDeckState();
+
+            if (card == null) { bSuspendCardContextUpdates = false; }
         }
 
         private void contextMenuStripFindCard_Opened(object sender, EventArgs e)
@@ -820,6 +826,7 @@ namespace FFTriadBuddy
             if (!bSuspendCardContextUpdates)
             {
                 PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+                playerDB.MarkDirty();
                 bool bWasOwned = playerDB.ownedCards.Contains(card);
                 if (bWasOwned)
                 {
@@ -1005,7 +1012,7 @@ namespace FFTriadBuddy
             foreach (ListViewItem lvi in listViewNpcs.Items)
             {
                 TriadNpc npc = lvi.Tag as TriadNpc;
-                if (npc != null && npc.Rewards.Contains(changedCard))
+                if (npc != null && (npc.Rewards.Contains(changedCard) || changedCard == null))
                 {
                     string rewardDesc = "";
                     foreach (TriadCard card in npc.Rewards)
@@ -1058,6 +1065,7 @@ namespace FFTriadBuddy
 
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
             playerDB.completedNpcs.Remove(npc);
+            playerDB.MarkDirty();
 
             if (bIsCompleted)
             {
@@ -1125,6 +1133,7 @@ namespace FFTriadBuddy
 
                 TriadCard card = contextNpc.Rewards[rewardIdx];
                 PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+                playerDB.MarkDirty();
                 playerDB.ownedCards.Remove(card);
 
                 if (senderItem.Checked)
@@ -1883,6 +1892,7 @@ namespace FFTriadBuddy
         private void buttonRemoveLocalHashes_Click(object sender, EventArgs e)
         {
             PlayerSettingsDB.Get().customHashes.Clear();
+            PlayerSettingsDB.Get().MarkDirty();
             screenReader.currentHashDetections.Clear();
             ShowScreenshotState();
         }
@@ -2015,5 +2025,201 @@ namespace FFTriadBuddy
 
         #endregion
 
+        #region Cloud storage
+
+        private void InitializeCloudStorage()
+        {
+            PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+            playerDB.OnUpdated += PlayerDB_OnUpdated;
+
+            bLoadedCloudSave = false;
+            checkBoxUseCloudSaves.Checked = playerDB.useCloudStorage;
+            UpdateCloudState();
+        }
+
+        private void PlayerDB_OnUpdated(bool bCards, bool bNpcs, bool bDecks)
+        {
+            Logger.WriteLine("Applying cloud save (cards:" + bCards + ", npcs:" + bNpcs + ", decks:" + bDecks + ")");
+
+            if (bCards)
+            {
+                updateOwnedCards(null);
+            }
+
+            if (bNpcs)
+            {
+                InitializeNpcUI();
+            }
+
+            if (bDecks)
+            {
+                PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+                if (playerDB.lastDeck.ContainsKey(currentNpc))
+                {
+                    TriadDeck updatedDeck = PlayerSettingsDB.Get().lastDeck[currentNpc];
+                    if (!updatedDeck.Equals(playerDeck) && updatedDeck.knownCards.Count == 5)
+                    {
+                        TriadCard[] cardsCopy = updatedDeck.knownCards.ToArray();
+                        playerDeck = new TriadDeck(cardsCopy);
+                        deckCtrlSetup.SetDeck(playerDeck);
+                    }
+
+                    updateGameUIAfterDeckChange();
+                }
+            }
+
+            if (cloudStorage.GetState() == CloudStorage.EState.NoErrors && (bCards || bNpcs || bDecks))
+            {
+                labelCloudState.Text = "Cloud save applied";
+            }
+        }
+
+        private void checkBoxUseCloudSaves_CheckedChanged(object sender, EventArgs e)
+        {
+            CloudStorage.GoogleOAuth2.KillPendingAuthorization();
+            UpdateCloudState();
+
+            PlayerSettingsDB.Get().useCloudStorage = checkBoxUseCloudSaves.Checked;
+
+            timerCloudSave.Enabled = checkBoxUseCloudSaves.Checked;
+            if (checkBoxUseCloudSaves.Checked && cloudStorage != null && cloudStorage.GetState() == CloudStorage.EState.NotInitialized)
+            {
+                buttonCloudAuth_Click(null, null);
+            }
+        }
+
+        private async void buttonCloudAuth_Click(object sender, EventArgs e)
+        {
+            if (cloudStorage != null && !bLoadedCloudSave)
+            {
+                UpdateCloudState(CloudStorage.EState.AuthInProgress);
+
+                try
+                {
+                    await cloudStorage.InitFileList();
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Exception: " + ex);
+                }
+
+                UpdateCloudState();
+                PlayerSettingsDB.Get().cloudToken = cloudStorage.GetAuthToken().refreshToken;
+
+                bool bShouldSaveSettings = await LoadCloudSettings();
+                bLoadedCloudSave = true;
+
+                if (bShouldSaveSettings)
+                {
+                    SaveCloudSettings();
+                }
+            }
+        }
+
+        private void UpdateCloudState(CloudStorage.EState forcedState = CloudStorage.EState.NoErrors)
+        {
+            bool bShowLastResponse = false;
+            bool bEnabledAuthButton = false;
+
+            if (checkBoxUseCloudSaves.Checked)
+            {
+                if (cloudStorage != null)
+                {
+                    CloudStorage.EState showState = (forcedState != CloudStorage.EState.NoErrors) ? forcedState : cloudStorage.GetState();
+                    switch (showState)
+                    {
+                        case CloudStorage.EState.NoErrors: labelCloudState.Text = "Active"; break;
+                        case CloudStorage.EState.ApiFailure: labelCloudState.Text = "API call failed"; bShowLastResponse = true; break;
+                        case CloudStorage.EState.NotAuthorized: labelCloudState.Text = "Not authorized"; bEnabledAuthButton = true; break;
+                        case CloudStorage.EState.AuthInProgress: labelCloudState.Text = "Authorizing..."; break;
+                        case CloudStorage.EState.NotInitialized: labelCloudState.Text = "Scanning..."; break;
+                        default: labelCloudState.Text = ""; break;
+                    }
+                }
+                else
+                {
+                    labelCloudState.Text = "Database failure";
+                }
+            }
+            else
+            {
+                labelCloudState.Text = "Disabled";
+            }
+
+            buttonCloudAuth.Enabled = bEnabledAuthButton;
+            labelCloudApiTitle.Visible = bShowLastResponse;
+            labelCloudApiResponse.Visible = bShowLastResponse;
+
+            if (bShowLastResponse)
+            {
+                labelCloudApiResponse.Text = (cloudStorage != null) ? cloudStorage.GetLastApiResponse() : "";
+            }
+        }
+
+        private async Task<bool> LoadCloudSettings()
+        {
+            string fileContent = null;
+            try
+            {
+                fileContent = await cloudStorage.DownloadTextFile("FFTriadBuddy-settings.json");
+
+                Logger.WriteLine("Loaded cloud save");
+                if (cloudStorage.GetState() == CloudStorage.EState.NoErrors)
+                {
+                    labelCloudState.Text = "Synced";
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Exception: " + ex);
+            }
+
+            bool bShouldSaveSettings = true;
+            if (!string.IsNullOrEmpty(fileContent))
+            {
+                bShouldSaveSettings = PlayerSettingsDB.Get().MergeWithContent(fileContent);
+            }
+
+            return bShouldSaveSettings;
+        }
+
+        private async void SaveCloudSettings()
+        {
+            string fileContent = PlayerSettingsDB.Get().SaveToString();
+            if (!string.IsNullOrEmpty(fileContent))
+            {
+                try
+                {
+                    await cloudStorage.UploadTextFile("FFTriadBuddy-settings.json", fileContent);
+
+                    Logger.WriteLine("Saved settings in cloud");
+                    if (cloudStorage.GetState() == CloudStorage.EState.NoErrors)
+                    {
+                        labelCloudState.Text = "Saved settings";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Exception: " + ex);
+                }
+            }
+        }
+
+        private void timerCloudSave_Tick(object sender, EventArgs e)
+        {
+            if (bLoadedCloudSave && cloudStorage != null)
+            {
+                if (PlayerSettingsDB.Get().isDirty)
+                {
+                    SaveCloudSettings();
+                }
+                else
+                {
+                    labelCloudState.Text = "Synced";
+                }
+            }
+        }
+
+        #endregion
     }
 }

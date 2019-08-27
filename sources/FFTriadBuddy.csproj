@@ -81,6 +81,9 @@
     <Compile Include="CardGridCtrl.Designer.cs">
       <DependentUpon>CardGridCtrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CloudStorage\GoogleDriveService.cs" />
+    <Compile Include="CloudStorage\GoogleOAuth2.cs" />
+    <Compile Include="CloudStorage\JsonParser.cs" />
     <Compile Include="DataCoverter.cs" />
     <Compile Include="DeckCtrl.cs">
       <SubType>UserControl</SubType>
@@ -168,6 +171,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="card.ico" />
+  </ItemGroup>
+  <ItemGroup Condition="Exists('CloudStorage\GoogleClientIdentifiers.cs')">
+    <Compile Include="CloudStorage\GoogleClientIdentifiers.cs" />
+    <Compile Remove="CloudStorage\GoogleClientMissingIdentifiers.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="!Exists('CloudStorage\GoogleClientIdentifiers.cs')">
+    <Compile Include="CloudStorage\GoogleClientMissingIdentifiers.cs" />
+    <Compile Remove="CloudStorage\GoogleClientIdentifiers.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

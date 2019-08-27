@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml;
+using CloudStorage;
 
 namespace FFTriadBuddy
 {
@@ -14,13 +16,21 @@ namespace FFTriadBuddy
         public TriadCard[] starterCards;
         public Dictionary<TriadNpc, TriadDeck> lastDeck;
         public bool useAutoScan;
+        public bool useCloudStorage;
+        public bool isDirty;
+        public string DBPathDeprecated;
         public string DBPath;
+        public string cloudToken;
         private List<ImageHashData> lockedHashes;
         private static PlayerSettingsDB instance = new PlayerSettingsDB();
 
+        public delegate void UpdatedDelegate(bool bCards, bool bNpcs, bool bDecks);
+        public event UpdatedDelegate OnUpdated;
+
         public PlayerSettingsDB()
         {
-            DBPath = "player.xml";
+            DBPathDeprecated = "player.xml";
+            DBPath = "FFTriadBuddy-settings.json";
             ownedCards = new List<TriadCard>();
             completedNpcs = new List<TriadNpc>();
             lastDeck = new Dictionary<TriadNpc, TriadDeck>();
@@ -29,6 +39,9 @@ namespace FFTriadBuddy
             customDigits = new List<ImagePatternDigit>();
             lockedHashes = new List<ImageHashData>();
             useAutoScan = false;
+            useCloudStorage = false;
+            isDirty = false;
+            cloudToken = null;
         }
 
         public static PlayerSettingsDB Get()
@@ -38,97 +51,38 @@ namespace FFTriadBuddy
 
         public bool Load()
         {
-            string FilePath = AssetManager.Get().CreateFilePath(DBPath);
-            TriadCardDB cardDB = TriadCardDB.Get();
-            TriadNpcDB npcDB = TriadNpcDB.Get();
+            bool bResult = false;
 
+            string FilePath = AssetManager.Get().CreateFilePath(DBPathDeprecated);
             if (File.Exists(FilePath))
             {
-                try
+                using (Stream file = File.OpenRead(FilePath))
                 {
-                    XmlDocument xdoc = new XmlDocument();
-                    xdoc.Load(FilePath);
-
-                    foreach (XmlNode testNode in xdoc.DocumentElement.ChildNodes)
-                    {
-                        try
-                        {
-                            XmlElement testElem = (XmlElement)testNode;
-                            if (testElem != null && testElem.Name == "ui")
-                            {
-                                int autoScanNum = int.Parse(testElem.GetAttribute("autoScan"));
-                                useAutoScan = (autoScanNum == 1);
-                            }
-                            else if (testElem != null && testElem.Name == "card")
-                            {
-                                int cardId = int.Parse(testElem.GetAttribute("id"));
-                                ownedCards.Add(cardDB.cards[cardId]);
-                            }
-                            else if (testElem != null && testElem.Name == "npc")
-                            {
-                                int npcId = int.Parse(testElem.GetAttribute("id"));
-                                completedNpcs.Add(npcDB.npcs[npcId]);
-                            }
-                            else if (testElem != null && testElem.Name == "deck")
-                            {
-                                int npcId = int.Parse(testElem.GetAttribute("id"));
-                                TriadNpc npc = TriadNpcDB.Get().npcs[npcId];
-                                if (npc != null)
-                                {
-                                    TriadDeck deckCards = new TriadDeck();
-                                    foreach (XmlAttribute attr in testElem.Attributes)
-                                    {
-                                        if (attr.Name.StartsWith("card"))
-                                        {
-                                            string cardNumStr = attr.Name.Substring(4);
-                                            int cardNum = int.Parse(cardNumStr);
-                                            while (deckCards.knownCards.Count < (cardNum + 1))
-                                            {
-                                                deckCards.knownCards.Add(null);
-                                            }
-
-                                            int cardId = int.Parse(attr.Value);
-                                            deckCards.knownCards[cardNum] = TriadCardDB.Get().cards[cardId];
-                                        }
-                                    }
-
-                                    lastDeck.Add(npc, deckCards);
-                                }
-                            }
-                            else
-                            {
-                                ImageHashData customHash = ImageHashDB.Get().LoadHashEntry(testElem);
-                                if (customHash != null)
-                                {
-                                    customHashes.Add(customHash);
-                                }
-                                else
-                                {
-                                    ImagePatternDigit customDigit = ImageHashDB.Get().LoadDigitEntry(testElem);
-                                    if (customDigit.Value > 0)
-                                    {
-                                        customDigits.Add(customDigit);
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.WriteLine("Loading failed! Exception:" + ex);
-                        }
-                    }
+                    bResult = LoadFromXmlStream(file);
+                    file.Close();
                 }
-                catch (Exception ex)
+            }
+            else
+            {
+                FilePath = AssetManager.Get().CreateFilePath(DBPath);
+                if (File.Exists(FilePath))
                 {
-                    Logger.WriteLine("Loading failed! Exception:" + ex);
+                    using (StreamReader file = new StreamReader(FilePath))
+                    {
+                        string fileContent = file.ReadToEnd();
+                        bResult = LoadFromJson(fileContent);
+                        file.Close();
+                    }
                 }
             }
 
+            TriadCardDB cardDB = TriadCardDB.Get();
             starterCards[0] = cardDB.Find("Dodo");
             starterCards[1] = cardDB.Find("Sabotender");
             starterCards[2] = cardDB.Find("Bomb");
             starterCards[3] = cardDB.Find("Mandragora");
             starterCards[4] = cardDB.Find("Coeurl");
+
             foreach (TriadCard starterCard in starterCards)
             {
                 if (!ownedCards.Contains(starterCard))
@@ -138,85 +92,392 @@ namespace FFTriadBuddy
             }
 
             Logger.WriteLine("Loaded player cards: " + ownedCards.Count + ", npcs: " + completedNpcs.Count + ", hashes: " + customHashes.Count);
+            return bResult;
+        }
+
+        public bool LoadFromXmlStream(Stream stream)
+        {
+            TriadCardDB cardDB = TriadCardDB.Get();
+            TriadNpcDB npcDB = TriadNpcDB.Get();
+
+            try
+            {
+                XmlDocument xdoc = new XmlDocument();
+                xdoc.Load(stream);
+
+                foreach (XmlNode testNode in xdoc.DocumentElement.ChildNodes)
+                {
+                    try
+                    {
+                        XmlElement testElem = (XmlElement)testNode;
+                        if (testElem != null && testElem.Name == "ui")
+                        {
+                            int autoScanNum = int.Parse(testElem.GetAttribute("autoScan"));
+                            useAutoScan = (autoScanNum == 1);
+                        }
+                        else if (testElem != null && testElem.Name == "cloud")
+                        {
+                            int useNum = int.Parse(testElem.GetAttribute("use"));
+                            useCloudStorage = (useNum == 1);
+                            cloudToken = testElem.HasAttribute("token") ? testElem.GetAttribute("token") : null;
+                        }
+                        else if (testElem != null && testElem.Name == "card")
+                        {
+                            int cardId = int.Parse(testElem.GetAttribute("id"));
+                            ownedCards.Add(cardDB.cards[cardId]);
+                        }
+                        else if (testElem != null && testElem.Name == "npc")
+                        {
+                            int npcId = int.Parse(testElem.GetAttribute("id"));
+                            completedNpcs.Add(npcDB.npcs[npcId]);
+                        }
+                        else if (testElem != null && testElem.Name == "deck")
+                        {
+                            int npcId = int.Parse(testElem.GetAttribute("id"));
+                            TriadNpc npc = TriadNpcDB.Get().npcs[npcId];
+                            if (npc != null)
+                            {
+                                TriadDeck deckCards = new TriadDeck();
+                                foreach (XmlAttribute attr in testElem.Attributes)
+                                {
+                                    if (attr.Name.StartsWith("card"))
+                                    {
+                                        string cardNumStr = attr.Name.Substring(4);
+                                        int cardNum = int.Parse(cardNumStr);
+                                        while (deckCards.knownCards.Count < (cardNum + 1))
+                                        {
+                                            deckCards.knownCards.Add(null);
+                                        }
+
+                                        int cardId = int.Parse(attr.Value);
+                                        deckCards.knownCards[cardNum] = TriadCardDB.Get().cards[cardId];
+                                    }
+                                }
+
+                                lastDeck.Add(npc, deckCards);
+                            }
+                        }
+                        else
+                        {
+                            ImageHashData customHash = ImageHashDB.Get().LoadHashEntry(testElem);
+                            if (customHash != null)
+                            {
+                                customHashes.Add(customHash);
+                            }
+                            else
+                            {
+                                ImagePatternDigit customDigit = ImageHashDB.Get().LoadDigitEntry(testElem);
+                                if (customDigit.Value > 0)
+                                {
+                                    customDigits.Add(customDigit);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("Loading failed! Exception:" + ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Loading failed! Exception:" + ex);
+            }
+
             return ownedCards.Count > 0;
+        }
+
+        public bool LoadFromJson(string jsonStr)
+        {
+            TriadCardDB cardDB = TriadCardDB.Get();
+            TriadNpcDB npcDB = TriadNpcDB.Get();
+
+            try
+            {
+                JsonParser.ObjectValue jsonOb = JsonParser.ParseJson(jsonStr);
+
+                JsonParser.ObjectValue uiOb = (JsonParser.ObjectValue)jsonOb["ui", null];
+                if (uiOb != null)
+                {
+                    useAutoScan = (JsonParser.BoolValue)uiOb["autoScan", JsonParser.BoolValue.Empty];
+                }
+
+                JsonParser.ObjectValue cloudOb = (JsonParser.ObjectValue)jsonOb["cloud", null];
+                if (cloudOb != null)
+                {
+                    useCloudStorage = (JsonParser.BoolValue)cloudOb["use", JsonParser.BoolValue.Empty];
+                    cloudToken = (JsonParser.StringValue)cloudOb["token", null];
+                }
+
+                JsonParser.ArrayValue cardsArr = (JsonParser.ArrayValue)jsonOb["cards", JsonParser.ArrayValue.Empty];
+                foreach (JsonParser.Value value in cardsArr.entries)
+                {
+                    int cardId = (JsonParser.IntValue)value;
+                    ownedCards.Add(cardDB.cards[cardId]);
+                }
+
+                JsonParser.ArrayValue npcsArr = (JsonParser.ArrayValue)jsonOb["npcs", JsonParser.ArrayValue.Empty];
+                foreach (JsonParser.Value value in npcsArr.entries)
+                {
+                    int npcId = (JsonParser.IntValue)value;
+                    completedNpcs.Add(npcDB.npcs[npcId]);
+                }
+
+                JsonParser.ArrayValue decksArr = (JsonParser.ArrayValue)jsonOb["decks", JsonParser.ArrayValue.Empty];
+                foreach (JsonParser.Value value in decksArr.entries)
+                {
+                    JsonParser.ObjectValue deckOb = (JsonParser.ObjectValue)value;
+                    int npcId = (JsonParser.IntValue)deckOb["id"];
+
+                    TriadNpc npc = TriadNpcDB.Get().npcs[npcId];
+                    if (npc != null)
+                    {
+                        TriadDeck deckCards = new TriadDeck();
+
+                        cardsArr = (JsonParser.ArrayValue)deckOb["cards", JsonParser.ArrayValue.Empty];
+                        foreach (JsonParser.Value cardValue in cardsArr.entries)
+                        {
+                            int cardId = (JsonParser.IntValue)cardValue;
+                            deckCards.knownCards.Add(cardDB.cards[cardId]);
+                        }
+
+                        lastDeck.Add(npc, deckCards);
+                    }
+                }
+
+                JsonParser.ObjectValue imageHashesOb = (JsonParser.ObjectValue)jsonOb["images", null];
+                if (imageHashesOb != null)
+                {
+                    customHashes = ImageHashDB.Get().LoadImageHashes(imageHashesOb);
+                }
+
+                JsonParser.ArrayValue digitHashesArr = (JsonParser.ArrayValue)jsonOb["digits", null];
+                if (digitHashesArr != null)
+                {
+                    customDigits = ImageHashDB.Get().LoadDigitHashes(digitHashesArr);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Loading failed! Exception:" + ex);
+            }
+
+            return ownedCards.Count > 0;
+        }
+
+        public bool MergeWithContent(string jsonString)
+        {
+            PlayerSettingsDB mergeDB = new PlayerSettingsDB();
+            bool bLoaded = mergeDB.LoadFromJson(jsonString);
+            bool bHadUniqueSettings = false;
+
+            if (bLoaded)
+            {
+                bool bUpdatedOwnedCards = false;
+                foreach (TriadCard card in mergeDB.ownedCards)
+                {
+                    if (!ownedCards.Contains(card))
+                    {
+                        ownedCards.Add(card);
+                        bUpdatedOwnedCards = true;
+                    }
+                }
+                bHadUniqueSettings = bHadUniqueSettings || (ownedCards.Count > mergeDB.ownedCards.Count);
+
+                bool bUpdatedNpcs = false;
+                foreach (TriadNpc npc in mergeDB.completedNpcs)
+                {
+                    if (!completedNpcs.Contains(npc))
+                    {
+                        completedNpcs.Add(npc);
+                        bUpdatedNpcs = true;
+                    }
+                }
+                bHadUniqueSettings = bHadUniqueSettings || (completedNpcs.Count > mergeDB.completedNpcs.Count);
+
+                bool bUpdatedDecks = false;
+                foreach (KeyValuePair<TriadNpc, TriadDeck> kvp in mergeDB.lastDeck)
+                {
+                    if (!lastDeck.ContainsKey(kvp.Key))
+                    {
+                        lastDeck.Add(kvp.Key, kvp.Value);
+                    }
+
+                    // replace existing? skip for now...
+                }
+                bHadUniqueSettings = bHadUniqueSettings || (lastDeck.Count > mergeDB.lastDeck.Count);
+
+                OnUpdated.Invoke(bUpdatedOwnedCards, bUpdatedNpcs, bUpdatedDecks);
+            }
+
+            return bHadUniqueSettings;
         }
 
         public void Save()
         {
             string FilePath = AssetManager.Get().CreateFilePath(DBPath);
+            using (StreamWriter file = new StreamWriter(FilePath))
+            {
+                string jsonString = SaveToJson(false);
+                file.Write(jsonString);
+                file.Close();
+            }
+
+            string OldFilePath = AssetManager.Get().CreateFilePath(DBPathDeprecated);
+            if (File.Exists(OldFilePath))
+            {
+                try
+                {
+                    File.Delete(OldFilePath);
+                }
+                catch (Exception) { }
+            }
+        }
+
+        public string SaveToString()
+        {
+            isDirty = false;
+            return SaveToJson(true);
+        }
+
+        public string SaveToJson(bool bLimitedMode = false)
+        {
+            JsonWriter jsonWriter = new JsonWriter();
             try
             {
-                XmlWriterSettings writerSettings = new XmlWriterSettings();
-                writerSettings.Indent = true;
+                jsonWriter.WriteObjectStart();
 
-                XmlWriter xmlWriter = XmlWriter.Create(FilePath, writerSettings);
-                xmlWriter.WriteStartDocument();
-                xmlWriter.WriteStartElement("root");
-
+                if (!bLimitedMode)
                 {
-                    xmlWriter.WriteStartElement("ui");
-                    xmlWriter.WriteAttributeString("autoScan", useAutoScan ? "1" : "0");
-                    xmlWriter.WriteEndElement();
+                    jsonWriter.WriteObjectStart("ui");
+                    jsonWriter.WriteBool(useAutoScan, "autoScan");
+
+                    jsonWriter.WriteObjectEnd();
                 }
 
-                List<int> ownedIds = new List<int>();
-                foreach (TriadCard card in ownedCards)
+                if (!bLimitedMode)
                 {
-                    ownedIds.Add(card.Id);
-                }
-
-                ownedIds.Sort();
-                foreach (int id in ownedIds)
-                {
-                    xmlWriter.WriteStartElement("card");
-                    xmlWriter.WriteAttributeString("id", id.ToString());
-                    xmlWriter.WriteEndElement();
-                }
-
-                ownedIds.Clear();
-                foreach (TriadNpc npc in completedNpcs)
-                {
-                    ownedIds.Add(npc.Id);
-                }
-
-                ownedIds.Sort();
-                foreach (int id in ownedIds)
-                {
-                    xmlWriter.WriteStartElement("npc");
-                    xmlWriter.WriteAttributeString("id", id.ToString());
-                    xmlWriter.WriteEndElement();
-                }
-
-                foreach (KeyValuePair<TriadNpc, TriadDeck> kvp in lastDeck)
-                {
-                    xmlWriter.WriteStartElement("deck");
-                    xmlWriter.WriteAttributeString("id", kvp.Key.Id.ToString());
-                    for (int Idx = 0; Idx < kvp.Value.knownCards.Count; Idx++)
+                    jsonWriter.WriteObjectStart("cloud");
+                    jsonWriter.WriteBool(useCloudStorage, "use");
+                    if (cloudToken != null)
                     {
-                        xmlWriter.WriteAttributeString("card" + Idx, kvp.Value.knownCards[Idx].Id.ToString());
+                        jsonWriter.WriteString(cloudToken, "token");
                     }
 
-                    xmlWriter.WriteEndElement();
+                    jsonWriter.WriteObjectEnd();
                 }
 
-                customHashes.Sort();
-                foreach (ImageHashData customHash in customHashes)
                 {
-                    ImageHashDB.Get().StoreEntry(customHash, xmlWriter);
+                    List<int> listIds = new List<int>();
+                    foreach (TriadCard card in ownedCards)
+                    {
+                        listIds.Add(card.Id);
+                    }
+                    listIds.Sort();
+
+                    jsonWriter.WriteArrayStart("cards");
+                    foreach (int id in listIds)
+                    {
+                        jsonWriter.WriteInt(id);
+                    }
+
+                    jsonWriter.WriteArrayEnd();
                 }
 
-                customDigits.Sort();
-                foreach (ImagePatternDigit customDigit in customDigits)
                 {
-                    ImageHashDB.Get().StoreEntry(customDigit, xmlWriter);
+                    List<int> listIds = new List<int>();
+                    foreach (TriadNpc npc in completedNpcs)
+                    {
+                        listIds.Add(npc.Id);
+                    }
+                    listIds.Sort();
+
+                    jsonWriter.WriteArrayStart("npcs");
+                    foreach (int id in listIds)
+                    {
+                        jsonWriter.WriteInt(id);
+                    }
+
+                    jsonWriter.WriteArrayEnd();
                 }
 
-                xmlWriter.WriteEndDocument();
-                xmlWriter.Close();
+                {
+                    jsonWriter.WriteArrayStart("decks");
+                    foreach (KeyValuePair<TriadNpc, TriadDeck> kvp in lastDeck)
+                    {
+                        jsonWriter.WriteObjectStart();
+                        jsonWriter.WriteInt(kvp.Key.Id, "id");
+                        jsonWriter.WriteArrayStart("cards");
+                        for (int Idx = 0; Idx < kvp.Value.knownCards.Count; Idx++)
+                        {
+                            jsonWriter.WriteInt(kvp.Value.knownCards[Idx].Id);
+                        }
+                        jsonWriter.WriteArrayEnd();
+                        jsonWriter.WriteObjectEnd();
+                    }
+
+                    jsonWriter.WriteArrayEnd();
+                }
+
+                if (!bLimitedMode)
+                {
+                    jsonWriter.WriteObjectStart("images");
+                    ImageHashDB.Get().StoreImageHashes(customHashes, jsonWriter);
+                    jsonWriter.WriteObjectEnd();
+
+                    jsonWriter.WriteArrayStart("digits");
+                    ImageHashDB.Get().StoreDigitHashes(customDigits, jsonWriter);
+                    jsonWriter.WriteArrayEnd();
+                }
+
+                jsonWriter.WriteObjectEnd();
             }
             catch (Exception ex)
             {
                 Logger.WriteLine("Saving failed! Exception:" + ex);
+            }
+
+            return jsonWriter.ToString();
+        }
+
+        public void MarkDirty()
+        {
+            isDirty = true;
+        }
+
+        public void UpdatePlayerDeckForNpc(TriadNpc npc, TriadDeck deck)
+        {
+            if (npc != null && deck != null && deck.knownCards.Count == 5)
+            {
+                bool bIsStarterDeck = true;
+                for (int Idx = 0; Idx < starterCards.Length; Idx++)
+                {
+                    bIsStarterDeck = bIsStarterDeck && (starterCards[Idx] == deck.knownCards[Idx]);
+                }
+
+                if (!bIsStarterDeck)
+                {
+                    bool bChanged = true;
+                    if (lastDeck.ContainsKey(npc))
+                    {
+                        if (lastDeck[npc].Equals(deck))
+                        {
+                            bChanged = false;
+                        }
+                        else
+                        {
+                            lastDeck.Remove(npc);
+                        }
+                    }
+
+                    if (bChanged)
+                    {
+                        TriadCard[] deckCardsCopy = deck.knownCards.ToArray();
+                        lastDeck.Add(npc, new TriadDeck(deckCardsCopy));
+                        MarkDirty();
+                    }
+                }
             }
         }
 
@@ -232,6 +493,7 @@ namespace FFTriadBuddy
                     if (testDistance == 0)
                     {
                         customHashes.RemoveAt(Idx);
+                        MarkDirty();
                         break;
                     }
                 }
@@ -276,6 +538,7 @@ namespace FFTriadBuddy
             }
 
             customHashes.Add(hashData);
+            MarkDirty();
         }
 
         public void AddKnownDigit(ImagePatternDigit digitData)
@@ -290,6 +553,7 @@ namespace FFTriadBuddy
             }
 
             customDigits.Add(digitData);
+            MarkDirty();
         }
     }
 }
