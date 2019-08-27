@@ -44,13 +44,13 @@ namespace CloudStorage
 
         public class ClientIdentifier
         {
-            public string id;
-            public string secret;
-
             public override string ToString()
             {
-                return "ID:" + id + ", Secret:" + secret;
+                return "ID:" + GetID() + ", Secret:" + GetSecret();
             }
+
+            public virtual string GetID() { return ""; }
+            public virtual string GetSecret() { return ""; }
         }
 
         private static readonly string RequestAccessApi = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -114,7 +114,7 @@ namespace CloudStorage
                 "?redirect_uri=" + Uri.EscapeDataString(authListenUri) +
                 "&prompt=consent" +
                 "&response_type=code" +
-                "&client_id=" + clientIdentifier.id +
+                "&client_id=" + clientIdentifier.GetID() +
                 "&scope=" + Uri.EscapeDataString(AccessScopeAppSettings) +
                 "&access_type=offline";
 
@@ -159,8 +159,8 @@ namespace CloudStorage
                 {
                 new KeyValuePair<string, string>("code", authorizationCode),
                 new KeyValuePair<string, string>("redirect_uri", authListenUri),
-                new KeyValuePair<string, string>("client_id", clientIdentifier.id),
-                new KeyValuePair<string, string>("client_secret", clientIdentifier.secret),
+                new KeyValuePair<string, string>("client_id", clientIdentifier.GetID()),
+                new KeyValuePair<string, string>("client_secret", clientIdentifier.GetSecret()),
                 new KeyValuePair<string, string>("scope", AccessScopeAppSettings),
                 new KeyValuePair<string, string>("grant_type", "authorization_code"),
                 });
@@ -196,10 +196,10 @@ namespace CloudStorage
 
             HttpContent requestContent = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("client_secret", clientIdentifier.secret),
+                new KeyValuePair<string, string>("client_secret", clientIdentifier.GetSecret()),
                 new KeyValuePair<string, string>("grant_type", "refresh_token"),
                 new KeyValuePair<string, string>("refresh_token", tokenData.refreshToken),
-                new KeyValuePair<string, string>("client_id", clientIdentifier.id),
+                new KeyValuePair<string, string>("client_id", clientIdentifier.GetID()),
                 });
 
             requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
