@@ -118,9 +118,9 @@ namespace FFTriadBuddy
         private FastPixelMatch colorMatchRuleText = new FastPixelMatchMono(150, 255);
         private FastPixelMatch colorMatchCardBorder = new FastPixelMatchHSV(20, 40, 0, 100, 0, 100);
         private FastPixelMatch colorMatchCardNumber = new FastPixelMatchMono(220, 255);
-        private FastPixelMatch colorMatchCardOwnerRed1 = new FastPixelMatchHSV(0, 10, 30, 60, 20, 60);
-        private FastPixelMatch colorMatchCardOwnerRed2 = new FastPixelMatchHSV(350, 360, 30, 60, 20, 60);
-        private FastPixelMatch colorMatchCardOwnerBlue = new FastPixelMatchHSV(190, 260, 20, 60, 20, 60);
+        private FastPixelMatch colorMatchCardOwnerRed1 = new FastPixelMatchHueMono(0, 30, 150, 255);
+        private FastPixelMatch colorMatchCardOwnerRed2 = new FastPixelMatchHueMono(330, 360, 150, 255);
+        private FastPixelMatch colorMatchCardOwnerBlue = new FastPixelMatchHueMono(200, 280, 150, 255);
         private FastPixelMatch colorMatchTimerBox = new FastPixelMatchHSV(40, 60, 10, 40, 0, 100);
         private FastPixelMatch colorMatchTimerActive = new FastPixelMatchMono(80, 255);
         private FastPixelMatch colorMatchCactpotBack = new FastPixelMatchMono(0, 80);
@@ -310,7 +310,7 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    cachedScreenshot = LoadTestScreenshot(imagePath + "cactpot/23.png");
+                    cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-owner2.jpg");
 
                     cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
                 }
@@ -453,7 +453,8 @@ namespace FFTriadBuddy
 
                         if (currentTriadGame.board[Idx] != null)
                         {
-                            currentTriadGame.boardOwner[Idx] = ParseCardOwner(fastBitmap, cachedBoardCards[Idx], "board" + Idx);
+                            int gridCellLeft = cachedGridBox.Left + ((Idx % 3) * cachedGridBox.Width / 3);
+                            currentTriadGame.boardOwner[Idx] = ParseCardOwner(fastBitmap, cachedBoardCards[Idx], gridCellLeft, "board" + Idx);
                         }
                     }
 
@@ -1352,32 +1353,27 @@ namespace FFTriadBuddy
             return foundCard;
         }
 
-        private ETriadCardOwner ParseCardOwner(FastBitmapHSV bitmap, Rectangle cardRect, string debugName)
+        private ETriadCardOwner ParseCardOwner(FastBitmapHSV bitmap, Rectangle cardRect, int gridCellLeft, string debugName)
         {
             ETriadCardOwner owner = ETriadCardOwner.Unknown;
 
-            int testWidth = cardRect.Width / 4;
-            Rectangle[] testBounds = new Rectangle[2]
-            {
-                new Rectangle(cardRect.Left, cardRect.Top + (cardRect.Height / 4), testWidth, cardRect.Height / 2),
-                new Rectangle(cardRect.Right - testWidth, cardRect.Top + (cardRect.Height / 4), testWidth, cardRect.Height / 2),
-            };
+            int testWidth = 10;
+            int testHeight = cardRect.Height / 3;
+
+            Rectangle testBounds = new Rectangle(gridCellLeft + 5, cardRect.Top + ((cardRect.Height - testHeight) / 2), Math.Min(testWidth, cardRect.Left - gridCellLeft - 10), testHeight);
+            if (bDebugMode) { debugShapes.Add(testBounds); }
 
             int counterRed = 0;
             int counterBlue = 0;
-            foreach (Rectangle rect in testBounds)
-            {
-                for (int IdxY = rect.Top; IdxY < rect.Bottom; IdxY++)
-                {
-                    for (int IdxX = rect.Left; IdxX < rect.Right; IdxX++)
-                    {
-                        FastPixelHSV testPx = bitmap.GetPixel(IdxX, IdxY);
-                        counterRed += (colorMatchCardOwnerRed1.IsMatching(testPx) || colorMatchCardOwnerRed2.IsMatching(testPx)) ? 1 : 0;
-                        counterBlue += colorMatchCardOwnerBlue.IsMatching(testPx) ? 1 : 0;
-                    }
-                }
 
-                if (bDebugMode) { debugShapes.Add(rect); }
+            for (int IdxY = testBounds.Top; IdxY < testBounds.Bottom; IdxY++)
+            {
+                for (int IdxX = testBounds.Left; IdxX < testBounds.Right; IdxX++)
+                {
+                    FastPixelHSV testPx = bitmap.GetPixel(IdxX, IdxY);
+                    counterRed += (colorMatchCardOwnerRed1.IsMatching(testPx) || colorMatchCardOwnerRed2.IsMatching(testPx)) ? 1 : 0;
+                    counterBlue += colorMatchCardOwnerBlue.IsMatching(testPx) ? 1 : 0;
+                }
             }
 
             owner = (counterRed > 10 || counterBlue > 10) ? (counterRed > counterBlue ? ETriadCardOwner.Red : ETriadCardOwner.Blue) : ETriadCardOwner.Unknown;
