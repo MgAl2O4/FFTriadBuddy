@@ -191,10 +191,15 @@ namespace FFTriadBuddy
                     bResult = TriadCardDB.Get().Load();
                     bResult = bResult && TriadNpcDB.Get().Load();
                     bResult = bResult && ImageHashDB.Get().Load();
-                    bResult = bResult && PlayerSettingsDB.Get().Load();
 
                     if (bResult)
                     {
+                        bool bLoadedSettings = PlayerSettingsDB.Get().Load();
+                        if (!bLoadedSettings)
+                        {
+                            Logger.WriteLine("Warning: failed to load player settings!");
+                        }
+
                         TriadCardDB cardDB = TriadCardDB.Get();
                         cardIconImages = new ImageList
                         {
