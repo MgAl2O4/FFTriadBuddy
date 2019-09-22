@@ -163,6 +163,20 @@ namespace FFTriadBuddy
                     List<TriadCard> redUnknownCards = new List<TriadCard>();
                     string redCardsDebug = "";
 
+                    for (int Idx = 0; Idx < gameData.board.Length; Idx++)
+                    {
+                        if (gameData.board[Idx].owner == ETriadCardOwner.Blue)
+                        {
+                            blueCards.Add(gameData.board[Idx].card);
+                        }
+                        else
+                        {
+                            redCards.Add(gameData.board[Idx].card);
+                        }
+
+                        gameData.board[Idx] = null;
+                    }
+
                     if (deckBlueEx.numPlaced < deckRedEx.numPlaced)
                     {
                         // blue has cards on hand, all known
@@ -202,26 +216,11 @@ namespace FFTriadBuddy
                                 {
                                     redUnknownCards.Add(deckRedEx.deck.unknownCardPool[Idx]);
                                     redCardsDebug += deckRedEx.deck.unknownCardPool[Idx].Name + ":U, ";
-                                    break;
                                 }
                             }
                         }
 
                         gameData.state = ETriadGameState.InProgressRed;
-                    }
-
-                    for (int Idx = 0; Idx < gameData.board.Length; Idx++)
-                    {
-                        if (gameData.board[Idx].owner == ETriadCardOwner.Blue)
-                        {
-                            blueCards.Add(gameData.board[Idx].card);
-                        }
-                        else
-                        {
-                            redCards.Add(gameData.board[Idx].card);
-                        }
-
-                        gameData.board[Idx] = null;
                     }
 
                     gameData.deckBlue = new TriadDeckInstanceManual(new TriadDeck(blueCards));
