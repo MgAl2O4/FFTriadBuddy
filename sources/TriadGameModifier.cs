@@ -280,7 +280,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierSame : TriadGameModifier
     {
-        public TriadGameModifierSame() { RuleName = "Same"; bAllowCombo = true; Features = EFeature.CaptureNei; }
+        public TriadGameModifierSame() { RuleName = "Same"; bAllowCombo = true; Features = EFeature.CaptureNei | EFeature.CardPlaced; }
 
         public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
@@ -328,7 +328,7 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierPlus : TriadGameModifier
     {
-        public TriadGameModifierPlus() { RuleName = "Plus"; bAllowCombo = true; Features = EFeature.CaptureNei; }
+        public TriadGameModifierPlus() { RuleName = "Plus"; bAllowCombo = true; Features = EFeature.CaptureNei | EFeature.CardPlaced; }
 
         public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
