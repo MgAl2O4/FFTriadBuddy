@@ -723,4 +723,11 @@
     <reward id="270" />
     <reward id="266" />
   </npc>
+  <npc id="94" name="Eo Sigun" location="Il Mheg (22, 4)">
+    <deckA id0="274" id1="276" id2="0" id3="0" id4="0" />
+    <deckV id0="257" id1="111" id2="261" id3="103" id4="38" />
+    <rule name="Plus" />
+    <reward id="276" />
+    <reward id="274" />
+  </npc>
 </root>

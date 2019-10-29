@@ -14,6 +14,7 @@ namespace FFTriadBuddy
     {
         public string Name = null;
         public int MapIndex = 0;
+        public int TerritoryId = 0;
         public float Scale = 0.0f;
         public float OffsetX = 0.0f;
         public float OffsetY = 0.0f;
@@ -567,7 +568,7 @@ namespace FFTriadBuddy
             return idMap;
         }
 
-        private Dictionary<string, MapData> ParseMapData(string folderPath)
+        private Dictionary<int, MapData> ParseMapData(string folderPath)
         {
             Dictionary<int, string> mapNames = new Dictionary<int, string>();
             List<string[]> mapNameData = ParseCSVFile(folderPath + "PlaceName.csv");
@@ -586,33 +587,42 @@ namespace FFTriadBuddy
                 throw new Exception("Unable to parse map names from csv!");
             }
 
-            Dictionary<string, MapData> maps = new Dictionary<string, MapData>();
+            Dictionary<int, MapData> maps = new Dictionary<int, MapData>();
             List<string[]> mapData = ParseCSVFile(folderPath + "Map.csv");
-            if (mapData.Count > 0 && mapData[0].Length == 18)
+            if (mapData.Count > 0 && mapData[0].Length == 19)
             {
                 for (int Idx = 0; Idx < mapData.Count; Idx++)
                 {
-                    string mapCode = mapData[Idx][6];
+                    string mapCode = mapData[Idx][7];
                     if (mapCode.Length > 0 && !mapCode.StartsWith("default"))
                     {
-                        bool hasMapId = int.TryParse(mapData[Idx][11], out int mapNameId);
+                        bool hasMapId = int.TryParse(mapData[Idx][12], out int mapNameId);
                         if (!hasMapId || mapNames.ContainsKey(mapNameId))
                         {
-                            int mapIndex = int.Parse(mapData[Idx][3]);
-                            int scale = int.Parse(mapData[Idx][7]);
-                            int offsetX = int.Parse(mapData[Idx][8]);
-                            int offsetY = int.Parse(mapData[Idx][9]);
+                            int mapIndex = int.Parse(mapData[Idx][4]);
+                            int scale = int.Parse(mapData[Idx][8]);
+                            int offsetX = int.Parse(mapData[Idx][9]);
+                            int offsetY = int.Parse(mapData[Idx][10]);
+                            int terrId = int.Parse(mapData[Idx][16]);
 
                             MapData newMapData = new MapData();
                             newMapData.OffsetX = offsetX;
                             newMapData.OffsetY = offsetY;
                             newMapData.Scale = scale;
                             newMapData.MapIndex = mapIndex;
-                            newMapData.Name = hasMapId ? mapNames[mapNameId] : mapData[Idx][11];
+                            newMapData.Name = hasMapId ? mapNames[mapNameId] : mapData[Idx][12];
+                            newMapData.TerritoryId = terrId;
 
-                            if (!maps.ContainsKey(mapCode))
+                            if (!maps.ContainsKey(terrId))
                             {
-                                maps.Add(mapCode, newMapData);
+                                maps.Add(terrId, newMapData);
+                            }
+                            else
+                            {
+                                // found duplicate terriorty id
+                                MapData existingData = maps[terrId];
+                                // uh...
+                                Logger.WriteLine("Duplicate territory found, ignore '" + newMapData + "', keep using: '" + existingData + "'");
                             }
                         }
                     }
@@ -628,7 +638,7 @@ namespace FFTriadBuddy
 
         private Dictionary<int, string> ParseNpcLocations(string folderPath, List<int> npcIds)
         {
-            Dictionary<string, MapData> locationMap = ParseMapData(folderPath);
+            Dictionary<int, MapData> locationMap = ParseMapData(folderPath);
             string pattern = "ENpcBase#";
 
             Dictionary<int, string> npcLocationMap = new Dictionary<int, string>();
@@ -644,9 +654,9 @@ namespace FFTriadBuddy
                         {
                             float posX = float.Parse(posData[Idx][1], CultureInfo.InvariantCulture);
                             float posZ = float.Parse(posData[Idx][3], CultureInfo.InvariantCulture);
-                            string mapId = posData[Idx][8];
+                            int territoryId = int.Parse(posData[Idx][10]);
 
-                            MapData useMap = locationMap[mapId];
+                            MapData useMap = locationMap[territoryId];
                             string locationDesc = useMap.GetLocationDesc(posX, posZ);
                             npcLocationMap.Add(npcId, locationDesc);
                         }
