@@ -13,8 +13,7 @@ namespace FFTriadBuddy
     class MapData
     {
         public string Name = null;
-        public int MapIndex = 0;
-        public int TerritoryId = 0;
+        public string MapCode = null;
         public float Scale = 0.0f;
         public float OffsetX = 0.0f;
         public float OffsetY = 0.0f;
@@ -35,7 +34,7 @@ namespace FFTriadBuddy
 
         public override string ToString()
         {
-            return MapIndex + ":" + Name;
+            return MapCode + ":" + Name;
         }
     }
 
@@ -568,26 +567,9 @@ namespace FFTriadBuddy
             return idMap;
         }
 
-        private Dictionary<int, MapData> ParseMapData(string folderPath)
+        private Dictionary<string, MapData> ParseMapData(string folderPath)
         {
-            Dictionary<int, string> mapNames = new Dictionary<int, string>();
-            List<string[]> mapNameData = ParseCSVFile(folderPath + "PlaceName.csv");
-            if (mapNameData.Count > 0 && mapNameData[0].Length == 11)
-            {
-                for (int Idx = 0; Idx < mapNameData.Count; Idx++)
-                {
-                    if (mapNameData[Idx][1].Length > 0)
-                    {
-                        mapNames.Add(int.Parse(mapNameData[Idx][0]), mapNameData[Idx][1]);
-                    }
-                }
-            }
-            else
-            {
-                throw new Exception("Unable to parse map names from csv!");
-            }
-
-            Dictionary<int, MapData> maps = new Dictionary<int, MapData>();
+            Dictionary<string, MapData> maps = new Dictionary<string, MapData>();
             List<string[]> mapData = ParseCSVFile(folderPath + "Map.csv");
             if (mapData.Count > 0 && mapData[0].Length == 19)
             {
@@ -596,33 +578,27 @@ namespace FFTriadBuddy
                     string mapCode = mapData[Idx][7];
                     if (mapCode.Length > 0 && !mapCode.StartsWith("default"))
                     {
-                        bool hasMapId = int.TryParse(mapData[Idx][12], out int mapNameId);
-                        if (!hasMapId || mapNames.ContainsKey(mapNameId))
+                        MapData newMapData = new MapData();
+                        newMapData.MapCode = mapCode;
+                        newMapData.Scale = int.Parse(mapData[Idx][8]);
+                        newMapData.OffsetX = int.Parse(mapData[Idx][9]);
+                        newMapData.OffsetY = int.Parse(mapData[Idx][10]);
+                        newMapData.Name = mapData[Idx][12];
+
+                        if (!maps.ContainsKey(mapCode))
                         {
-                            int mapIndex = int.Parse(mapData[Idx][4]);
-                            int scale = int.Parse(mapData[Idx][8]);
-                            int offsetX = int.Parse(mapData[Idx][9]);
-                            int offsetY = int.Parse(mapData[Idx][10]);
-                            int terrId = int.Parse(mapData[Idx][16]);
-
-                            MapData newMapData = new MapData();
-                            newMapData.OffsetX = offsetX;
-                            newMapData.OffsetY = offsetY;
-                            newMapData.Scale = scale;
-                            newMapData.MapIndex = mapIndex;
-                            newMapData.Name = hasMapId ? mapNames[mapNameId] : mapData[Idx][12];
-                            newMapData.TerritoryId = terrId;
-
-                            if (!maps.ContainsKey(terrId))
+                            maps.Add(mapCode, newMapData);
+                        }
+                        else
+                        {
+                            MapData oldMapData = maps[mapCode];
+                            bool hasChanges = (oldMapData.Scale != newMapData.Scale) || (oldMapData.OffsetX != newMapData.OffsetX) || (oldMapData.OffsetY != newMapData.OffsetY);
+                            if (hasChanges)
                             {
-                                maps.Add(terrId, newMapData);
-                            }
-                            else
-                            {
-                                // found duplicate terriorty id
-                                MapData existingData = maps[terrId];
-                                // uh...
-                                Logger.WriteLine("Duplicate territory found, ignore '" + newMapData + "', keep using: '" + existingData + "'");
+                                Logger.WriteLine("Duplicate map code found: " + newMapData + ", using prev. Scale:" +
+                                    oldMapData.Scale + "<>" + newMapData.Scale + ", OffsetX:" +
+                                    oldMapData.OffsetX + "<>" + newMapData.OffsetX + ", OffsetY:" +
+                                    oldMapData.OffsetY + "<>" + newMapData.OffsetY + ".");
                             }
                         }
                     }
@@ -638,7 +614,7 @@ namespace FFTriadBuddy
 
         private Dictionary<int, string> ParseNpcLocations(string folderPath, List<int> npcIds)
         {
-            Dictionary<int, MapData> locationMap = ParseMapData(folderPath);
+            Dictionary<string, MapData> locationMap = ParseMapData(folderPath);
             string pattern = "ENpcBase#";
 
             Dictionary<int, string> npcLocationMap = new Dictionary<int, string>();
@@ -654,9 +630,9 @@ namespace FFTriadBuddy
                         {
                             float posX = float.Parse(posData[Idx][1], CultureInfo.InvariantCulture);
                             float posZ = float.Parse(posData[Idx][3], CultureInfo.InvariantCulture);
-                            int territoryId = int.Parse(posData[Idx][10]);
+                            string mapCode = posData[Idx][8];
 
-                            MapData useMap = locationMap[territoryId];
+                            MapData useMap = locationMap[mapCode];
                             string locationDesc = useMap.GetLocationDesc(posX, posZ);
                             npcLocationMap.Add(npcId, locationDesc);
                         }
