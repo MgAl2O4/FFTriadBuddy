@@ -353,6 +353,12 @@ namespace FFTriadBuddy
             {
                 if (type.IsSubclassOf(typeof(TriadGameModifier)))
                 {
+                    if (type == typeof(TriadGameModifierRoulette))
+                    {
+                        // roulette is special, don't include in roulette resolve dropdowns
+                        continue;
+                    }
+
                     TriadGameModifier modNew = (TriadGameModifier)Activator.CreateInstance(type);
                     modObjects.Add(modNew);
 
@@ -373,9 +379,18 @@ namespace FFTriadBuddy
             comboBoxRoulette3.Items.AddRange(modObjects.ToArray());
             comboBoxRoulette4.Items.AddRange(modObjects.ToArray());
 
+            // roulette: each region combo needs to use different instance, so they can be resolved separately
+            TriadGameModifier modRoulette = new TriadGameModifierRoulette();
+            modObjects.Add(modRoulette);
+            modObjects.Sort();
+
             comboBoxRegionRule1.Items.Clear();
             comboBoxRegionRule2.Items.Clear();
             comboBoxRegionRule1.Items.AddRange(modObjects.ToArray());
+
+            int roulettePos = modObjects.IndexOf(modRoulette);
+            modObjects[roulettePos] = new TriadGameModifierRoulette();
+
             comboBoxRegionRule2.Items.AddRange(modObjects.ToArray());
             comboBoxRegionRule1.SelectedItem = modNone;
             comboBoxRegionRule2.SelectedItem = modNone;

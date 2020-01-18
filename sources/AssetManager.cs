@@ -67,7 +67,9 @@ namespace FFTriadBuddy
             path = path.Replace("/", "\\");
             foreach (ZipArchiveEntry entry in assetArchive.Entries)
             {
-                if (entry.FullName.Equals(path, StringComparison.InvariantCultureIgnoreCase))
+                string compareName = entry.FullName.Replace("/", "\\");
+
+                if (compareName.Equals(path, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return entry.Open();
                 }

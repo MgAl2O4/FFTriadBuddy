@@ -35,7 +35,8 @@ namespace FFTriadBuddy
             try
             {
                 XmlDocument xdoc = new XmlDocument();
-                xdoc.Load(AssetManager.Get().GetAsset(DBPath));
+                Stream dataStream = AssetManager.Get().GetAsset(DBPath);
+                xdoc.Load(dataStream);
 
                 foreach (XmlNode cardNode in xdoc.DocumentElement.ChildNodes)
                 {
