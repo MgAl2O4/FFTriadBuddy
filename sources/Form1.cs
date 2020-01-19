@@ -411,6 +411,12 @@ namespace FFTriadBuddy
             timerSelectNpc.Enabled = lockMe;
         }
 
+        private void checkBoxSetupRules_CheckedChanged(object sender, EventArgs e)
+        {
+            // TODO: tournament presets instead of regional rules
+            updateGameUIAfterDeckChange();
+        }
+
         private void comboBoxNpc_SelectedIndexChanged(object sender, EventArgs e)
         {
             TriadNpc newSelectedNpc = (TriadNpc)comboBoxNpc.SelectedItem;
@@ -464,7 +470,7 @@ namespace FFTriadBuddy
             overlayForm.UpdatePlayerDeck(playerDeck);
             PlayerSettingsDB.Get().UpdatePlayerDeckForNpc(currentNpc, playerDeck);
 
-            string ruleDesc = "";
+            string ruleDesc = !checkBoxSetupRules.Checked ? "(disabled) " : "";
             foreach (TriadGameModifier mod in currentNpc.Rules)
             {
                 if (mod.GetType() != typeof(TriadGameModifierNone))
@@ -1207,7 +1213,11 @@ namespace FFTriadBuddy
             if ((currentNpc != null) && (playerDeck != null))
             {
                 gameSession = new TriadGameSession();
-                gameSession.modifiers.AddRange(currentNpc.Rules);
+                if (checkBoxSetupRules.Checked)
+                {
+                    gameSession.modifiers.AddRange(currentNpc.Rules);
+                }
+
                 gameSession.modifiers.Add((TriadGameModifier)comboBoxRegionRule1.SelectedItem);
                 gameSession.modifiers.Add((TriadGameModifier)comboBoxRegionRule2.SelectedItem);
                 foreach (TriadGameModifier mod in gameSession.modifiers)
@@ -2241,5 +2251,6 @@ namespace FFTriadBuddy
         }
 
         #endregion
+
     }
 }

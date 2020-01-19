@@ -214,6 +214,7 @@
             this.labelUpdateNotify = new System.Windows.Forms.Label();
             this.timerSetupDetails = new System.Windows.Forms.Timer(this.components);
             this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
+            this.checkBoxSetupRules = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.tabControlSetupDetails.SuspendLayout();
@@ -267,6 +268,7 @@
             // 
             // tabPageSetup
             // 
+            this.tabPageSetup.Controls.Add(this.checkBoxSetupRules);
             this.tabPageSetup.Controls.Add(this.tabControlSetupDetails);
             this.tabPageSetup.Controls.Add(this.buttonOptimizeAbort);
             this.tabPageSetup.Controls.Add(this.deckCtrlSetup);
@@ -943,6 +945,7 @@
             this.columnHeader10});
             this.listViewDetectionCards.FullRowSelect = true;
             this.listViewDetectionCards.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewDetectionCards.HideSelection = false;
             this.listViewDetectionCards.Location = new System.Drawing.Point(248, 0);
             this.listViewDetectionCards.MultiSelect = false;
             this.listViewDetectionCards.Name = "listViewDetectionCards";
@@ -976,6 +979,7 @@
             this.columnHeader7});
             this.listViewDetectionHashes.FullRowSelect = true;
             this.listViewDetectionHashes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewDetectionHashes.HideSelection = false;
             this.listViewDetectionHashes.Location = new System.Drawing.Point(0, 0);
             this.listViewDetectionHashes.MultiSelect = false;
             this.listViewDetectionHashes.Name = "listViewDetectionHashes";
@@ -1086,6 +1090,7 @@
             this.listViewRedDeck.BackColor = System.Drawing.Color.MistyRose;
             this.listViewRedDeck.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewRedDeck.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listViewRedDeck.HideSelection = false;
             this.listViewRedDeck.Location = new System.Drawing.Point(0, 0);
             this.listViewRedDeck.Name = "listViewRedDeck";
             this.listViewRedDeck.Size = new System.Drawing.Size(420, 141);
@@ -1974,6 +1979,7 @@
             // 
             // toolStripFindCardText
             // 
+            this.toolStripFindCardText.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripFindCardText.Name = "toolStripFindCardText";
             this.toolStripFindCardText.Size = new System.Drawing.Size(100, 23);
             this.toolStripFindCardText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindCardText_KeyDown);
@@ -2011,6 +2017,7 @@
             // 
             // toolStripFindNpcText
             // 
+            this.toolStripFindNpcText.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripFindNpcText.Name = "toolStripFindNpcText";
             this.toolStripFindNpcText.Size = new System.Drawing.Size(100, 23);
             this.toolStripFindNpcText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindNpcText_KeyDown);
@@ -2158,6 +2165,19 @@
             // 
             this.timerCloudSave.Interval = 10000;
             this.timerCloudSave.Tick += new System.EventHandler(this.timerCloudSave_Tick);
+            // 
+            // checkBoxSetupRules
+            // 
+            this.checkBoxSetupRules.AutoSize = true;
+            this.checkBoxSetupRules.Checked = true;
+            this.checkBoxSetupRules.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSetupRules.Location = new System.Drawing.Point(25, 65);
+            this.checkBoxSetupRules.Name = "checkBoxSetupRules";
+            this.checkBoxSetupRules.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxSetupRules.TabIndex = 25;
+            this.toolTip1.SetToolTip(this.checkBoxSetupRules, "Toggle npc rules, disable for tournament");
+            this.checkBoxSetupRules.UseVisualStyleBackColor = true;
+            this.checkBoxSetupRules.CheckedChanged += new System.EventHandler(this.checkBoxSetupRules_CheckedChanged);
             // 
             // Form1
             // 
@@ -2417,6 +2437,7 @@
         private System.Windows.Forms.Label labelCloudApiTitle;
         private System.Windows.Forms.Button buttonCloudAuth;
         private System.Windows.Forms.Timer timerCloudSave;
+        private System.Windows.Forms.CheckBox checkBoxSetupRules;
     }
 }
 
