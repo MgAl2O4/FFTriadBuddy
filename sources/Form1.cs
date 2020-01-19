@@ -191,6 +191,7 @@ namespace FFTriadBuddy
                     bResult = TriadCardDB.Get().Load();
                     bResult = bResult && TriadNpcDB.Get().Load();
                     bResult = bResult && ImageHashDB.Get().Load();
+                    bResult = bResult && TriadTournamentDB.Get().Load();
 
                     if (bResult)
                     {
@@ -347,6 +348,20 @@ namespace FFTriadBuddy
                 }
             }
 
+            comboBoxTournamentType.Items.Clear();
+            foreach (TriadTournament tournament in TriadTournamentDB.Get().tournaments)
+            {
+                if (tournament != null)
+                {
+                    comboBoxTournamentType.Items.Add(tournament);
+                }
+            }
+            
+            if (comboBoxTournamentType.Items.Count > 0)
+            {
+                comboBoxTournamentType.SelectedIndex = 0;
+            }
+
             List<TriadGameModifier> modObjects = new List<TriadGameModifier>();
             TriadGameModifier modNone = null;
             foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
@@ -413,8 +428,11 @@ namespace FFTriadBuddy
 
         private void checkBoxSetupRules_CheckedChanged(object sender, EventArgs e)
         {
-            // TODO: tournament presets instead of regional rules
-            updateGameUIAfterDeckChange();
+            tabControlSetupRules.SelectedTab = checkBoxSetupRules.Checked ? tabPageSetupRegion : tabPageSetupTournament;
+            if (!bSuspendSetupUpdates)
+            {
+                updateGameUIAfterDeckChange();
+            }
         }
 
         private void comboBoxNpc_SelectedIndexChanged(object sender, EventArgs e)
@@ -470,7 +488,7 @@ namespace FFTriadBuddy
             overlayForm.UpdatePlayerDeck(playerDeck);
             PlayerSettingsDB.Get().UpdatePlayerDeckForNpc(currentNpc, playerDeck);
 
-            string ruleDesc = !checkBoxSetupRules.Checked ? "(disabled) " : "";
+            string ruleDesc = "";
             foreach (TriadGameModifier mod in currentNpc.Rules)
             {
                 if (mod.GetType() != typeof(TriadGameModifierNone))
@@ -483,6 +501,7 @@ namespace FFTriadBuddy
             labelLevel.Text = currentNpc.Deck.GetPower().ToString();
             labelDescChance.Text = labelChance.Text;
             labelDescRules.Text = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : "(none)";
+            labelDescRules.Enabled = checkBoxSetupRules.Checked;
         }
 
         private async void buttonOptimize_Click(object sender, EventArgs e)
@@ -581,6 +600,30 @@ namespace FFTriadBuddy
             if (!bSuspendSetupUpdates)
             {
                 updateGameUIAfterDeckChange();
+            }
+        }
+
+        private void comboBoxTournamentType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string ruleDesc = "";
+            
+            TriadTournament currentTournament = (TriadTournament)comboBoxTournamentType.SelectedItem;
+            if (currentTournament != null)
+            {
+                foreach (TriadGameModifier mod in currentTournament.Rules)
+                {
+                    if (mod.GetType() != typeof(TriadGameModifierNone))
+                    {
+                        ruleDesc += mod.ToString() + ", ";
+                    }
+                }
+            }
+
+            labelTournamentRules.Text = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : "(none)";
+
+            if (!bSuspendSetupUpdates)
+            {
+                InitializeGameUI();
             }
         }
 
@@ -1216,6 +1259,14 @@ namespace FFTriadBuddy
                 if (checkBoxSetupRules.Checked)
                 {
                     gameSession.modifiers.AddRange(currentNpc.Rules);
+                }
+                else
+                {
+                    TriadTournament currentTournament = (TriadTournament)comboBoxTournamentType.SelectedItem;
+                    if (currentTournament != null)
+                    {
+                        gameSession.modifiers.AddRange(currentTournament.Rules);
+                    }
                 }
 
                 gameSession.modifiers.Add((TriadGameModifier)comboBoxRegionRule1.SelectedItem);
