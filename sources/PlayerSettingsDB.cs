@@ -18,7 +18,6 @@ namespace FFTriadBuddy
         public bool useAutoScan;
         public bool useCloudStorage;
         public bool isDirty;
-        public string DBPathDeprecated;
         public string DBPath;
         public string cloudToken;
         private List<ImageHashData> lockedHashes;
@@ -29,7 +28,6 @@ namespace FFTriadBuddy
 
         public PlayerSettingsDB()
         {
-            DBPathDeprecated = "player.xml";
             DBPath = "FFTriadBuddy-settings.json";
             ownedCards = new List<TriadCard>();
             completedNpcs = new List<TriadNpc>();
@@ -53,26 +51,20 @@ namespace FFTriadBuddy
         {
             bool bResult = false;
 
-            string FilePath = AssetManager.Get().CreateFilePath(DBPathDeprecated);
-            if (File.Exists(FilePath))
-            {
-                using (Stream file = File.OpenRead(FilePath))
-                {
-                    bResult = LoadFromXmlStream(file);
-                    file.Close();
-                }
-            }
-            else
+            string SettingsPath = Logger.GetOutputDir();
+            string FilePath = (SettingsPath != null) ? Path.Combine(SettingsPath, DBPath) : null;
+            if ((FilePath == null) && !File.Exists(FilePath))
             {
                 FilePath = AssetManager.Get().CreateFilePath(DBPath);
-                if (File.Exists(FilePath))
+            }
+
+            if (File.Exists(FilePath))
+            { 
+                using (StreamReader file = new StreamReader(FilePath))
                 {
-                    using (StreamReader file = new StreamReader(FilePath))
-                    {
-                        string fileContent = file.ReadToEnd();
-                        bResult = LoadFromJson(fileContent);
-                        file.Close();
-                    }
+                    string fileContent = file.ReadToEnd();
+                    bResult = LoadFromJson(fileContent);
+                    file.Close();
                 }
             }
 
@@ -316,7 +308,13 @@ namespace FFTriadBuddy
 
         public void Save()
         {
-            string FilePath = AssetManager.Get().CreateFilePath(DBPath);
+            string SettingsPath = Logger.GetOutputDir();
+            string FilePath = (SettingsPath != null) ? Path.Combine(SettingsPath, DBPath) : null;
+            if (FilePath == null)
+            {
+                FilePath = AssetManager.Get().CreateFilePath(DBPath);
+            }
+
             using (StreamWriter file = new StreamWriter(FilePath))
             {
                 string jsonString = SaveToJson(false);
@@ -324,14 +322,17 @@ namespace FFTriadBuddy
                 file.Close();
             }
 
-            string OldFilePath = AssetManager.Get().CreateFilePath(DBPathDeprecated);
-            if (File.Exists(OldFilePath))
+            FilePath = AssetManager.Get().CreateFilePath(DBPath);
+            if (File.Exists(FilePath))
             {
                 try
                 {
-                    File.Delete(OldFilePath);
+                    File.Delete(FilePath);
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Cleanup failed: " + ex);
+                }
             }
         }
 

@@ -278,17 +278,22 @@ namespace FFTriadBuddy
                     int iconId = 82500 + keyIdx;
                     string iconPath = iconId.ToString("000000") + ".png";
 
-                    TriadCard cardOb = new TriadCard(0, nameMap[keyIdx], iconPath,
-                        (ETriadCardRarity)(rarityIdx - 1), cardType,
-                        int.Parse(cardData[Idx][2]),
-                        int.Parse(cardData[Idx][3]),
-                        int.Parse(cardData[Idx][5]),
-                        int.Parse(cardData[Idx][4]),
-                        int.Parse(cardData[Idx][9]));
+                    int numUp = int.Parse(cardData[Idx][2]);
+                    int numDown = int.Parse(cardData[Idx][3]);
+                    int numRight = int.Parse(cardData[Idx][4]);
+                    int numLeft = int.Parse(cardData[Idx][5]);
 
-                    if (cardOb.IsValid())
+                    if (numUp > 0 && numDown > 0 && numRight > 0 && numLeft > 0)
                     {
-                        loadedCards.Add(keyIdx, cardOb);
+                        TriadCard cardOb = new TriadCard(0, nameMap[keyIdx], iconPath,
+                            (ETriadCardRarity)(rarityIdx - 1), cardType, 
+                            numUp, numDown, numLeft, numRight, 
+                            int.Parse(cardData[Idx][9]));
+
+                        if (cardOb.IsValid())
+                        {
+                            loadedCards.Add(keyIdx, cardOb);
+                        }
                     }
                 }
             }
@@ -308,10 +313,16 @@ namespace FFTriadBuddy
 
             foreach (KeyValuePair<int, TriadCard> kvp in cardMap)
             {
+                if (kvp.Key > 285)
+                {
+                    int a = 1;
+                    a++;
+                }
+
                 if (kvp.Key >= newCardId)
                 {
-                    kvp.Value.Id = newCardId;
-                    newCardId++;
+                    kvp.Value.Id = kvp.Key;
+                    newCardId = kvp.Key + 1;
 
                     while (cardDB.cards.Count < newCardId)
                     {

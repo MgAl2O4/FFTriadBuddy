@@ -6,15 +6,27 @@ namespace FFTriadBuddy
     public class Logger
     {
         private static StreamWriter logWriter;
+        private static string outputDir;
 
         public static void Initialize(string[] Args)
         {
-            foreach (string cmdArg in Args)
+            outputDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            outputDir = Path.Combine(outputDir, "FFTriadBuddy");
+
+            try
             {
-                if (cmdArg == "-log")
+                if (!Directory.Exists(outputDir))
                 {
-                    logWriter = new StreamWriter("debugLog.txt");
+                    Directory.CreateDirectory(outputDir);
                 }
+
+                string logPath = Path.Combine(outputDir, "outputLog.txt");
+                logWriter = new StreamWriter(logPath);
+            }
+            catch (Exception)
+            {
+                logWriter = null;
+                outputDir = null;
             }
         }
 
@@ -31,6 +43,11 @@ namespace FFTriadBuddy
                 logWriter.WriteLine(str);
                 logWriter.Flush();
             }
+        }
+
+        public static string GetOutputDir()
+        {
+            return outputDir;
         }
     }
 }

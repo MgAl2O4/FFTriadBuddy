@@ -730,4 +730,22 @@
     <reward id="276" />
     <reward id="274" />
   </npc>
+  <npc id="95" name="Redard" location="The Rak'tika Greatwood (20, 27)">
+    <deckA id0="284" id1="287" id2="275" id3="0" id4="0" />
+    <deckV id0="109" id1="262" id2="86" id3="0" id4="0" />
+    <rule name="Same" />
+    <rule name="Reverse" />
+    <reward id="287" />
+    <reward id="284" />
+  </npc>
+  <npc id="96" name="Hanagasa" location="Kugane (10, 12)">
+    <deckA id0="209" id1="208" id2="20" id3="226" id4="0" />
+    <deckV id0="250" id1="229" id2="58" id3="0" id4="0" />
+    <rule name="Plus" />
+    <rule name="Descension" />
+    <reward id="250" />
+    <reward id="229" />
+    <reward id="209" />
+    <reward id="208" />
+  </npc>
 </root>
