@@ -51,13 +51,7 @@ namespace FFTriadBuddy
         {
             bool bResult = false;
 
-            string SettingsPath = Logger.GetOutputDir();
-            string FilePath = (SettingsPath != null) ? Path.Combine(SettingsPath, DBPath) : null;
-            if ((FilePath == null) && !File.Exists(FilePath))
-            {
-                FilePath = AssetManager.Get().CreateFilePath(DBPath);
-            }
-
+            string FilePath = AssetManager.Get().CreateFilePath(DBPath);
             if (File.Exists(FilePath))
             { 
                 using (StreamReader file = new StreamReader(FilePath))
@@ -308,31 +302,12 @@ namespace FFTriadBuddy
 
         public void Save()
         {
-            string SettingsPath = Logger.GetOutputDir();
-            string FilePath = (SettingsPath != null) ? Path.Combine(SettingsPath, DBPath) : null;
-            if (FilePath == null)
-            {
-                FilePath = AssetManager.Get().CreateFilePath(DBPath);
-            }
-
+            string FilePath = AssetManager.Get().CreateFilePath(DBPath);
             using (StreamWriter file = new StreamWriter(FilePath))
             {
                 string jsonString = SaveToJson(false);
                 file.Write(jsonString);
                 file.Close();
-            }
-
-            FilePath = AssetManager.Get().CreateFilePath(DBPath);
-            if (File.Exists(FilePath))
-            {
-                try
-                {
-                    File.Delete(FilePath);
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine("Cleanup failed: " + ex);
-                }
             }
         }
 
