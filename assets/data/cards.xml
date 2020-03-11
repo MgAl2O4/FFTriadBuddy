@@ -285,6 +285,7 @@
   <card id="283" name="Flower Basket" icon="082783.png" rarity="Common" type="None" up="2" lt="2" dn="2" rt="7" sort="1" />
   <card id="284" name="Qitari" icon="082784.png" rarity="Common" type="Beastman" up="4" lt="6" dn="2" rt="2" sort="3" />
   <card id="285" name="Gnoll" icon="082785.png" rarity="Uncommon" type="None" up="2" lt="4" dn="7" rt="6" sort="8" />
+  <card id="286" name="Lizbeth" icon="082786.png" rarity="Uncommon" type="None" up="5" lt="5" dn="6" rt="4" sort="16" />
   <card id="287" name="Batsquatch" icon="082787.png" rarity="Rare" type="None" up="6" lt="2" dn="8" rt="6" sort="20" />
   <card id="288" name="Forgiven Obscenity" icon="082788.png" rarity="Rare" type="None" up="8" lt="7" dn="1" rt="6" sort="20" />
   <card id="289" name="Huaca" icon="082789.png" rarity="Rare" type="None" up="7" lt="5" dn="8" rt="2" sort="20" />
