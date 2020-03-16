@@ -321,18 +321,30 @@ namespace FFTriadBuddy
                 }
             }
 
-            rareScoredList.Sort();
-            int maxRareToCopy = Math.Min(numRareToBuild, rareScoredList.Count);
-            for (int Idx = 0; Idx < maxRareToCopy; Idx++)
+            // special case: don't include any rare slots with reverse rule if there's enough cards in common list
+            bool shouldRemoveRares = false;
+            foreach (TriadGameModifier mod in modifiers)
             {
-                rareList.Add(rareScoredList[Idx].card);
+                if (mod.GetType() == typeof(TriadGameModifierReverse))
+                {
+                    shouldRemoveRares = (commonScoredList.Count >= 5);
+                    break;
+                }
             }
 
             commonScoredList.Sort();
-            int maxCommonToCopy = Math.Min(numCommonToBuild, commonScoredList.Count);
+            rareScoredList.Sort();
+
+            int maxCommonToCopy = Math.Min(shouldRemoveRares ? (numCommonToBuild + numRareToBuild) : numCommonToBuild, commonScoredList.Count);
             for (int Idx = 0; Idx < maxCommonToCopy; Idx++)
             {
                 commonList.Add(commonScoredList[Idx].card);
+            }
+
+            int maxRareToCopy = Math.Min(shouldRemoveRares ? 0 : numRareToBuild, rareScoredList.Count);
+            for (int Idx = 0; Idx < maxRareToCopy; Idx++)
+            {
+                rareList.Add(rareScoredList[Idx].card);
             }
         }
 
