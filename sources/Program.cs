@@ -45,6 +45,8 @@ namespace FFTriadBuddy
             {
                 MessageBox.Show("Failed to initialize resources!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
+
+            Logger.Close();
         }
     }
 }
