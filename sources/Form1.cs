@@ -557,7 +557,7 @@ namespace FFTriadBuddy
         private void timerSetupDetails_Tick(object sender, EventArgs e)
         {
             timerSetupDetails.Stop();
-            tabControlSetupDetails.SelectedTab = tabPageSetupCloud;
+            tabControlSetupDetails.SelectedTab = tabPageFavDecks;
         }
 
         private void buttonOptimizeAbort_Click(object sender, EventArgs e)
@@ -2197,9 +2197,13 @@ namespace FFTriadBuddy
             }
         }
 
+        private void panelCloud_Click(object sender, EventArgs e)
+        {
+            checkBoxUseCloudSaves.Checked = !checkBoxUseCloudSaves.Checked;
+        }
+
         private void UpdateCloudState(CloudStorage.EState forcedState = CloudStorage.EState.NoErrors)
         {
-            bool bShowLastResponse = false;
             bool bEnabledAuthButton = false;
 
             if (checkBoxUseCloudSaves.Checked)
@@ -2209,32 +2213,25 @@ namespace FFTriadBuddy
                     CloudStorage.EState showState = (forcedState != CloudStorage.EState.NoErrors) ? forcedState : cloudStorage.GetState();
                     switch (showState)
                     {
-                        case CloudStorage.EState.NoErrors: labelCloudState.Text = "Active"; break;
-                        case CloudStorage.EState.ApiFailure: labelCloudState.Text = "API call failed"; bShowLastResponse = true; break;
-                        case CloudStorage.EState.NotAuthorized: labelCloudState.Text = "Not authorized"; bEnabledAuthButton = true; break;
-                        case CloudStorage.EState.AuthInProgress: labelCloudState.Text = "Authorizing..."; break;
-                        case CloudStorage.EState.NotInitialized: labelCloudState.Text = "Scanning..."; break;
+                        case CloudStorage.EState.NoErrors: labelCloudState.Text = "active"; break;
+                        case CloudStorage.EState.ApiFailure: labelCloudState.Text = "API call failed"; break;
+                        case CloudStorage.EState.NotAuthorized: labelCloudState.Text = "Login required"; bEnabledAuthButton = true; break;
+                        case CloudStorage.EState.AuthInProgress: labelCloudState.Text = "authorizing..."; break;
+                        case CloudStorage.EState.NotInitialized: labelCloudState.Text = "scanning..."; break;
                         default: labelCloudState.Text = ""; break;
                     }
                 }
                 else
                 {
-                    labelCloudState.Text = "Database failure";
+                    labelCloudState.Text = "database failure";
                 }
             }
             else
             {
-                labelCloudState.Text = "Disabled";
+                labelCloudState.Text = "disabled, local only";
             }
 
-            buttonCloudAuth.Enabled = bEnabledAuthButton;
-            labelCloudApiTitle.Visible = bShowLastResponse;
-            labelCloudApiResponse.Visible = bShowLastResponse;
-
-            if (bShowLastResponse)
-            {
-                labelCloudApiResponse.Text = (cloudStorage != null) ? cloudStorage.GetLastApiResponse() : "";
-            }
+            buttonCloudAuth.Visible = bEnabledAuthButton;
         }
 
         private async Task<bool> LoadCloudSettings()
@@ -2244,10 +2241,10 @@ namespace FFTriadBuddy
             {
                 fileContent = await cloudStorage.DownloadTextFile("FFTriadBuddy-settings.json");
 
-                Logger.WriteLine("Loaded cloud save");
+                Logger.WriteLine("Loaded cloud save, API response: " + cloudStorage.GetLastApiResponse());
                 if (cloudStorage.GetState() == CloudStorage.EState.NoErrors)
                 {
-                    labelCloudState.Text = "Synced";
+                    labelCloudState.Text = "synchronized";
                 }
             }
             catch (Exception ex)
@@ -2273,10 +2270,10 @@ namespace FFTriadBuddy
                 {
                     await cloudStorage.UploadTextFile("FFTriadBuddy-settings.json", fileContent);
 
-                    Logger.WriteLine("Saved settings in cloud");
+                    Logger.WriteLine("Created cloud save, API response: " + cloudStorage.GetLastApiResponse());
                     if (cloudStorage.GetState() == CloudStorage.EState.NoErrors)
                     {
-                        labelCloudState.Text = "Saved settings";
+                        labelCloudState.Text = "stored";
                     }
                 }
                 catch (Exception ex)
@@ -2296,12 +2293,11 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    labelCloudState.Text = "Synced";
+                    labelCloudState.Text = "synchronized";
                 }
             }
         }
 
         #endregion
-
     }
 }

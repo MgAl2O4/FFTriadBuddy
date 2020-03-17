@@ -32,15 +32,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSetup = new System.Windows.Forms.TabPage();
-            this.tabControlSetupDetails = new FFTriadBuddy.TabControlNoTabs();
-            this.tabPageSetupCloud = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonCloudAuth = new System.Windows.Forms.Button();
-            this.labelCloudApiResponse = new System.Windows.Forms.Label();
-            this.labelCloudApiTitle = new System.Windows.Forms.Label();
-            this.checkBoxUseCloudSaves = new System.Windows.Forms.CheckBox();
+            this.panelCloud = new System.Windows.Forms.Panel();
             this.labelCloudState = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
+            this.checkBoxUseCloudSaves = new System.Windows.Forms.CheckBox();
+            this.buttonCloudAuth = new System.Windows.Forms.Button();
+            this.tabControlSetupDetails = new FFTriadBuddy.TabControlNoTabs();
+            this.tabPageFavDecks = new System.Windows.Forms.TabPage();
             this.tabPageSetupOptimizerStats = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.labelOptTimeLeft = new System.Windows.Forms.Label();
@@ -55,13 +52,11 @@
             this.label10 = new System.Windows.Forms.Label();
             this.tabControlSetupRules = new FFTriadBuddy.TabControlNoTabs();
             this.tabPageSetupRegion = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxRegionRule2 = new System.Windows.Forms.ComboBox();
             this.comboBoxRegionRule1 = new System.Windows.Forms.ComboBox();
             this.tabPageSetupTournament = new System.Windows.Forms.TabPage();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.labelTournamentRules = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -225,16 +220,13 @@
             this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
+            this.panelCloud.SuspendLayout();
             this.tabControlSetupDetails.SuspendLayout();
-            this.tabPageSetupCloud.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.tabPageSetupOptimizerStats.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControlSetupRules.SuspendLayout();
             this.tabPageSetupRegion.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.tabPageSetupTournament.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.tabPageScreenshot.SuspendLayout();
             this.panelScreenshotState.SuspendLayout();
             this.tabControlScreenDetection.SuspendLayout();
@@ -280,6 +272,8 @@
             // 
             // tabPageSetup
             // 
+            this.tabPageSetup.Controls.Add(this.panelCloud);
+            this.tabPageSetup.Controls.Add(this.buttonCloudAuth);
             this.tabPageSetup.Controls.Add(this.tabControlSetupDetails);
             this.tabPageSetup.Controls.Add(this.tabControlSetupRules);
             this.tabPageSetup.Controls.Add(this.checkBoxSetupRules);
@@ -307,112 +301,83 @@
             this.tabPageSetup.Text = "Setup";
             this.tabPageSetup.UseVisualStyleBackColor = true;
             // 
+            // panelCloud
+            // 
+            this.panelCloud.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelCloud.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panelCloud.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelCloud.Controls.Add(this.labelCloudState);
+            this.panelCloud.Controls.Add(this.checkBoxUseCloudSaves);
+            this.panelCloud.Location = new System.Drawing.Point(431, 89);
+            this.panelCloud.Name = "panelCloud";
+            this.panelCloud.Size = new System.Drawing.Size(215, 23);
+            this.panelCloud.TabIndex = 29;
+            this.panelCloud.Click += new System.EventHandler(this.panelCloud_Click);
+            // 
+            // labelCloudState
+            // 
+            this.labelCloudState.AutoSize = true;
+            this.labelCloudState.Location = new System.Drawing.Point(107, 4);
+            this.labelCloudState.Name = "labelCloudState";
+            this.labelCloudState.Size = new System.Drawing.Size(0, 13);
+            this.labelCloudState.TabIndex = 28;
+            this.labelCloudState.Click += new System.EventHandler(this.panelCloud_Click);
+            // 
+            // checkBoxUseCloudSaves
+            // 
+            this.checkBoxUseCloudSaves.AutoSize = true;
+            this.checkBoxUseCloudSaves.Location = new System.Drawing.Point(2, 3);
+            this.checkBoxUseCloudSaves.Name = "checkBoxUseCloudSaves";
+            this.checkBoxUseCloudSaves.Size = new System.Drawing.Size(102, 17);
+            this.checkBoxUseCloudSaves.TabIndex = 27;
+            this.checkBoxUseCloudSaves.Text = "Save in Google:";
+            this.checkBoxUseCloudSaves.UseVisualStyleBackColor = true;
+            this.checkBoxUseCloudSaves.CheckedChanged += new System.EventHandler(this.checkBoxUseCloudSaves_CheckedChanged);
+            // 
+            // buttonCloudAuth
+            // 
+            this.buttonCloudAuth.Location = new System.Drawing.Point(346, 89);
+            this.buttonCloudAuth.Name = "buttonCloudAuth";
+            this.buttonCloudAuth.Size = new System.Drawing.Size(75, 23);
+            this.buttonCloudAuth.TabIndex = 28;
+            this.buttonCloudAuth.Text = "Login";
+            this.buttonCloudAuth.UseVisualStyleBackColor = true;
+            this.buttonCloudAuth.Click += new System.EventHandler(this.buttonCloudAuth_Click);
+            // 
             // tabControlSetupDetails
             // 
             this.tabControlSetupDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlSetupDetails.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControlSetupDetails.Controls.Add(this.tabPageSetupCloud);
+            this.tabControlSetupDetails.Controls.Add(this.tabPageFavDecks);
             this.tabControlSetupDetails.Controls.Add(this.tabPageSetupOptimizerStats);
-            this.tabControlSetupDetails.Location = new System.Drawing.Point(346, 109);
+            this.tabControlSetupDetails.Location = new System.Drawing.Point(346, 115);
             this.tabControlSetupDetails.Margin = new System.Windows.Forms.Padding(0);
             this.tabControlSetupDetails.Name = "tabControlSetupDetails";
             this.tabControlSetupDetails.Padding = new System.Drawing.Point(0, 0);
             this.tabControlSetupDetails.SelectedIndex = 0;
-            this.tabControlSetupDetails.Size = new System.Drawing.Size(306, 118);
+            this.tabControlSetupDetails.Size = new System.Drawing.Size(306, 112);
             this.tabControlSetupDetails.TabIndex = 24;
             // 
-            // tabPageSetupCloud
+            // tabPageFavDecks
             // 
-            this.tabPageSetupCloud.Controls.Add(this.groupBox3);
-            this.tabPageSetupCloud.Location = new System.Drawing.Point(4, 25);
-            this.tabPageSetupCloud.Margin = new System.Windows.Forms.Padding(0);
-            this.tabPageSetupCloud.Name = "tabPageSetupCloud";
-            this.tabPageSetupCloud.Size = new System.Drawing.Size(298, 89);
-            this.tabPageSetupCloud.TabIndex = 1;
-            this.tabPageSetupCloud.Text = "Cloud";
-            this.tabPageSetupCloud.UseVisualStyleBackColor = true;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.buttonCloudAuth);
-            this.groupBox3.Controls.Add(this.labelCloudApiResponse);
-            this.groupBox3.Controls.Add(this.labelCloudApiTitle);
-            this.groupBox3.Controls.Add(this.checkBoxUseCloudSaves);
-            this.groupBox3.Controls.Add(this.labelCloudState);
-            this.groupBox3.Controls.Add(this.label25);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(298, 89);
-            this.groupBox3.TabIndex = 16;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Cloud saves";
-            // 
-            // buttonCloudAuth
-            // 
-            this.buttonCloudAuth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCloudAuth.Location = new System.Drawing.Point(168, 25);
-            this.buttonCloudAuth.Name = "buttonCloudAuth";
-            this.buttonCloudAuth.Size = new System.Drawing.Size(124, 23);
-            this.buttonCloudAuth.TabIndex = 11;
-            this.buttonCloudAuth.Text = "Authorize with Google";
-            this.buttonCloudAuth.UseVisualStyleBackColor = true;
-            this.buttonCloudAuth.Click += new System.EventHandler(this.buttonCloudAuth_Click);
-            // 
-            // labelCloudApiResponse
-            // 
-            this.labelCloudApiResponse.AutoSize = true;
-            this.labelCloudApiResponse.Location = new System.Drawing.Point(85, 70);
-            this.labelCloudApiResponse.Name = "labelCloudApiResponse";
-            this.labelCloudApiResponse.Size = new System.Drawing.Size(0, 13);
-            this.labelCloudApiResponse.TabIndex = 10;
-            // 
-            // labelCloudApiTitle
-            // 
-            this.labelCloudApiTitle.AutoSize = true;
-            this.labelCloudApiTitle.Location = new System.Drawing.Point(6, 70);
-            this.labelCloudApiTitle.Name = "labelCloudApiTitle";
-            this.labelCloudApiTitle.Size = new System.Drawing.Size(73, 13);
-            this.labelCloudApiTitle.TabIndex = 9;
-            this.labelCloudApiTitle.Text = "API response:";
-            // 
-            // checkBoxUseCloudSaves
-            // 
-            this.checkBoxUseCloudSaves.AutoSize = true;
-            this.checkBoxUseCloudSaves.Location = new System.Drawing.Point(6, 29);
-            this.checkBoxUseCloudSaves.Name = "checkBoxUseCloudSaves";
-            this.checkBoxUseCloudSaves.Size = new System.Drawing.Size(159, 17);
-            this.checkBoxUseCloudSaves.TabIndex = 8;
-            this.checkBoxUseCloudSaves.Text = "Use cloud saves for settings";
-            this.checkBoxUseCloudSaves.UseVisualStyleBackColor = true;
-            this.checkBoxUseCloudSaves.CheckedChanged += new System.EventHandler(this.checkBoxUseCloudSaves_CheckedChanged);
-            // 
-            // labelCloudState
-            // 
-            this.labelCloudState.AutoSize = true;
-            this.labelCloudState.Location = new System.Drawing.Point(85, 57);
-            this.labelCloudState.Name = "labelCloudState";
-            this.labelCloudState.Size = new System.Drawing.Size(0, 13);
-            this.labelCloudState.TabIndex = 7;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(6, 57);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(70, 13);
-            this.label25.TabIndex = 6;
-            this.label25.Text = "Current state:";
+            this.tabPageFavDecks.Location = new System.Drawing.Point(0, 0);
+            this.tabPageFavDecks.Margin = new System.Windows.Forms.Padding(0);
+            this.tabPageFavDecks.Name = "tabPageFavDecks";
+            this.tabPageFavDecks.Size = new System.Drawing.Size(306, 112);
+            this.tabPageFavDecks.TabIndex = 1;
+            this.tabPageFavDecks.Text = "Decks";
+            this.tabPageFavDecks.UseVisualStyleBackColor = true;
             // 
             // tabPageSetupOptimizerStats
             // 
             this.tabPageSetupOptimizerStats.Controls.Add(this.groupBox1);
-            this.tabPageSetupOptimizerStats.Location = new System.Drawing.Point(4, 25);
+            this.tabPageSetupOptimizerStats.Location = new System.Drawing.Point(0, 0);
             this.tabPageSetupOptimizerStats.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageSetupOptimizerStats.Name = "tabPageSetupOptimizerStats";
-            this.tabPageSetupOptimizerStats.Size = new System.Drawing.Size(298, 89);
+            this.tabPageSetupOptimizerStats.Size = new System.Drawing.Size(306, 112);
             this.tabPageSetupOptimizerStats.TabIndex = 0;
             this.tabPageSetupOptimizerStats.Text = "Stats";
             this.tabPageSetupOptimizerStats.UseVisualStyleBackColor = true;
@@ -432,7 +397,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(298, 89);
+            this.groupBox1.Size = new System.Drawing.Size(306, 112);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Optimization stats:";
@@ -534,52 +499,40 @@
             this.tabControlSetupRules.Name = "tabControlSetupRules";
             this.tabControlSetupRules.Padding = new System.Drawing.Point(0, 0);
             this.tabControlSetupRules.SelectedIndex = 0;
-            this.tabControlSetupRules.Size = new System.Drawing.Size(306, 106);
+            this.tabControlSetupRules.Size = new System.Drawing.Size(306, 55);
             this.tabControlSetupRules.TabIndex = 26;
             // 
             // tabPageSetupRegion
             // 
-            this.tabPageSetupRegion.Controls.Add(this.groupBox2);
-            this.tabPageSetupRegion.Location = new System.Drawing.Point(4, 25);
+            this.tabPageSetupRegion.Controls.Add(this.label5);
+            this.tabPageSetupRegion.Controls.Add(this.label4);
+            this.tabPageSetupRegion.Controls.Add(this.comboBoxRegionRule2);
+            this.tabPageSetupRegion.Controls.Add(this.comboBoxRegionRule1);
+            this.tabPageSetupRegion.Location = new System.Drawing.Point(0, 0);
             this.tabPageSetupRegion.Name = "tabPageSetupRegion";
             this.tabPageSetupRegion.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSetupRegion.Size = new System.Drawing.Size(298, 77);
+            this.tabPageSetupRegion.Size = new System.Drawing.Size(306, 55);
             this.tabPageSetupRegion.TabIndex = 0;
             this.tabPageSetupRegion.Text = "Region";
             this.tabPageSetupRegion.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.comboBoxRegionRule2);
-            this.groupBox2.Controls.Add(this.comboBoxRegionRule1);
-            this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(298, 78);
-            this.groupBox2.TabIndex = 21;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Region rules: ";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 49);
+            this.label5.Location = new System.Drawing.Point(6, 34);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 13);
+            this.label5.Size = new System.Drawing.Size(73, 13);
             this.label5.TabIndex = 18;
-            this.label5.Text = "Region 2:";
+            this.label5.Text = "Region rule 2:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Location = new System.Drawing.Point(6, 9);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 13);
+            this.label4.Size = new System.Drawing.Size(73, 13);
             this.label4.TabIndex = 17;
-            this.label4.Text = "Region 1:";
+            this.label4.Text = "Region rule 1:";
             // 
             // comboBoxRegionRule2
             // 
@@ -589,9 +542,9 @@
             this.comboBoxRegionRule2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxRegionRule2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRegionRule2.FormattingEnabled = true;
-            this.comboBoxRegionRule2.Location = new System.Drawing.Point(65, 46);
+            this.comboBoxRegionRule2.Location = new System.Drawing.Point(85, 31);
             this.comboBoxRegionRule2.Name = "comboBoxRegionRule2";
-            this.comboBoxRegionRule2.Size = new System.Drawing.Size(227, 21);
+            this.comboBoxRegionRule2.Size = new System.Drawing.Size(215, 21);
             this.comboBoxRegionRule2.TabIndex = 20;
             this.comboBoxRegionRule2.SelectedIndexChanged += new System.EventHandler(this.comboBoxRegionRule2_SelectedIndexChanged);
             // 
@@ -603,42 +556,30 @@
             this.comboBoxRegionRule1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxRegionRule1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRegionRule1.FormattingEnabled = true;
-            this.comboBoxRegionRule1.Location = new System.Drawing.Point(65, 19);
+            this.comboBoxRegionRule1.Location = new System.Drawing.Point(85, 6);
             this.comboBoxRegionRule1.Name = "comboBoxRegionRule1";
-            this.comboBoxRegionRule1.Size = new System.Drawing.Size(227, 21);
+            this.comboBoxRegionRule1.Size = new System.Drawing.Size(215, 21);
             this.comboBoxRegionRule1.TabIndex = 19;
             this.comboBoxRegionRule1.SelectedIndexChanged += new System.EventHandler(this.comboBoxRegionRule1_SelectedIndexChanged);
             // 
             // tabPageSetupTournament
             // 
-            this.tabPageSetupTournament.Controls.Add(this.groupBox4);
-            this.tabPageSetupTournament.Location = new System.Drawing.Point(4, 25);
+            this.tabPageSetupTournament.Controls.Add(this.labelTournamentRules);
+            this.tabPageSetupTournament.Controls.Add(this.label18);
+            this.tabPageSetupTournament.Controls.Add(this.label20);
+            this.tabPageSetupTournament.Controls.Add(this.comboBoxTournamentType);
+            this.tabPageSetupTournament.Location = new System.Drawing.Point(0, 0);
             this.tabPageSetupTournament.Name = "tabPageSetupTournament";
             this.tabPageSetupTournament.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSetupTournament.Size = new System.Drawing.Size(298, 77);
+            this.tabPageSetupTournament.Size = new System.Drawing.Size(537, 60);
             this.tabPageSetupTournament.TabIndex = 1;
             this.tabPageSetupTournament.Text = "Tournament";
             this.tabPageSetupTournament.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.labelTournamentRules);
-            this.groupBox4.Controls.Add(this.label18);
-            this.groupBox4.Controls.Add(this.label20);
-            this.groupBox4.Controls.Add(this.comboBoxTournamentType);
-            this.groupBox4.Location = new System.Drawing.Point(0, 0);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(298, 78);
-            this.groupBox4.TabIndex = 22;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Tournament: ";
-            // 
             // labelTournamentRules
             // 
             this.labelTournamentRules.AutoSize = true;
-            this.labelTournamentRules.Location = new System.Drawing.Point(62, 49);
+            this.labelTournamentRules.Location = new System.Drawing.Point(85, 34);
             this.labelTournamentRules.Name = "labelTournamentRules";
             this.labelTournamentRules.Size = new System.Drawing.Size(0, 13);
             this.labelTournamentRules.TabIndex = 20;
@@ -646,7 +587,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 49);
+            this.label18.Location = new System.Drawing.Point(6, 34);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(37, 13);
             this.label18.TabIndex = 18;
@@ -655,20 +596,20 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 22);
+            this.label20.Location = new System.Drawing.Point(6, 9);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(34, 13);
+            this.label20.Size = new System.Drawing.Size(67, 13);
             this.label20.TabIndex = 17;
-            this.label20.Text = "Type:";
+            this.label20.Text = "Tournament:";
             // 
             // comboBoxTournamentType
             // 
             this.comboBoxTournamentType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxTournamentType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTournamentType.Location = new System.Drawing.Point(65, 19);
+            this.comboBoxTournamentType.Location = new System.Drawing.Point(85, 6);
             this.comboBoxTournamentType.Name = "comboBoxTournamentType";
-            this.comboBoxTournamentType.Size = new System.Drawing.Size(227, 21);
+            this.comboBoxTournamentType.Size = new System.Drawing.Size(446, 21);
             this.comboBoxTournamentType.Sorted = true;
             this.comboBoxTournamentType.TabIndex = 19;
             this.comboBoxTournamentType.SelectedIndexChanged += new System.EventHandler(this.comboBoxTournamentType_SelectedIndexChanged);
@@ -2301,20 +2242,17 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageSetup.ResumeLayout(false);
             this.tabPageSetup.PerformLayout();
+            this.panelCloud.ResumeLayout(false);
+            this.panelCloud.PerformLayout();
             this.tabControlSetupDetails.ResumeLayout(false);
-            this.tabPageSetupCloud.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.tabPageSetupOptimizerStats.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControlSetupRules.ResumeLayout(false);
             this.tabPageSetupRegion.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.tabPageSetupRegion.PerformLayout();
             this.tabPageSetupTournament.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.tabPageSetupTournament.PerformLayout();
             this.tabPageScreenshot.ResumeLayout(false);
             this.tabPageScreenshot.PerformLayout();
             this.panelScreenshotState.ResumeLayout(false);
@@ -2419,10 +2357,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ProgressBar progressBarNpc;
         private System.Windows.Forms.Timer timerSelectNpc;
-        private System.Windows.Forms.ComboBox comboBoxRegionRule2;
-        private System.Windows.Forms.ComboBox comboBoxRegionRule1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panelBlueDeck;
         private CardCtrl cardCtrlBlue4;
         private CardCtrl cardCtrlBlue5;
@@ -2431,7 +2365,6 @@
         private CardCtrl cardCtrlBlue1;
         private System.Windows.Forms.Label labelGameStateHint;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private DeckCtrl deckCtrlSetup;
         private System.Windows.Forms.TabPage tabPageSubGame;
         private System.Windows.Forms.TabPage tabPageSubRoulette;
@@ -2534,25 +2467,25 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuFindCardOnline;
         private TabControlNoTabs tabControlSetupDetails;
         private System.Windows.Forms.TabPage tabPageSetupOptimizerStats;
-        private System.Windows.Forms.TabPage tabPageSetupCloud;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label labelCloudState;
-        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TabPage tabPageFavDecks;
         private System.Windows.Forms.Timer timerSetupDetails;
-        private System.Windows.Forms.CheckBox checkBoxUseCloudSaves;
-        private System.Windows.Forms.Label labelCloudApiResponse;
-        private System.Windows.Forms.Label labelCloudApiTitle;
-        private System.Windows.Forms.Button buttonCloudAuth;
         private System.Windows.Forms.Timer timerCloudSave;
         private System.Windows.Forms.CheckBox checkBoxSetupRules;
         private TabControlNoTabs tabControlSetupRules;
         private System.Windows.Forms.TabPage tabPageSetupRegion;
         private System.Windows.Forms.TabPage tabPageSetupTournament;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label labelTournamentRules;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ComboBox comboBoxTournamentType;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBoxRegionRule2;
+        private System.Windows.Forms.ComboBox comboBoxRegionRule1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox checkBoxUseCloudSaves;
+        private System.Windows.Forms.Button buttonCloudAuth;
+        private System.Windows.Forms.Panel panelCloud;
+        private System.Windows.Forms.Label labelCloudState;
     }
 }
 

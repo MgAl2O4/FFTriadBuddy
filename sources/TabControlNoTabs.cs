@@ -9,7 +9,7 @@ namespace FFTriadBuddy
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == 0x1328 && !DesignMode)
+            if (m.Msg == 0x1328)// && !DesignMode)
             {
                 m.Result = (IntPtr)1;
             }
