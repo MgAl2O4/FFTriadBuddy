@@ -68,6 +68,7 @@ namespace FFTriadBuddy
         private CardCtrl[] cardCtrls;
         private CardCtrl cardClickOwner;
         private bool[] lockFlags;
+        private bool ignoreDragOnContextClose;
 
         public DeckCtrl()
         {
@@ -75,6 +76,7 @@ namespace FFTriadBuddy
             allowRearrange = true;
             enableHitTest = true;
             enableLocking = false;
+            ignoreDragOnContextClose = false;
             clickAction = EDeckCtrlAction.Pick;
             deckOwner = ETriadCardOwner.Blue;
 
@@ -256,7 +258,7 @@ namespace FFTriadBuddy
         private void CardCtrl_MouseMove(object sender, MouseEventArgs e)
         {
             CardCtrl cardCtrlSender = (CardCtrl)sender;
-            if (e.Button == MouseButtons.Left && allowRearrange && (deck != null))
+            if (e.Button == MouseButtons.Left && allowRearrange && (deck != null) && !ignoreDragOnContextClose)
             {
                 dragTargetIdx = dragSourceIdx = (int)cardCtrlSender.Tag;
 
@@ -268,6 +270,7 @@ namespace FFTriadBuddy
         private void CardCtrl_Click(object sender, EventArgs e)
         {
             CardCtrl prevOwner = cardClickOwner;
+            ignoreDragOnContextClose = false;
 
             cardClickOwner = (CardCtrl)sender;
             if (cardClickOwner != null)
@@ -303,10 +306,12 @@ namespace FFTriadBuddy
 
         private void contextMenuStripPickCard_Opened(object sender, EventArgs e)
         {
+            toolStripComboBoxPick.BeginUpdate();
+
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
             TriadCardDB cardsDB = TriadCardDB.Get();
-            bool bShouldRefresh = toolStripMenuOnlyOwned.Checked || (cardsDB.cards.Count != toolStripComboBoxPick.Items.Count);
-            if (bShouldRefresh)
+            int numExpected = toolStripMenuOnlyOwned.Checked ? playerDB.ownedCards.Count : cardsDB.cards.Count;
+            if (numExpected != toolStripComboBoxPick.Items.Count)
             {
                 toolStripComboBoxPick.Items.Clear();
                 foreach (TriadCard card in cardsDB.cards)
@@ -324,9 +329,11 @@ namespace FFTriadBuddy
                 if (cardOb.Card == cardClickOwner.GetCard())
                 {
                     toolStripComboBoxPick.SelectedIndex = Idx;
+                    break;
                 }
             }
 
+            toolStripComboBoxPick.EndUpdate();
             toolStripComboBoxPick.Focus();
         }
 
@@ -336,6 +343,8 @@ namespace FFTriadBuddy
             {
                 e.Cancel = true;
             }
+
+            ignoreDragOnContextClose = true;
         }
 
         private void toolStripMenuOnlyOwned_CheckedChanged(object sender, EventArgs e)
