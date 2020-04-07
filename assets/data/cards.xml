@@ -292,4 +292,5 @@
   <card id="290" name="Unknown" icon="082790.png" rarity="Rare" type="None" up="5" lt="6" dn="3" rt="8" sort="20" />
   <card id="291" name="Ruby Weapon" icon="082791.png" rarity="Epic" type="Garlean" up="8" lt="7" dn="1" rt="9" sort="36" />
   <card id="292" name="Therion" icon="082792.png" rarity="Legendary" type="None" up="9" lt="9" dn="2" rt="9" sort="40" />
+  <card id="293" name="Varis yae Galvus" icon="082793.png" rarity="Legendary" type="Garlean" up="10" lt="10" dn="4" rt="1" sort="43" />
 </root>
