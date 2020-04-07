@@ -38,10 +38,16 @@ namespace FFTriadBuddy
 
             if (deckInfo != null)
             {
+                bool deckChanged = (deckCtrl.deck == null) || !deckCtrl.deck.Equals(deckInfo);
+
                 deckCtrl.SetDeck(deckInfo);
                 labelTitle.Text = deckInfo.Name;
-                labelChance.Text = "...";
                 buttonEdit.Text = "Edit";
+
+                if (deckChanged)
+                {
+                    labelChance.Text = "...";
+                }
             }
         }
 
@@ -51,9 +57,9 @@ namespace FFTriadBuddy
             buttonUse.Enabled = !lockMe;
         }
 
-        public void UpdateChance(float chance)
+        public void UpdateChance(TriadGameResultChance chance)
         {
-            labelChance.Text = chance.ToString("P2");
+            labelChance.Text = chance.winChance.ToString("P2");
         }
 
         private void buttonUse_Click(object sender, EventArgs e)

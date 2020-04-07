@@ -38,6 +38,7 @@
             this.buttonCloudAuth = new System.Windows.Forms.Button();
             this.tabControlSetupDetails = new FFTriadBuddy.TabControlNoTabs();
             this.tabPageFavDecks = new System.Windows.Forms.TabPage();
+            this.buttonAddFav = new System.Windows.Forms.Button();
             this.favDeckCtrl3 = new FFTriadBuddy.FavDeckCtrl();
             this.favDeckCtrl2 = new FFTriadBuddy.FavDeckCtrl();
             this.favDeckCtrl1 = new FFTriadBuddy.FavDeckCtrl();
@@ -221,7 +222,6 @@
             this.labelUpdateNotify = new System.Windows.Forms.Label();
             this.timerSetupDetails = new System.Windows.Forms.Timer(this.components);
             this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
-            this.buttonAddFav = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.panelCloud.SuspendLayout();
@@ -379,6 +379,18 @@
             this.tabPageFavDecks.TabIndex = 1;
             this.tabPageFavDecks.Text = "Decks";
             this.tabPageFavDecks.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddFav
+            // 
+            this.buttonAddFav.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAddFav.Location = new System.Drawing.Point(85, 82);
+            this.buttonAddFav.Name = "buttonAddFav";
+            this.buttonAddFav.Size = new System.Drawing.Size(215, 23);
+            this.buttonAddFav.TabIndex = 3;
+            this.buttonAddFav.Text = "Add favorite deck slot";
+            this.buttonAddFav.UseVisualStyleBackColor = true;
+            this.buttonAddFav.Click += new System.EventHandler(this.buttonAddFav_Click);
             // 
             // favDeckCtrl3
             // 
@@ -2257,16 +2269,6 @@
             // 
             this.timerCloudSave.Interval = 10000;
             this.timerCloudSave.Tick += new System.EventHandler(this.timerCloudSave_Tick);
-            // 
-            // buttonAddFav
-            // 
-            this.buttonAddFav.Location = new System.Drawing.Point(85, 82);
-            this.buttonAddFav.Name = "buttonAddFav";
-            this.buttonAddFav.Size = new System.Drawing.Size(215, 23);
-            this.buttonAddFav.TabIndex = 3;
-            this.buttonAddFav.Text = "Add favorite deck slot";
-            this.buttonAddFav.UseVisualStyleBackColor = true;
-            this.buttonAddFav.Click += new System.EventHandler(this.buttonAddFav_Click);
             // 
             // Form1
             // 

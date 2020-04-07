@@ -112,6 +112,7 @@ namespace FFTriadBuddy
         public int solverWorkers = 2000;
         public int currentProgress = 0;
         public TriadCard forcedBlueCard = null;
+        public string solverName = null;
 
 #if DEBUG
         private class SolverPerfStats
@@ -474,6 +475,8 @@ namespace FFTriadBuddy
             boardPos = -1;
             currentProgress = 0;
 
+            string namePrefix = string.IsNullOrEmpty(solverName) ? "" : ("[" + solverName + "] ");
+
             // prepare available board data
             int availBoardMask = 0;
             int numAvailBoard = 0;
@@ -558,14 +561,14 @@ namespace FFTriadBuddy
                 }
 
                 probabilities = bestProb;
-                Logger.WriteLine("Solver win:" + bestProb.winChance.ToString("P2") + " (draw:" + bestProb.drawChance.ToString("P2") + 
+                Logger.WriteLine(namePrefix + "Solver win:" + bestProb.winChance.ToString("P2") + " (draw:" + bestProb.drawChance.ToString("P2") + 
                     "), blue[" + gameData.deckBlue + "], red[" + gameData.deckRed + "], turn:" + turnOwner + ", availBoard:" + numAvailBoard + 
                     " (" + availBoardMask.ToString("x") + ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
             }
             else
             {
                 probabilities = new TriadGameResultChance(0, 0);
-                Logger.WriteLine("Can't find move! availSpots:" + numAvailBoard + " (" + availBoardMask.ToString("x") + 
+                Logger.WriteLine(namePrefix + "Can't find move! availSpots:" + numAvailBoard + " (" + availBoardMask.ToString("x") + 
                     ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
             }
 

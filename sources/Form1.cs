@@ -37,6 +37,7 @@ namespace FFTriadBuddy
         private ScreenshotAnalyzer screenReader;
         private FormOverlay overlayForm;
         private MessageFilter scrollFilter;
+        private FavDeckSolver[] favDeckSolvers;
 
         private static CloudStorage.GoogleDriveService cloudStorage;
 
@@ -84,6 +85,7 @@ namespace FFTriadBuddy
             }
 
             favControls = new FavDeckCtrl[] { favDeckCtrl1, favDeckCtrl2, favDeckCtrl3 };
+            favDeckSolvers = new FavDeckSolver[favControls.Length];
             for (int Idx = 0; Idx < favControls.Length; Idx++)
             {
                 favControls[Idx].SetImageLists(cardIconImages, imageListType, imageListRarity);
@@ -91,6 +93,9 @@ namespace FFTriadBuddy
                 favControls[Idx].Tag = Idx;
                 favControls[Idx].OnEdit += favDeck_OnEdit;
                 favControls[Idx].OnUse += favDeck_OnUse;
+                favDeckSolvers[Idx] = new FavDeckSolver();
+                favDeckSolvers[Idx].OnSolved += favDeck_OnSolved;
+                favDeckSolvers[Idx].contextId = Idx;
             }
 
             deckCtrlSetup.clickAction = EDeckCtrlAction.Pick;
@@ -690,15 +695,28 @@ namespace FFTriadBuddy
             for (int Idx = 0; Idx < numToShow; Idx++)
             {
                 favControls[Idx].SetDeck(playerDB.favDecks[Idx]);
+                favDeckSolvers[Idx].SetDeck(playerDB.favDecks[Idx]);
             }
 
             for (int Idx = numToShow; Idx < favControls.Length; Idx++)
             {
                 favControls[Idx].SetDeck(null);
+                favDeckSolvers[Idx].SetDeck(null);
             }
 
             buttonAddFav.Visible = numToShow < favControls.Length;
             buttonAddFav.Enabled = buttonAddFav.Visible;
+        }
+
+        private void UpdateFavDeckSolvers()
+        {
+            if (favDeckSolvers != null)
+            {
+                for (int Idx = 0; Idx < favDeckSolvers.Length; Idx++)
+                {
+                    favDeckSolvers[Idx].Update(gameSession, currentNpc);
+                }
+            }
         }
 
         private void buttonAddFav_Click(object sender, EventArgs e)
@@ -735,6 +753,14 @@ namespace FFTriadBuddy
             deckCtrlSetup.SetDeck(playerDeck);
 
             updateGameUIAfterDeckChange();
+        }
+
+        private void favDeck_OnSolved(int id, TriadGameResultChance chance)
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                favControls[id].UpdateChance(chance);
+            });
         }
 
         #endregion
@@ -1337,6 +1363,7 @@ namespace FFTriadBuddy
                 updateGameRulesDesc();
                 Text = orgTitle + ": " + currentNpc.Name + versionTitle;
 
+                UpdateFavDeckSolvers();
                 ResetGame();
             }
         }

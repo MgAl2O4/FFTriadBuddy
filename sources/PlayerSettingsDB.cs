@@ -508,11 +508,12 @@ namespace FFTriadBuddy
 
             if (deck == null)
             {
-                for (int Idx = favDecks.Count - 1; Idx >= slot; Idx--)
+                if (slot < favDecks.Count)
                 {
-                    favDecks.RemoveAt(Idx);
-                    MarkDirty();
+                    favDecks.RemoveAt(slot);
                 }
+
+                MarkDirty();
             }
             else
             {

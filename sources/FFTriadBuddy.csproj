@@ -97,6 +97,7 @@
     <Compile Include="FavDeckCtrl.Designer.cs">
       <DependentUpon>FavDeckCtrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="FavDeckSolver.cs" />
     <Compile Include="FormFavEdit.cs">
       <SubType>Form</SubType>
     </Compile>
