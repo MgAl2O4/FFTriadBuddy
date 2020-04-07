@@ -91,6 +91,18 @@
     <Compile Include="DeckCtrl.Designer.cs">
       <DependentUpon>DeckCtrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="FavDeckCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FavDeckCtrl.Designer.cs">
+      <DependentUpon>FavDeckCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFavEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFavEdit.Designer.cs">
+      <DependentUpon>FormFavEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormOverlay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,8 +153,14 @@
     <EmbeddedResource Include="DeckCtrl.resx">
       <DependentUpon>DeckCtrl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FavDeckCtrl.resx">
+      <DependentUpon>FavDeckCtrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFavEdit.resx">
+      <DependentUpon>FormFavEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOverlay.resx">
       <DependentUpon>FormOverlay.cs</DependentUpon>

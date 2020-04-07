@@ -273,6 +273,16 @@ namespace FFTriadBuddy
         }
     }
 
+    public class TriadDeckNamed : TriadDeck
+    {
+        public string Name;
+
+        public TriadDeckNamed() { }
+        public TriadDeckNamed(TriadDeck copyFrom) : base(copyFrom.knownCards)
+        {
+        }
+    }
+
     public abstract class TriadDeckInstance
     {
         public abstract void OnCardPlacedFast(int Idx);

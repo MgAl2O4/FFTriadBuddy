@@ -31,12 +31,17 @@ namespace FFTriadBuddy
             };
         }
 
+        public void SetImageLists(ImageList cardImages, ImageList typeImages, ImageList rarityImages)
+        {
+            cardIcons = cardImages;
+        }
+
         public void InitCardControls()
         { 
             for (int Idx = 0; Idx < cardControls.Length; Idx++)
             {
+                cardControls[Idx].SetImageLists(cardIcons, null, null);
                 cardControls[Idx].drawMode = ECardDrawMode.ImageOnly;
-                cardControls[Idx].cardIcons = cardIcons;
                 cardControls[Idx].bBlinkHighlighted = false;
                 cardControls[Idx].Tag = Idx;
                 cardControls[Idx].SetCard(null);

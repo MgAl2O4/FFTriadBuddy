@@ -66,6 +66,13 @@ namespace FFTriadBuddy
                 base.WndProc(ref m);
         }
 
+        public void SetImageLists(ImageList cardImages, ImageList typeImages, ImageList rarityImages)
+        {
+            cardIcons = cardImages;
+            cardTypes = typeImages;
+            cardRarity = rarityImages;
+        }
+
         public void SetCard(TriadCardInstance cardData)
         {
             this.cardData = cardData;

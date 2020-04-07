@@ -15,6 +15,7 @@ namespace FFTriadBuddy
         public List<ImagePatternDigit> customDigits;
         public TriadCard[] starterCards;
         public Dictionary<TriadNpc, TriadDeck> lastDeck;
+        public List<TriadDeckNamed> favDecks;
         public bool useAutoScan;
         public bool useCloudStorage;
         public bool isDirty;
@@ -32,6 +33,7 @@ namespace FFTriadBuddy
             ownedCards = new List<TriadCard>();
             completedNpcs = new List<TriadNpc>();
             lastDeck = new Dictionary<TriadNpc, TriadDeck>();
+            favDecks = new List<TriadDeckNamed>();
             starterCards = new TriadCard[5];
             customHashes = new List<ImageHashData>();
             customDigits = new List<ImagePatternDigit>();
@@ -232,6 +234,26 @@ namespace FFTriadBuddy
                     }
                 }
 
+                JsonParser.ArrayValue favDecksArr = (JsonParser.ArrayValue)jsonOb["favDecks", JsonParser.ArrayValue.Empty];
+                foreach (JsonParser.Value value in favDecksArr.entries)
+                {
+                    JsonParser.ObjectValue deckOb = (JsonParser.ObjectValue)value;
+                    TriadDeckNamed deckCards = new TriadDeckNamed();
+
+                    cardsArr = (JsonParser.ArrayValue)deckOb["cards", JsonParser.ArrayValue.Empty];
+                    foreach (JsonParser.Value cardValue in cardsArr.entries)
+                    {
+                        int cardId = (JsonParser.IntValue)cardValue;
+                        deckCards.knownCards.Add(cardDB.cards[cardId]);
+                    }
+
+                    if (deckCards.knownCards.Count > 0)
+                    {
+                        deckCards.Name = deckOb["name", JsonParser.StringValue.Empty];
+                        favDecks.Add(deckCards);
+                    }
+                }
+
                 JsonParser.ObjectValue imageHashesOb = (JsonParser.ObjectValue)jsonOb["images", null];
                 if (imageHashesOb != null)
                 {
@@ -396,6 +418,26 @@ namespace FFTriadBuddy
                     jsonWriter.WriteArrayEnd();
                 }
 
+                {
+                    jsonWriter.WriteArrayStart("favDecks");
+                    foreach (TriadDeckNamed deck in favDecks)
+                    {
+                        jsonWriter.WriteObjectStart();
+                        if (deck != null)
+                        {
+                            jsonWriter.WriteString(deck.Name, "name");
+                            jsonWriter.WriteArrayStart("cards");
+                            for (int Idx = 0; Idx < deck.knownCards.Count; Idx++)
+                            {
+                                jsonWriter.WriteInt(deck.knownCards[Idx].Id);
+                            }
+                            jsonWriter.WriteArrayEnd();
+                        }
+                        jsonWriter.WriteObjectEnd();
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+
                 if (!bLimitedMode)
                 {
                     jsonWriter.WriteObjectStart("images");
@@ -454,6 +496,43 @@ namespace FFTriadBuddy
                         MarkDirty();
                     }
                 }
+            }
+        }
+
+        public void UpdateFavDeck(int slot, TriadDeckNamed deck)
+        {
+            if (slot < 0 || slot > 16)
+            {
+                return;
+            }
+
+            if (deck == null)
+            {
+                for (int Idx = favDecks.Count - 1; Idx >= slot; Idx--)
+                {
+                    favDecks.RemoveAt(Idx);
+                    MarkDirty();
+                }
+            }
+            else
+            {
+                while (favDecks.Count <= slot)
+                {
+                    favDecks.Add(null);
+                }
+
+                bool bChanged = (deck == null) != (favDecks[slot] == null);
+                if (!bChanged && (deck != null))
+                {
+                    bChanged = !deck.Name.Equals(favDecks[slot].Name) || (deck.knownCards != favDecks[slot].knownCards);
+                }
+
+                if (bChanged)
+                {
+                    MarkDirty();
+                }
+
+                favDecks[slot] = deck;
             }
         }
 

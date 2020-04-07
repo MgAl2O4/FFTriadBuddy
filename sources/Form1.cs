@@ -14,6 +14,7 @@ namespace FFTriadBuddy
         private CardCtrl[] deckBlueControls;
         private CardCtrl highlightedCard;
         private CardGridCtrl[] cardGridControls;
+        private FavDeckCtrl[] favControls;
         private static ImageList cardIconImages;
         private ListViewColumnSorter cardViewSorter;
         private ListViewColumnSorter npcViewSorter;
@@ -61,9 +62,7 @@ namespace FFTriadBuddy
             boardControls = new CardCtrl[9] { cardCtrl1, cardCtrl2, cardCtrl3, cardCtrl4, cardCtrl5, cardCtrl6, cardCtrl7, cardCtrl8, cardCtrl9 };
             for (int Idx = 0; Idx < boardControls.Length; Idx++)
             {
-                boardControls[Idx].cardIcons = cardIconImages;
-                boardControls[Idx].cardTypes = imageListType;
-                boardControls[Idx].cardRarity = imageListRarity;
+                boardControls[Idx].SetImageLists(cardIconImages, imageListType, imageListRarity);
                 boardControls[Idx].SetCard(null);
                 boardControls[Idx].Tag = Idx;
             }
@@ -71,44 +70,37 @@ namespace FFTriadBuddy
             deckBlueControls = new CardCtrl[5] { cardCtrlBlue1, cardCtrlBlue2, cardCtrlBlue3, cardCtrlBlue4, cardCtrlBlue5 };
             for (int Idx = 0; Idx < deckBlueControls.Length; Idx++)
             {
-                deckBlueControls[Idx].cardIcons = cardIconImages;
-                deckBlueControls[Idx].cardTypes = imageListType;
-                deckBlueControls[Idx].cardRarity = imageListRarity;
+                deckBlueControls[Idx].SetImageLists(cardIconImages, imageListType, imageListRarity);
                 deckBlueControls[Idx].SetCard(null);
                 deckBlueControls[Idx].Tag = Idx;
                 deckBlueControls[Idx].drawMode = ECardDrawMode.ImageOnly;
             }
 
+            DeckCtrl[] deckControls = new DeckCtrl[] { deckCtrlSetup, deckCtrlSwapBlue, deckCtrlSwapRed, deckCtrlRandom };
+            for (int Idx = 0; Idx < deckControls.Length; Idx++)
             {
-                deckCtrlSetup.cardIcons = cardIconImages;
-                deckCtrlSetup.cardTypes = imageListType;
-                deckCtrlSetup.cardRarity = imageListRarity;
-                deckCtrlSetup.allowRearrange = true;
-                deckCtrlSetup.clickAction = EDeckCtrlAction.Pick;
+                deckControls[Idx].SetImageLists(cardIconImages, imageListType, imageListRarity);
+                deckControls[Idx].allowRearrange = false;
             }
 
+            favControls = new FavDeckCtrl[] { favDeckCtrl1, favDeckCtrl2, favDeckCtrl3 };
+            for (int Idx = 0; Idx < favControls.Length; Idx++)
             {
-                deckCtrlSwapBlue.cardIcons = cardIconImages;
-                deckCtrlSwapBlue.cardTypes = imageListType;
-                deckCtrlSwapBlue.cardRarity = imageListRarity;
-                deckCtrlSwapRed.cardIcons = cardIconImages;
-                deckCtrlSwapRed.cardTypes = imageListType;
-                deckCtrlSwapRed.cardRarity = imageListRarity;
-                deckCtrlSwapBlue.allowRearrange = false;
-                deckCtrlSwapRed.allowRearrange = false;
-                deckCtrlSwapBlue.clickAction = EDeckCtrlAction.Highlight;
-                deckCtrlSwapRed.clickAction = EDeckCtrlAction.Highlight;
-                deckCtrlSwapBlue.deckOwner = ETriadCardOwner.Blue;
-                deckCtrlSwapRed.deckOwner = ETriadCardOwner.Red;
+                favControls[Idx].SetImageLists(cardIconImages, imageListType, imageListRarity);
+                favControls[Idx].SetDeck(null);
+                favControls[Idx].Tag = Idx;
+                favControls[Idx].OnEdit += favDeck_OnEdit;
+                favControls[Idx].OnUse += favDeck_OnUse;
             }
 
-            {
-                deckCtrlRandom.cardIcons = cardIconImages;
-                deckCtrlRandom.cardTypes = imageListType;
-                deckCtrlRandom.cardRarity = imageListRarity;
-                deckCtrlRandom.allowRearrange = true;
-                deckCtrlRandom.clickAction = EDeckCtrlAction.Pick;
-            }
+            deckCtrlSetup.clickAction = EDeckCtrlAction.Pick;
+            deckCtrlSwapBlue.clickAction = EDeckCtrlAction.Highlight;
+            deckCtrlSwapRed.clickAction = EDeckCtrlAction.Highlight;
+            deckCtrlSwapBlue.deckOwner = ETriadCardOwner.Blue;
+            deckCtrlSwapRed.deckOwner = ETriadCardOwner.Red;
+            deckCtrlRandom.allowRearrange = true;
+            deckCtrlRandom.clickAction = EDeckCtrlAction.Pick;
+
             CreateCardViewGrids();
 
             deckOptimizer = new TriadDeckOptimizer();
@@ -289,6 +281,7 @@ namespace FFTriadBuddy
             InitializeNpcUI();
             InitializeScreenshotUI();
             InitializeCloudStorage();
+            UpdateFavDecks();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -424,6 +417,11 @@ namespace FFTriadBuddy
             progressBarNpc.Value = 0;
             progressBarNpc.Visible = lockMe;
             timerSelectNpc.Enabled = lockMe;
+
+            foreach (FavDeckCtrl favSlot in favControls)
+            {
+                favSlot.SetLocked(lockMe);
+            }
         }
 
         private void checkBoxSetupRules_CheckedChanged(object sender, EventArgs e)
@@ -682,6 +680,63 @@ namespace FFTriadBuddy
             updateGameUIAfterDeckChange();
         }
 
+        private void UpdateFavDecks()
+        {
+            PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+
+            int numSaved = playerDB.favDecks.Count;
+            int numToShow = Math.Min(numSaved, favControls.Length);
+
+            for (int Idx = 0; Idx < numToShow; Idx++)
+            {
+                favControls[Idx].SetDeck(playerDB.favDecks[Idx]);
+            }
+
+            for (int Idx = numToShow; Idx < favControls.Length; Idx++)
+            {
+                favControls[Idx].SetDeck(null);
+            }
+
+            buttonAddFav.Visible = numToShow < favControls.Length;
+            buttonAddFav.Enabled = buttonAddFav.Visible;
+        }
+
+        private void buttonAddFav_Click(object sender, EventArgs e)
+        {
+            PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+
+            FormFavEdit editForm = new FormFavEdit();
+            editForm.InitDeck(playerDB.favDecks.Count, playerDeck, cardIconImages, imageListType, imageListRarity);
+            editForm.ShowDialog();
+
+            UpdateFavDecks();
+        }
+
+        private void favDeck_OnEdit(int slotIdx)
+        {
+            PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+
+            FormFavEdit editForm = new FormFavEdit();
+            editForm.InitDeck(slotIdx, null, cardIconImages, imageListType, imageListRarity);
+            editForm.ShowDialog();
+
+            UpdateFavDecks();
+        }
+
+        private void favDeck_OnUse(int slotIdx)
+        {
+            PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+
+            TriadCard[] cardsCopy = new TriadCard[5];
+            TriadDeckNamed useDeck = playerDB.favDecks[slotIdx];
+            Array.Copy(useDeck.knownCards.ToArray(), cardsCopy, cardsCopy.Length);
+
+            playerDeck = new TriadDeck(cardsCopy);
+            deckCtrlSetup.SetDeck(playerDeck);
+
+            updateGameUIAfterDeckChange();
+        }
+
         #endregion
 
         #region Tab: Cards
@@ -880,7 +935,7 @@ namespace FFTriadBuddy
             for (int GridIdx = 0; GridIdx < numGrids; GridIdx++)
             {
                 CardGridCtrl gridCtrl = new CardGridCtrl();
-                gridCtrl.cardIcons = cardIconImages;
+                gridCtrl.SetImageLists(cardIconImages, imageListType, imageListRarity);
                 gridCtrl.Tag = GridIdx;
                 gridCtrl.InitCardControls();
                 gridCtrl.OnCardClicked += GridCtrl_OnCardClicked;
@@ -2202,6 +2257,11 @@ namespace FFTriadBuddy
             checkBoxUseCloudSaves.Checked = !checkBoxUseCloudSaves.Checked;
         }
 
+        private void panelCloud_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, panelCloud.ClientRectangle, SystemColors.ControlDark, ButtonBorderStyle.Solid);
+        }
+
         private void UpdateCloudState(CloudStorage.EState forcedState = CloudStorage.EState.NoErrors)
         {
             bool bEnabledAuthButton = false;
@@ -2215,7 +2275,7 @@ namespace FFTriadBuddy
                     {
                         case CloudStorage.EState.NoErrors: labelCloudState.Text = "active"; break;
                         case CloudStorage.EState.ApiFailure: labelCloudState.Text = "API call failed"; break;
-                        case CloudStorage.EState.NotAuthorized: labelCloudState.Text = "Login required"; bEnabledAuthButton = true; break;
+                        case CloudStorage.EState.NotAuthorized: labelCloudState.Text = "Auth required"; bEnabledAuthButton = true; break;
                         case CloudStorage.EState.AuthInProgress: labelCloudState.Text = "authorizing..."; break;
                         case CloudStorage.EState.NotInitialized: labelCloudState.Text = "scanning..."; break;
                         default: labelCloudState.Text = ""; break;
@@ -2299,5 +2359,6 @@ namespace FFTriadBuddy
         }
 
         #endregion
+
     }
 }

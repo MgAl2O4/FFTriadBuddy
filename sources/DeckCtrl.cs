@@ -69,6 +69,8 @@ namespace FFTriadBuddy
         private CardCtrl cardClickOwner;
         private bool[] lockFlags;
         private bool ignoreDragOnContextClose;
+        private int cardTileSize;
+        private int cardTileSpacing;
 
         public DeckCtrl()
         {
@@ -79,6 +81,9 @@ namespace FFTriadBuddy
             ignoreDragOnContextClose = false;
             clickAction = EDeckCtrlAction.Pick;
             deckOwner = ETriadCardOwner.Blue;
+
+            cardTileSize = 50;
+            cardTileSpacing = 6;
 
             InitializeComponent();
 
@@ -93,6 +98,13 @@ namespace FFTriadBuddy
                 base.WndProc(ref m);
         }
 
+        public void SetImageLists(ImageList cardImages, ImageList typeImages, ImageList rarityImages)
+        {
+            cardIcons = cardImages;
+            cardTypes = typeImages;
+            cardRarity = rarityImages;
+        }
+
         public void SetDeck(TriadDeck deck)
         {
             if ((clickAction == EDeckCtrlAction.Highlight) && (cardClickOwner != null))
@@ -101,18 +113,21 @@ namespace FFTriadBuddy
                 cardClickOwner = null;
             }
 
-            int prevCtrlCount = (cardCtrls != null) ? cardCtrls.Length : 0;
-            int numCards = deck.knownCards.Count + deck.unknownCardPool.Count;
-            if (prevCtrlCount == numCards)
+            if (cardCtrls != null)
             {
-                this.deck = null;
-                for (int Idx = 0; Idx < cardCtrls.Length; Idx++)
+                int prevCtrlCount = cardCtrls.Length;
+                int numCards = deck.knownCards.Count + deck.unknownCardPool.Count;
+                if (prevCtrlCount == numCards)
                 {
-                    setDeckCard(Idx, deck.GetCard(Idx), true);
-                }
+                    this.deck = null;
+                    for (int Idx = 0; Idx < cardCtrls.Length; Idx++)
+                    {
+                        setDeckCard(Idx, deck.GetCard(Idx), true);
+                    }
 
-                this.deck = deck;
-                return;
+                    this.deck = deck;
+                    return;
+                }
             }
 
             if (deck.unknownCardPool.Count == 0)
@@ -161,14 +176,12 @@ namespace FFTriadBuddy
                 CardCtrl newCardCtrl = new CardCtrl();
                 cardCtrls[Idx] = newCardCtrl;
 
-                newCardCtrl.cardIcons = cardIcons;
-                newCardCtrl.cardTypes = cardTypes;
-                newCardCtrl.cardRarity = cardRarity;
+                newCardCtrl.SetImageLists(cardIcons, cardTypes, cardRarity);
                 newCardCtrl.Tag = Idx;
                 newCardCtrl.defaultBackColor = BackColor;
 
-                newCardCtrl.Location = new Point(56 * Idx, 0);
-                newCardCtrl.Size = new Size(50, 50);
+                newCardCtrl.Location = new Point((cardTileSize + cardTileSpacing) * Idx, 0);
+                newCardCtrl.Size = new Size(cardTileSize, cardTileSize);
                 newCardCtrl.BorderStyle = BorderStyle.FixedSingle;
                 newCardCtrl.AllowDrop = true;
                 newCardCtrl.bBlinkHighlighted = (clickAction != EDeckCtrlAction.Highlight);
@@ -195,6 +208,12 @@ namespace FFTriadBuddy
 
             ResumeLayout();
             Invalidate();
+        }
+
+        public void SetCardSize(int size, int spacing)
+        {
+            cardTileSize = size;
+            cardTileSpacing = spacing;
         }
 
         public bool GetActiveCard(out int slotIdx, out TriadCard card)
