@@ -133,6 +133,7 @@ namespace FFTriadBuddy
         private Rectangle cachedGameWindow;
         private Bitmap cachedScreenshot;
         private Bitmap debugScreenshot;
+        private Size cachedImageSize;
         private Rectangle cachedGridBox;
         private Rectangle cachedScanAreaBox;
         private Rectangle cachedRuleBox;
@@ -337,6 +338,17 @@ namespace FFTriadBuddy
 
         private void DoWorkFindAndCacheBouds(EMode mode, Stopwatch perfTimer, FastBitmapHSV fastBitmap)
         {
+            if (cachedImageSize == null ||
+                cachedImageSize.Width != fastBitmap.Width ||
+                cachedImageSize.Height != fastBitmap.Height)
+            {
+                cachedImageSize = new Size(fastBitmap.Width, fastBitmap.Height);
+                for (int Idx = 0; Idx < bHasCachedData.Length; Idx++)
+                {
+                    bHasCachedData[Idx] = false;
+                }
+            }
+
             if (!bHasCachedData[(int)EGame.TripleTriad] ||
                 cachedGridBox.Width <= 0 ||
                 !HasGridMatch(fastBitmap, cachedGridBox.Left, cachedGridBox.Top, cachedGridBox.Width / 3))
