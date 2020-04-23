@@ -9,6 +9,8 @@ namespace FFTriadBuddy
         private static StreamWriter logWriter;
         private static StreamWriter logWriterDefault;
 
+        private static bool isSuperVerbose = false;
+
         public static void Initialize(string[] Args)
         {
             foreach (string cmdArg in Args)
@@ -16,6 +18,10 @@ namespace FFTriadBuddy
                 if (cmdArg == "-log")
                 {
                     logWriter = new StreamWriter("debugLog.txt");
+                }
+                else if (cmdArg == "-verbose")
+                {
+                    isSuperVerbose = true;
                 }
             }
 
@@ -38,6 +44,11 @@ namespace FFTriadBuddy
         public static bool IsActive()
         {
             return logWriter != null;
+        }
+
+        public static bool IsSuperVerbose()
+        {
+            return isSuperVerbose;
         }
 
         public static void WriteLine(string str)

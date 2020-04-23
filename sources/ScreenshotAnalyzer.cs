@@ -201,6 +201,7 @@ namespace FFTriadBuddy
             FastBitmapHSV fastBitmap = ScreenshotUtilities.ConvertToFastBitmap(cachedScreenshot);
             timerStep.Stop();
             if (bDebugMode) { Logger.WriteLine("Screenshot convert: " + timerStep.ElapsedMilliseconds + "ms"); }
+            if (Logger.IsSuperVerbose()) { Logger.WriteLine("Screenshot: " + cachedScreenshot.Width + "x" + cachedScreenshot.Height); }
 
             if ((mode & EMode.TurnTimerOnly) != EMode.None)
             {
@@ -235,20 +236,30 @@ namespace FFTriadBuddy
                 unknownHashes.Clear();
                 currentHashDetections.Clear();
 
-                // scan image and convert to game data
-                if (bHasCachedData[(int)EGame.TripleTriad])
+                try
                 {
-                    currentGameType = EGame.TripleTriad;
-                    DoWorkScanTripleTriad(mode, timerStep, fastBitmap, imagePath);
+                    // scan image and convert to game data
+                    if (bHasCachedData[(int)EGame.TripleTriad])
+                    {
+                        currentGameType = EGame.TripleTriad;
+                        DoWorkScanTripleTriad(mode, timerStep, fastBitmap, imagePath);
+                    }
+                    else if (bHasCachedData[(int)EGame.MiniCactpot])
+                    {
+                        currentGameType = EGame.MiniCactpot;
+                        DoWorkScanMiniCactpot(mode, timerStep, fastBitmap);
+                    }
+                    else
+                    {
+                        // failed to find any game, report triple triad failure
+                        currentGameType = EGame.TripleTriad;
+                        currentState = EState.MissingGrid;
+                    }
                 }
-                else if (bHasCachedData[(int)EGame.MiniCactpot])
+                catch (Exception ex)
                 {
-                    currentGameType = EGame.MiniCactpot;
-                    DoWorkScanMiniCactpot(mode, timerStep, fastBitmap);
-                }
-                else
-                {
-                    // failed to find any game, report triple triad failure
+                    Logger.WriteLine("Failed to scan screenshot: " + ex);
+
                     currentGameType = EGame.TripleTriad;
                     currentState = EState.MissingGrid;
                 }
@@ -608,6 +619,11 @@ namespace FFTriadBuddy
             public int Top;         // y position of upper-left corner
             public int Right;       // x position of lower-right corner
             public int Bottom;      // y position of lower-right corner
+
+            public override string ToString()
+            {
+                return string.Format("[L:{0},T:{1},R:{2},B:{3}]", Left, Top, Right, Bottom);
+            }
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -617,6 +633,7 @@ namespace FFTriadBuddy
         private HandleRef FindGameWindow()
         {
             HandleRef WindowHandle = new HandleRef();
+            bool useVerboseLogs = Logger.IsSuperVerbose();
 
             if (cachedProcess == null || !cachedProcess.MainWindowTitle.StartsWith("FINAL FANTASY"))
             {
@@ -626,10 +643,29 @@ namespace FFTriadBuddy
                     processes = Process.GetProcessesByName("ffxiv");
                 }
 
+                if (useVerboseLogs) { Logger.WriteLine("FindGameWindow: process list to check: " + processes.Length); }
+
                 cachedProcess = null;
                 foreach (Process p in processes)
                 {
-                    if (p.MainWindowTitle.StartsWith("FINAL FANTASY"))
+                    bool hasMatchingTitle = p.MainWindowTitle.StartsWith("FINAL FANTASY");
+                    if (useVerboseLogs)
+                    {
+                        try
+                        {
+                            Logger.WriteLine(">> pid:" + p.Id + ", name:" + p.ProcessName + 
+                                ", path:'" + p.MainModule.FileName + 
+                                "', window:'" + p.MainWindowTitle + 
+                                "', hwnd:0x" +  p.MainWindowHandle.ToInt64().ToString("x") +
+                                " => " + (hasMatchingTitle ? "match!" : "nope")); 
+                        }
+                        catch (Exception ex) 
+                        {
+                            Logger.WriteLine(">> failed to read process info: " + ex);
+                        }
+                    }
+
+                    if (hasMatchingTitle)
                     {
                         cachedProcess = p;
                         break;
@@ -639,10 +675,12 @@ namespace FFTriadBuddy
 
             if (cachedProcess != null)
             {
+                if (useVerboseLogs) { Logger.WriteLine("FindGameWindow: 0x" + cachedProcess.MainWindowHandle.ToInt64().ToString("x")); }
                 WindowHandle = new HandleRef(this, cachedProcess.MainWindowHandle);
             }
             else
             {
+                if (useVerboseLogs) { Logger.WriteLine("FindGameWindow: can't find window!"); }
                 currentState = EState.MissingGameProcess;
             }
 
@@ -668,12 +706,15 @@ namespace FFTriadBuddy
 
         private Bitmap TakeScreenshot(HandleRef WindowHandle)
         {
+            bool useVerboseLogs = Logger.IsSuperVerbose();
+
             Bitmap bitmap = null;
             if (GetWindowRect(WindowHandle, out RECT windowRectApi))
             {
                 cachedGameWindow = new Rectangle(windowRectApi.Left, windowRectApi.Top, windowRectApi.Right - windowRectApi.Left, windowRectApi.Bottom - windowRectApi.Top);
-                bitmap = new Bitmap(cachedGameWindow.Width, cachedGameWindow.Height, PixelFormat.Format32bppArgb);
+                if (useVerboseLogs) { Logger.WriteLine("TakeScreenshot: game window for:0x" + WindowHandle.Handle.ToInt64().ToString("x") + " is " + cachedGameWindow + ", api:" + windowRectApi); }
 
+                bitmap = new Bitmap(cachedGameWindow.Width, cachedGameWindow.Height, PixelFormat.Format32bppArgb);
                 using (Graphics g = Graphics.FromImage(bitmap))
                 {
                     bool bIsNewerThanWindows7 = (Environment.OSVersion.Platform == PlatformID.Win32NT &&
@@ -684,6 +725,7 @@ namespace FFTriadBuddy
                         // can't use PrintWindow API above win7, returns black screen
                         // copy entire screen - will capture all windows on top of game too
                         g.CopyFromScreen(cachedGameWindow.Location, Point.Empty, cachedGameWindow.Size);
+                        if (useVerboseLogs) { Logger.WriteLine(">> copied from screen"); }
                     }
                     else
                     {
@@ -700,6 +742,7 @@ namespace FFTriadBuddy
                         // capture window contents only
                         PrintWindow(WindowHandle.Handle, hdcBitmap, 0);
                         g.ReleaseHdc(hdcBitmap);
+                        if (useVerboseLogs) { Logger.WriteLine(">> captured content"); }
                     }
                 }
             }
@@ -713,11 +756,14 @@ namespace FFTriadBuddy
 
         private Bitmap TakeScreenshotPartial(HandleRef WindowHandle, Rectangle innerBounds)
         {
+            bool useVerboseLogs = Logger.IsSuperVerbose();
+
             Bitmap bitmap = null;
             if (innerBounds.Width > 0 && GetWindowRect(WindowHandle, out RECT windowRectApi))
             {
-                bitmap = new Bitmap(innerBounds.Width, innerBounds.Height, PixelFormat.Format32bppArgb);
+                if (useVerboseLogs) { Logger.WriteLine("TakeScreenshotPartial: game window for:0x" + WindowHandle.Handle.ToInt64().ToString("x") + " is " + windowRectApi); }
 
+                bitmap = new Bitmap(innerBounds.Width, innerBounds.Height, PixelFormat.Format32bppArgb);
                 using (Graphics g = Graphics.FromImage(bitmap))
                 {
                     // copy entire screen - will capture all windows on top of game too
@@ -793,6 +839,7 @@ namespace FFTriadBuddy
 
             stopwatch.Stop();
             if (bDebugMode) { Logger.WriteLine("FindGridCoords: " + stopwatch.ElapsedMilliseconds + "ms"); }
+            if (Logger.IsSuperVerbose()) { Logger.WriteLine("FindGridCoords: " + GridRect); }
 
             return GridRect;
         }
@@ -1011,6 +1058,7 @@ namespace FFTriadBuddy
 
             stopwatch.Stop();
             if (bDebugMode) { Logger.WriteLine("FindRuleBoxCoords: " + stopwatch.ElapsedMilliseconds + "ms"); }
+            if (Logger.IsSuperVerbose()) { Logger.WriteLine("FindRuleBoxCoords: " + RuleBoxRect); }
 
             return RuleBoxRect;
         }
@@ -1035,6 +1083,7 @@ namespace FFTriadBuddy
                 }
             }
 
+            if (Logger.IsSuperVerbose()) { Logger.WriteLine("FindTimerBox: " + result); }
             return result;
         }
 
@@ -1052,6 +1101,7 @@ namespace FFTriadBuddy
                 }
             }
 
+            if (Logger.IsSuperVerbose()) { Logger.WriteLine("FindTimerBox: " + result); }
             return result;
         }
 
@@ -1145,6 +1195,12 @@ namespace FFTriadBuddy
 
             stopwatch.Stop();
             if (bDebugMode) { Logger.WriteLine("FindBuleCardCoords: " + stopwatch.ElapsedMilliseconds + "ms"); }
+            if (Logger.IsSuperVerbose())
+            {
+                string desc = "FindBuleCardCoords: ";
+                foreach (var r in result) { desc += r.ToString() + " "; }
+                Logger.WriteLine(desc);
+            }
 
             return result;
         }
@@ -1209,10 +1265,23 @@ namespace FFTriadBuddy
                     TriadGameModifier bestModOb = (TriadGameModifier)ScreenshotUtilities.FindMatchingHash(ruleHashData, EImageHashType.Rule, out int bestDistance, bDebugMode);
                     if (bestModOb == null)
                     {
-                        ScreenshotUtilities.ConditionalAddUnknownHash(
-                            ScreenshotUtilities.CreateUnknownImageHash(ruleHashData, cachedScreenshot, EImageHashType.Rule), unknownHashes);
+                        bool isValid =
+                            (ruleHashData.ContextBounds.Top >= 0) &&
+                            (ruleHashData.ContextBounds.Left >= 0) &&
+                            (ruleHashData.ContextBounds.Bottom < cachedScreenshot.Height) &&
+                            (ruleHashData.ContextBounds.Right < cachedScreenshot.Width);
 
-                        currentState = EState.UnknownHash;
+                        if (isValid)
+                        {
+                            ScreenshotUtilities.ConditionalAddUnknownHash(
+                                ScreenshotUtilities.CreateUnknownImageHash(ruleHashData, cachedScreenshot, EImageHashType.Rule), unknownHashes);
+
+                            currentState = EState.UnknownHash;
+                        }
+                        else
+                        {
+                            Logger.WriteLine("ParseRules ERROR: out of bounds! screenshot:" + cachedScreenshot.Width + "x" + cachedScreenshot.Height + ", hashContext:" + ruleHashData.ContextBounds + ", ruleBox:" + rulesRect + ", fastBitmap:" + bitmap.Width + "x" + bitmap.Height);
+                        }
                     }
                     else
                     {
