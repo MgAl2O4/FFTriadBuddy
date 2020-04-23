@@ -131,10 +131,12 @@ namespace FFTriadBuddy
         private FastPixelMatch colorMatchCactpotNumber = new FastPixelMatchMono(0, 110);
 
         private Process cachedProcess;
+        private Screen cachedScreen;
         private Rectangle cachedGameWindow;
         private Bitmap cachedScreenshot;
         private Bitmap debugScreenshot;
         private Size cachedImageSize;
+        private float cachedScreenScaling;
         private Rectangle cachedGridBox;
         private Rectangle cachedScanAreaBox;
         private Rectangle cachedRuleBox;
@@ -343,7 +345,8 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-owner2.jpg");
+                    cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-scaling.jpg");
+                    //cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-owner2.jpg");
 
                     cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
                 }
@@ -444,7 +447,7 @@ namespace FFTriadBuddy
                 ParseRules(fastBitmap, cachedRuleBox, currentTriadGame.mods);
             }
 
-            bool bCanContinue = currentState != EState.UnknownHash;
+            bool bCanContinue = (currentState != EState.UnknownHash) || ((mode & EMode.Debug) != EMode.None);
             if (bCanContinue)
             {
                 bool bHasFailedCardMatch = false;
@@ -633,6 +636,9 @@ namespace FFTriadBuddy
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetWindowRect(HandleRef hWnd, out RECT lpRect);
 
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplaySettings(string DeviceName, int ModeNum, ref DEVMODE lpDevMode);
+
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -645,6 +651,45 @@ namespace FFTriadBuddy
             {
                 return string.Format("[L:{0},T:{1},R:{2},B:{3}]", Left, Top, Right, Bottom);
             }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct DEVMODE
+        {
+            private const int CCHDEVICENAME = 0x20;
+            private const int CCHFORMNAME = 0x20;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmDeviceName;
+            public short dmSpecVersion;
+            public short dmDriverVersion;
+            public short dmSize;
+            public short dmDriverExtra;
+            public int dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public ScreenOrientation dmDisplayOrientation;
+            public int dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmFormName;
+            public short dmLogPixels;
+            public int dmBitsPerPel;
+            public int dmPelsWidth;
+            public int dmPelsHeight;
+            public int dmDisplayFlags;
+            public int dmDisplayFrequency;
+            public int dmICMMethod;
+            public int dmICMIntent;
+            public int dmMediaType;
+            public int dmDitherType;
+            public int dmReserved1;
+            public int dmReserved2;
+            public int dmPanningWidth;
+            public int dmPanningHeight;
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -710,12 +755,6 @@ namespace FFTriadBuddy
             return result;
         }
 
-        public void UpdateCachedGameWindowBounds()
-        {
-            HandleRef windowHandle = FindGameWindow();
-            cachedGameWindow = GetAdjustedGameWindowBounds(windowHandle);
-        }
-
         private Rectangle GetGameWindowBoundsFromAPI(HandleRef windowHandle)
         {
             Rectangle result = new Rectangle(0, 0, 0, 0);
@@ -739,6 +778,33 @@ namespace FFTriadBuddy
             if (result.Width > 0 && PlayerSettingsDB.Get().useFullScreenCapture)
             {
                 result = Screen.GetBounds(result);
+            }
+
+            Screen activeScreen = Screen.FromHandle(windowHandle.Handle);
+            if (activeScreen != cachedScreen)
+            {
+                cachedScreen = activeScreen;
+                
+                DEVMODE dm = new DEVMODE();
+                dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+                EnumDisplaySettings(cachedScreen.DeviceName, -1, ref dm);
+
+                if (dm.dmPelsWidth == cachedScreen.Bounds.Width)
+                {
+                    cachedScreenScaling = 1.0f;
+                }
+                else
+                {
+                    cachedScreenScaling = (float)cachedScreen.Bounds.Width / (float)dm.dmPelsWidth;
+                }
+            }
+            
+            if (cachedScreenScaling != 1.0f)
+            {
+                result.X = (int)(result.X / cachedScreenScaling);
+                result.Y = (int)(result.Y / cachedScreenScaling);
+                result.Width = (int)(result.Width / cachedScreenScaling);
+                result.Height = (int)(result.Height / cachedScreenScaling);
             }
 
             return result;
@@ -1386,23 +1452,53 @@ namespace FFTriadBuddy
             int approxCardHeight = numberBox.Height * 45 / 100;
             int approxCardWidth = numberBox.Width / 3;
 
-            Point[] cardScanAnchors = new Point[4]
-            {
-                new Point(numberBoxMidX - (approxCardWidth / 2), numberBox.Top),
-                new Point(numberBoxMidX - (approxCardWidth / 2), numberBox.Bottom - approxCardHeight),
-                new Point(numberBoxMidX + (approxCardWidth * 40 / 100), numberBoxMidY - (approxCardHeight / 2)),
-                new Point(numberBoxMidX - (approxCardWidth * 110 / 100), numberBoxMidY - (approxCardHeight / 2)),
-            };
-
             CardState detectionState = new CardState();
             detectionState.sideImage = new ImageDataDigit[4];
+            int[] CardNumbers = new int[4] { 0, 0, 0, 0 };
 
-            int[] CardNumbers = new int[4]
+            // number match tries to avoid scaling and hopes that 100% UI scale will create digits fitting 8x10 boxes
+            // check if numberbox height is roughly (2x digit height + 2x offset:2) = 20
+            // - yes: yay, go and match pixel perfect digits
+            // - nope: assume digit box with height 50% of number box and width to keep 8x10 ratio
+            int heightCheckError = numberBox.Height - (ImagePatternDigit.Height * 2) - 4;
+            if (heightCheckError < 5)
+            {                  
+                Point[] cardScanAnchors = new Point[4]
+                {
+                    new Point(numberBoxMidX - (approxCardWidth / 2), numberBox.Top),
+                    new Point(numberBoxMidX - (approxCardWidth / 2), numberBox.Bottom - approxCardHeight),
+                    new Point(numberBoxMidX + (approxCardWidth * 40 / 100), numberBoxMidY - (approxCardHeight / 2)),
+                    new Point(numberBoxMidX - (approxCardWidth * 110 / 100), numberBoxMidY - (approxCardHeight / 2)),
+                };
+
+                for (int Idx = 0; Idx < 4; Idx++)
+                {
+                    CardNumbers[Idx] = ScreenshotUtilities.FindPatternMatch(bitmap, cardScanAnchors[Idx], colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx]);
+                }
+            }
+            else
             {
-                ScreenshotUtilities.FindPatternMatch(bitmap, cardScanAnchors[0], colorMatchNumAdjusted, digitList, out detectionState.sideImage[0]),
-                ScreenshotUtilities.FindPatternMatch(bitmap, cardScanAnchors[1], colorMatchNumAdjusted, digitList, out detectionState.sideImage[1]),
-                ScreenshotUtilities.FindPatternMatch(bitmap, cardScanAnchors[2], colorMatchNumAdjusted, digitList, out detectionState.sideImage[2]),
-                ScreenshotUtilities.FindPatternMatch(bitmap, cardScanAnchors[3], colorMatchNumAdjusted, digitList, out detectionState.sideImage[3]),
+                int sadDigitHeight = numberBox.Height * 45 / 100;
+                int sadDigitWidth = sadDigitHeight * ImagePatternDigit.Width / ImagePatternDigit.Height;
+                Size sadDigitSize = new Size(sadDigitWidth, sadDigitHeight);
+
+                Point[] cardScanAnchors = new Point[4]
+                {
+                    new Point(numberBoxMidX - (sadDigitWidth / 2), numberBox.Top),
+                    new Point(numberBoxMidX - (sadDigitWidth / 2), numberBox.Bottom - sadDigitHeight),
+                    new Point(numberBoxMidX + (sadDigitWidth / 2) + 2, numberBoxMidY - (sadDigitHeight / 2)),
+                    new Point(numberBoxMidX - (sadDigitWidth * 3 / 2) - 2, numberBoxMidY - (sadDigitHeight / 2)),
+                };
+
+                const int inactiveThr = 220 * 80 / 100;
+                colorMatchNumAdjusted = new FastPixelMatchMono((byte)(maxMono * 80 / 100), 255);
+                bIsGreyedOut = (maxMono < inactiveThr);
+
+                for (int Idx = 0; Idx < 4; Idx++)
+                {
+                    CardNumbers[Idx] = ScreenshotUtilities.FindPatternMatchScaled(bitmap, cardScanAnchors[Idx], sadDigitSize, colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx]);
+                    debugShapes.Add(new Rectangle(cardScanAnchors[Idx], sadDigitSize));
+                }
             };
 
             TriadCard foundCard = TriadCardDB.Get().Find(CardNumbers[0], CardNumbers[1], CardNumbers[2], CardNumbers[3]);

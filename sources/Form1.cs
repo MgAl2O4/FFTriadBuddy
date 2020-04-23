@@ -1873,7 +1873,6 @@ namespace FFTriadBuddy
             ShowScreenshotState();
 
             tabControlScreenDetection.SelectedTab = tabPageDetectionInfo;
-            checkBoxForceFullScreenCapture.Checked = PlayerSettingsDB.Get().useFullScreenCapture;
         }
 
         class LocalHashComboItem : IComparable
@@ -1934,18 +1933,6 @@ namespace FFTriadBuddy
                     case ScreenshotAnalyzer.EState.UnknownHash: labelScreenshotState.Text = "Can't recognize pattern! See details below"; useBackColor = screenshotStateWaitingColor; break;
                     default: labelScreenshotState.Text = "??"; break; 
                 }
-
-                if (state == ScreenshotAnalyzer.EState.MissingGameProcess || state == ScreenshotAnalyzer.EState.MissingGameWindow)
-                {
-                    labelGameResolution.Text = "waiting...";
-                }
-                else
-                {
-                    string captureRes = screenReader.GetGameWindowRect().Width + "x" + screenReader.GetGameWindowRect().Height;
-                    if (PlayerSettingsDB.Get().useFullScreenCapture) { captureRes += " (override)"; }
-                    labelGameResolution.Text = captureRes;
-                }
-                checkBoxForceFullScreenCapture.Checked = PlayerSettingsDB.Get().useFullScreenCapture;
             }
             else
             {
@@ -2064,16 +2051,6 @@ namespace FFTriadBuddy
 
             ShowScreenshotState();
             ShowGameData(gameState);
-        }
-
-        private void checkBoxForceFullScreenCapture_CheckedChanged(object sender, EventArgs e)
-        {
-            PlayerSettingsDB.Get().useFullScreenCapture = checkBoxForceFullScreenCapture.Checked;
-            PlayerSettingsDB.Get().MarkDirty();
-
-            screenReader.UpdateCachedGameWindowBounds();
-            ShowScreenshotState();
-            overlayForm.UpdateScanResolutionInfo(screenReader.GetGameWindowRect());
         }
 
         private void buttonRemoveLocalHashes_Click(object sender, EventArgs e)
