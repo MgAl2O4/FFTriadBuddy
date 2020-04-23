@@ -80,6 +80,7 @@ namespace FFTriadBuddy
             panelCactpot.Visible = false;
             panelDebug.Visible = false;
             panelSwapWarning.Visible = false;
+            panelScanResolution.Visible = false;
             labelStatus.Focus();
             labelSwapWarningIcon.Image = SystemIcons.Warning.ToBitmap();
 
@@ -134,9 +135,21 @@ namespace FFTriadBuddy
             screenMemory.UpdatePlayerDeck(activeDeck);
         }
 
+        public void UpdateScanResolutionInfo(Rectangle gameWindowRect)
+        {
+            labelScanResolution.Text = (gameWindowRect.Width > 0) ?
+                (gameWindowRect.Width + "x" + gameWindowRect.Height + (PlayerSettingsDB.Get().useFullScreenCapture ? " (override)" : "")) :
+                "waiting...";
+
+            checkBoxFullScreenScan.Checked = PlayerSettingsDB.Get().useFullScreenCapture;
+        }
+
         public void UpdateScreenState(ScreenshotAnalyzer screenReader, bool bDebugMode = false)
         {
             checkBoxDetails_CheckedChanged(null, null);
+
+            Rectangle gameWindowRect = screenReader.GetGameWindowRect();
+            UpdateScanResolutionInfo(gameWindowRect);
 
             if (screenReader.GetCurrentState() != ScreenshotAnalyzer.EState.NoErrors)
             {
@@ -152,7 +165,6 @@ namespace FFTriadBuddy
             Logger.WriteLine("Capture " + labelScanId.Text);
 
             // multi monitor setup: make sure that overlay and game and on the same monitor
-            Rectangle gameWindowRect = screenReader.GetGameWindowRect();
             if (gameWindowRect.Width > 0)
             {
                 Rectangle gameScreenBounds = Screen.GetBounds(gameWindowRect);
@@ -378,6 +390,7 @@ namespace FFTriadBuddy
             panelDetails.Visible = checkBoxDetails.Checked && bShowTriadControls;
             panelBoard.Visible = checkBoxDetails.Checked && bShowTriadControls;
             panelCactpot.Visible = checkBoxDetails.Checked && !bShowTriadControls;
+            panelScanResolution.Visible = checkBoxDetails.Checked;
         }
 
         public bool IsUsingAutoScan()
@@ -406,6 +419,7 @@ namespace FFTriadBuddy
             panelBoard.Location = new Point(screenX + panelSummary.Width + 10, screenY);
             panelCactpot.Location = new Point(screenX + panelSummary.Width + 10, screenY);
             panelDebug.Location = new Point(screenX, screenY + panelSummary.Height + 10);
+            panelScanResolution.Location = new Point(screenX, screenY + panelSummary.Height + 10);
         }
 
         public void InitOverlayLocation(Rectangle mainWindowBounds)
@@ -430,6 +444,12 @@ namespace FFTriadBuddy
             }
 
             UpdateOverlayLocation((Width - panelSummary.Width) / 2, Bottom - panelSummary.Height - 10);
+
+            if (screenReader != null)
+            {
+                screenReader.UpdateCachedGameWindowBounds();
+                UpdateScanResolutionInfo(screenReader.GetGameWindowRect());
+            }
 
             // allow one time auto placement on successful scan
             bCanAdjustSummaryLocation = true;
@@ -683,6 +703,24 @@ namespace FFTriadBuddy
         {
             Pen linePen = new Pen(Color.Lime, 5);
             e.Graphics.DrawLine(linePen, cactpotLinePt0, cactpotLinePt1);
+        }
+
+        private void checkBoxFullScreenScan_CheckedChanged(object sender, EventArgs e)
+        {
+            PlayerSettingsDB.Get().useFullScreenCapture = checkBoxFullScreenScan.Checked;
+            UpdateScreenState(screenReader);
+            OnUpdateState.Invoke();
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                // turn on WS_EX_TOOLWINDOW style bit
+                cp.ExStyle |= 0x80;
+                return cp;
+            }
         }
     }
 }

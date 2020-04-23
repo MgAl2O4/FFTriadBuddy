@@ -17,6 +17,7 @@ namespace FFTriadBuddy
         public Dictionary<TriadNpc, TriadDeck> lastDeck;
         public List<TriadDeckNamed> favDecks;
         public bool useAutoScan;
+        public bool useFullScreenCapture;
         public bool useCloudStorage;
         public bool isDirty;
         public string DBPath;
@@ -39,6 +40,7 @@ namespace FFTriadBuddy
             customDigits = new List<ImagePatternDigit>();
             lockedHashes = new List<ImageHashData>();
             useAutoScan = false;
+            useFullScreenCapture = false;
             useCloudStorage = false;
             isDirty = false;
             cloudToken = null;
@@ -189,6 +191,7 @@ namespace FFTriadBuddy
                 if (uiOb != null)
                 {
                     useAutoScan = (JsonParser.BoolValue)uiOb["autoScan", JsonParser.BoolValue.Empty];
+                    useFullScreenCapture = (JsonParser.BoolValue)uiOb["forceFSC", JsonParser.BoolValue.Empty];
                 }
 
                 JsonParser.ObjectValue cloudOb = (JsonParser.ObjectValue)jsonOb["cloud", null];
@@ -350,6 +353,7 @@ namespace FFTriadBuddy
                 {
                     jsonWriter.WriteObjectStart("ui");
                     jsonWriter.WriteBool(useAutoScan, "autoScan");
+                    jsonWriter.WriteBool(useFullScreenCapture, "forceFSC");
 
                     jsonWriter.WriteObjectEnd();
                 }

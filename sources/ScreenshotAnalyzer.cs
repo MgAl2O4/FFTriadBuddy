@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace FFTriadBuddy
 {
@@ -302,8 +303,28 @@ namespace FFTriadBuddy
 
         private string DoWorkLoadScreenshot(EMode mode, Stopwatch perfTimer)
         {
-            bool bTurnTimerOnly = (mode & EMode.TurnTimerOnly) != EMode.None;
-            string imagePath = AssetManager.Get().CreateFilePath("test/" + (bTurnTimerOnly ? "timer-" : ""));
+            bool bTurnTimerOnly = (mode & EMode.TurnTimerOnly) != EMode.None;           
+            string imagePath = AssetManager.Get().CreateFilePath("test/");
+            if (!Directory.Exists(imagePath))
+            {
+                imagePath = AssetManager.Get().CreateFilePath(null);
+                if (!Directory.Exists(imagePath))
+                {
+                    imagePath = Path.GetTempPath();
+                    if (!Directory.Exists(imagePath))
+                    {
+                        if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
+                        cachedScreenshot = null;
+                        return null;
+                    }
+                }
+            }
+
+            if (bTurnTimerOnly)
+            {
+                imagePath += "timer-";
+            }
+
             bool bUseTestScreenshot = false;
             bDebugMode = (mode & EMode.Debug) != EMode.None;
 
@@ -651,18 +672,13 @@ namespace FFTriadBuddy
                     bool hasMatchingTitle = p.MainWindowTitle.StartsWith("FINAL FANTASY");
                     if (useVerboseLogs)
                     {
-                        try
-                        {
-                            Logger.WriteLine(">> pid:" + p.Id + ", name:" + p.ProcessName + 
-                                ", path:'" + p.MainModule.FileName + 
-                                "', window:'" + p.MainWindowTitle + 
-                                "', hwnd:0x" +  p.MainWindowHandle.ToInt64().ToString("x") +
-                                " => " + (hasMatchingTitle ? "match!" : "nope")); 
-                        }
-                        catch (Exception ex) 
-                        {
-                            Logger.WriteLine(">> failed to read process info: " + ex);
-                        }
+                        Logger.WriteLine(">> pid:" + p.Id + ", name:" + p.ProcessName +
+                            "', window:'" + p.MainWindowTitle +
+                            "', hwnd:0x" + p.MainWindowHandle.ToInt64().ToString("x") +
+                            " => " + (hasMatchingTitle ? "match!" : "nope"));
+
+                        try { Logger.WriteLine("   path:'" + p.MainModule.FileName + "'"); }
+                        catch (Exception ex) { Logger.WriteLine("   path: FAILED: " + ex); }
                     }
 
                     if (hasMatchingTitle)
@@ -689,30 +705,55 @@ namespace FFTriadBuddy
 
         public Rectangle FindGameWindowBounds()
         {
+            HandleRef windowHandle = FindGameWindow();
+            Rectangle result = GetGameWindowBoundsFromAPI(windowHandle);
+            return result;
+        }
+
+        public void UpdateCachedGameWindowBounds()
+        {
+            HandleRef windowHandle = FindGameWindow();
+            cachedGameWindow = GetAdjustedGameWindowBounds(windowHandle);
+        }
+
+        private Rectangle GetGameWindowBoundsFromAPI(HandleRef windowHandle)
+        {
             Rectangle result = new Rectangle(0, 0, 0, 0);
 
-            HandleRef windowHandle = FindGameWindow();
             bool bHasWindow = windowHandle.Handle.ToInt64() != 0;
             if (bHasWindow)
             {
                 if (GetWindowRect(windowHandle, out RECT windowRectApi))
                 {
                     result = new Rectangle(windowRectApi.Left, windowRectApi.Top, windowRectApi.Right - windowRectApi.Left, windowRectApi.Bottom - windowRectApi.Top);
+                    if (Logger.IsSuperVerbose()) { Logger.WriteLine("GetGameWindowBoundsFromAPI: handle:0x" + windowHandle.Handle.ToInt64().ToString("x") + " bounds: " + result + ", api:" + windowRectApi); }
                 }
             }
 
             return result;
         }
 
-        private Bitmap TakeScreenshot(HandleRef WindowHandle)
+        public Rectangle GetAdjustedGameWindowBounds(HandleRef windowHandle)
+        {
+            Rectangle result = GetGameWindowBoundsFromAPI(windowHandle);
+            if (result.Width > 0 && PlayerSettingsDB.Get().useFullScreenCapture)
+            {
+                result = Screen.GetBounds(result);
+            }
+
+            return result;
+        }
+
+        private Bitmap TakeScreenshot(HandleRef windowHandle)
         {
             bool useVerboseLogs = Logger.IsSuperVerbose();
-
             Bitmap bitmap = null;
-            if (GetWindowRect(WindowHandle, out RECT windowRectApi))
+
+            Rectangle bounds = GetAdjustedGameWindowBounds(windowHandle);
+            if (bounds.Width > 0)
             {
-                cachedGameWindow = new Rectangle(windowRectApi.Left, windowRectApi.Top, windowRectApi.Right - windowRectApi.Left, windowRectApi.Bottom - windowRectApi.Top);
-                if (useVerboseLogs) { Logger.WriteLine("TakeScreenshot: game window for:0x" + WindowHandle.Handle.ToInt64().ToString("x") + " is " + cachedGameWindow + ", api:" + windowRectApi); }
+                cachedGameWindow = bounds;
+                if (useVerboseLogs) { Logger.WriteLine("TakeScreenshot: bounds " + cachedGameWindow); }
 
                 bitmap = new Bitmap(cachedGameWindow.Width, cachedGameWindow.Height, PixelFormat.Format32bppArgb);
                 using (Graphics g = Graphics.FromImage(bitmap))
@@ -740,7 +781,7 @@ namespace FFTriadBuddy
                         }
 
                         // capture window contents only
-                        PrintWindow(WindowHandle.Handle, hdcBitmap, 0);
+                        PrintWindow(windowHandle.Handle, hdcBitmap, 0);
                         g.ReleaseHdc(hdcBitmap);
                         if (useVerboseLogs) { Logger.WriteLine(">> captured content"); }
                     }
@@ -754,20 +795,21 @@ namespace FFTriadBuddy
             return bitmap;
         }
 
-        private Bitmap TakeScreenshotPartial(HandleRef WindowHandle, Rectangle innerBounds)
+        private Bitmap TakeScreenshotPartial(HandleRef windowHandle, Rectangle innerBounds)
         {
             bool useVerboseLogs = Logger.IsSuperVerbose();
-
             Bitmap bitmap = null;
-            if (innerBounds.Width > 0 && GetWindowRect(WindowHandle, out RECT windowRectApi))
+
+            Rectangle bounds = GetAdjustedGameWindowBounds(windowHandle);
+            if (bounds.Width > 0 && innerBounds.Width > 0)
             {
-                if (useVerboseLogs) { Logger.WriteLine("TakeScreenshotPartial: game window for:0x" + WindowHandle.Handle.ToInt64().ToString("x") + " is " + windowRectApi); }
+                if (useVerboseLogs) { Logger.WriteLine("TakeScreenshotPartial: bounds " + bounds); }
 
                 bitmap = new Bitmap(innerBounds.Width, innerBounds.Height, PixelFormat.Format32bppArgb);
                 using (Graphics g = Graphics.FromImage(bitmap))
                 {
                     // copy entire screen - will capture all windows on top of game too
-                    Point copyPt = new Point(windowRectApi.Left + innerBounds.Left, windowRectApi.Top + innerBounds.Top);
+                    Point copyPt = new Point(bounds.Left + innerBounds.Left, bounds.Top + innerBounds.Top);
                     g.CopyFromScreen(copyPt, Point.Empty, innerBounds.Size);
                 }
             }

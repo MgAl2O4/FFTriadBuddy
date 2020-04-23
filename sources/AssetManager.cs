@@ -58,8 +58,7 @@ namespace FFTriadBuddy
                 }
             }
 
-            AssemblyTitleAttribute attributes = (AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false);
-            return Path.Combine(currentDirName, relativeFilePath);
+            return string.IsNullOrEmpty(relativeFilePath) ? currentDirName : Path.Combine(currentDirName, relativeFilePath);
         }
 
         public Stream GetAsset(string path)

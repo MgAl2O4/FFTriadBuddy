@@ -94,6 +94,10 @@
             this.labelCactpot1 = new FFTriadBuddy.HitInvisibleLabel();
             this.labelCactpot0 = new FFTriadBuddy.HitInvisibleLabel();
             this.panelMarkerLine = new FFTriadBuddy.HitInvisiblePanel();
+            this.panelScanResolution = new FFTriadBuddy.HitInvisiblePanel();
+            this.hitInvisibleLabel3 = new FFTriadBuddy.HitInvisibleLabel();
+            this.labelScanResolution = new FFTriadBuddy.HitInvisibleLabel();
+            this.checkBoxFullScreenScan = new System.Windows.Forms.CheckBox();
             this.panelSummary.SuspendLayout();
             this.panelDebug.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureDebugScreen)).BeginInit();
@@ -105,6 +109,7 @@
             this.panelSwapWarning.SuspendLayout();
             this.panelMarkerSwap.SuspendLayout();
             this.panelCactpot.SuspendLayout();
+            this.panelScanResolution.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerFadeMarkers
@@ -803,6 +808,46 @@
             this.panelMarkerLine.TabIndex = 12;
             this.panelMarkerLine.Paint += new System.Windows.Forms.PaintEventHandler(this.panelMarkerLine_Paint);
             // 
+            // panelScanResolution
+            // 
+            this.panelScanResolution.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.panelScanResolution.Controls.Add(this.checkBoxFullScreenScan);
+            this.panelScanResolution.Controls.Add(this.labelScanResolution);
+            this.panelScanResolution.Controls.Add(this.hitInvisibleLabel3);
+            this.panelScanResolution.Location = new System.Drawing.Point(509, 410);
+            this.panelScanResolution.Name = "panelScanResolution";
+            this.panelScanResolution.Size = new System.Drawing.Size(214, 47);
+            this.panelScanResolution.TabIndex = 13;
+            // 
+            // hitInvisibleLabel3
+            // 
+            this.hitInvisibleLabel3.AutoSize = true;
+            this.hitInvisibleLabel3.Location = new System.Drawing.Point(2, 3);
+            this.hitInvisibleLabel3.Name = "hitInvisibleLabel3";
+            this.hitInvisibleLabel3.Size = new System.Drawing.Size(83, 13);
+            this.hitInvisibleLabel3.TabIndex = 0;
+            this.hitInvisibleLabel3.Text = "Scan resolution:";
+            // 
+            // labelScanResolution
+            // 
+            this.labelScanResolution.AutoSize = true;
+            this.labelScanResolution.Location = new System.Drawing.Point(91, 3);
+            this.labelScanResolution.Name = "labelScanResolution";
+            this.labelScanResolution.Size = new System.Drawing.Size(49, 13);
+            this.labelScanResolution.TabIndex = 1;
+            this.labelScanResolution.Text = "waiting...";
+            // 
+            // checkBoxFullScreenScan
+            // 
+            this.checkBoxFullScreenScan.AutoSize = true;
+            this.checkBoxFullScreenScan.Location = new System.Drawing.Point(4, 27);
+            this.checkBoxFullScreenScan.Name = "checkBoxFullScreenScan";
+            this.checkBoxFullScreenScan.Size = new System.Drawing.Size(181, 17);
+            this.checkBoxFullScreenScan.TabIndex = 2;
+            this.checkBoxFullScreenScan.Text = "Force full screen scan (see rules)";
+            this.checkBoxFullScreenScan.UseVisualStyleBackColor = true;
+            this.checkBoxFullScreenScan.CheckedChanged += new System.EventHandler(this.checkBoxFullScreenScan_CheckedChanged);
+            // 
             // FormOverlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -810,6 +855,7 @@
             this.BackColor = System.Drawing.Color.Fuchsia;
             this.ClientSize = new System.Drawing.Size(1064, 473);
             this.ControlBox = false;
+            this.Controls.Add(this.panelScanResolution);
             this.Controls.Add(this.panelMarkerLine);
             this.Controls.Add(this.panelCactpot);
             this.Controls.Add(this.panelMarkerSwap);
@@ -842,6 +888,8 @@
             this.panelSwapWarning.ResumeLayout(false);
             this.panelMarkerSwap.ResumeLayout(false);
             this.panelCactpot.ResumeLayout(false);
+            this.panelScanResolution.ResumeLayout(false);
+            this.panelScanResolution.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -913,5 +961,9 @@
         private HitInvisibleLabel labelCactpot1;
         private HitInvisibleLabel labelCactpot0;
         private HitInvisiblePanel panelMarkerLine;
+        private HitInvisiblePanel panelScanResolution;
+        private System.Windows.Forms.CheckBox checkBoxFullScreenScan;
+        private HitInvisibleLabel labelScanResolution;
+        private HitInvisibleLabel hitInvisibleLabel3;
     }
 }

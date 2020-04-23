@@ -222,6 +222,10 @@
             this.labelUpdateNotify = new System.Windows.Forms.Label();
             this.timerSetupDetails = new System.Windows.Forms.Timer(this.components);
             this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
+            this.checkBoxForceFullScreenCapture = new System.Windows.Forms.CheckBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.labelGameResolution = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.panelCloud.SuspendLayout();
@@ -1105,6 +1109,10 @@
             // 
             // tabPageDetectionInfo
             // 
+            this.tabPageDetectionInfo.Controls.Add(this.label25);
+            this.tabPageDetectionInfo.Controls.Add(this.labelGameResolution);
+            this.tabPageDetectionInfo.Controls.Add(this.label24);
+            this.tabPageDetectionInfo.Controls.Add(this.checkBoxForceFullScreenCapture);
             this.tabPageDetectionInfo.Controls.Add(this.textBox1);
             this.tabPageDetectionInfo.Location = new System.Drawing.Point(0, 0);
             this.tabPageDetectionInfo.Name = "tabPageDetectionInfo";
@@ -1120,11 +1128,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(6, 6);
+            this.textBox1.Location = new System.Drawing.Point(6, 29);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(648, 165);
+            this.textBox1.Size = new System.Drawing.Size(648, 139);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
@@ -2270,6 +2278,44 @@
             this.timerCloudSave.Interval = 10000;
             this.timerCloudSave.Tick += new System.EventHandler(this.timerCloudSave_Tick);
             // 
+            // checkBoxForceFullScreenCapture
+            // 
+            this.checkBoxForceFullScreenCapture.AutoSize = true;
+            this.checkBoxForceFullScreenCapture.Location = new System.Drawing.Point(518, 6);
+            this.checkBoxForceFullScreenCapture.Name = "checkBoxForceFullScreenCapture";
+            this.checkBoxForceFullScreenCapture.Size = new System.Drawing.Size(143, 17);
+            this.checkBoxForceFullScreenCapture.TabIndex = 1;
+            this.checkBoxForceFullScreenCapture.Text = "Force full screen capture";
+            this.checkBoxForceFullScreenCapture.UseVisualStyleBackColor = true;
+            this.checkBoxForceFullScreenCapture.CheckedChanged += new System.EventHandler(this.checkBoxForceFullScreenCapture_CheckedChanged);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(3, 7);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(143, 13);
+            this.label24.TabIndex = 2;
+            this.label24.Text = "Detected game window size:";
+            // 
+            // labelGameResolution
+            // 
+            this.labelGameResolution.AutoSize = true;
+            this.labelGameResolution.Location = new System.Drawing.Point(152, 7);
+            this.labelGameResolution.Name = "labelGameResolution";
+            this.labelGameResolution.Size = new System.Drawing.Size(49, 13);
+            this.labelGameResolution.TabIndex = 3;
+            this.labelGameResolution.Text = "waiting...";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(278, 7);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(234, 13);
+            this.label25.TabIndex = 4;
+            this.label25.Text = "If doesn\'t match, please try override (see rules) >";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2539,6 +2585,10 @@
         private FavDeckCtrl favDeckCtrl3;
         private FavDeckCtrl favDeckCtrl2;
         private System.Windows.Forms.Button buttonAddFav;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label labelGameResolution;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.CheckBox checkBoxForceFullScreenCapture;
     }
 }
 
