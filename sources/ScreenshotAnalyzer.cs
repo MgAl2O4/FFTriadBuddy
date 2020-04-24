@@ -608,7 +608,9 @@ namespace FFTriadBuddy
 
         public bool IsInScanArea(Point testPt)
         {
-            return cachedScanAreaBox.Contains(testPt.X - cachedGameWindow.Left, testPt.Y - cachedGameWindow.Top);
+            return cachedScanAreaBox.Contains(
+                (int)(testPt.X / cachedScreenScaling) - cachedGameWindow.Left, 
+                (int)(testPt.Y /cachedScreenScaling) - cachedGameWindow.Top);
         }
 
         public void ConvertToScaledScreen(ref Rectangle rect)
