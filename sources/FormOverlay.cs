@@ -227,6 +227,8 @@ namespace FFTriadBuddy
                     Rectangle boardRect = screenReader.GetCactpotBoardRect();
                     if ((boardRect.Width > 0) && (gameWindowRect.Width > 0))
                     {
+                        screenReader.ConvertToScaledScreen(ref boardRect);
+
                         bCanAdjustSummaryLocation = false;
                         UpdateOverlayLocation(gameWindowRect.Left + ((boardRect.Left + boardRect.Right) / 2) - (panelSummary.Width / 2), gameWindowRect.Top + boardRect.Bottom + 50);
                     }
@@ -244,10 +246,12 @@ namespace FFTriadBuddy
                     {
                         Rectangle fromBox = screenReader.GetCactpotCircleBox(fromIdx);
                         Rectangle toBox = screenReader.GetCactpotCircleBox(toIdx);
-                        fromBox.Inflate(10, 10);
                         fromBox.Offset(gameWindowRect.Location);
-                        toBox.Inflate(10, 10);
                         toBox.Offset(gameWindowRect.Location);
+                        screenReader.ConvertToScaledScreen(ref fromBox);
+                        screenReader.ConvertToScaledScreen(ref toBox); 
+                        fromBox.Inflate(10, 10);
+                        toBox.Inflate(10, 10);
 
                         ShowCactpotLine(fromBox, toBox);
                     }
@@ -261,8 +265,9 @@ namespace FFTriadBuddy
                     if (bHasValidMarkerBoard)
                     {
                         Rectangle rectBoardPos = screenReader.GetCactpotCircleBox(markerPos);
-                        rectBoardPos.Inflate(10, 10);
                         rectBoardPos.Offset(gameWindowRect.Location);
+                        screenReader.ConvertToScaledScreen(ref rectBoardPos);
+                        rectBoardPos.Inflate(10, 10);
 
                         panelMarkerBoard.Bounds = rectBoardPos;
                         panelMarkerBoard.BackColor = Color.Lime;
@@ -312,8 +317,11 @@ namespace FFTriadBuddy
                 Rectangle ruleRect = screenReader.GetRuleBoxRect();
                 if (gameWindowRect.Width > 0 && ruleRect.Width > 0)
                 {
-                    panelSwapWarning.Top = gameWindowRect.Top + ruleRect.Top - panelSwapWarning.Height - 10;
-                    panelSwapWarning.Left = gameWindowRect.Left + ruleRect.Left;
+                    Rectangle warningBounds = new Rectangle(ruleRect.Left, ruleRect.Top - panelSwapWarning.Height - 10, 0, 0);
+                    warningBounds.Offset(gameWindowRect.Location);
+                    screenReader.ConvertToScaledScreen(ref warningBounds);
+
+                    panelSwapWarning.Location = warningBounds.Location;                    
                     panelSwapWarning.Visible = true;
                     timerHideSwapWarning.Stop();
                     timerHideSwapWarning.Start();
@@ -323,8 +331,9 @@ namespace FFTriadBuddy
             if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.SwapHints) != TriadGameScreenMemory.EUpdateFlags.None)
             {
                 Rectangle rectDeckPos = screenReader.GetBlueCardRect(screenMemory.swappedBlueCardIdx);
-                rectDeckPos.Inflate(-10, -10);
                 rectDeckPos.Offset(gameWindowRect.Location);
+                screenReader.ConvertToScaledScreen(ref rectDeckPos);
+                rectDeckPos.Inflate(-10, -10);
 
                 panelMarkerSwap.Bounds = rectDeckPos;
                 panelMarkerSwap.Visible = true;
