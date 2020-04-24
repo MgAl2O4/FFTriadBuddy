@@ -170,6 +170,8 @@ namespace FFTriadBuddy
                     if ((gridRect.Width > 0) && (gameWindowRect.Width > 0))
                     {
                         bCanAdjustSummaryLocation = false;
+                        screenReader.ConvertToScaledScreen(ref gridRect);
+
                         UpdateOverlayLocation(gameWindowRect.Left + ((gridRect.Left + gridRect.Right) / 2) - (panelSummary.Width / 2), gameWindowRect.Top + gridRect.Bottom + 50);
                     }
                 }
@@ -195,10 +197,13 @@ namespace FFTriadBuddy
                         {
                             Rectangle rectDeckPos = screenReader.GetBlueCardRect(markerDeckPos);
                             Rectangle rectBoardPos = screenReader.GetBoardCardRect(markerBoardPos);
-                            rectDeckPos.Inflate(10, 10);
                             rectDeckPos.Offset(gameWindowRect.Location);
-                            rectBoardPos.Inflate(10, 10);
                             rectBoardPos.Offset(gameWindowRect.Location);
+
+                            screenReader.ConvertToScaledScreen(ref rectDeckPos);
+                            screenReader.ConvertToScaledScreen(ref rectBoardPos);
+                            rectDeckPos.Inflate(10, 10);
+                            rectBoardPos.Inflate(10, 10);
 
                             panelMarkerDeck.Bounds = rectDeckPos;
                             panelMarkerBoard.Bounds = rectBoardPos;

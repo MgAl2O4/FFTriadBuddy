@@ -345,8 +345,7 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-scaling.jpg");
-                    //cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-owner2.jpg");
+                    cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-15.jpg");
 
                     cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
                 }
@@ -610,6 +609,14 @@ namespace FFTriadBuddy
         public bool IsInScanArea(Point testPt)
         {
             return cachedScanAreaBox.Contains(testPt.X - cachedGameWindow.Left, testPt.Y - cachedGameWindow.Top);
+        }
+
+        public void ConvertToScaledScreen(ref Rectangle rect)
+        {
+            rect.X = (int)(rect.X * cachedScreenScaling);
+            rect.Y = (int)(rect.Y * cachedScreenScaling);
+            rect.Width = (int)(rect.Width * cachedScreenScaling);
+            rect.Height = (int)(rect.Height * cachedScreenScaling);
         }
 
         public void PopUnknownHash()
