@@ -110,6 +110,7 @@ namespace FFTriadBuddy
 
             deckOptimizer = new TriadDeckOptimizer();
             deckOptimizer.OnFoundDeck += DeckOptimizer_OnFoundDeck;
+            deckOptimizer.OnUpdateMaxSearchDecks += DeckOptimizer_OnUpdateMaxSearchDecks;
 
             screenReader = new ScreenshotAnalyzer();
             overlayForm = new FormOverlay();
@@ -566,6 +567,11 @@ namespace FFTriadBuddy
         private void buttonOptimizeAbort_Click(object sender, EventArgs e)
         {
             deckOptimizer.AbortProcess();
+        }
+
+        private void DeckOptimizer_OnUpdateMaxSearchDecks(string numPossibleDesc)
+        {
+            BeginInvoke((MethodInvoker)delegate () { labelOptNumPossible.Text = numPossibleDesc; });
         }
 
         private void timerOptimizeDeck_Tick(object sender, EventArgs e)
