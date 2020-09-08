@@ -294,6 +294,7 @@
   <card id="292" name="Therion" icon="082792.png" rarity="Legendary" type="None" up="9" lt="9" dn="2" rt="9" sort="40" />
   <card id="293" name="Varis yae Galvus" icon="082793.png" rarity="Legendary" type="Garlean" up="10" lt="10" dn="4" rt="1" sort="43" />
   <card id="294" name="Dwarf" icon="082794.png" rarity="Common" type="Beastman" up="2" lt="4" dn="6" rt="2" sort="3" />
+  <card id="295" name="Ehll Tou" icon="082795.png" rarity="Uncommon" type="None" up="1" lt="7" dn="1" rt="7" sort="16" />
   <card id="296" name="Rolling Tankard" icon="082796.png" rarity="Uncommon" type="None" up="6" lt="4" dn="2" rt="6" sort="8" />
   <card id="297" name="Lugus" icon="082797.png" rarity="Rare" type="None" up="5" lt="4" dn="7" rt="7" sort="20" />
   <card id="300" name="Elidibus" icon="082800.png" rarity="Epic" type="None" up="8" lt="4" dn="9" rt="4" sort="39" />
