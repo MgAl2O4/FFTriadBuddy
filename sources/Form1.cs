@@ -290,7 +290,10 @@ namespace FFTriadBuddy
             UpdateFavDecks();
 
             // XInput polling
-            XInputStub.StartPolling();
+            if (PlayerSettingsDB.Get().useXInput)
+            {
+                XInputStub.StartPolling();
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -2064,8 +2067,10 @@ namespace FFTriadBuddy
             ShowScreenshotState();
             ShowGameData(gameState);
 
-            //
-            overlayForm.SetXInputEnble(bUseScreenReader);
+            if (PlayerSettingsDB.Get().useXInput)
+            {
+                overlayForm.SetXInputEnble(bUseScreenReader);
+            }
         }
 
         private void buttonRemoveLocalHashes_Click(object sender, EventArgs e)

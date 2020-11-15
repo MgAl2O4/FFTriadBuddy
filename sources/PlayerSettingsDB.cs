@@ -19,6 +19,7 @@ namespace FFTriadBuddy
         public bool useAutoScan;
         public bool useFullScreenCapture;
         public bool useCloudStorage;
+        public bool useXInput;
         public bool isDirty;
         public string DBPath;
         public string cloudToken;
@@ -42,6 +43,7 @@ namespace FFTriadBuddy
             useAutoScan = false;
             useFullScreenCapture = false;
             useCloudStorage = false;
+            useXInput = true;
             isDirty = false;
             cloudToken = null;
         }
@@ -190,8 +192,11 @@ namespace FFTriadBuddy
                 JsonParser.ObjectValue uiOb = (JsonParser.ObjectValue)jsonOb["ui", null];
                 if (uiOb != null)
                 {
+                    JsonParser.Value BoolTrue = new JsonParser.BoolValue(true);
+
                     useAutoScan = (JsonParser.BoolValue)uiOb["autoScan", JsonParser.BoolValue.Empty];
                     useFullScreenCapture = (JsonParser.BoolValue)uiOb["forceFSC", JsonParser.BoolValue.Empty];
+                    useXInput = (JsonParser.BoolValue)uiOb["xInput", BoolTrue];
                 }
 
                 JsonParser.ObjectValue cloudOb = (JsonParser.ObjectValue)jsonOb["cloud", null];
@@ -354,6 +359,7 @@ namespace FFTriadBuddy
                     jsonWriter.WriteObjectStart("ui");
                     jsonWriter.WriteBool(useAutoScan, "autoScan");
                     jsonWriter.WriteBool(useFullScreenCapture, "forceFSC");
+                    jsonWriter.WriteBool(useXInput, "xInput");
 
                     jsonWriter.WriteObjectEnd();
                 }
