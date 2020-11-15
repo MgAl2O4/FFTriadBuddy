@@ -147,6 +147,7 @@
     <Compile Include="TriadGameScreenMemory.cs" />
     <Compile Include="TriadTournamentDB.cs" />
     <Compile Include="TriadNpcDB.cs" />
+    <Compile Include="XInputStub.cs" />
     <EmbeddedResource Include="CardCtrl.resx">
       <DependentUpon>CardCtrl.cs</DependentUpon>
     </EmbeddedResource>

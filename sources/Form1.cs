@@ -288,10 +288,16 @@ namespace FFTriadBuddy
             InitializeScreenshotUI();
             InitializeCloudStorage();
             UpdateFavDecks();
+
+            // XInput polling
+            XInputStub.StartPolling();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // XInput stop
+            XInputStub.StopPolling();
+
             Application.RemoveMessageFilter(scrollFilter);
             scrollFilter = null;
         }
@@ -2057,6 +2063,9 @@ namespace FFTriadBuddy
 
             ShowScreenshotState();
             ShowGameData(gameState);
+
+            //
+            overlayForm.SetXInputEnble(bUseScreenReader);
         }
 
         private void buttonRemoveLocalHashes_Click(object sender, EventArgs e)
