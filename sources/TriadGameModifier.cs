@@ -630,4 +630,11 @@ namespace FFTriadBuddy
             }
         }
     }
+
+    public class TriadGameModifierDraft : TriadGameModifier
+    {
+        public TriadGameModifierDraft() { RuleName = "Draft"; }
+        
+        // no special logic ...yet
+    }
 }

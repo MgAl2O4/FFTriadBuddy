@@ -247,7 +247,7 @@ namespace FFTriadBuddy
 
             Dictionary<int, TriadCard> loadedCards = new Dictionary<int, TriadCard>();
             List<string[]> cardData = ParseCSVFile(folderPath + "TripleTriadCardResident.csv");
-            if (cardData.Count > 0 && cardData[0].Length == 10)
+            if (cardData.Count > 0 && cardData[0].Length == 17)
             {
                 for (int Idx = 0; Idx < cardData.Count; Idx++)
                 {
@@ -384,7 +384,7 @@ namespace FFTriadBuddy
         {
             Dictionary<int, TriadGameModifier> ruleMap = new Dictionary<int, TriadGameModifier>();
             List<string[]> cardRules = ParseCSVFile(folderPath + "TripleTriadRule.csv");
-            if (cardRules.Count > 0 && cardRules[0].Length == 7)
+            if (cardRules.Count > 0 && cardRules[0].Length == 8)
             {
                 List<TriadGameModifier> modList = new List<TriadGameModifier>();
                 foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())

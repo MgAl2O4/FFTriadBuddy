@@ -763,4 +763,20 @@
     <rule name="Fallen Ace" />
     <reward id="302" />
   </npc>
+  <npc id="99" name="Arsieu" location="Gangos (6, 7)">
+    <deckA id0="298" id1="299" id2="208" id3="180" id4="0" />
+    <deckV id0="250" id1="229" id2="209" id3="0" id4="0" />
+    <rule name="Plus" />
+    <rule name="Ascension" />
+    <reward id="298" />
+    <reward id="299" />
+  </npc>
+  <npc id="100" name="Lewto-Sue" location="Amh Araeng (27, 16)">
+    <deckA id0="313" id1="314" id2="263" id3="288" id4="0" />
+    <deckV id0="301" id1="270" id2="254" id3="256" id4="0" />
+    <rule name="Plus" />
+    <rule name="Fallen Ace" />
+    <reward id="313" />
+    <reward id="314" />
+  </npc>
 </root>
