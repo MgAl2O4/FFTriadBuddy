@@ -102,6 +102,8 @@ namespace FFTriadBuddy
                 {
                     cards[card.Id] = card;
                 }
+
+                AssignSortOrder();
             }
 
             sameNumberMap.Clear();
@@ -187,6 +189,32 @@ namespace FFTriadBuddy
             catch (Exception ex)
             {
                 Logger.WriteLine("Saving failed! Exception:" + ex);
+            }
+        }
+
+        public void AssignSortOrder()
+        {
+            List<int> indices = new List<int>();
+            for (int idx = 0; idx < cards.Count; idx++)
+            {
+                if (cards[idx] != null && cards[idx].IsValid())
+                {
+                    indices.Add(idx);
+                }
+            }
+
+            indices.Sort((idxA, idxB) =>
+            {
+                var cardA = cards[idxA];
+                var cardB = cards[idxB];
+
+                return cardA.Id.CompareTo(cardB.Id);
+                //return (cardA.SortKey == cardB.SortKey) ? cardA.Id.CompareTo(cardB.Id) : cardA.SortKey.CompareTo(cardB.SortKey);
+            });
+
+            for (int idx = 0; idx < indices.Count; idx++)
+            {
+                cards[indices[idx]].SortOrder = (idx + 1);
             }
         }
 

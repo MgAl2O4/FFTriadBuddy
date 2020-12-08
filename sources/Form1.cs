@@ -818,14 +818,16 @@ namespace FFTriadBuddy
 
                 bool bIsOwned = playerDB.ownedCards.Contains(card);
                 string ownedDesc = bIsOwned ? "Yes" : "";
+                string sortOrder = card.SortOrder.ToString();
 
-                ListViewItem cardListItem = new ListViewItem(new string[] { card.Name, rarityDesc, powerDesc, typeDesc, ownedDesc });
+                ListViewItem cardListItem = new ListViewItem(new string[] { card.Name, rarityDesc, powerDesc, typeDesc, ownedDesc, sortOrder });
                 cardListItem.Checked = bIsOwned;
                 cardListItem.Tag = card;
 
                 listViewCards.Items.Add(cardListItem);
             }
 
+            cardViewSorter.SortColumn = columnHeaderSO.Index;
             listViewCards.Sort();
             labelNumOwned.Text = playerDB.ownedCards.Count.ToString();
         }
@@ -961,16 +963,11 @@ namespace FFTriadBuddy
             }
         }
 
-        private void checkBoxCardGridOnlyOwned_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateCardViewGrids();
-        }
-
         private void CreateCardViewGrids()
         {
             TriadCardDB cardDB = TriadCardDB.Get();
             int numCards = cardDB.cards.Count;
-            int numGrids = (numCards + 24) / 25;
+            int numGrids = (numCards + 29) / 30;
 
             cardGridControls = new CardGridCtrl[numGrids];
             for (int GridIdx = 0; GridIdx < numGrids; GridIdx++)
@@ -1010,22 +1007,19 @@ namespace FFTriadBuddy
 
         private void UpdateCardViewGrids()
         {
-            bool bOnlyOwned = checkBoxCardGridOnlyOwned.Checked;
+            bool bOnlyOwned = false;
 
             List<TriadCard> cardList = new List<TriadCard>();
             cardList.AddRange(bOnlyOwned ? PlayerSettingsDB.Get().ownedCards : TriadCardDB.Get().cards);
             cardList.RemoveAll(x => (x == null || !x.IsValid()));
-            cardList.Sort((c1, c2) =>
-            {
-                return (c1.SortKey == c2.SortKey) ? c1.Id.CompareTo(c2.Id) : c1.SortKey.CompareTo(c2.SortKey);
-            });
+            cardList.Sort((c1, c2) => { return c1.SortOrder.CompareTo(c2.SortOrder); });
 
             flowLayoutPanelCardGrids.Controls.Clear();
             int GridIdx = -1;
 
             for (int CardIdx = 0; CardIdx < cardList.Count; CardIdx++)
             {
-                if ((CardIdx % 25) == 0)
+                if ((CardIdx % 30) == 0)
                 {
                     GridIdx++;
                     flowLayoutPanelCardGrids.Controls.Add(cardGridControls[GridIdx]);
@@ -1033,13 +1027,13 @@ namespace FFTriadBuddy
                 }
 
                 bool bIsCardOwned = bOnlyOwned ? true : PlayerSettingsDB.Get().ownedCards.Contains(cardList[CardIdx]);
-                cardGridControls[GridIdx].SetCard(CardIdx % 25, cardList[CardIdx], bIsCardOwned);
+                cardGridControls[GridIdx].SetCard(CardIdx % 30, cardList[CardIdx], bIsCardOwned);
             }
         }
 
         private void UpdateOwnedCardInGrids(TriadCard card, bool bOwned)
         {
-            bool bOnlyOwned = checkBoxCardGridOnlyOwned.Checked;
+            bool bOnlyOwned = false;
             if (bOnlyOwned)
             {
                 // full rebuild required

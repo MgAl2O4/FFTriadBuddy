@@ -53,6 +53,11 @@
             this.cardCtrl23 = new FFTriadBuddy.CardCtrl();
             this.cardCtrl24 = new FFTriadBuddy.CardCtrl();
             this.cardCtrl25 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl26 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl27 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl28 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl29 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl30 = new FFTriadBuddy.CardCtrl();
             this.SuspendLayout();
             // 
             // cardCtrl1
@@ -255,11 +260,56 @@
             this.cardCtrl25.Size = new System.Drawing.Size(30, 30);
             this.cardCtrl25.TabIndex = 24;
             // 
+            // cardCtrl26
+            // 
+            this.cardCtrl26.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl26.Location = new System.Drawing.Point(1, 157);
+            this.cardCtrl26.Name = "cardCtrl26";
+            this.cardCtrl26.Size = new System.Drawing.Size(30, 30);
+            this.cardCtrl26.TabIndex = 25;
+            // 
+            // cardCtrl27
+            // 
+            this.cardCtrl27.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl27.Location = new System.Drawing.Point(32, 157);
+            this.cardCtrl27.Name = "cardCtrl27";
+            this.cardCtrl27.Size = new System.Drawing.Size(30, 30);
+            this.cardCtrl27.TabIndex = 26;
+            // 
+            // cardCtrl28
+            // 
+            this.cardCtrl28.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl28.Location = new System.Drawing.Point(64, 157);
+            this.cardCtrl28.Name = "cardCtrl28";
+            this.cardCtrl28.Size = new System.Drawing.Size(30, 30);
+            this.cardCtrl28.TabIndex = 27;
+            // 
+            // cardCtrl29
+            // 
+            this.cardCtrl29.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl29.Location = new System.Drawing.Point(95, 157);
+            this.cardCtrl29.Name = "cardCtrl29";
+            this.cardCtrl29.Size = new System.Drawing.Size(30, 30);
+            this.cardCtrl29.TabIndex = 28;
+            // 
+            // cardCtrl30
+            // 
+            this.cardCtrl30.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl30.Location = new System.Drawing.Point(126, 157);
+            this.cardCtrl30.Name = "cardCtrl30";
+            this.cardCtrl30.Size = new System.Drawing.Size(30, 30);
+            this.cardCtrl30.TabIndex = 29;
+            // 
             // CardGridCtrl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.cardCtrl30);
+            this.Controls.Add(this.cardCtrl29);
+            this.Controls.Add(this.cardCtrl28);
+            this.Controls.Add(this.cardCtrl27);
+            this.Controls.Add(this.cardCtrl26);
             this.Controls.Add(this.cardCtrl25);
             this.Controls.Add(this.cardCtrl24);
             this.Controls.Add(this.cardCtrl23);
@@ -287,7 +337,7 @@
             this.Controls.Add(this.cardCtrl1);
             this.DoubleBuffered = true;
             this.Name = "CardGridCtrl";
-            this.Size = new System.Drawing.Size(157, 157);
+            this.Size = new System.Drawing.Size(157, 188);
             this.ResumeLayout(false);
 
         }
@@ -319,5 +369,10 @@
         private CardCtrl cardCtrl23;
         private CardCtrl cardCtrl24;
         private CardCtrl cardCtrl25;
+        private CardCtrl cardCtrl26;
+        private CardCtrl cardCtrl27;
+        private CardCtrl cardCtrl28;
+        private CardCtrl cardCtrl29;
+        private CardCtrl cardCtrl30;
     }
 }

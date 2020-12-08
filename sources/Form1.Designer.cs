@@ -171,12 +171,12 @@
             this.columnHeaderP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderSO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripCardInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuFindCardOnline = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageCardsIcons = new System.Windows.Forms.TabPage();
-            this.checkBoxCardGridOnlyOwned = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanelCardGrids = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageNpcs = new System.Windows.Forms.TabPage();
             this.labelNumPendingNpc = new System.Windows.Forms.Label();
@@ -1793,7 +1793,8 @@
             this.columnHeaderR,
             this.columnHeaderP,
             this.columnHeaderT,
-            this.columnHeaderO});
+            this.columnHeaderO,
+            this.columnHeaderSO});
             this.listViewCards.ContextMenuStrip = this.contextMenuStripCardInfo;
             this.listViewCards.FullRowSelect = true;
             this.listViewCards.HideSelection = false;
@@ -1809,7 +1810,7 @@
             // columnHeaderN
             // 
             this.columnHeaderN.Text = "Name";
-            this.columnHeaderN.Width = 300;
+            this.columnHeaderN.Width = 287;
             // 
             // columnHeaderR
             // 
@@ -1821,7 +1822,7 @@
             // 
             this.columnHeaderP.DisplayIndex = 1;
             this.columnHeaderP.Text = "Power";
-            this.columnHeaderP.Width = 100;
+            this.columnHeaderP.Width = 65;
             // 
             // columnHeaderT
             // 
@@ -1832,6 +1833,11 @@
             // 
             this.columnHeaderO.Text = "Owned";
             this.columnHeaderO.Width = 52;
+            // 
+            // columnHeaderSO
+            // 
+            this.columnHeaderSO.Text = "#";
+            this.columnHeaderSO.Width = 55;
             // 
             // contextMenuStripCardInfo
             // 
@@ -1864,7 +1870,6 @@
             // 
             // tabPageCardsIcons
             // 
-            this.tabPageCardsIcons.Controls.Add(this.checkBoxCardGridOnlyOwned);
             this.tabPageCardsIcons.Controls.Add(this.flowLayoutPanelCardGrids);
             this.tabPageCardsIcons.Location = new System.Drawing.Point(4, 25);
             this.tabPageCardsIcons.Name = "tabPageCardsIcons";
@@ -1874,27 +1879,13 @@
             this.tabPageCardsIcons.Text = "Icons";
             this.tabPageCardsIcons.UseVisualStyleBackColor = true;
             // 
-            // checkBoxCardGridOnlyOwned
-            // 
-            this.checkBoxCardGridOnlyOwned.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxCardGridOnlyOwned.AutoSize = true;
-            this.checkBoxCardGridOnlyOwned.Location = new System.Drawing.Point(0, 171);
-            this.checkBoxCardGridOnlyOwned.Name = "checkBoxCardGridOnlyOwned";
-            this.checkBoxCardGridOnlyOwned.Size = new System.Drawing.Size(139, 17);
-            this.checkBoxCardGridOnlyOwned.TabIndex = 1;
-            this.checkBoxCardGridOnlyOwned.Text = "Show only owned cards";
-            this.checkBoxCardGridOnlyOwned.UseVisualStyleBackColor = true;
-            this.checkBoxCardGridOnlyOwned.CheckedChanged += new System.EventHandler(this.checkBoxCardGridOnlyOwned_CheckedChanged);
-            // 
             // flowLayoutPanelCardGrids
             // 
-            this.flowLayoutPanelCardGrids.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanelCardGrids.AutoScroll = true;
-            this.flowLayoutPanelCardGrids.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanelCardGrids.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelCardGrids.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanelCardGrids.Name = "flowLayoutPanelCardGrids";
-            this.flowLayoutPanelCardGrids.Size = new System.Drawing.Size(652, 165);
+            this.flowLayoutPanelCardGrids.Size = new System.Drawing.Size(646, 182);
             this.flowLayoutPanelCardGrids.TabIndex = 0;
             // 
             // tabPageNpcs
@@ -2332,7 +2323,6 @@
             this.tabPageCardsList.ResumeLayout(false);
             this.contextMenuStripCardInfo.ResumeLayout(false);
             this.tabPageCardsIcons.ResumeLayout(false);
-            this.tabPageCardsIcons.PerformLayout();
             this.tabPageNpcs.ResumeLayout(false);
             this.tabPageNpcs.PerformLayout();
             this.contextMenuStripSelectNpc.ResumeLayout(false);
@@ -2509,7 +2499,6 @@
         private System.Windows.Forms.TabPage tabPageCardsList;
         private System.Windows.Forms.TabPage tabPageCardsIcons;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelCardGrids;
-        private System.Windows.Forms.CheckBox checkBoxCardGridOnlyOwned;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripCardInfo;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
@@ -2539,6 +2528,7 @@
         private FavDeckCtrl favDeckCtrl3;
         private FavDeckCtrl favDeckCtrl2;
         private System.Windows.Forms.Button buttonAddFav;
+        private System.Windows.Forms.ColumnHeader columnHeaderSO;
     }
 }
 

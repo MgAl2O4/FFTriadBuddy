@@ -45,6 +45,7 @@ namespace FFTriadBuddy
         public int[] Sides;
         public int SameNumberId;
         public int SortKey;
+        public int SortOrder;
 
         public TriadCard()
         {
@@ -52,6 +53,7 @@ namespace FFTriadBuddy
             Sides = new int[4] { 0, 0, 0, 0 };
             SameNumberId = -1;
             SortKey = 0;
+            SortOrder = 0;
         }
 
         public TriadCard(int id, string name, string iconPath, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortKey)

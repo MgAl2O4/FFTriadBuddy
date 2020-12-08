@@ -28,6 +28,7 @@ namespace FFTriadBuddy
                 cardCtrl11, cardCtrl12, cardCtrl13, cardCtrl14, cardCtrl15,
                 cardCtrl16, cardCtrl17, cardCtrl18, cardCtrl19, cardCtrl20,
                 cardCtrl21, cardCtrl22, cardCtrl23, cardCtrl24, cardCtrl25,
+                cardCtrl26, cardCtrl27, cardCtrl28, cardCtrl29, cardCtrl30,
             };
         }
 
