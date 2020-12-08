@@ -195,26 +195,35 @@ namespace FFTriadBuddy
         public void AssignSortOrder()
         {
             List<int> indices = new List<int>();
+            List<int> indicesEx = new List<int>();
+
             for (int idx = 0; idx < cards.Count; idx++)
             {
                 if (cards[idx] != null && cards[idx].IsValid())
                 {
-                    indices.Add(idx);
+                    bool isExGroup = cards[idx].SortKey == 48;
+                    if (isExGroup)
+                    {
+                        indicesEx.Add(idx);
+                    }
+                    else 
+                    {
+                        indices.Add(idx);
+                    }
                 }
             }
 
-            indices.Sort((idxA, idxB) =>
-            {
-                var cardA = cards[idxA];
-                var cardB = cards[idxB];
-
-                return cardA.Id.CompareTo(cardB.Id);
-                //return (cardA.SortKey == cardB.SortKey) ? cardA.Id.CompareTo(cardB.Id) : cardA.SortKey.CompareTo(cardB.SortKey);
-            });
+            indices.Sort((idxA, idxB) => { return cards[idxA].Id.CompareTo(cards[idxB].Id); });
+            indicesEx.Sort((idxA, idxB) => { return cards[idxA].Id.CompareTo(cards[idxB].Id); });
 
             for (int idx = 0; idx < indices.Count; idx++)
             {
                 cards[indices[idx]].SortOrder = (idx + 1);
+            }
+
+            for (int idx = 0; idx < indicesEx.Count; idx++)
+            {
+                cards[indicesEx[idx]].SortOrder = (idx + 1000);
             }
         }
 

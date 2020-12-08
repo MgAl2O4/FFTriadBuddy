@@ -1016,18 +1016,26 @@ namespace FFTriadBuddy
 
             flowLayoutPanelCardGrids.Controls.Clear();
             int GridIdx = -1;
+            int NumInGrid = 30;
+            bool wasExPage = false;
 
             for (int CardIdx = 0; CardIdx < cardList.Count; CardIdx++)
             {
-                if ((CardIdx % 30) == 0)
+                bool isExPage = cardList[CardIdx].SortOrder >= 1000;
+                if (NumInGrid == 30 || (!wasExPage && isExPage))
                 {
                     GridIdx++;
+                    NumInGrid = 0;
+
                     flowLayoutPanelCardGrids.Controls.Add(cardGridControls[GridIdx]);
                     cardGridControls[GridIdx].Clear();
                 }
 
                 bool bIsCardOwned = bOnlyOwned ? true : PlayerSettingsDB.Get().ownedCards.Contains(cardList[CardIdx]);
-                cardGridControls[GridIdx].SetCard(CardIdx % 30, cardList[CardIdx], bIsCardOwned);
+                cardGridControls[GridIdx].SetCard(NumInGrid, cardList[CardIdx], bIsCardOwned);
+                
+                NumInGrid++;
+                wasExPage = isExPage;
             }
         }
 
