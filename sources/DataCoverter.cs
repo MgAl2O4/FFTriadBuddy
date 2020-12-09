@@ -288,7 +288,8 @@ namespace FFTriadBuddy
                         TriadCard cardOb = new TriadCard(0, nameMap[keyIdx], iconPath,
                             (ETriadCardRarity)(rarityIdx - 1), cardType, 
                             numUp, numDown, numLeft, numRight, 
-                            int.Parse(cardData[Idx][9]));
+                            int.Parse(cardData[Idx][10]),
+                            int.Parse(cardData[Idx][11]));
 
                         if (cardOb.IsValid())
                         {

@@ -152,7 +152,7 @@ namespace FFTriadBuddy
         private List<ImagePatternDigit> digitMasks = new List<ImagePatternDigit>();
         private List<FastBitmapHash> debugHashes = new List<FastBitmapHash>();
         private List<Rectangle> debugShapes = new List<Rectangle>();
-        private TriadCard failedMatchCard = new TriadCard(-1, "failedMatch", "", ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0);
+        private TriadCard failedMatchCard = new TriadCard(-1, "failedMatch", "", ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0, 0);
 
         private EState currentState = EState.NoErrors;
         private ETurnState currentTurnState = ETurnState.MissingTimer;

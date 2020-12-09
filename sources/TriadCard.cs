@@ -44,19 +44,19 @@ namespace FFTriadBuddy
         public ETriadCardType Type;
         public int[] Sides;
         public int SameNumberId;
-        public int SortKey;
         public int SortOrder;
+        public int Group;
 
         public TriadCard()
         {
             Id = -1;
             Sides = new int[4] { 0, 0, 0, 0 };
             SameNumberId = -1;
-            SortKey = 0;
             SortOrder = 0;
+            Group = 0;
         }
 
-        public TriadCard(int id, string name, string iconPath, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortKey)
+        public TriadCard(int id, string name, string iconPath, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortOrder, int group)
         {
             Id = id;
             Name = name;
@@ -65,7 +65,13 @@ namespace FFTriadBuddy
             Type = type;
             Sides = new int[4] { numUp, numLeft, numDown, numRight };
             SameNumberId = -1;
-            SortKey = sortKey;
+            SortOrder = sortOrder;
+            Group = group;
+
+            if (group != 0 && SortOrder < 1000)
+            {
+                SortOrder += 1000;
+            }
         }
 
         public override bool Equals(object obj)

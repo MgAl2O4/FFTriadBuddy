@@ -18,7 +18,7 @@ namespace FFTriadBuddy
         {
             DBPath = "data/cards.xml";
             cards = new List<TriadCard>();
-            hiddenCard = new TriadCard(0, "(hidden)", null, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0);
+            hiddenCard = new TriadCard(0, "(hidden)", null, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0, 0);
             sameNumberMap = new Dictionary<int, List<TriadCard>>();
         }
 
@@ -52,6 +52,11 @@ namespace FFTriadBuddy
 
                             if (bHasType && bHasRarity)
                             {
+                                int sortOrder = 0;
+                                int cardGroup = 0;
+                                int.TryParse(cardElem.GetAttribute("sort"), out sortOrder);
+                                int.TryParse(cardElem.GetAttribute("group"), out cardGroup);
+
                                 TriadCard newCard = new TriadCard(
                                     int.Parse(cardElem.GetAttribute("id")),
                                     WebUtility.HtmlDecode(cardElem.GetAttribute("name")),
@@ -62,7 +67,8 @@ namespace FFTriadBuddy
                                     ParseCardSideNum(cardElem.GetAttribute("dn")),
                                     ParseCardSideNum(cardElem.GetAttribute("lt")),
                                     ParseCardSideNum(cardElem.GetAttribute("rt")),
-                                    int.Parse(cardElem.GetAttribute("sort")));
+                                    sortOrder,
+                                    cardGroup);
 
                                 if (newCard.IsValid())
                                 {
@@ -102,8 +108,6 @@ namespace FFTriadBuddy
                 {
                     cards[card.Id] = card;
                 }
-
-                AssignSortOrder();
             }
 
             sameNumberMap.Clear();
@@ -178,7 +182,8 @@ namespace FFTriadBuddy
                         xmlWriter.WriteAttributeString("lt", card.Sides[(int)ETriadGameSide.Left].ToString());
                         xmlWriter.WriteAttributeString("dn", card.Sides[(int)ETriadGameSide.Down].ToString());
                         xmlWriter.WriteAttributeString("rt", card.Sides[(int)ETriadGameSide.Right].ToString());
-                        xmlWriter.WriteAttributeString("sort", card.SortKey.ToString());
+                        xmlWriter.WriteAttributeString("sort", card.SortOrder.ToString());
+                        xmlWriter.WriteAttributeString("group", card.Group.ToString());
                         xmlWriter.WriteEndElement();
                     }
                 }
@@ -189,41 +194,6 @@ namespace FFTriadBuddy
             catch (Exception ex)
             {
                 Logger.WriteLine("Saving failed! Exception:" + ex);
-            }
-        }
-
-        public void AssignSortOrder()
-        {
-            List<int> indices = new List<int>();
-            List<int> indicesEx = new List<int>();
-
-            for (int idx = 0; idx < cards.Count; idx++)
-            {
-                if (cards[idx] != null && cards[idx].IsValid())
-                {
-                    bool isExGroup = cards[idx].SortKey == 48;
-                    if (isExGroup)
-                    {
-                        indicesEx.Add(idx);
-                    }
-                    else 
-                    {
-                        indices.Add(idx);
-                    }
-                }
-            }
-
-            indices.Sort((idxA, idxB) => { return cards[idxA].Id.CompareTo(cards[idxB].Id); });
-            indicesEx.Sort((idxA, idxB) => { return cards[idxA].Id.CompareTo(cards[idxB].Id); });
-
-            for (int idx = 0; idx < indices.Count; idx++)
-            {
-                cards[indices[idx]].SortOrder = (idx + 1);
-            }
-
-            for (int idx = 0; idx < indicesEx.Count; idx++)
-            {
-                cards[indicesEx[idx]].SortOrder = (idx + 1000);
             }
         }
 
