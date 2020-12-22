@@ -74,6 +74,25 @@ class TriadCard:
 TriadCard.loadDB()
 print('Loaded cards database:',len(triadCardDB),'entries')
 
+class TriadDeck():
+    def __init__(self):
+        self.cards = [ 0, 0, 0, 0, 0 ]
+        self.visible = [ False, False, False, False, False ]
+        self.numAvail = 0
+
+    def hasCard(self, idx):
+        return isinstance(self.cards[idx], TriadCard)
+
+    def useCard(self, idx):
+        card = self.cards[idx]
+        self.cards[idx] = 0
+        self.visible[idx] = True
+        self.numAvail -= 1
+        return card
+
+    def makeAllVisible(self):
+        self.visible = [ True, True, True, True, True ]
+
 ###############################################################################
 # Game logic
 #
@@ -87,12 +106,11 @@ class TriadGameState(Enum):
     
 class TriadGame:
     def __init__(self):
-        self.board = [ {}, {}, {}, {}, {}, {}, {}, {}, {}]
+        self.board = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
         self.owner = [ -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
         self.typeMod = [0, 0, 0, 0, 0]
-        self.playerCards = []
-        self.opponentCards = []
-        self.opponentVisible = []
+        self.playerCards = TriadDeck()
+        self.opponentCards = TriadDeck()
         self.mods = []
         self.numRestarts = 0
         self.numPlayerPlaced = 0
@@ -115,28 +133,27 @@ class TriadGame:
         return self.getCardSideValue(card, (side + 2) % 4)
 
     def restartGame(self):
-        self.board = [ {}, {}, {}, {}, {}, {}, {}, {}, {}]
+        self.board = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
         self.owner = [ -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
         self.typeMod = [0, 0, 0, 0, 0]
         self.numRestarts += 1
         self.numPlayerPlaced = 0
 
     def placePlayerCard(self, pos, idx):
-        if (idx >= len(self.playerCards) or self.owner[pos] >= 0):
+        if (not self.playerCards.hasCard(idx) or self.owner[pos] >= 0):
             return False
         
-        card = self.playerCards.pop(idx)
+        card = self.playerCards.useCard(idx)
         self.numPlayerPlaced += 1
         #print('DEBUG player place card:',pos,'at:',idx)
         self.placeCard(pos, card, 0)
         return True
 
     def placeOpponentCard(self, pos, idx):
-        if (idx >= len(self.opponentCards) or self.owner[pos] >= 0):
+        if (not self.opponentCards.hasCard(idx) or self.owner[pos] >= 0):
             return False
 
-        card = self.opponentCards.pop(idx)
-        wasVisible = self.opponentVisible.pop(idx)
+        card = self.opponentCards.useCard(idx)
         #print('DEBUG opponent place card:',pos,'at:',idx)
         self.placeCard(pos, card, 1)
         return True
@@ -174,7 +191,7 @@ class TriadGame:
         self.state = TriadGameState.PlayerTurn if (owner == 1) else TriadGameState.OpponentTurn
 
     def onAllCardsPlaced(self):
-        numPlayerCards = len(self.playerCards) + self.getNumByOwner(0)
+        numPlayerCards = self.playerCards.numAvail + self.getNumByOwner(0)
         numPlayerOwnedToWin = 5
         if (numPlayerCards > numPlayerOwnedToWin):
             self.state = TriadGameState.GameWin
@@ -253,13 +270,13 @@ class TriadGame:
             if (self.typeMod[i] != 0):
                 print('  [%i] %i' % (i,self.typeMod[i]))
 
-        print('Player hand:', '(empty)' if (len(self.playerCards) == 0) else '')
-        for i in range(len(self.playerCards)):
-            print('  [%i]: %s' % (i, str(self.playerCards[i])))
+        print('Player hand:', '(empty)' if (self.playerCards.numAvail == 0) else '')
+        for i in range(5):
+            print('  [%i]: %s' % (i, str(self.playerCards.cards[i])))
 
-        print('Opponent hand:', '(empty)' if (len(self.opponentCards) == 0) else '')
-        for i in range(len(self.opponentCards)):
-            print('  [%i]: %s' % (i, str(self.opponentCards[i])))
+        print('Opponent hand:', '(empty)' if (self.opponentCards.numAvail == 0) else '')
+        for i in range(5):
+            print('  [%i]: %s, vis:%s' % (i, str(self.opponentCards.cards[i]), self.opponentCards.visible[i]))
 
         print('Modifiers:', '(empty)' if (len(self.mods) == 0) else '')
         for i in range(len(self.mods)):
@@ -423,15 +440,21 @@ class TriadModSuddenDeath(TriadMod):
     def onAllCardsPlaced(self, game):
         if ((game.state == TriadGameState.GameDraw) and (game.numRestarts < 3)):
             for i in range(len(game.owner)):
-                if (game.owner[i] == 0):
-                    game.playerCards.append(game.board[i])
-                elif (game.owner[i] == 1):
-                    game.opponentVisible.append(True)
-                    game.opponentCards.append(game.board[i])
+                if (game.owner[i] < 0):
+                    continue
+                deck = game.playerCards if (game.owner[i] == 0) else game.opponentCards
+                for freeIdx in range(5):
+                    if not deck.hasCard(freeIdx):
+                        deck.cards[freeIdx] = game.board[i]
+                        break
 
             nextTurn = TriadGameState.PlayerTurn if (game.numPlayerPlaced < 5) else TriadGameState.OpponentTurn
-            game.restartGame()
+            game.restartGame()            
             game.state = nextTurn            
+            game.playerCards.makeAllVisible()
+            game.playerCards.numAvail = 5
+            game.opponentCards.makeAllVisible()
+            game.opponentCards.numAvail = 5
 
 triadModDB.append(TriadModSuddenDeath())
 
@@ -442,8 +465,7 @@ class TriadModAllOpen(TriadMod):
         self.blockedMods = ['ThreeOpen']
 
     def onMatchStart(self, game):
-        for i in range(len(game.opponentCards)):
-            game.opponentVisible[i] = True
+        game.opponentCards.makeAllVisible()
 
 triadModDB.append(TriadModAllOpen())
 
@@ -456,7 +478,7 @@ class TriadModThreeOpen(TriadMod):
     def onMatchStart(self, game):
         random3 = np.random.choice(range(5), 3, False)
         for idx in random3:
-            game.opponentVisible[idx] = True
+            game.opponentCards.visible[idx] = True
         pass
 
 triadModDB.append(TriadModThreeOpen())
@@ -467,7 +489,12 @@ class TriadModOrder(TriadMod):
         self.name = 'Order'
 
     def getFilteredCards(self, game):
-        return True, [ 0 ]
+        deck = game.playerCards if (game.state == TriadGameState.PlayerTurn) else game.opponentCards
+        for i in range(len(deck.cards)):
+            if deck.hasCard(i):
+                return True, [ i ]
+        
+        return False, [ 0 ]
 
 triadModDB.append(TriadModOrder())
         
@@ -495,11 +522,11 @@ class TriadModSwap(TriadMod):
     def onMatchStart(self, game):
         playerIdx = np.random.randint(0, 5)
         opponentIdx = np.random.randint(0, 5)
-        
-        swapCard = game.opponentCards[playerIdx]
-        game.opponentCards[opponentIdx] = swapCard
-        game.opponentVisible[opponentIdx] = True
-        game.playerCards[playerIdx] = swapCard
+
+        swapCard = game.opponentCards.cards[opponentIdx]
+        game.opponentCards.cards[opponentIdx] = game.playerCards.cards[playerIdx]
+        game.opponentCards.visible[opponentIdx] = True
+        game.playerCards.cards[playerIdx] = swapCard
 
 triadModDB.append(TriadModSwap())
 
@@ -513,32 +540,38 @@ class TriadGameSession():
         self.initializeGame()
     
     def generateRandomDeck(self, numLimited = 1):
-        cards = []
+        deck = TriadDeck()
+        deck.numAvail = 5
+        deck.cards = []
+
         if (numLimited > 0):
             indicesL = np.random.choice(range(len(triadCardDB_Limited)), numLimited, False)
             for idx in indicesL:
-                cards.append(triadCardDB_Limited[idx])
+                deck.cards.append(triadCardDB_Limited[idx])
 
         numCommon = 5 - numLimited
         if (numCommon > 0):
             indicesC = np.random.choice(range(len(triadCardDB_Common)), numCommon, False)
             for idx in indicesC:
-                cards.append(triadCardDB_Common[idx])
+                deck.cards.append(triadCardDB_Common[idx])        
 
-        return cards
+        return deck
 
 
     def generateRandomDeck_Player(self):
-        cards = []
+        deck = TriadDeck()
+        deck.numAvail = 5
+        deck.cards = []
+        
         indicesL = np.random.choice(range(len(triadCardDB_LimitedBest)), 1, False)
         for idx in indicesL:
-            cards.append(triadCardDB_Limited[idx])
+            deck.cards.append(triadCardDB_Limited[idx])
 
         indicesC = np.random.choice(range(len(triadCardDB_CommonBest)), 4, False)
         for idx in indicesC:
-            cards.append(triadCardDB_Common[idx])
+            deck.cards.append(triadCardDB_Common[idx])
 
-        return cards
+        return deck
 
 
     def generateRandomDeck_StrongNPC(self):
@@ -565,9 +598,9 @@ class TriadGameSession():
     def initializeGame(self):
         self.game = TriadGame()
         self.game.mods = self.generateMods()
-        self.game.playerCards = self.generateRandomDeck_Player()
         self.game.opponentCards = self.generateRandomDeck_Player()
-        self.game.opponentVisible = [ False ] * len(self.game.opponentCards)
+        self.game.playerCards = self.generateRandomDeck_Player()
+        self.game.playerCards.makeAllVisible()
 
         for mod in self.game.mods:
             mod.onMatchStart(self.game)
@@ -598,11 +631,14 @@ class TriadGameSession():
             if useOverride:
                 return forcedIndices
 
-        if self.game.state == TriadGameState.PlayerTurn:
-            return list(range(len(self.game.playerCards)))
-        else:
-            return list(range(len(self.game.opponentCards)))
+        deck = self.game.playerCards if (self.game.state == TriadGameState.PlayerTurn) else self.game.opponentCards
+        availCardIndices = []
+        for i in range(5):
+            if deck.hasCard(i):
+                availCardIndices.append(i)
 
+        return availCardIndices
+    
 
     def getAvailActions(self):
         listCards = self.getAvailCards()
@@ -638,26 +674,17 @@ class TriadGameSession():
             state += self.getCardState(self.game.board[i])
         
         # card data for player
-        numPlayerCards = len(self.game.playerCards)
-        state += [ numPlayerCards ]
-        for i in range(numPlayerCards):
-            state += self.getCardState(self.game.playerCards[i])
-        while (numPlayerCards < 5):
-            state += [ 0, 0, 0, 0 ]
-            numPlayerCards += 1
+        state += [ self.game.playerCards.numAvail ]
+        for i in range(5):
+            state += self.getCardState(self.game.playerCards.cards[i])
         
         # card data for opponent
-        numOppCards = len(self.game.opponentCards)
-        state += [ numOppCards ]
-        for i in range(numOppCards):
-            if self.game.opponentVisible[i]:
-                state += self.getCardState(self.game.opponentCards[i])
+        state += [ self.game.opponentCards.numAvail ]
+        for i in range(5):
+            if self.game.opponentCards.visible[i]:
+                state += self.getCardState(self.game.playerCards.cards[i])
             else:
                 state += [ -1, -1, -1, -1 ]
-
-        while (numOppCards < 5):
-            state += [ 0, 0, 0, 0 ]
-            numOppCards += 1
 
         return state
 
@@ -684,4 +711,5 @@ class TriadGameSession():
         self.playRandomMove()
         state = self.getState()
         done = self.isFinished()
+
         return state, reward, done
