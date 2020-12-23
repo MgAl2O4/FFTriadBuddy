@@ -545,15 +545,11 @@ class TriadGameSession():
         deck.cards = []
 
         if (numLimited > 0):
-            indicesL = np.random.choice(range(len(triadCardDB_Limited)), numLimited, False)
-            for idx in indicesL:
-                deck.cards.append(triadCardDB_Limited[idx])
+            deck.cards += list(np.random.choice(triadCardDB_Limited, numLimited, False))
 
         numCommon = 5 - numLimited
         if (numCommon > 0):
-            indicesC = np.random.choice(range(len(triadCardDB_Common)), numCommon, False)
-            for idx in indicesC:
-                deck.cards.append(triadCardDB_Common[idx])        
+            deck.cards += list(np.random.choice(triadCardDB_Common, numCommon, False))
 
         return deck
 
@@ -562,17 +558,9 @@ class TriadGameSession():
         deck = TriadDeck()
         deck.numAvail = 5
         deck.cards = []
-        
-        indicesL = np.random.choice(range(len(triadCardDB_LimitedBest)), 1, False)
-        for idx in indicesL:
-            deck.cards.append(triadCardDB_Limited[idx])
-
-        indicesC = np.random.choice(range(len(triadCardDB_CommonBest)), 4, False)
-        for idx in indicesC:
-            deck.cards.append(triadCardDB_Common[idx])
-
+        deck.cards += list(np.random.choice(triadCardDB_LimitedBest, 1, False))
+        deck.cards += list(np.random.choice(triadCardDB_CommonBest, 4, False))
         return deck
-
 
     def generateRandomDeck_StrongNPC(self):
         return self.generateRandomDeck(5)
