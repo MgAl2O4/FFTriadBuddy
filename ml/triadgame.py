@@ -114,6 +114,8 @@ class TriadGame:
         self.mods = []
         self.numRestarts = 0
         self.numPlayerPlaced = 0
+        self.forcedCardIdx = -1
+        self.forcedBoardIdx = -1
         self.state = TriadGameState.Unknown       
 
     def getNumByOwner(self, ownerId):
@@ -140,22 +142,29 @@ class TriadGame:
         self.numPlayerPlaced = 0
 
     def placePlayerCard(self, pos, idx):
-        if (not self.playerCards.hasCard(idx) or self.owner[pos] >= 0):
-            return False
-        
-        card = self.playerCards.useCard(idx)
-        self.numPlayerPlaced += 1
-        #print('DEBUG player place card:',pos,'at:',idx)
-        self.placeCard(pos, card, 0)
-        return True
+        isValid = self.isMoveValid(self.playerCards, pos, idx)
+        if isValid:
+            card = self.playerCards.useCard(idx)
+            self.numPlayerPlaced += 1
+            #print('DEBUG player place card:',pos,'at:',idx)
+            self.placeCard(pos, card, 0)
+        return isValid
 
     def placeOpponentCard(self, pos, idx):
-        if (not self.opponentCards.hasCard(idx) or self.owner[pos] >= 0):
-            return False
+        isValid = self.isMoveValid(self.opponentCards, pos, idx)
+        if isValid:
+            card = self.opponentCards.useCard(idx)
+            #print('DEBUG opponent place card:',pos,'at:',idx)
+            self.placeCard(pos, card, 1)
+        return isValid
 
-        card = self.opponentCards.useCard(idx)
-        #print('DEBUG opponent place card:',pos,'at:',idx)
-        self.placeCard(pos, card, 1)
+    def isMoveValid(self, deck, pos, idx):
+        if (self.forcedBoardIdx >= 0 and self.forcedBoardIdx != pos):
+            return False
+        if (self.forcedCardIdx >= 0 and self.forcedCardIdx != idx):
+            return False
+        if (not deck.hasCard(idx) or self.owner[pos] >= 0):
+            return False
         return True
 
     def placeCard(self, pos, card, owner):
@@ -183,12 +192,21 @@ class TriadGame:
             numEmpty = self.getNumByOwner(-1)
             if (numEmpty == 0):
                 self.onAllCardsPlaced()
-                
+        else:
+            print('ERROR: failed to place card:%i, pos:%i, owner:%i' % (card, pos, owner))
+            self.showState('DEBUG')
 
     def setBoardRaw(self, pos, card, owner):
         self.board[pos] = card
         self.owner[pos] = owner
         self.state = TriadGameState.PlayerTurn if (owner == 1) else TriadGameState.OpponentTurn
+
+    def onTurnStart(self):
+        self.forcedBoardIdx = -1
+        self.forcedCardIdx = -1
+        if (self.state == TriadGameState.PlayerTurn or self.state == TriadGameState.OpponentTurn):
+            for mod in self.mods:
+                mod.onTurnStart(self)
 
     def onAllCardsPlaced(self):
         numPlayerCards = self.playerCards.numAvail + self.getNumByOwner(0)
@@ -280,7 +298,10 @@ class TriadGame:
 
         print('Modifiers:', '(empty)' if (len(self.mods) == 0) else '')
         for i in range(len(self.mods)):
-            print('  [%i]: %s' % (i, self.mods[i].name))        
+            print('  [%i]: %s' % (i, self.mods[i].name))
+
+        if (self.forcedCardIdx >= 0 or self.forcedBoardIdx >= 0):
+            print('Forced card:%i, placement:%i' % (self.forcedCardIdx, self.forcedBoardIdx))
 
 
 ###############################################################################
@@ -295,6 +316,8 @@ class TriadMod:
 
     def onMatchStart(self, game):
         pass
+    def onTurnStart(self, game):
+        pass
     def onCardPlaced(self, game, pos):
         pass
     def onPostCaptures(self, game):
@@ -307,10 +330,6 @@ class TriadMod:
         return cardNum, neiNum
     def getCaptureCondition(self, game, cardNum, neiNum):
         return False, False
-    def getFilteredCards(self, game):
-        return False, []
-    def getFilteredPlacement(self, game):
-        return False, []
 
 # reverse: capture when number of lower
 class TriadModReverse(TriadMod):
@@ -488,13 +507,12 @@ class TriadModOrder(TriadMod):
     def __init__(self):
         self.name = 'Order'
 
-    def getFilteredCards(self, game):
+    def onTurnStart(self, game):
         deck = game.playerCards if (game.state == TriadGameState.PlayerTurn) else game.opponentCards
         for i in range(len(deck.cards)):
             if deck.hasCard(i):
-                return True, [ i ]
-        
-        return False, [ 0 ]
+                game.forcedCardIdx = i
+                break
 
 triadModDB.append(TriadModOrder())
         
@@ -503,14 +521,15 @@ class TriadModChaos(TriadMod):
     def __init__(self):
         self.name = 'Chaos'
 
-    def getFilteredPlacement(self, game):
+    def onTurnStart(self, game):
         availPos = []
         for i in range(len(game.owner)):
             if (game.owner[i] < 0):
                 availPos.append(i)
+        
+        if (len(availPos) > 0):
+            game.forcedBoardIdx = np.random.choice(availPos)        
 
-        randIdx = np.random.randint(0, len(availPos))
-        return True, [ availPos[randIdx] ]
 
 triadModDB.append(TriadModChaos())
 
@@ -586,6 +605,7 @@ class TriadGameSession():
     def initializeGame(self):
         self.game = TriadGame()
         self.game.mods = self.generateMods()
+        self.game.mods = [ TriadModChaos() ]
         self.game.opponentCards = self.generateRandomDeck_Player()
         self.game.playerCards = self.generateRandomDeck_Player()
         self.game.playerCards.makeAllVisible()
@@ -593,6 +613,7 @@ class TriadGameSession():
         for mod in self.game.mods:
             mod.onMatchStart(self.game)
 
+        self.game.onTurnStart()
         if (np.random.random() < 0.5):
             self.game.state = TriadGameState.OpponentTurn
             self.playRandomMove()
@@ -601,10 +622,8 @@ class TriadGameSession():
             
 
     def getAvailPositions(self):
-        for mod in self.game.mods:
-            useOverride, forcedPos = mod.getFilteredPlacement(self.game)
-            if useOverride:
-                return forcedPos
+        if (self.game.forcedBoardIdx >= 0):
+            return [ self.game.forcedBoardIdx ]
 
         availPos = []
         for i in range(len(self.game.owner)):
@@ -614,10 +633,8 @@ class TriadGameSession():
         return availPos
 
     def getAvailCards(self):
-        for mod in self.game.mods:
-            useOverride, forcedIndices = mod.getFilteredCards(self.game)
-            if useOverride:
-                return forcedIndices
+        if (self.game.forcedCardIdx >= 0):
+            return [ self.game.forcedCardIdx ]
 
         deck = self.game.playerCards if (self.game.state == TriadGameState.PlayerTurn) else self.game.opponentCards
         availCardIndices = []
@@ -631,7 +648,6 @@ class TriadGameSession():
     def getAvailActions(self):
         listCards = self.getAvailCards()
         listPos = self.getAvailPositions()
-        #print('cards:',listCards,'pos:',listPos)
         
         if (len(listCards) > 0 and len(listPos) > 0):
             return [(itCard + (itPos * 5)) for itPos in listPos for itCard in listCards]
@@ -656,6 +672,9 @@ class TriadGameSession():
         # value of type modes
         state += self.game.typeMod
         
+        # forced placement and card
+        state += [ self.game.forcedBoardIdx, self.game.forcedCardIdx ]
+        
         # owner,card data for each board cell
         for i in range(len(self.game.owner)):
             state += [ self.game.owner[i] ]
@@ -677,27 +696,50 @@ class TriadGameSession():
         return state
 
     def playRandomMove(self):
+        actions = self.getAvailActions()
+        action = np.random.choice(actions)
+            
+        cardIdx = action % 5
+        boardPos = int(action / 5)
+        placed = False
         if (self.game.state == TriadGameState.OpponentTurn):
-            actions = self.getAvailActions()
-            action = np.random.choice(actions)
-            
-            cardIdx = action % 5
-            boardPos = int(action / 5)
-            self.game.placeOpponentCard(boardPos, cardIdx)
-            
+            placed = self.game.placeOpponentCard(boardPos, cardIdx)
+            if not placed:
+                self.game.showState('ERROR!')
+                print('Avail cards:',self.getAvailCards())
+                print('Avail board:',self.getAvailPositions())
+                exit()
+        else:
+            placed = self.game.placePlayerCard(boardPos, cardIdx)
+
+        if placed:
+            self.game.onTurnStart()
+
+    def playRandomGame(self):
+        while not self.isFinished():
+            self.game.showState('step')
+            self.playRandomMove()
+        self.game.showState('done')
 
     def isFinished(self):
         return (self.game.state == TriadGameState.GameWin) or (self.game.state == TriadGameState.GameDraw) or (self.game.state == TriadGameState.GameLose)
 
     def step(self, action):
         cardIdx = action % 5
-        boardPos = int(action / 5)
+        boardPos = int(action / 5)        
+        #print('step: requesting card:%i at %i' % (cardIdx, boardPos))
         
         placed = self.game.placePlayerCard(boardPos, cardIdx)
-        reward = -100 if not placed else self.game.getNumByOwner(0)
-        
-        self.playRandomMove()
-        state = self.getState()
         done = self.isFinished()
 
+        if placed:
+            reward = self.game.getNumByOwner(0)
+            if not done:
+                self.game.onTurnStart()
+                #print('step: play random move, turn:',str(self.game.state))
+                self.playRandomMove()
+        else:
+            reward = -10
+            
+        state = self.getState()
         return state, reward, done
