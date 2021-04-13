@@ -290,7 +290,7 @@
   <card id="288" name="Forgiven Obscenity" icon="082788.png" rarity="Rare" type="None" up="8" lt="7" dn="1" rt="6" sort="273" group="0" />
   <card id="289" name="Huaca" icon="082789.png" rarity="Rare" type="None" up="7" lt="5" dn="8" rt="2" sort="274" group="0" />
   <card id="290" name="Unknown" icon="082790.png" rarity="Rare" type="None" up="5" lt="6" dn="3" rt="8" sort="275" group="0" />
-  <card id="291" name="Ruby Weapon" icon="082791.png" rarity="Epic" type="Garlean" up="8" lt="7" dn="1" rt="9" sort="276" group="0" />
+  <card id="291" name="The Ruby Weapon" icon="082791.png" rarity="Epic" type="Garlean" up="8" lt="7" dn="1" rt="9" sort="276" group="0" />
   <card id="292" name="Therion" icon="082792.png" rarity="Legendary" type="None" up="9" lt="9" dn="2" rt="9" sort="277" group="0" />
   <card id="293" name="Varis yae Galvus" icon="082793.png" rarity="Legendary" type="Garlean" up="10" lt="10" dn="4" rt="1" sort="279" group="0" />
   <card id="294" name="Dwarf" icon="082794.png" rarity="Common" type="Beastman" up="2" lt="4" dn="6" rt="2" sort="280" group="0" />
@@ -301,13 +301,25 @@
   <card id="299" name="Adrammelech" icon="082799.png" rarity="Rare" type="None" up="6" lt="1" dn="7" rt="8" sort="290" group="0" />
   <card id="300" name="Elidibus" icon="082800.png" rarity="Epic" type="None" up="8" lt="4" dn="9" rt="4" sort="283" group="0" />
   <card id="301" name="Shadowbringers Thancred" icon="082801.png" rarity="Epic" type="Scion" up="7" lt="9" dn="8" rt="1" sort="284" group="0" />
-  <card id="302" name="Sapphire Weapon" icon="082802.png" rarity="Epic" type="Garlean" up="1" lt="9" dn="8" rt="7" sort="285" group="0" />
+  <card id="302" name="The Sapphire Weapon" icon="082802.png" rarity="Epic" type="Garlean" up="1" lt="9" dn="8" rt="7" sort="285" group="0" />
   <card id="303" name="2P" icon="082803.png" rarity="Legendary" type="None" up="4" lt="8" dn="10" rt="6" sort="286" group="0" />
   <card id="304" name="Shadowbringers Warrior of Light" icon="082804.png" rarity="Legendary" type="Primal" up="2" lt="10" dn="10" rt="5" sort="287" group="0" />
+  <card id="305" name="The Great Azuro" icon="082805.png" rarity="Common" type="None" up="4" lt="7" dn="1" rt="1" sort="297" group="0" />
   <card id="306" name="Mother Porxie" icon="082806.png" rarity="Uncommon" type="None" up="3" lt="3" dn="7" rt="6" sort="291" group="0" />
-  <card id="312" name="Emerald Weapon" icon="082812.png" rarity="Epic" type="Garlean" up="7" lt="1" dn="9" rt="8" sort="292" group="0" />
+  <card id="307" name="Trinity Seeker" icon="082807.png" rarity="Rare" type="None" up="6" lt="1" dn="8" rt="7" sort="298" group="0" />
+  <card id="308" name="Trinity Avowed" icon="082808.png" rarity="Rare" type="None" up="8" lt="7" dn="6" rt="1" sort="299" group="0" />
+  <card id="309" name="Azulmagia" icon="082809.png" rarity="Rare" type="None" up="4" lt="8" dn="6" rt="6" sort="300" group="0" />
+  <card id="310" name="Siegfried" icon="082810.png" rarity="Rare" type="None" up="6" lt="6" dn="4" rt="8" sort="301" group="0" />
+  <card id="311" name="Gogo, Master of Mimicry" icon="082811.png" rarity="Rare" type="None" up="8" lt="6" dn="4" rt="6" sort="302" group="0" />
+  <card id="312" name="The Emerald Weapon" icon="082812.png" rarity="Epic" type="Garlean" up="7" lt="1" dn="9" rt="8" sort="292" group="0" />
   <card id="313" name="Ryne" icon="082813.png" rarity="Epic" type="None" up="7" lt="9" dn="7" rt="1" sort="293" group="0" />
   <card id="314" name="Gaia" icon="082814.png" rarity="Epic" type="None" up="5" lt="9" dn="1" rt="9" sort="294" group="0" />
   <card id="315" name="Eden's Promise" icon="082815.png" rarity="Legendary" type="None" up="10" lt="5" dn="8" rt="6" sort="295" group="0" />
   <card id="316" name="Phoenix" icon="082816.png" rarity="Legendary" type="Primal" up="5" lt="9" dn="6" rt="9" sort="296" group="0" />
+  <card id="317" name="Keeper of the Keys" icon="082817.png" rarity="Uncommon" type="None" up="5" lt="4" dn="4" rt="7" sort="303" group="0" />
+  <card id="318" name="Lunar Bahamut" icon="082818.png" rarity="Rare" type="Primal" up="8" lt="2" dn="8" rt="4" sort="304" group="0" />
+  <card id="319" name="Valens van Varro" icon="082819.png" rarity="Rare" type="Garlean" up="7" lt="5" dn="8" rt="3" sort="305" group="0" />
+  <card id="323" name="G-Warrior" icon="082823.png" rarity="Epic" type="None" up="9" lt="1" dn="7" rt="8" sort="306" group="0" />
+  <card id="324" name="The Diamond Weapon" icon="082824.png" rarity="Epic" type="Garlean" up="9" lt="8" dn="7" rt="1" sort="307" group="0" />
+  <card id="326" name="2B" icon="082826.png" rarity="Legendary" type="None" up="6" lt="10" dn="4" rt="8" sort="308" group="0" />
 </root>

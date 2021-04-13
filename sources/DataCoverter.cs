@@ -820,6 +820,11 @@ namespace FFTriadBuddy
                                     cardName = cardName.Remove(cardName.Length - 5);
                                 }
 
+                                if (!cardNameMap.ContainsKey(cardName))
+                                {
+                                    cardName = "The " + cardName;
+                                }
+
                                 TriadCard matchingCard = cardNameMap[cardName];
                                 rewardCards.Add(matchingCard);
                             }

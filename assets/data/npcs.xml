@@ -779,4 +779,12 @@
     <reward id="313" />
     <reward id="314" />
   </npc>
+  <npc id="101" name="Droyn" location="Ul'dah - Steps of Thal (12, 13)">
+    <deckA id0="309" id1="310" id2="136" id3="39" id4="0" />
+    <deckV id0="305" id1="9" id2="22" id3="25" id4="0" />
+    <rule name="Same" />
+    <rule name="Descension" />
+    <reward id="309" />
+    <reward id="310" />
+  </npc>
 </root>
