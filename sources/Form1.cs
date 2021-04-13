@@ -487,9 +487,8 @@ namespace FFTriadBuddy
             string deckStateDesc =
                 (deckState == ETriadDeckState.MissingCards) ? "Missing cards!" :
                 (deckState == ETriadDeckState.HasDuplicates) ? "Found duplicate cards!" :
-                (deckState == ETriadDeckState.TooManyRaresUncomon) ? "Only one (* *)+ allowed!" :
-                (deckState == ETriadDeckState.TooManyRaresRare) ? "Only one (* * *)+ allowed!" :
-                (deckState == ETriadDeckState.TooManyRaresEpic) ? "Only one (* * * *)+ allowed!" :
+                (deckState == ETriadDeckState.TooMany4Star) ? "More than two 4+ star!" :
+                (deckState == ETriadDeckState.TooMany5Star) ? "Only one 5 star allowed!" :
                 "";
 
             labelDeckState.Text = deckStateDesc;
@@ -967,7 +966,7 @@ namespace FFTriadBuddy
         {
             TriadCardDB cardDB = TriadCardDB.Get();
             int numCards = cardDB.cards.Count;
-            int numGrids = (numCards + 29) / 30;
+            int numGrids = ((numCards + 29) / 30) + 1;
 
             cardGridControls = new CardGridCtrl[numGrids];
             for (int GridIdx = 0; GridIdx < numGrids; GridIdx++)

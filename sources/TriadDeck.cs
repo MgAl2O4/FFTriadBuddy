@@ -8,9 +8,8 @@ namespace FFTriadBuddy
         Valid,
         MissingCards,
         HasDuplicates,
-        TooManyRaresUncomon,
-        TooManyRaresRare,
-        TooManyRaresEpic,
+        TooMany4Star,
+        TooMany5Star,
     };
 
     public class TriadDeck
@@ -108,30 +107,16 @@ namespace FFTriadBuddy
                 rarityCounters[(int)deckCard.Rarity]++;
             }
 
-            int numRare45 = rarityCounters[(int)ETriadCardRarity.Epic] + rarityCounters[(int)ETriadCardRarity.Legendary];
-            int numRare345 = rarityCounters[(int)ETriadCardRarity.Rare] + numRare45;
-            int numRare2345 = rarityCounters[(int)ETriadCardRarity.Uncommon] + numRare345;
+            int numRare5 = rarityCounters[(int)ETriadCardRarity.Legendary];
+            int numRare45 = rarityCounters[(int)ETriadCardRarity.Epic] + numRare5;
 
-            if (playerDB.ownedCards.Count < 30)
+            if (numRare5 > 1)
             {
-                if (numRare2345 > 1)
-                {
-                    return ETriadDeckState.TooManyRaresUncomon;
-                }
+                return ETriadDeckState.TooMany5Star;
             }
-            else if (playerDB.ownedCards.Count < 60)
+            else if (numRare45 > 2)
             {
-                if (numRare345 > 1)
-                {
-                    return ETriadDeckState.TooManyRaresRare;
-                }
-            }
-            else
-            {
-                if (numRare45 > 1)
-                {
-                    return ETriadDeckState.TooManyRaresEpic;
-                }
+                return ETriadDeckState.TooMany4Star;
             }
 
             return ETriadDeckState.Valid;
