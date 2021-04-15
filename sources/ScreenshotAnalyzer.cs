@@ -345,7 +345,7 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    cachedScreenshot = LoadTestScreenshot(imagePath + "screenshot-15.jpg");
+                    cachedScreenshot = LoadTestScreenshot(imagePath + "test-git25.jpg");
 
                     cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
                 }
@@ -1420,20 +1420,44 @@ namespace FFTriadBuddy
         {
             bIsGreyedOut = false;
 
-            // check if card is there
-            int MidX = (cardRect.Left + cardRect.Right) / 2;
-            int borderMatchCount = 0;
-            for (int PosY = 0; PosY < 10; PosY++)
+            bool bIsBoardCard = debugName.StartsWith("board");
+            if (bIsBoardCard)
             {
-                FastPixelHSV testPx = bitmap.GetPixel(MidX, PosY + cardRect.Top);
-                borderMatchCount += colorMatchCardBorder.IsMatching(testPx) ? 1 : 0;
-            }
+                // check average color of frame vs mid part of card as a backup plan
+                Rectangle topFrameRect = new Rectangle(cardRect.Left + (cardRect.Width * 25 / 100), cardRect.Top,
+                    cardRect.Width * 50 / 100, 5);
 
-            bool bHasCard = borderMatchCount >= 4;
-            if (!bHasCard)
+                Rectangle cardMidRect = new Rectangle(cardRect.Left + (cardRect.Width * 25 / 100), cardRect.Top + (cardRect.Height * 25 / 100),
+                    cardRect.Width * 50 / 100, Math.Min(cardRect.Height * 40 / 100, 25));
+
+                FastPixelHSV avgColorFrame = ScreenshotUtilities.GetAverageColor(bitmap, topFrameRect);
+                FastPixelHSV avgColorMid = ScreenshotUtilities.GetAverageColor(bitmap, cardMidRect);
+                int avgColorDiff = Math.Abs(avgColorFrame.GetHue() - avgColorMid.GetHue()) + Math.Abs(avgColorFrame.GetSaturation() - avgColorMid.GetSaturation());
+
+                // low color diff: empty / hidden
+                bool bIsColorDiffLow = avgColorDiff < 15;
+                if (bIsColorDiffLow)
+                {
+                    if (bDebugMode) { Logger.WriteLine("ParseCard(" + debugName + "): empty, diff:" + avgColorDiff + " (" + avgColorFrame + " vs " + avgColorMid + ")"); }
+                    return null;
+                }
+            }
+            else
             {
-                if (bDebugMode) { Logger.WriteLine("ParseCard(" + debugName + "): empty, counter:" + borderMatchCount); }
-                return null;
+                int MidX = (cardRect.Left + cardRect.Right) / 2;
+                int borderMatchCount = 0;
+                for (int PosY = 0; PosY < 10; PosY++)
+                {
+                    FastPixelHSV testPx = bitmap.GetPixel(MidX, PosY + cardRect.Top);
+                    borderMatchCount += colorMatchCardBorder.IsMatching(testPx) ? 1 : 0;
+                }
+
+                bool bHasCard = borderMatchCount >= 4;
+                if (!bHasCard)
+                {
+                    if (bDebugMode) { Logger.WriteLine("ParseCard(" + debugName + "): empty, counter:" + borderMatchCount); }
+                    return null;
+                }
             }
 
             // check if card is hidden based on approx numberbox location

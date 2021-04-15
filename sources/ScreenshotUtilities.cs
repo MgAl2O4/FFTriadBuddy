@@ -17,16 +17,21 @@ namespace FFTriadBuddy
         public byte Value;
         public byte Monochrome;
 
+        public byte RawR;
+        public byte RawG;
+        public byte RawB;
+        public byte HasHSL;
+
         public FastPixelHSV(byte colorR, byte colorG, byte colorB)
         {
-            Color pixelColor = Color.FromArgb(colorR, colorG, colorB);
-
-            int Hue = (int)Math.Round(pixelColor.GetHue());
-            int Saturation = (int)Math.Round(pixelColor.GetSaturation() * 100);
-            HuePack = (byte)(Hue & 0xff);
-            SaturationPack = (byte)((Saturation & 0xff) | ((Hue & 0x100) >> 1));
-            Value = (byte)Math.Round(pixelColor.GetBrightness() * 100);
-            Monochrome = (byte)Math.Round((0.2125 * colorR) + (0.7154 * colorG) + (0.0721 * colorB));
+            HuePack = 0;
+            SaturationPack = 0;
+            Value = 0;
+            Monochrome = 0;
+            RawR = colorR;
+            RawG = colorG;
+            RawB = colorB;
+            HasHSL = 0;
         }
 
         public FastPixelHSV(bool patternMatch)
@@ -35,6 +40,10 @@ namespace FFTriadBuddy
             SaturationPack = 0;
             Value = 0;
             Monochrome = patternMatch ? (byte)255 : (byte)0;
+            RawR = Monochrome;
+            RawG = Monochrome;
+            RawB = Monochrome;
+            HasHSL = 1;
         }
 
         public int GetHue()
@@ -55,6 +64,73 @@ namespace FFTriadBuddy
         public int GetMonochrome()
         {
             return Monochrome;
+        }
+
+        public void SetHSV(int hue, int saturation, int value)
+        {
+            HuePack = (byte)(hue & 0xff);
+            SaturationPack = (byte)((saturation & 0x7f) | ((hue & 0x100) >> 1));
+            Value = (byte)value;
+
+            ScreenshotUtilities.HsvToRgb(hue, saturation, value, out int colorR, out int colorG, out int colorB);
+            Monochrome = (byte)Math.Round((0.2125 * colorR) + (0.7154 * colorG) + (0.0721 * colorB));
+            RawR = (byte)colorR;
+            RawG = (byte)colorG;
+            RawB = (byte)colorB;
+            HasHSL = 1;
+        }
+
+        public void ExpandHSV()
+        {
+            float LinearR = (RawR / 255f);
+            float LinearG = (RawG / 255f);
+            float LinearB = (RawB / 255f);
+
+            float MinRG = (LinearR < LinearG) ? LinearR : LinearG;
+            float MaxRG = (LinearR > LinearG) ? LinearR : LinearG;
+            float MinV = (MinRG < LinearB) ? MinRG : LinearB;
+            float MaxV = (MaxRG > LinearB) ? MaxRG : LinearB;
+            float DeltaV = MaxV - MinV;
+
+            float H = 0;
+            float S = 0;
+            float L = (float)((MaxV + MinV) / 2.0f);
+
+            if (DeltaV != 0)
+            {
+                if (L < 0.5f)
+                {
+                    S = (float)(DeltaV / (MaxV + MinV));
+                }
+                else
+                {
+                    S = (float)(DeltaV / (2.0f - MaxV - MinV));
+                }
+
+                if (LinearR == MaxV)
+                {
+                    H = (LinearG - LinearB) / DeltaV;
+                }
+                else if (LinearG == MaxV)
+                {
+                    H = 2f + (LinearB - LinearR) / DeltaV;
+                }
+                else if (LinearB == MaxV)
+                {
+                    H = 4f + (LinearR - LinearG) / DeltaV;
+                }
+            }
+
+            int HueV = (int)(H * 60f);
+            if (HueV < 0) HueV += 360;
+            int SaturationV = (int)(S * 100f);
+            int LightV = (int)(L * 100f);
+
+            HuePack = (byte)(HueV & 0xff);
+            SaturationPack = (byte)((SaturationV & 0x7f) | ((HueV & 0x100) >> 1));
+            Value = (byte)LightV;
+            Monochrome = (byte)((0.2125 * RawR) + (0.7154 * RawG) + (0.0721 * RawB));
+            HasHSL = 1;
         }
 
         public override string ToString()
@@ -166,7 +242,23 @@ namespace FFTriadBuddy
 
         public FastPixelHSV GetPixel(int X, int Y)
         {
-            return Pixels[X + (Y * Width)];
+            int idx = X + (Y * Width);
+            if (Pixels[idx].HasHSL == 0)
+            {
+                Pixels[idx].ExpandHSV();
+            }
+
+            return Pixels[idx];
+        }
+
+        public void SetPixel(int X, int Y, FastPixelHSV pixel)
+        {
+            Pixels[X + (Y * Width)] = pixel;
+        }
+
+        public void SetPixel(int Idx, FastPixelHSV pixel)
+        {
+            Pixels[Idx] = pixel;
         }
 
         public override string ToString()
@@ -289,7 +381,7 @@ namespace FFTriadBuddy
                     int IdxPixel = IdxY * image.Width;
                     for (int IdxByte = 0; IdxByte < bytesPerRow; IdxByte += bytesPerPixel)
                     {
-                        result.Pixels[IdxPixel] = new FastPixelHSV(pixels[IdxByte + 2], pixels[IdxByte + 1], pixels[IdxByte]);
+                        result.SetPixel(IdxPixel, new FastPixelHSV(pixels[IdxByte + 2], pixels[IdxByte + 1], pixels[IdxByte]));
                         IdxPixel++;
                     }
                 }
@@ -759,6 +851,26 @@ namespace FFTriadBuddy
             }
 
             return (float)matchPixels / totalPixels;
+        }
+
+        public static FastPixelHSV GetAverageColor(FastBitmapHSV bitmap, Rectangle bounds)
+        {
+            float hueAcc = 0.0f;
+            float satAcc = 0.0f;
+            float valAcc = 0.0f;
+            float scale = 1.0f / bounds.Width;
+
+            for (int idx = 0; idx < bounds.Width; idx++)
+            {
+                FastPixelHSV testPx = bitmap.GetPixel(bounds.X + idx, bounds.Y);
+                hueAcc += testPx.GetHue();
+                satAcc += testPx.GetSaturation();
+                valAcc += testPx.GetValue();
+            }
+
+            FastPixelHSV avgPx = new FastPixelHSV();
+            avgPx.SetHSV((int)(hueAcc * scale), (int)(satAcc * scale), (int)(valAcc * scale));
+            return avgPx;
         }
 
         public static void FindColorRange(FastBitmapHSV bitmap, Rectangle box, out int minMono, out int maxMono)
