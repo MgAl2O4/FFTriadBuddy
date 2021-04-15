@@ -1430,8 +1430,8 @@ namespace FFTriadBuddy
                 Rectangle topFrameRect = new Rectangle(cardRect.Left + (cardRect.Width * 25 / 100), cardRect.Top,
                     cardRect.Width * 50 / 100, 5);
 
-                Rectangle cardMidRect = new Rectangle(cardRect.Left + (cardRect.Width * 25 / 100), cardRect.Top + (cardRect.Height * 25 / 100),
-                    cardRect.Width * 50 / 100, Math.Min(cardRect.Height * 40 / 100, 25));
+                Rectangle cardMidRect = new Rectangle(cardRect.Left + (cardRect.Width * 25 / 100), cardRect.Top + (cardRect.Height * 60 / 100),
+                    cardRect.Width * 50 / 100, cardRect.Height * 40 / 100);
 
                 FastPixelHSV avgColorFrame = ScreenshotUtilities.GetAverageColor(bitmap, topFrameRect);
                 FastPixelHSV avgColorMid = ScreenshotUtilities.GetAverageColor(bitmap, cardMidRect);
