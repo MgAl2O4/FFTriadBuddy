@@ -163,6 +163,8 @@ namespace FFTriadBuddy
         public List<ImageHashUnknown> unknownHashes = new List<ImageHashUnknown>();
         public List<CardState> currentCardState = new List<CardState>();
 
+        public string testScreenshotPath = null;
+
         public ScreenshotAnalyzer()
         {
             digitMasks.Add(new ImagePatternDigit(1, new byte[] { 0x00, 0x00, 0x00, 0x02, 0x02, 0x03, 0xff, 0x00, 0x00, 0x00 }));
@@ -345,8 +347,9 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    cachedScreenshot = LoadTestScreenshot(imagePath + "test-git25.jpg");
-
+                    string screenshotPath = string.IsNullOrEmpty(testScreenshotPath) ? (imagePath + "test-git25.jpg") : testScreenshotPath;
+                    
+                    cachedScreenshot = LoadTestScreenshot(screenshotPath);
                     cachedGameWindow = (cachedScreenshot != null) ? new Rectangle(0, 0, cachedScreenshot.Width, cachedScreenshot.Height) : new Rectangle();
                 }
             }

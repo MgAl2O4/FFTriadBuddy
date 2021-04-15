@@ -122,6 +122,7 @@
     <Compile Include="ScanLineHash.cs" />
     <Compile Include="ScreenshotAnalyzer.cs" />
     <Compile Include="ScreenshotUtilities.cs" />
+    <Compile Include="ScreenshotVerify.cs" />
     <Compile Include="TabControlNoTabs.cs">
       <SubType>Component</SubType>
     </Compile>

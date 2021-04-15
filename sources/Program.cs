@@ -36,6 +36,13 @@ namespace FFTriadBuddy
                 }
                 else
                 {
+#if DEBUG
+                    if (Args.Contains("-selfCheck"))
+                    {
+                        ScreenshotVerify.RunAutoVerify();
+                    }
+#endif // DEBUG
+
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());
