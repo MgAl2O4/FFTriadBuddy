@@ -172,7 +172,7 @@ namespace FFTriadBuddy
 						bCanAdjustSummaryLocation = false;
 						screenReader.ConvertToScaledScreen(ref gridRect);
 
-						UpdateOverlayLocation(gameWindowRect.Left + ((gridRect.Left + gridRect.Right) / 2) - (panelSummary.Width / 2), gameWindowRect.Top + gridRect.Bottom + 50);
+						UpdateOverlayLocation(gameWindowRect.Left + ((gridRect.Left + gridRect.Right) / 2) - (panelSummary.Width / 2) - Location.X, gameWindowRect.Top + gridRect.Bottom + 50 - Location.Y);
 					}
 				}
 
@@ -197,8 +197,8 @@ namespace FFTriadBuddy
 						{
 							Rectangle rectDeckPos = screenReader.GetBlueCardRect(markerDeckPos);
 							Rectangle rectBoardPos = screenReader.GetBoardCardRect(markerBoardPos);
-							rectDeckPos.Offset(gameWindowRect.Location);
-							rectBoardPos.Offset(gameWindowRect.Location);
+							rectDeckPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
+							rectBoardPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
 
 							screenReader.ConvertToScaledScreen(ref rectDeckPos);
 							screenReader.ConvertToScaledScreen(ref rectBoardPos);
@@ -230,7 +230,7 @@ namespace FFTriadBuddy
 						screenReader.ConvertToScaledScreen(ref boardRect);
 
 						bCanAdjustSummaryLocation = false;
-						UpdateOverlayLocation(gameWindowRect.Left + ((boardRect.Left + boardRect.Right) / 2) - (panelSummary.Width / 2), gameWindowRect.Top + boardRect.Bottom + 50);
+						UpdateOverlayLocation(gameWindowRect.Left + ((boardRect.Left + boardRect.Right) / 2) - (panelSummary.Width / 2) - Location.X, gameWindowRect.Top + boardRect.Bottom + 50 - Location.Y);
 					}
 				}
 
@@ -246,8 +246,8 @@ namespace FFTriadBuddy
 					{
 						Rectangle fromBox = screenReader.GetCactpotCircleBox(fromIdx);
 						Rectangle toBox = screenReader.GetCactpotCircleBox(toIdx);
-						fromBox.Offset(gameWindowRect.Location);
-						toBox.Offset(gameWindowRect.Location);
+						fromBox.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
+						toBox.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
 						screenReader.ConvertToScaledScreen(ref fromBox);
 						screenReader.ConvertToScaledScreen(ref toBox);
 						fromBox.Inflate(10, 10);
@@ -265,7 +265,7 @@ namespace FFTriadBuddy
 					if (bHasValidMarkerBoard)
 					{
 						Rectangle rectBoardPos = screenReader.GetCactpotCircleBox(markerPos);
-						rectBoardPos.Offset(gameWindowRect.Location);
+						rectBoardPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
 						screenReader.ConvertToScaledScreen(ref rectBoardPos);
 						rectBoardPos.Inflate(10, 10);
 
@@ -331,7 +331,7 @@ namespace FFTriadBuddy
 			if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.SwapHints) != TriadGameScreenMemory.EUpdateFlags.None)
 			{
 				Rectangle rectDeckPos = screenReader.GetBlueCardRect(screenMemory.swappedBlueCardIdx);
-				rectDeckPos.Offset(gameWindowRect.Location);
+				rectDeckPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
 				screenReader.ConvertToScaledScreen(ref rectDeckPos);
 				rectDeckPos.Inflate(-10, -10);
 
