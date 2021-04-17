@@ -363,7 +363,15 @@ namespace FFTriadBuddy
 
                     if (cachedScreenshot != null && bDebugMode)
                     {
-                        cachedScreenshot.Save(imagePath + "screenshot-source.jpg");
+                        for (int idx = 1; idx < 1000000; idx++)
+                        {
+                            string testPath = imagePath + "screenshot-source-" + idx + ".jpg";
+                            if (!File.Exists(testPath))
+                            {
+                                cachedScreenshot.Save(testPath);
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -580,6 +588,11 @@ namespace FFTriadBuddy
             return cachedGridBox;
         }
 
+        public Rectangle GetScanAreaRect()
+        {
+            return cachedScanAreaBox;
+        }
+
         public Rectangle GetRuleBoxRect()
         {
             return cachedRuleBox;
@@ -610,19 +623,16 @@ namespace FFTriadBuddy
             return debugScreenshot;
         }
 
-        public bool IsInScanArea(Point testPt)
+        public Rectangle ConvertGameToScreen(Rectangle gameBounds)
         {
-            return cachedScanAreaBox.Contains(
-                (int)(testPt.X / cachedScreenScaling) - cachedGameWindow.Left,
-                (int)(testPt.Y / cachedScreenScaling) - cachedGameWindow.Top);
-        }
+            if (cachedGameWindow.Width <= 0 || cachedScreen == null) { return Rectangle.Empty; }
 
-        public void ConvertToScaledScreen(ref Rectangle rect)
-        {
-            rect.X = (int)(rect.X * cachedScreenScaling);
-            rect.Y = (int)(rect.Y * cachedScreenScaling);
-            rect.Width = (int)(rect.Width * cachedScreenScaling);
-            rect.Height = (int)(rect.Height * cachedScreenScaling);
+            return new Rectangle(
+                cachedScreen.Bounds.X + (int)((gameBounds.X + cachedGameWindow.X - cachedScreen.Bounds.X) * cachedScreenScaling),
+                cachedScreen.Bounds.Y + (int)((gameBounds.Y + cachedGameWindow.Y - cachedScreen.Bounds.Y) * cachedScreenScaling),
+                (int)(gameBounds.Width * cachedScreenScaling),
+                (int)(gameBounds.Height * cachedScreenScaling)
+                );
         }
 
         public void PopUnknownHash()
@@ -814,8 +824,8 @@ namespace FFTriadBuddy
 
             if (cachedScreenScaling != 1.0f)
             {
-                result.X = (int)(result.X / cachedScreenScaling);
-                result.Y = (int)(result.Y / cachedScreenScaling);
+                result.X = cachedScreen.Bounds.X + (int)((result.X - cachedScreen.Bounds.X) / cachedScreenScaling);
+                result.Y = cachedScreen.Bounds.Y + (int)((result.Y - cachedScreen.Bounds.Y) / cachedScreenScaling);
                 result.Width = (int)(result.Width / cachedScreenScaling);
                 result.Height = (int)(result.Height / cachedScreenScaling);
             }

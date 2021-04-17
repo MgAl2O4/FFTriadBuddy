@@ -171,9 +171,10 @@ namespace FFTriadBuddy
                     if ((gridRect.Width > 0) && (gameWindowRect.Width > 0))
                     {
                         bCanAdjustSummaryLocation = false;
-                        screenReader.ConvertToScaledScreen(ref gridRect);
-
-                        UpdateOverlayLocation(gameWindowRect.Left + ((gridRect.Left + gridRect.Right) / 2) - (panelSummary.Width / 2) - Location.X, gameWindowRect.Top + gridRect.Bottom + 50 - Location.Y);
+                        
+                        Rectangle boardBoundsLocal = ConvertGameBoundsToLocal(gridRect, 0);
+                        int boardLocalMidX = (boardBoundsLocal.Left + boardBoundsLocal.Right) / 2;
+                        UpdateOverlayLocation(boardLocalMidX - (panelSummary.Width / 2), boardBoundsLocal.Bottom + 50);
                     }
                 }
 
@@ -181,10 +182,7 @@ namespace FFTriadBuddy
                 updateFlags = screenMemory.OnNewScan(screenReader.currentTriadGame, npc);
                 if (updateFlags != TriadGameScreenMemory.EUpdateFlags.None)
                 {
-                    int markerDeckPos = -1;
-                    int markerBoardPos = -1;
-
-                    FindNextMove(out markerDeckPos, out markerBoardPos, out TriadGameResultChance bestChance);
+                    FindNextMove(out int markerDeckPos, out int markerBoardPos, out TriadGameResultChance bestChance);
                     ETriadGameState expectedResult = bestChance.expectedResult;
 
                     TriadCard suggestedCard = screenMemory.deckBlue.GetCard(markerDeckPos);
@@ -198,16 +196,9 @@ namespace FFTriadBuddy
                         {
                             Rectangle rectDeckPos = screenReader.GetBlueCardRect(markerDeckPos);
                             Rectangle rectBoardPos = screenReader.GetBoardCardRect(markerBoardPos);
-                            rectDeckPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
-                            rectBoardPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
 
-                            screenReader.ConvertToScaledScreen(ref rectDeckPos);
-                            screenReader.ConvertToScaledScreen(ref rectBoardPos);
-                            rectDeckPos.Inflate(10, 10);
-                            rectBoardPos.Inflate(10, 10);
-
-                            panelMarkerDeck.Bounds = rectDeckPos;
-                            panelMarkerBoard.Bounds = rectBoardPos;
+                            panelMarkerDeck.Bounds = ConvertGameBoundsToLocal(rectDeckPos);
+                            panelMarkerBoard.Bounds = ConvertGameBoundsToLocal(rectBoardPos);
                             panelMarkerBoard.BackColor =
                                 (expectedResult == ETriadGameState.BlueWins) ? Color.Lime :
                                 (expectedResult == ETriadGameState.BlueDraw) ? Color.Gold :
@@ -228,10 +219,11 @@ namespace FFTriadBuddy
                     Rectangle boardRect = screenReader.GetCactpotBoardRect();
                     if ((boardRect.Width > 0) && (gameWindowRect.Width > 0))
                     {
-                        screenReader.ConvertToScaledScreen(ref boardRect);
-
                         bCanAdjustSummaryLocation = false;
-                        UpdateOverlayLocation(gameWindowRect.Left + ((boardRect.Left + boardRect.Right) / 2) - (panelSummary.Width / 2) - Location.X, gameWindowRect.Top + boardRect.Bottom + 50 - Location.Y);
+
+                        Rectangle boardBoundsLocal = ConvertGameBoundsToLocal(boardRect, 0);
+                        int boardLocalMidX = (boardBoundsLocal.Left + boardBoundsLocal.Right) / 2;
+                        UpdateOverlayLocation(boardLocalMidX - (panelSummary.Width / 2), boardBoundsLocal.Bottom + 50);
                     }
                 }
 
@@ -245,16 +237,12 @@ namespace FFTriadBuddy
 
                     if (fromIdx >= 0 && toIdx >= 0)
                     {
-                        Rectangle fromBox = screenReader.GetCactpotCircleBox(fromIdx);
-                        Rectangle toBox = screenReader.GetCactpotCircleBox(toIdx);
-                        fromBox.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
-                        toBox.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
-                        screenReader.ConvertToScaledScreen(ref fromBox);
-                        screenReader.ConvertToScaledScreen(ref toBox);
-                        fromBox.Inflate(10, 10);
-                        toBox.Inflate(10, 10);
+                        Rectangle gameFromBox = screenReader.GetCactpotCircleBox(fromIdx);
+                        Rectangle gameToBox = screenReader.GetCactpotCircleBox(toIdx);
 
-                        ShowCactpotLine(fromBox, toBox);
+                        Rectangle localFromBox = ConvertGameBoundsToLocal(gameFromBox);
+                        Rectangle localToBox = ConvertGameBoundsToLocal(gameToBox);
+                        ShowCactpotLine(localFromBox, localToBox);
                     }
                 }
                 else
@@ -265,12 +253,8 @@ namespace FFTriadBuddy
                     bHasValidMarkerBoard = (markerPos >= 0);
                     if (bHasValidMarkerBoard)
                     {
-                        Rectangle rectBoardPos = screenReader.GetCactpotCircleBox(markerPos);
-                        rectBoardPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
-                        screenReader.ConvertToScaledScreen(ref rectBoardPos);
-                        rectBoardPos.Inflate(10, 10);
-
-                        panelMarkerBoard.Bounds = rectBoardPos;
+                        Rectangle gameBoardPos = screenReader.GetCactpotCircleBox(markerPos);
+                        panelMarkerBoard.Bounds = ConvertGameBoundsToLocal(gameBoardPos);
                         panelMarkerBoard.BackColor = Color.Lime;
                     }
                 }
@@ -318,11 +302,8 @@ namespace FFTriadBuddy
                 Rectangle ruleRect = screenReader.GetRuleBoxRect();
                 if (gameWindowRect.Width > 0 && ruleRect.Width > 0)
                 {
-                    Rectangle warningBounds = new Rectangle(ruleRect.Left, ruleRect.Top - panelSwapWarning.Height - 10, 0, 0);
-                    warningBounds.Offset(gameWindowRect.Location);
-                    screenReader.ConvertToScaledScreen(ref warningBounds);
-
-                    panelSwapWarning.Location = warningBounds.Location;
+                    Rectangle gameWarningBounds = new Rectangle(ruleRect.Left, ruleRect.Top - panelSwapWarning.Height - 10, 0, 0);
+                    panelSwapWarning.Location = ConvertGameBoundsToLocal(gameWarningBounds, 0).Location;
                     panelSwapWarning.Visible = true;
                     timerHideSwapWarning.Stop();
                     timerHideSwapWarning.Start();
@@ -331,12 +312,8 @@ namespace FFTriadBuddy
 
             if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.SwapHints) != TriadGameScreenMemory.EUpdateFlags.None)
             {
-                Rectangle rectDeckPos = screenReader.GetBlueCardRect(screenMemory.swappedBlueCardIdx);
-                rectDeckPos.Offset(gameWindowRect.Location.X - Location.X, gameWindowRect.Location.Y - Location.Y);
-                screenReader.ConvertToScaledScreen(ref rectDeckPos);
-                rectDeckPos.Inflate(-10, -10);
-
-                panelMarkerSwap.Bounds = rectDeckPos;
+                Rectangle gameDeckPos = screenReader.GetBlueCardRect(screenMemory.swappedBlueCardIdx);
+                panelMarkerSwap.Bounds = ConvertGameBoundsToLocal(gameDeckPos, -10);
                 panelMarkerSwap.Visible = true;
             }
 
@@ -353,7 +330,6 @@ namespace FFTriadBuddy
 
         private void FindNextMove(out int blueCardIdx, out int boardCardIdx, out TriadGameResultChance bestChance)
         {
-            blueCardIdx = -1;
             boardCardIdx = -1;
 
             screenMemory.gameSession.SolverFindBestMove(screenMemory.gameState, out int solverBoardPos, out TriadCard solverTriadCard, out bestChance);
@@ -363,6 +339,22 @@ namespace FFTriadBuddy
             {
                 boardCardIdx = solverBoardPos;
             }
+        }
+
+        private Rectangle ConvertGameBoundsToLocal(Rectangle gameBounds, int inflateSize = 10)
+        {
+            Rectangle localBounds = screenReader.ConvertGameToScreen(gameBounds);
+            localBounds.X -= Location.X;
+            localBounds.Y -= Location.Y;
+            localBounds.Inflate(inflateSize, inflateSize);
+
+            return localBounds;
+        }
+
+        private bool IsCursorInScanArea()
+        {
+            Rectangle screenScanArea = screenReader.ConvertGameToScreen(screenReader.GetScanAreaRect());
+            return screenScanArea.Contains(Cursor.Position);
         }
 
         private void buttonCaptureWoker()
@@ -413,18 +405,18 @@ namespace FFTriadBuddy
             labelRules.Text = "Rules: npc changed, waiting for scan...";
         }
 
-        public void UpdateOverlayLocation(int screenX, int screenY)
+        public void UpdateOverlayLocation(int localX, int localY)
         {
-            screenX = Math.Min(Math.Max(screenX, 0), Size.Width - panelSummary.Width);
-            screenY = Math.Min(Math.Max(screenY, 0), Size.Height - panelSummary.Height);
+            localX = Math.Min(Math.Max(localX, 0), Size.Width - panelSummary.Width);
+            localY = Math.Min(Math.Max(localY, 0), Size.Height - panelSummary.Height);
 
-            panelSummary.Location = new Point(screenX, screenY);
+            panelSummary.Location = new Point(localX, localY);
 
-            panelDetails.Location = new Point(screenX - panelDetails.Width - 10, screenY);
-            panelBoard.Location = new Point(screenX + panelSummary.Width + 10, screenY);
-            panelCactpot.Location = new Point(screenX + panelSummary.Width + 10, screenY);
-            panelDebug.Location = new Point(screenX, screenY + panelSummary.Height + 10);
-            panelScanResolution.Location = new Point(screenX, screenY + panelSummary.Height + 10);
+            panelDetails.Location = new Point(localX - panelDetails.Width - 10, localY);
+            panelBoard.Location = new Point(localX + panelSummary.Width + 10, localY);
+            panelCactpot.Location = new Point(localX + panelSummary.Width + 10, localY);
+            panelDebug.Location = new Point(localX, localY + panelSummary.Height + 10);
+            panelScanResolution.Location = new Point(localX, localY + panelSummary.Height + 10);
         }
 
         public void InitOverlayLocation(Rectangle mainWindowBounds)
@@ -484,7 +476,7 @@ namespace FFTriadBuddy
                                 case ScreenshotAnalyzer.ETurnState.MissingTimer: SetStatusText(npcDesc + "Ready", SystemIcons.Information); break;
                                 case ScreenshotAnalyzer.ETurnState.Waiting: SetStatusText(npcDesc + "Waiting for blue turn", SystemIcons.Shield); break;
                                 case ScreenshotAnalyzer.ETurnState.Active:
-                                    bool bIsMouseOverGrid = (screenReader != null) && screenReader.IsInScanArea(Cursor.Position);
+                                    bool bIsMouseOverGrid = IsCursorInScanArea();
                                     if (bIsMouseOverGrid && IsUsingAutoScan())
                                     {
                                         SetStatusText("Move cursor away from scan zone!", SystemIcons.Warning);
@@ -557,7 +549,7 @@ namespace FFTriadBuddy
                 }
                 else if (screenReader.GetCurrentTurnState() == ScreenshotAnalyzer.ETurnState.Active)
                 {
-                    bool bIsMouseOverGrid = screenReader.IsInScanArea(Cursor.Position);
+                    bool bIsMouseOverGrid = IsCursorInScanArea();
                     if (bCanAutoCapture && !bIsMouseOverGrid)
                     {
                         bCanAutoCapture = false;
