@@ -70,106 +70,85 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssetManager.cs" />
-    <Compile Include="CardCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CardCtrl.Designer.cs">
-      <DependentUpon>CardCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CardGridCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CardGridCtrl.Designer.cs">
-      <DependentUpon>CardGridCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CloudStorage\GoogleDriveService.cs" />
-    <Compile Include="CloudStorage\GoogleOAuth2.cs" />
-    <Compile Include="CloudStorage\JsonParser.cs" />
-    <Compile Include="DataCoverter.cs" />
-    <Compile Include="DeckCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DeckCtrl.Designer.cs">
-      <DependentUpon>DeckCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FavDeckCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FavDeckCtrl.Designer.cs">
-      <DependentUpon>FavDeckCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FavDeckSolver.cs" />
-    <Compile Include="FormFavEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormFavEdit.Designer.cs">
-      <DependentUpon>FormFavEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormOverlay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormOverlay.Designer.cs">
-      <DependentUpon>FormOverlay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GithubUpdater.cs" />
-    <Compile Include="HitInvisControls.cs" />
-    <Compile Include="ImageHashDB.cs" />
-    <Compile Include="ListViewColumnSorter.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="MiniCactpotGame.cs" />
-    <Compile Include="PlayerSettingsDB.cs" />
-    <Compile Include="ScanLineHash.cs" />
-    <Compile Include="ScreenshotAnalyzer.cs" />
-    <Compile Include="ScreenshotUtilities.cs" />
-    <Compile Include="ScreenshotVerify.cs" />
-    <Compile Include="TabControlNoTabs.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tlsh\BucketSize.cs" />
-    <Compile Include="Tlsh\ChecksumSize.cs" />
-    <Compile Include="Tlsh\TlshBuilder.cs" />
-    <Compile Include="Tlsh\TlshHash.cs" />
-    <Compile Include="Tlsh\TlshUtilities.cs" />
-    <Compile Include="TriadCardDB.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
+    <Compile Include="data\ImageHashDB.cs" />
+    <Compile Include="data\PlayerSettingsDB.cs" />
+    <Compile Include="data\TriadCardDB.cs" />
+    <Compile Include="data\TriadNpcDB.cs" />
+    <Compile Include="data\TriadTournamentDB.cs" />
+    <Compile Include="gamelogic\FavDeckSolver.cs" />
+    <Compile Include="gamelogic\MiniCactpotGame.cs" />
+    <Compile Include="gamelogic\TriadCard.cs" />
+    <Compile Include="gamelogic\TriadDeck.cs" />
+    <Compile Include="gamelogic\TriadDeckOptimizer.cs" />
+    <Compile Include="gamelogic\TriadGame.cs" />
+    <Compile Include="gamelogic\TriadGameModifier.cs" />
+    <Compile Include="gamelogic\TriadGameScreenMemory.cs" />
+    <Compile Include="googleapi\GoogleDriveService.cs" />
+    <Compile Include="googleapi\GoogleOAuth2.cs" />
+    <Compile Include="patternmatch\ScanLineHash.cs" />
+    <Compile Include="patternmatch\tlsh\BucketSize.cs" />
+    <Compile Include="patternmatch\tlsh\ChecksumSize.cs" />
+    <Compile Include="patternmatch\tlsh\TlshBuilder.cs" />
+    <Compile Include="patternmatch\tlsh\TlshHash.cs" />
+    <Compile Include="patternmatch\tlsh\TlshUtilities.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TriadCard.cs" />
-    <Compile Include="TriadDeck.cs" />
-    <Compile Include="TriadDeckOptimizer.cs" />
-    <Compile Include="TriadGame.cs" />
-    <Compile Include="TriadGameModifier.cs" />
-    <Compile Include="TriadGameScreenMemory.cs" />
-    <Compile Include="TriadTournamentDB.cs" />
-    <Compile Include="TriadNpcDB.cs" />
-    <Compile Include="XInputStub.cs" />
-    <EmbeddedResource Include="CardCtrl.resx">
+    <Compile Include="ui\CardCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\CardCtrl.Designer.cs">
       <DependentUpon>CardCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CardGridCtrl.resx">
+    </Compile>
+    <Compile Include="ui\CardGridCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\CardGridCtrl.Designer.cs">
       <DependentUpon>CardGridCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DeckCtrl.resx">
+    </Compile>
+    <Compile Include="utils\DataCoverter.cs" />
+    <Compile Include="ui\DeckCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\DeckCtrl.Designer.cs">
       <DependentUpon>DeckCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FavDeckCtrl.resx">
+    </Compile>
+    <Compile Include="ui\FavDeckCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\FavDeckCtrl.Designer.cs">
       <DependentUpon>FavDeckCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    </Compile>
+    <Compile Include="ui\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormFavEdit.resx">
+    </Compile>
+    <Compile Include="ui\FormFavEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\FormFavEdit.Designer.cs">
       <DependentUpon>FormFavEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormOverlay.resx">
+    </Compile>
+    <Compile Include="ui\FormOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\FormOverlay.Designer.cs">
       <DependentUpon>FormOverlay.cs</DependentUpon>
-    </EmbeddedResource>
+    </Compile>
+    <Compile Include="ui\HitInvisControls.cs" />
+    <Compile Include="ui\ListViewColumnSorter.cs" />
+    <Compile Include="ui\TabControlNoTabs.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="utils\AssetManager.cs" />
+    <Compile Include="utils\GithubUpdater.cs" />
+    <Compile Include="utils\JsonParser.cs" />
+    <Compile Include="utils\Logger.cs" />
+    <Compile Include="utils\ScreenshotVerify.cs" />
+    <Compile Include="utils\XInputStub.cs" />
+    <Compile Include="vision\ScreenshotAnalyzer.cs" />
+    <Compile Include="vision\ScreenshotUtilities.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -180,6 +159,27 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ui\CardCtrl.resx">
+      <DependentUpon>CardCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\CardGridCtrl.resx">
+      <DependentUpon>CardGridCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\DeckCtrl.resx">
+      <DependentUpon>DeckCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\FavDeckCtrl.resx">
+      <DependentUpon>FavDeckCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\FormFavEdit.resx">
+      <DependentUpon>FormFavEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\FormOverlay.resx">
+      <DependentUpon>FormOverlay.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -196,13 +196,13 @@
   <ItemGroup>
     <Content Include="card.ico" />
   </ItemGroup>
-  <ItemGroup Condition="Exists('CloudStorage\GoogleClientIdentifiers.cs')">
-    <Compile Include="CloudStorage\GoogleClientIdentifiers.cs" />
-    <Compile Remove="CloudStorage\GoogleClientMissingIdentifiers.cs" />
+  <ItemGroup Condition="Exists('googleapi\GoogleClientIdentifiers.cs')">
+    <Compile Include="googleapi\GoogleClientIdentifiers.cs" />
+    <Compile Remove="googleapi\GoogleClientMissingIdentifiers.cs" />
   </ItemGroup>
-  <ItemGroup Condition="!Exists('CloudStorage\GoogleClientIdentifiers.cs')">
-    <Compile Include="CloudStorage\GoogleClientMissingIdentifiers.cs" />
-    <Compile Remove="CloudStorage\GoogleClientIdentifiers.cs" />
+  <ItemGroup Condition="!Exists('googleapi\GoogleClientIdentifiers.cs')">
+    <Compile Include="googleapi\GoogleClientMissingIdentifiers.cs" />
+    <Compile Remove="googleapi\GoogleClientIdentifiers.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
