@@ -161,9 +161,13 @@ namespace FFTriadBuddy
                 }
             }
 
+            int markerTimeout = timerFadeMarkers.Interval;
+
             TriadGameScreenMemory.EUpdateFlags updateFlags = TriadGameScreenMemory.EUpdateFlags.None;
             if (screenAnalyzer.activeScanner is ScannerTriad)
             {
+                markerTimeout = 4000;
+
                 // update overlay locations
                 if (bCanAdjustSummaryLocation)
                 {
@@ -213,6 +217,8 @@ namespace FFTriadBuddy
             }
             else if (screenAnalyzer.activeScanner is ScannerCactpot)
             {
+                markerTimeout = 2000;
+
                 // update overlay locations
                 if (bCanAdjustSummaryLocation)
                 {
@@ -320,9 +326,18 @@ namespace FFTriadBuddy
             bCanStopTurnScan = false;
             bCanAutoCapture = false;
 
-            timerFadeMarkers.Enabled = bHasValidMarkerDeck || bHasValidMarkerBoard || panelMarkerSwap.Visible || panelMarkerLine.Visible;
             panelMarkerDeck.Visible = bHasValidMarkerDeck;
             panelMarkerBoard.Visible = bHasValidMarkerBoard;
+
+            if (bHasValidMarkerDeck || bHasValidMarkerBoard || panelMarkerSwap.Visible || panelMarkerLine.Visible)
+            {
+                timerFadeMarkers.Interval = markerTimeout;
+                timerFadeMarkers.Enabled = true;
+            }
+            else
+            {
+                timerFadeMarkers.Enabled = false;
+            }
 
             timerTurnScan.Enabled = true;
             timerTurnScan_Tick(null, null);
@@ -359,7 +374,7 @@ namespace FFTriadBuddy
 
         private void buttonCaptureWoker()
         {
-            screenAnalyzer.DoWork();
+            screenAnalyzer.DoWork(ScreenAnalyzer.EMode.Default);
             UpdateScreenState();
             OnUpdateState.Invoke();
         }
@@ -473,11 +488,11 @@ namespace FFTriadBuddy
                     break;
 
                 case ScreenAnalyzer.EState.NoScannerMatch:
-                    SetStatusText("Can't find minigame", SystemIcons.Error);
+                    SetStatusText("Can't find minigame window", SystemIcons.Error);
                     break;
 
                 case ScreenAnalyzer.EState.UnknownHash:
-                    SetStatusText("Unknown cards! Check Play:Screenshot for details", SystemIcons.Warning);
+                    SetStatusText("Unknown pattern! Check Play:Screenshot for details", SystemIcons.Warning);
                     break;
 
                 case ScreenAnalyzer.EState.ScannerErrors:
@@ -586,11 +601,16 @@ namespace FFTriadBuddy
                 }
                 else if (screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.Active)
                 {
-                    bool bIsMouseOverGrid = IsCursorInScanArea();
-                    if (bCanAutoCapture && !bIsMouseOverGrid)
+                    if (bCanAutoCapture)
                     {
-                        bCanAutoCapture = false;
-                        buttonCapture_Click(null, null);
+                        bool bIsMouseOverGrid = IsCursorInScanArea();
+                        if (bDebugMode) { Logger.WriteLine("Checking auto scan: mouse:{0}, state:{1}", bIsMouseOverGrid ? "OverGrid" : "ok", screenAnalyzer.GetCurrentState()); }
+
+                        if (!bIsMouseOverGrid && screenAnalyzer.GetCurrentState() == ScreenAnalyzer.EState.NoErrors)
+                        {
+                            bCanAutoCapture = false;
+                            buttonCapture_Click(null, null);
+                        }
                     }
                 }
             }

@@ -54,7 +54,9 @@ namespace FFTriadBuddy
         public Dictionary<FastBitmapHash, int> currentHashDetections;
         public Rectangle scanClipBounds;
         public Rectangle currentScanArea;
+        
         public string debugScreenshotPath;
+        public string debugScannerContext;
 
         private EState currentState = EState.NoInputImage;
         private Size currentImageSize;
@@ -129,7 +131,7 @@ namespace FFTriadBuddy
                         }
                         catch (Exception ex)
                         {
-                            Logger.WriteLine("Failed to scan [2] image! {0}", ex);
+                            Logger.WriteLine("Failed to scan [1] image! {0}", ex);
                             scanned = false;
                         }
 
@@ -137,6 +139,7 @@ namespace FFTriadBuddy
                         {
                             activeScanner = kvp.Value;
                             currentState = (currentState == EState.NoScannerMatch) ? EState.NoErrors : currentState;
+                            if (debugMode) Logger.WriteLine("Scan [1] successful, type:{0}, state:{1}", kvp.Key, currentState);
                         }
                         else
                         {
@@ -169,6 +172,7 @@ namespace FFTriadBuddy
                             {
                                 activeScanner = kvp.Value;
                                 currentState = (currentState == EState.NoScannerMatch) ? EState.NoErrors : currentState;
+                                if (debugMode) Logger.WriteLine("Scan [2] successful, type:{0}, state:{1}", kvp.Key, currentState);
                                 break;
                             }
                         }
@@ -218,7 +222,10 @@ namespace FFTriadBuddy
 
         public void OnScannerError()
         {
-            currentState = EState.ScannerErrors;
+            if (currentState != EState.UnknownHash)
+            {
+                currentState = EState.ScannerErrors;
+            }
         }
 
         public void PopUnknownHash()
@@ -272,9 +279,15 @@ namespace FFTriadBuddy
             bool result = false;
             perfTimer.Start();
 
+#if DEBUG
+            if (string.IsNullOrEmpty(debugScreenshotPath))
+            {
+                debugScreenshotPath = imagePath + "screenshot-source-4.jpg";
+            }
+#endif
+
             if ((mode & EMode.DebugScreenshotOnly) != EMode.None)
             {
-                debugScreenshotPath = imagePath + "screenshot-source-3.jpg";
                 result = screenReader.LoadScreenshot(debugScreenshotPath, optClipBounds);
             }
             else

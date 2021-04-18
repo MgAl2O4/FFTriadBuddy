@@ -806,10 +806,11 @@ namespace FFTriadBuddy
 
                         if (isValid)
                         {
-                            ImageUtils.ConditionalAddUnknownHash(
-                                ImageUtils.CreateUnknownImageHash(ruleHashData, cachedScreenshot, EImageHashType.Rule), screenAnalyzer.unknownHashes);
-
-                            screenAnalyzer.OnUnknownHashAdded();
+                            if (ImageUtils.ConditionalAddUnknownHash(
+                                ImageUtils.CreateUnknownImageHash(ruleHashData, cachedScreenshot, EImageHashType.Rule), screenAnalyzer.unknownHashes))
+                            {
+                                screenAnalyzer.OnUnknownHashAdded();
+                            }
                         }
                         else
                         {
@@ -839,22 +840,55 @@ namespace FFTriadBuddy
             bool bIsBoardCard = debugName.StartsWith("board");
             if (bIsBoardCard)
             {
-                // check average color of frame vs mid part of card as a backup plan
-                Rectangle topFrameRect = new Rectangle(cardRect.Left + (cardRect.Width * 25 / 100), cardRect.Top,
-                    cardRect.Width * 50 / 100, 5);
+                int gridCellHalfHeight = cachedGridBox.Height / 6;
+                int cardMidY = (cardRect.Top + cardRect.Bottom) / 2;
+                int scanStartY = Math.Min(cardMidY - gridCellHalfHeight, cardRect.Top - 2);
+                int scanEndY = cardRect.Top + 2;
 
-                Rectangle cardMidRect = new Rectangle(cardRect.Left + (cardRect.Width * 25 / 100), cardRect.Top + (cardRect.Height * 60 / 100),
-                    cardRect.Width * 50 / 100, cardRect.Height * 40 / 100);
+                // look for edge of border, sample 4 points along card width for avg
+                int[] scanX = new int[4]{ 
+                    cardRect.Left + (cardRect.Width * 20 / 100),
+                    cardRect.Left + (cardRect.Width * 40 / 100),
+                    cardRect.Left + (cardRect.Width * 60 / 100),
+                    cardRect.Left + (cardRect.Width * 80 / 100)};
 
-                FastPixelHSV avgColorFrame = ImageUtils.GetAverageColor(bitmap, topFrameRect);
-                FastPixelHSV avgColorMid = ImageUtils.GetAverageColor(bitmap, cardMidRect);
-                int avgColorDiff = Math.Abs(avgColorFrame.GetHue() - avgColorMid.GetHue()) + Math.Abs(avgColorFrame.GetSaturation() - avgColorMid.GetSaturation());
+                bool verboseDebug = debugMode && debugName == screenAnalyzer.debugScannerContext;
+                bool foundEdge = false;
+                int prevAvgMono = 0;
+                int prevAvgHue = 0;
 
-                // low color diff: empty / hidden
-                bool bIsColorDiffLow = avgColorDiff < 15;
-                if (bIsColorDiffLow)
+                for (int scanY = scanStartY; scanY < scanEndY; scanY++)
                 {
-                    if (debugMode) { Logger.WriteLine("ParseCard(" + debugName + "): empty, diff:" + avgColorDiff + " (" + avgColorFrame + " vs " + avgColorMid + ")"); }
+                    int avgMono = 0;
+                    int avgHue = 0;
+                    for (int idxX = 0; idxX < scanX.Length; idxX++)
+                    {
+                        FastPixelHSV testPx = bitmap.GetPixel(scanX[idxX], scanY);
+                        avgMono += testPx.GetMonochrome();
+                        avgHue += testPx.GetHue();
+                    }
+                    avgMono /= scanX.Length;
+                    avgHue /= scanX.Length;
+
+                    if (prevAvgMono > 0)
+                    {
+                        int diffMono = avgMono - prevAvgMono;
+                        foundEdge = (diffMono < -50);
+
+                        if (verboseDebug) { Logger.WriteLine("ParseCard[{0}] scan:{1} = [H:{2},M:{3}] vs prev[H:{4},M:{5}] => {6}", debugName, scanY, avgHue, avgMono, prevAvgHue, prevAvgMono, foundEdge ? " EDGE!" : "nope"); }
+                        if (foundEdge)
+                        {
+                            break;
+                        }
+                    }
+
+                    prevAvgMono = avgMono;
+                    prevAvgHue = avgHue;
+                }
+
+                if (!foundEdge)
+                {
+                    if (debugMode) { Logger.WriteLine("ParseCard(" + debugName + "): empty"); }
                     return null;
                 }
             }
@@ -905,6 +939,8 @@ namespace FFTriadBuddy
             detectionState.sideImage = new ImageDataDigit[4];
             int[] CardNumbers = new int[4] { 0, 0, 0, 0 };
 
+            bool debugNumberMatching = debugName == screenAnalyzer.debugScannerContext;
+
             // number match tries to avoid scaling and hopes that 100% UI scale will create digits fitting 8x10 boxes
             // check if numberbox height is roughly (2x digit height + 2x offset:2) = 20
             // - yes: yay, go and match pixel perfect digits
@@ -922,7 +958,7 @@ namespace FFTriadBuddy
 
                 for (int Idx = 0; Idx < 4; Idx++)
                 {
-                    CardNumbers[Idx] = ImageUtils.FindPatternMatch(bitmap, cardScanAnchors[Idx], colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx]);
+                    CardNumbers[Idx] = ImageUtils.FindPatternMatch(bitmap, cardScanAnchors[Idx], colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx], debugNumberMatching);
                 }
             }
             else
@@ -945,7 +981,7 @@ namespace FFTriadBuddy
 
                 for (int Idx = 0; Idx < 4; Idx++)
                 {
-                    CardNumbers[Idx] = ImageUtils.FindPatternMatchScaled(bitmap, cardScanAnchors[Idx], sadDigitSize, colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx]);
+                    CardNumbers[Idx] = ImageUtils.FindPatternMatchScaled(bitmap, cardScanAnchors[Idx], sadDigitSize, colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx], debugNumberMatching);
                     debugShapes.Add(new Rectangle(cardScanAnchors[Idx], sadDigitSize));
                 }
             };
@@ -991,10 +1027,11 @@ namespace FFTriadBuddy
                 TriadCard bestCardOb = (TriadCard)ImageUtils.FindMatchingHash(cardHashData, EImageHashType.Card, out int bestDistance, debugMode);
                 if (bestCardOb == null)
                 {
-                    ImageUtils.ConditionalAddUnknownHash(
-                        ImageUtils.CreateUnknownImageHash(cardHashData, screenAnalyzer.screenReader.cachedScreenshot, EImageHashType.Card), screenAnalyzer.unknownHashes);
-
-                    screenAnalyzer.OnUnknownHashAdded();
+                    if (ImageUtils.ConditionalAddUnknownHash(
+                        ImageUtils.CreateUnknownImageHash(cardHashData, screenAnalyzer.screenReader.cachedScreenshot, EImageHashType.Card), screenAnalyzer.unknownHashes))
+                    {
+                        screenAnalyzer.OnUnknownHashAdded();
+                    }
                 }
                 else
                 {
@@ -1249,10 +1286,12 @@ namespace FFTriadBuddy
 
                 if (blueState != configData.deckBlue[idx].state)
                 {
+                    screenAnalyzer.debugScannerContext = "blue" + idx;
                     string exceptionMsg = string.Format("Test {0} failed! Deck Blue[{1}] got:{2}, expected:{3}",
                         testName, idx,
                         blueState,
                         configData.deckBlue[idx].state);
+
                     throw new Exception(exceptionMsg);
                 }
 
@@ -1262,6 +1301,7 @@ namespace FFTriadBuddy
                     blueCard.Sides[2] != configData.deckBlue[idx].sides[2] ||
                     blueCard.Sides[3] != configData.deckBlue[idx].sides[3]))
                 {
+                    screenAnalyzer.debugScannerContext = "blue" + idx;
                     string exceptionMsg = string.Format("Test {0} failed! Deck Blue[{1}] got:[{2},{3},{4},{5}], expected:[{6},{7},{8},{9}]",
                         testName, idx,
                         blueCard.Sides[0], blueCard.Sides[1], blueCard.Sides[2], blueCard.Sides[3],
@@ -1279,6 +1319,7 @@ namespace FFTriadBuddy
                 if (configData.deckRed[idx].state == EVerifyCardState.Locked) { configData.deckRed[idx].state = EVerifyCardState.Visible; }
                 if (redState != configData.deckRed[idx].state)
                 {
+                    screenAnalyzer.debugScannerContext = "red" + idx;
                     string exceptionMsg = string.Format("Test {0} failed! Deck Red[{1}] got:{2}, expected:{3}",
                         testName, idx,
                         redState,
@@ -1292,6 +1333,7 @@ namespace FFTriadBuddy
                     redCard.Sides[2] != configData.deckRed[idx].sides[2] ||
                     redCard.Sides[3] != configData.deckRed[idx].sides[3]))
                 {
+                    screenAnalyzer.debugScannerContext = "red" + idx;
                     string exceptionMsg = string.Format("Test {0} failed! Deck Red[{1}] got:[{2},{3},{4},{5}], expected:[{6},{7},{8},{9}]",
                         testName, idx,
                         redCard.Sides[0], redCard.Sides[1], redCard.Sides[2], redCard.Sides[3],
@@ -1312,6 +1354,7 @@ namespace FFTriadBuddy
 
                 if (cardState != configData.board[idx].state)
                 {
+                    screenAnalyzer.debugScannerContext = "board" + idx;
                     string exceptionMsg = string.Format("Test {0} failed! Board[{1}] got:{2}, expected:{3}",
                         testName, idx,
                         cardState,
@@ -1325,6 +1368,7 @@ namespace FFTriadBuddy
                     testCard.Sides[2] != configData.board[idx].sides[2] ||
                     testCard.Sides[3] != configData.board[idx].sides[3]))
                 {
+                    screenAnalyzer.debugScannerContext = "board" + idx;
                     string exceptionMsg = string.Format("Test {0} failed! Board[{1}] got:[{2},{3},{4},{5}], expected:[{6},{7},{8},{9}]",
                         testName, idx,
                         testCard.Sides[0], testCard.Sides[1], testCard.Sides[2], testCard.Sides[3],

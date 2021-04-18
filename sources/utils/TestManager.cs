@@ -40,12 +40,18 @@ namespace FFTriadBuddy
             foreach (var configPath in configPaths)
             {
                 string imagePath = configPath.Replace(".json", ".jpg");
+                if (!File.Exists(imagePath))
+                {
+                    imagePath = imagePath.Replace(".jpg", ".png");
+                }
+
                 if (File.Exists(imagePath))
                 {
                     Logger.WriteLine("==> Testing: " + Path.GetFileNameWithoutExtension(configPath));
 
                     bool bNeedsDebugRun = false;
                     screenAnalyzer.debugScreenshotPath = imagePath;
+                    screenAnalyzer.debugScannerContext = null;
 
                     try
                     {

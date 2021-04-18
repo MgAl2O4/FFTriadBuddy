@@ -409,10 +409,11 @@ namespace FFTriadBuddy
                         CactpotNumberHash bestNumberOb = (CactpotNumberHash)ImageUtils.FindMatchingHash(cactpotHashData, EImageHashType.Cactpot, out int bestDistance, debugMode);
                         if (bestNumberOb == null)
                         {
-                            ImageUtils.ConditionalAddUnknownHash(
-                                ImageUtils.CreateUnknownImageHash(cactpotHashData, screenAnalyzer.screenReader.cachedScreenshot, EImageHashType.Cactpot), screenAnalyzer.unknownHashes);
-
-                            screenAnalyzer.OnUnknownHashAdded();
+                            if (ImageUtils.ConditionalAddUnknownHash(
+                                ImageUtils.CreateUnknownImageHash(cactpotHashData, screenAnalyzer.screenReader.cachedScreenshot, EImageHashType.Cactpot), screenAnalyzer.unknownHashes))
+                            {
+                                screenAnalyzer.OnUnknownHashAdded();
+                            }
                         }
                         else
                         {

@@ -1960,7 +1960,7 @@ namespace FFTriadBuddy
                         break;
 
                     case ScreenAnalyzer.EState.NoScannerMatch:
-                        labelScreenshotState.Text = "Can't find minigame";
+                        labelScreenshotState.Text = "Can't find minigame window";
                         break;
 
                     case ScreenAnalyzer.EState.UnknownHash:

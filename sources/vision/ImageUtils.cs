@@ -1153,7 +1153,7 @@ namespace FFTriadBuddy
             return bestMatchOb;
         }
 
-        public static void ConditionalAddUnknownHash(ImageHashUnknown newHashToAdd, List<ImageHashUnknown> unknownHashes)
+        public static bool ConditionalAddUnknownHash(ImageHashUnknown newHashToAdd, List<ImageHashUnknown> unknownHashes)
         {
             bool bCanAdd = true;
             foreach (ImageHashUnknown image in unknownHashes)
@@ -1173,6 +1173,8 @@ namespace FFTriadBuddy
             {
                 unknownHashes.Add(newHashToAdd);
             }
+
+            return bCanAdd;
         }
 
         public static float HasPatternMatch(byte[] cachedMatchData, int posX, int posY, int cacheWidth, bool bExact, ImagePatternDigit patternMask, bool bDebugMode = false)
