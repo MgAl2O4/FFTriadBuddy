@@ -25,7 +25,7 @@ namespace FFTriadBuddy
         private Point cactpotLinePt1;
 
         private TriadGameScreenMemory screenMemory;
-        public ScreenshotAnalyzer screenReader;
+        public ScreenAnalyzer screenAnalyzer;
         private TriadNpc npc;
 
         public delegate void UpdateStateDelegate();
@@ -130,13 +130,13 @@ namespace FFTriadBuddy
             screenMemory.UpdatePlayerDeck(activeDeck);
         }
 
-        public void UpdateScreenState(ScreenshotAnalyzer screenReader, bool bDebugMode = false)
+        public void UpdateScreenState(bool bDebugMode = false)
         {
             checkBoxDetails_CheckedChanged(null, null);
 
-            if (screenReader.GetCurrentState() != ScreenshotAnalyzer.EState.NoErrors)
+            if (screenAnalyzer.GetCurrentState() != ScreenAnalyzer.EState.NoErrors)
             {
-                Logger.WriteLine("Capture failed: " + screenReader.GetCurrentState());
+                Logger.WriteLine("Capture failed: " + screenAnalyzer.GetCurrentState());
                 bHasValidMarkerDeck = false;
                 bHasValidMarkerBoard = false;
                 UpdateStatusDescription();
@@ -148,7 +148,7 @@ namespace FFTriadBuddy
             Logger.WriteLine("Capture " + labelScanId.Text);
 
             // multi monitor setup: make sure that overlay and game and on the same monitor
-            Rectangle gameWindowRect = screenReader.GetGameWindowRect();
+            Rectangle gameWindowRect = screenAnalyzer.screenReader.GetCachedGameWindow();
             if (gameWindowRect.Width > 0)
             {
                 Rectangle gameScreenBounds = Screen.GetBounds(gameWindowRect);
@@ -162,16 +162,16 @@ namespace FFTriadBuddy
             }
 
             TriadGameScreenMemory.EUpdateFlags updateFlags = TriadGameScreenMemory.EUpdateFlags.None;
-            if (screenReader.GetCurrentGameType() == ScreenshotAnalyzer.EGame.TripleTriad)
+            if (screenAnalyzer.activeScanner is ScannerTriad)
             {
                 // update overlay locations
                 if (bCanAdjustSummaryLocation)
                 {
-                    Rectangle gridRect = screenReader.GetGridRect();
+                    Rectangle gridRect = screenAnalyzer.scannerTriad.GetBoardBox();
                     if ((gridRect.Width > 0) && (gameWindowRect.Width > 0))
                     {
                         bCanAdjustSummaryLocation = false;
-                        
+
                         Rectangle boardBoundsLocal = ConvertGameBoundsToLocal(gridRect, 0);
                         int boardLocalMidX = (boardBoundsLocal.Left + boardBoundsLocal.Right) / 2;
                         UpdateOverlayLocation(boardLocalMidX - (panelSummary.Width / 2), boardBoundsLocal.Bottom + 50);
@@ -179,7 +179,7 @@ namespace FFTriadBuddy
                 }
 
                 // solver logic
-                updateFlags = screenMemory.OnNewScan(screenReader.currentTriadGame, npc);
+                updateFlags = screenMemory.OnNewScan(screenAnalyzer.scannerTriad.cachedGameState, npc);
                 if (updateFlags != TriadGameScreenMemory.EUpdateFlags.None)
                 {
                     FindNextMove(out int markerDeckPos, out int markerBoardPos, out TriadGameResultChance bestChance);
@@ -194,8 +194,8 @@ namespace FFTriadBuddy
                     {
                         try
                         {
-                            Rectangle rectDeckPos = screenReader.GetBlueCardRect(markerDeckPos);
-                            Rectangle rectBoardPos = screenReader.GetBoardCardRect(markerBoardPos);
+                            Rectangle rectDeckPos = screenAnalyzer.scannerTriad.GetBlueCardBox(markerDeckPos);
+                            Rectangle rectBoardPos = screenAnalyzer.scannerTriad.GetBoardCardBox(markerBoardPos);
 
                             panelMarkerDeck.Bounds = ConvertGameBoundsToLocal(rectDeckPos);
                             panelMarkerBoard.Bounds = ConvertGameBoundsToLocal(rectBoardPos);
@@ -211,12 +211,12 @@ namespace FFTriadBuddy
                     }
                 }
             }
-            else if (screenReader.GetCurrentGameType() == ScreenshotAnalyzer.EGame.MiniCactpot)
+            else if (screenAnalyzer.activeScanner is ScannerCactpot)
             {
                 // update overlay locations
                 if (bCanAdjustSummaryLocation)
                 {
-                    Rectangle boardRect = screenReader.GetCactpotBoardRect();
+                    Rectangle boardRect = screenAnalyzer.scannerCactpot.GetBoardBox();
                     if ((boardRect.Width > 0) && (gameWindowRect.Width > 0))
                     {
                         bCanAdjustSummaryLocation = false;
@@ -228,17 +228,17 @@ namespace FFTriadBuddy
                 }
 
                 // solver logic
-                if (screenReader.currentCactpotGame.numRevealed > 3)
+                if (screenAnalyzer.scannerCactpot.cachedGameState.numRevealed > 3)
                 {
                     bHasValidMarkerBoard = false;
 
-                    CactpotGame.FindBestLine(screenReader.currentCactpotGame.board, out int fromIdx, out int toIdx);
+                    CactpotGame.FindBestLine(screenAnalyzer.scannerCactpot.cachedGameState.board, out int fromIdx, out int toIdx);
                     Logger.WriteLine("  suggested line: [" + fromIdx + "] -> [" + toIdx + "]");
 
                     if (fromIdx >= 0 && toIdx >= 0)
                     {
-                        Rectangle gameFromBox = screenReader.GetCactpotCircleBox(fromIdx);
-                        Rectangle gameToBox = screenReader.GetCactpotCircleBox(toIdx);
+                        Rectangle gameFromBox = screenAnalyzer.scannerCactpot.GetCircleBox(fromIdx);
+                        Rectangle gameToBox = screenAnalyzer.scannerCactpot.GetCircleBox(toIdx);
 
                         Rectangle localFromBox = ConvertGameBoundsToLocal(gameFromBox);
                         Rectangle localToBox = ConvertGameBoundsToLocal(gameToBox);
@@ -247,21 +247,21 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    int markerPos = CactpotGame.FindNextCircle(screenReader.currentCactpotGame.board);
+                    int markerPos = CactpotGame.FindNextCircle(screenAnalyzer.scannerCactpot.cachedGameState.board);
                     Logger.WriteLine("  suggested move: [" + markerPos + "]");
 
                     bHasValidMarkerBoard = (markerPos >= 0);
                     if (bHasValidMarkerBoard)
                     {
-                        Rectangle gameBoardPos = screenReader.GetCactpotCircleBox(markerPos);
+                        Rectangle gameBoardPos = screenAnalyzer.scannerCactpot.GetCircleBox(markerPos);
                         panelMarkerBoard.Bounds = ConvertGameBoundsToLocal(gameBoardPos);
                         panelMarkerBoard.BackColor = Color.Lime;
                     }
                 }
 
-                for (int Idx = 0; Idx < screenReader.currentCactpotGame.board.Length; Idx++)
+                for (int Idx = 0; Idx < screenAnalyzer.scannerCactpot.cachedGameState.board.Length; Idx++)
                 {
-                    int numInCircle = screenReader.currentCactpotGame.board[Idx];
+                    int numInCircle = screenAnalyzer.scannerCactpot.cachedGameState.board[Idx];
                     cactpotBoard[Idx].Text = (numInCircle == 0) ? "" : numInCircle.ToString();
                 }
             }
@@ -280,12 +280,12 @@ namespace FFTriadBuddy
 
             if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.BlueDeck) != TriadGameScreenMemory.EUpdateFlags.None)
             {
-                deckCtrlBlue.SetDeck(screenReader.currentTriadGame.blueDeck);
+                deckCtrlBlue.SetDeck(screenAnalyzer.scannerTriad.cachedGameState.blueDeck);
             }
 
             if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.RedDeck) != TriadGameScreenMemory.EUpdateFlags.None)
             {
-                deckCtrlRed.SetDeck(screenReader.currentTriadGame.redDeck);
+                deckCtrlRed.SetDeck(screenAnalyzer.scannerTriad.cachedGameState.redDeck);
                 UpdateRedDeckDetails(screenMemory.deckRed);
             }
 
@@ -299,7 +299,7 @@ namespace FFTriadBuddy
 
             if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.SwapWarning) != TriadGameScreenMemory.EUpdateFlags.None)
             {
-                Rectangle ruleRect = screenReader.GetRuleBoxRect();
+                Rectangle ruleRect = screenAnalyzer.scannerTriad.GetRuleBox();
                 if (gameWindowRect.Width > 0 && ruleRect.Width > 0)
                 {
                     Rectangle gameWarningBounds = new Rectangle(ruleRect.Left, ruleRect.Top - panelSwapWarning.Height - 10, 0, 0);
@@ -312,7 +312,7 @@ namespace FFTriadBuddy
 
             if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.SwapHints) != TriadGameScreenMemory.EUpdateFlags.None)
             {
-                Rectangle gameDeckPos = screenReader.GetBlueCardRect(screenMemory.swappedBlueCardIdx);
+                Rectangle gameDeckPos = screenAnalyzer.scannerTriad.GetBlueCardBox(screenMemory.swappedBlueCardIdx);
                 panelMarkerSwap.Bounds = ConvertGameBoundsToLocal(gameDeckPos, -10);
                 panelMarkerSwap.Visible = true;
             }
@@ -343,7 +343,7 @@ namespace FFTriadBuddy
 
         private Rectangle ConvertGameBoundsToLocal(Rectangle gameBounds, int inflateSize = 10)
         {
-            Rectangle localBounds = screenReader.ConvertGameToScreen(gameBounds);
+            Rectangle localBounds = screenAnalyzer.ConvertGameToScreen(gameBounds);
             localBounds.X -= Location.X;
             localBounds.Y -= Location.Y;
             localBounds.Inflate(inflateSize, inflateSize);
@@ -353,14 +353,14 @@ namespace FFTriadBuddy
 
         private bool IsCursorInScanArea()
         {
-            Rectangle screenScanArea = screenReader.ConvertGameToScreen(screenReader.GetScanAreaRect());
+            Rectangle screenScanArea = screenAnalyzer.ConvertGameToScreen(screenAnalyzer.currentScanArea);
             return screenScanArea.Contains(Cursor.Position);
         }
 
         private void buttonCaptureWoker()
         {
-            screenReader.DoWork(ScreenshotAnalyzer.EMode.All);
-            UpdateScreenState(screenReader);
+            screenAnalyzer.DoWork();
+            UpdateScreenState();
             OnUpdateState.Invoke();
         }
 
@@ -380,7 +380,7 @@ namespace FFTriadBuddy
 
         private void checkBoxDetails_CheckedChanged(object sender, EventArgs e)
         {
-            bool bShowTriadControls = (screenReader == null || screenReader.GetCurrentGameType() == ScreenshotAnalyzer.EGame.TripleTriad);
+            bool bShowTriadControls = (screenAnalyzer == null || screenAnalyzer.activeScanner is ScannerTriad);
 
             panelDetails.Visible = checkBoxDetails.Checked && bShowTriadControls;
             panelBoard.Visible = checkBoxDetails.Checked && bShowTriadControls;
@@ -392,7 +392,7 @@ namespace FFTriadBuddy
 
         public bool IsUsingAutoScan()
         {
-            bool bIsAutoScanAllowed = (screenReader == null || screenReader.GetCurrentGameType() == ScreenshotAnalyzer.EGame.TripleTriad);
+            bool bIsAutoScanAllowed = (screenAnalyzer == null || screenAnalyzer.activeScanner is ScannerTriad);
             return checkBoxAutoScan.Checked && bIsAutoScanAllowed;
         }
 
@@ -423,9 +423,9 @@ namespace FFTriadBuddy
         {
             // multi monitor setup: make sure that overlay and game and on the same monitor
             Rectangle gameWindowBounds = mainWindowBounds;
-            if (screenReader != null)
+            if (screenAnalyzer != null)
             {
-                Rectangle testBounds = screenReader.FindGameWindowBounds();
+                Rectangle testBounds = screenAnalyzer.screenReader.GetCachedGameWindow();
                 if (testBounds.Width > 0)
                 {
                     gameWindowBounds = testBounds;
@@ -441,6 +441,7 @@ namespace FFTriadBuddy
             }
 
             UpdateOverlayLocation((Width - panelSummary.Width) / 2, Bottom - panelSummary.Height - 10);
+            UpdateStatusDescription();
 
             // allow one time auto placement on successful scan
             bCanAdjustSummaryLocation = true;
@@ -454,43 +455,73 @@ namespace FFTriadBuddy
 
         private void UpdateStatusDescription()
         {
-            ScreenshotAnalyzer.EState showState = (screenReader != null) ? screenReader.GetCurrentState() : ScreenshotAnalyzer.EState.NoErrors;
-            ScreenshotAnalyzer.ETurnState timerState = (screenReader != null) ? screenReader.GetCurrentTurnState() : ScreenshotAnalyzer.ETurnState.MissingTimer;
-            ScreenshotAnalyzer.EGame showGame = (screenReader != null) ? screenReader.GetCurrentGameType() : ScreenshotAnalyzer.EGame.TripleTriad;
+            if (screenAnalyzer == null)
+            {
+                return;
+            }
 
+            ScreenAnalyzer.EState showState = screenAnalyzer.GetCurrentState();
             switch (showState)
             {
-                case ScreenshotAnalyzer.EState.MissingGameProcess: SetStatusText("Game is not running", SystemIcons.Error); break;
-                case ScreenshotAnalyzer.EState.MissingGameWindow: SetStatusText("Can't find game window", SystemIcons.Error); break;
-                case ScreenshotAnalyzer.EState.MissingGrid: SetStatusText("Can't find board", SystemIcons.Error); break;
-                case ScreenshotAnalyzer.EState.MissingCards: SetStatusText("Can't find blue deck", SystemIcons.Error); break;
-                case ScreenshotAnalyzer.EState.FailedCardMatching: SetStatusText("Unknown cards! Check Play:Screenshot for details", SystemIcons.Warning); break;
-                case ScreenshotAnalyzer.EState.UnknownHash: SetStatusText("Unknown pattern! Check Play:Screenshot for details", SystemIcons.Warning); break;
-                default:
-                    switch (showGame)
+                case ScreenAnalyzer.EState.NoInputImage:
+                    switch (screenAnalyzer.screenReader.currentState)
                     {
-                        case ScreenshotAnalyzer.EGame.TripleTriad:
-                            string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
-                            switch (timerState)
-                            {
-                                case ScreenshotAnalyzer.ETurnState.MissingTimer: SetStatusText(npcDesc + "Ready", SystemIcons.Information); break;
-                                case ScreenshotAnalyzer.ETurnState.Waiting: SetStatusText(npcDesc + "Waiting for blue turn", SystemIcons.Shield); break;
-                                case ScreenshotAnalyzer.ETurnState.Active:
-                                    bool bIsMouseOverGrid = IsCursorInScanArea();
-                                    if (bIsMouseOverGrid && IsUsingAutoScan())
-                                    {
-                                        SetStatusText("Move cursor away from scan zone!", SystemIcons.Warning);
-                                    }
-                                    else
-                                    {
-                                        SetStatusText(npcDesc + "Ready (active turn!)", SystemIcons.Information);
-                                    }
-                                    break;
-                            }
-                            break;
+                        case ScreenReader.EState.MissingGameProcess: SetStatusText("Game is not running", SystemIcons.Error); break;
+                        case ScreenReader.EState.MissingGameWindow: SetStatusText("Can't find game window", SystemIcons.Error); break;
+                        default: SetStatusText("Can't retrieve image to analyze", SystemIcons.Error); break;
+                    }
+                    break;
 
-                        case ScreenshotAnalyzer.EGame.MiniCactpot: SetStatusText("Mini cactpot: Ready", SystemIcons.Information); break;
-                        default: break;
+                case ScreenAnalyzer.EState.NoScannerMatch:
+                    SetStatusText("Can't find minigame", SystemIcons.Error);
+                    break;
+
+                case ScreenAnalyzer.EState.UnknownHash:
+                    SetStatusText("Unknown cards! Check Play:Screenshot for details", SystemIcons.Warning);
+                    break;
+
+                case ScreenAnalyzer.EState.ScannerErrors:
+                    SetStatusText("Failed to recognize minigame", SystemIcons.Error);
+                    if (screenAnalyzer.activeScanner is ScannerTriad)
+                    {
+                        switch (screenAnalyzer.scannerTriad.cachedScanError)
+                        {
+                            case ScannerTriad.EScanError.MissingGrid: SetStatusText("Can't find board", SystemIcons.Error); break;
+                            case ScannerTriad.EScanError.MissingCards: SetStatusText("Can't find blue deck", SystemIcons.Error); break;
+                            case ScannerTriad.EScanError.FailedCardMatching: SetStatusText("Unknown cards! Check Play:Screenshot for details", SystemIcons.Warning); break;
+                            default: break;
+                        }
+                    }
+                    break;
+
+                default:
+                    if (screenAnalyzer.activeScanner is ScannerTriad)
+                    {
+                        string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
+                        switch (screenAnalyzer.scannerTriad.cachedGameState.turnState)
+                        {
+                            case ScannerTriad.ETurnState.MissingTimer: SetStatusText(npcDesc + "Ready", SystemIcons.Information); break;
+                            case ScannerTriad.ETurnState.Waiting: SetStatusText(npcDesc + "Waiting for blue turn", SystemIcons.Shield); break;
+                            default:
+                                if (IsUsingAutoScan() && IsCursorInScanArea())
+                                {
+                                    SetStatusText("Move cursor away from scan zone!", SystemIcons.Warning);
+                                }
+                                else
+                                {
+                                    SetStatusText(npcDesc + "Ready (active turn!)", SystemIcons.Information);
+                                }
+                                break;
+                        }
+                    }
+                    else if (screenAnalyzer.activeScanner is ScannerCactpot)
+                    {
+                        SetStatusText("Mini cactpot: Ready", SystemIcons.Information);
+                    }
+                    else
+                    {
+                        string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
+                        SetStatusText(npcDesc + "Ready", SystemIcons.Information);
                     }
                     break;
             }
@@ -526,28 +557,34 @@ namespace FFTriadBuddy
             bool bDebugMode = false;
             UpdateAutoCaptureMarker();
 
-            if ((screenReader == null) ||
-                (bCanStopTurnScan && screenReader.GetCurrentTurnState() == ScreenshotAnalyzer.ETurnState.MissingTimer))
+            if ((screenAnalyzer == null) ||
+                (screenAnalyzer.scannerTriad.cachedGameState == null) ||
+                (bCanStopTurnScan && screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.MissingTimer))
             {
                 timerTurnScan.Stop();
                 bCanAutoCapture = false;
             }
             else
             {
-                screenReader.DoWork(ScreenshotAnalyzer.EMode.TurnTimerOnly | (bDebugMode ? ScreenshotAnalyzer.EMode.DebugTimerDetails : ScreenshotAnalyzer.EMode.None));
+                Rectangle timerGameBox = screenAnalyzer.scannerTriad.GetTimerScanBox();
+                screenAnalyzer.scanClipBounds = timerGameBox;
+
+                screenAnalyzer.DoWork(ScreenAnalyzer.EMode.ScanTriad, (int)ScannerTriad.EScanMode.TimerOnly);
+
+                screenAnalyzer.scanClipBounds = Rectangle.Empty;
                 bCanStopTurnScan = true;
             }
 
             UpdateStatusDescription();
             if (bDebugMode) { UpdateDebugDetails(); }
 
-            if (screenReader != null && IsUsingAutoScan())
+            if (screenAnalyzer != null && IsUsingAutoScan())
             {
-                if (screenReader.GetCurrentTurnState() == ScreenshotAnalyzer.ETurnState.Waiting)
+                if (screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.Waiting)
                 {
                     bCanAutoCapture = true;
                 }
-                else if (screenReader.GetCurrentTurnState() == ScreenshotAnalyzer.ETurnState.Active)
+                else if (screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.Active)
                 {
                     bool bIsMouseOverGrid = IsCursorInScanArea();
                     if (bCanAutoCapture && !bIsMouseOverGrid)
@@ -562,12 +599,12 @@ namespace FFTriadBuddy
         private void UpdateDebugDetails()
         {
 #if DEBUG
-            if (screenReader != null)
+            if (screenAnalyzer != null)
             {
                 panelDebug.Visible = true;
                 labelDebugTime.Text = DateTime.Now.ToString("HH:mm:ss.ff");
-                labelDebugDesc.Text = "Status: " + screenReader.GetCurrentTurnState();
-                pictureDebugScreen.Image = screenReader.GetDebugScreenshot();
+                labelDebugDesc.Text = "Status: " + screenAnalyzer.scannerTriad.cachedGameState.turnState;
+                //pictureDebugScreen.Image = screenAnalyzer.GetDebugScreenshot();
             }
 #endif // DEBUG
         }
@@ -629,7 +666,10 @@ namespace FFTriadBuddy
 
         private void UpdateAutoCaptureMarker()
         {
-            bool bCanShow = IsUsingAutoScan() && (screenReader != null) && (screenReader.GetCurrentTurnState() != ScreenshotAnalyzer.ETurnState.MissingTimer);
+            bool bCanShow = IsUsingAutoScan() &&
+                (screenAnalyzer != null && screenAnalyzer.scannerTriad.cachedGameState != null) &&
+                (screenAnalyzer.scannerTriad.cachedGameState.turnState != ScannerTriad.ETurnState.MissingTimer);
+
             if (bCanShow != bCanDrawCaptureMarker)
             {
                 bCanDrawCaptureMarker = bCanShow;
@@ -699,7 +739,7 @@ namespace FFTriadBuddy
         private void checkBoxFullScreenScan_CheckedChanged(object sender, EventArgs e)
         {
             PlayerSettingsDB.Get().useFullScreenCapture = checkBoxFullScreenScan.Checked;
-            UpdateScreenState(screenReader);
+            UpdateScreenState();
             OnUpdateState.Invoke();
         }
 

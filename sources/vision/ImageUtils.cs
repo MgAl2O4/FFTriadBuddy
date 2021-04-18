@@ -70,7 +70,7 @@ namespace FFTriadBuddy
             SaturationPack = (byte)((saturation & 0x7f) | ((hue & 0x100) >> 1));
             Value = (byte)value;
 
-            ScreenshotUtilities.HsvToRgb(hue, saturation, value, out int colorR, out int colorG, out int colorB);
+            ImageUtils.HsvToRgb(hue, saturation, value, out int colorR, out int colorG, out int colorB);
             Monochrome = (byte)Math.Round((0.2125 * colorR) + (0.7154 * colorG) + (0.0721 * colorB));
             RawR = (byte)colorR;
             RawG = (byte)colorG;
@@ -358,7 +358,7 @@ namespace FFTriadBuddy
         }
     }
 
-    public class ScreenshotUtilities
+    public class ImageUtils
     {
         public static FastBitmapHSV ConvertToFastBitmap(Bitmap image)
         {

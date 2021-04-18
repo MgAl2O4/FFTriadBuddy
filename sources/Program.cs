@@ -36,9 +36,9 @@ namespace FFTriadBuddy
                 else
                 {
 #if DEBUG
-                    if (Args.Contains("-selfCheck"))
+                    if (Args.Contains("-runTests"))
                     {
-                        ScreenshotVerify.RunAutoVerify();
+                        TestManager.RunTests();
                     }
 #endif // DEBUG
 

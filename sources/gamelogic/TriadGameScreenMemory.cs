@@ -43,7 +43,7 @@ namespace FFTriadBuddy
             lastScanNpc = null;
         }
 
-        public EUpdateFlags OnNewScan(ScreenshotAnalyzer.GameStateTriad screenGame, TriadNpc selectedNpc)
+        public EUpdateFlags OnNewScan(ScannerTriad.GameState screenGame, TriadNpc selectedNpc)
         {
             EUpdateFlags updateFlags = EUpdateFlags.None;
 

@@ -145,10 +145,14 @@
     <Compile Include="utils\GithubUpdater.cs" />
     <Compile Include="utils\JsonParser.cs" />
     <Compile Include="utils\Logger.cs" />
-    <Compile Include="utils\ScreenshotVerify.cs" />
+    <Compile Include="utils\TestManager.cs" />
     <Compile Include="utils\XInputStub.cs" />
-    <Compile Include="vision\ScreenshotAnalyzer.cs" />
-    <Compile Include="vision\ScreenshotUtilities.cs" />
+    <Compile Include="vision\ScannerBase.cs" />
+    <Compile Include="vision\ScannerTriad.cs" />
+    <Compile Include="vision\ScreenAnalyzer.cs" />
+    <Compile Include="vision\ScannerCactpot.cs" />
+    <Compile Include="vision\ScreenReader.cs" />
+    <Compile Include="vision\ImageUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

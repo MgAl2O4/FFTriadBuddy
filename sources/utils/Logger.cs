@@ -66,5 +66,10 @@ namespace MgAl2O4.Utils
                 logWriterDefault.WriteLine(str);
             }
         }
+
+        public static void WriteLine(string fmt, params object[] args)
+        {
+            WriteLine(string.Format(fmt, args));
+        }
     }
 }

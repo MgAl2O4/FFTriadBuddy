@@ -36,7 +36,7 @@ namespace FFTriadBuddy
         private List<TriadGameData> gameUndoRed;
         private TriadGameData gameUndoBlue;
         private TriadDeckOptimizer deckOptimizer;
-        private ScreenshotAnalyzer screenReader;
+        private ScreenAnalyzer screenAnalyzer;
         private FormOverlay overlayForm;
         private MessageFilter scrollFilter;
         private FavDeckSolver[] favDeckSolvers;
@@ -114,10 +114,10 @@ namespace FFTriadBuddy
             deckOptimizer.OnFoundDeck += DeckOptimizer_OnFoundDeck;
             deckOptimizer.OnUpdateMaxSearchDecks += DeckOptimizer_OnUpdateMaxSearchDecks;
 
-            screenReader = new ScreenshotAnalyzer();
+            screenAnalyzer = new ScreenAnalyzer();
             overlayForm = new FormOverlay();
             overlayForm.InitializeAssets(cardIconImages);
-            overlayForm.screenReader = screenReader;
+            overlayForm.screenAnalyzer = screenAnalyzer;
             overlayForm.OnUpdateState += OverlayForm_OnUpdateState;
 
             bUseScreenReader = false;
@@ -1504,16 +1504,23 @@ namespace FFTriadBuddy
 
         private void buttonConfirmRuleScreenshot_Click(object sender, EventArgs e)
         {
-            ScreenshotAnalyzer.EMode screenshotFlags = ScreenshotAnalyzer.EMode.Debug;
+            ScreenAnalyzer.EMode mode = ScreenAnalyzer.EMode.Debug;
             if (checkBoxDebugScreenshotForceCached.Checked)
             {
-                screenshotFlags |= ScreenshotAnalyzer.EMode.DebugForceCached;
+                mode |= ScreenAnalyzer.EMode.DebugScreenshotOnly;
             }
 
-            screenReader.DoWork(screenshotFlags | ScreenshotAnalyzer.EMode.All);
-            screenReader.DoWork(screenshotFlags | ScreenshotAnalyzer.EMode.TurnTimerOnly);
+            screenAnalyzer.DoWork(mode | ScreenAnalyzer.EMode.ScanAll);
 
-            overlayForm.UpdateScreenState(screenReader, true);
+            Rectangle clipBounds = screenAnalyzer.scannerTriad.GetTimerScanBox();
+            if (clipBounds.Width > 0)
+            {
+                screenAnalyzer.scanClipBounds = clipBounds;
+                screenAnalyzer.DoWork(mode | ScreenAnalyzer.EMode.ScanTriad, (int)ScannerTriad.EScanMode.TimerOnly);
+                screenAnalyzer.scanClipBounds = Rectangle.Empty;
+            }
+
+            overlayForm.UpdateScreenState(true);
 
             ShowScreenshotState();
             ShowGameData(gameState);
@@ -1936,21 +1943,53 @@ namespace FFTriadBuddy
 
         private void ShowScreenshotState()
         {
-            ScreenshotAnalyzer.EState state = screenReader.GetCurrentState();
+            ScreenAnalyzer.EState showState = screenAnalyzer.GetCurrentState();
             Color useBackColor = screenshotStateFailureColor;
 
-            if (bUseScreenReader || (state == ScreenshotAnalyzer.EState.UnknownHash))
+            if (bUseScreenReader || showState == ScreenAnalyzer.EState.UnknownHash)
             {
-                switch (state)
+                switch (showState)
                 {
-                    case ScreenshotAnalyzer.EState.NoErrors: labelScreenshotState.Text = "Active"; useBackColor = screenshotStateActiveColor; break;
-                    case ScreenshotAnalyzer.EState.MissingGameProcess: labelScreenshotState.Text = "Can't find game process"; break;
-                    case ScreenshotAnalyzer.EState.MissingGameWindow: labelScreenshotState.Text = "Can't find game window"; break;
-                    case ScreenshotAnalyzer.EState.MissingGrid: labelScreenshotState.Text = "Can't find board! Try resetting UI position, turning off reshade, etc..."; break;
-                    case ScreenshotAnalyzer.EState.MissingCards: labelScreenshotState.Text = "Can't find blue deck! Try resetting UI position, turning off reshade, etc..."; break;
-                    case ScreenshotAnalyzer.EState.FailedCardMatching: labelScreenshotState.Text = "Failed to recognize some of cards! Game state won't be accurate"; break;
-                    case ScreenshotAnalyzer.EState.UnknownHash: labelScreenshotState.Text = "Can't recognize pattern! See details below"; useBackColor = screenshotStateWaitingColor; break;
-                    default: labelScreenshotState.Text = "??"; break;
+                    case ScreenAnalyzer.EState.NoInputImage:
+                        switch (screenAnalyzer.screenReader.currentState)
+                        {
+                            case ScreenReader.EState.MissingGameProcess: labelScreenshotState.Text = "Game is not running"; break;
+                            case ScreenReader.EState.MissingGameWindow: labelScreenshotState.Text = "Can't find game window"; break;
+                            default: labelScreenshotState.Text = "Can't retrieve image to analyze"; break;
+                        }
+                        break;
+
+                    case ScreenAnalyzer.EState.NoScannerMatch:
+                        labelScreenshotState.Text = "Can't find minigame";
+                        break;
+
+                    case ScreenAnalyzer.EState.UnknownHash:
+                        labelScreenshotState.Text = "Can't recognize pattern! See details below";
+                        useBackColor = screenshotStateWaitingColor;
+                        break;
+
+                    case ScreenAnalyzer.EState.ScannerErrors:
+                        labelScreenshotState.Text = "Failed to recognize minigame";
+                        if (screenAnalyzer.activeScanner is ScannerTriad)
+                        {
+                            switch (screenAnalyzer.scannerTriad.cachedScanError)
+                            {
+                                case ScannerTriad.EScanError.MissingGrid: labelScreenshotState.Text = "Can't find board! Try resetting UI position, turning off reshade, etc..."; break;
+                                case ScannerTriad.EScanError.MissingCards: labelScreenshotState.Text = "Can't find blue deck! Try resetting UI position, turning off reshade, etc..."; break;
+                                case ScannerTriad.EScanError.FailedCardMatching: labelScreenshotState.Text = "Failed to recognize some of cards! Game state won't be accurate"; break;
+                                default: break;
+                            }
+                        }
+                        break;
+
+                    case ScreenAnalyzer.EState.NoErrors:
+                        labelScreenshotState.Text = "Active";
+                        useBackColor = screenshotStateActiveColor;
+                        break;
+
+                    default:
+                        labelScreenshotState.Text = "??";
+                        break;
                 }
             }
             else
@@ -1961,17 +2000,17 @@ namespace FFTriadBuddy
             panelScreenshotState.BackColor = useBackColor;
 
             // keep outside bUseScreenReader scope for debug mode updates
-            if ((state == ScreenshotAnalyzer.EState.UnknownHash) && (screenReader.unknownHashes.Count > 0))
+            if ((showState == ScreenAnalyzer.EState.UnknownHash) && (screenAnalyzer.unknownHashes.Count > 0))
             {
                 tabControlScreenDetection.SelectedTab = tabPageDetectionLearn;
                 labelDeleteLastHint.Visible = false;
-                labelLocalHashPending.Text = (screenReader.unknownHashes.Count > 1) ?
-                    ("(there " + (screenReader.unknownHashes.Count == 2 ? "is" : "are") + " " + (screenReader.unknownHashes.Count - 1) + " more pending)") :
+                labelLocalHashPending.Text = (screenAnalyzer.unknownHashes.Count > 1) ?
+                    ("(there " + (screenAnalyzer.unknownHashes.Count == 2 ? "is" : "are") + " " + (screenAnalyzer.unknownHashes.Count - 1) + " more pending)") :
                     "";
 
-                ImageHashData hashData = screenReader.unknownHashes[0].hashData;
+                ImageHashData hashData = screenAnalyzer.unknownHashes[0].hashData;
                 labelLocalHashType.Text = hashData.Type.ToString();
-                pictureBoxLocalHash.Image = screenReader.unknownHashes[0].sourceImage;
+                pictureBoxLocalHash.Image = screenAnalyzer.unknownHashes[0].sourceImage;
 
                 comboBoxLocalHash.SelectedIndex = -1;
                 comboBoxLocalHash.Items.Clear();
@@ -2011,13 +2050,13 @@ namespace FFTriadBuddy
             }
             else
             {
-                bool hasAnyDetection = (screenReader.currentHashDetections.Count > 0) || (screenReader.currentCardState.Count > 0);
+                bool hasAnyDetection = (screenAnalyzer.currentHashDetections.Count > 0) || (screenAnalyzer.scannerTriad.cachedCardState.Count > 0);
                 tabControlScreenDetection.SelectedTab = hasAnyDetection ? tabPageDetectionHistory : tabPageDetectionInfo;
                 labelDeleteLastHint.Visible = true;
                 pictureBoxLocalHash.Image = null;
 
                 listViewDetectionHashes.Items.Clear();
-                foreach (KeyValuePair<FastBitmapHash, int> kvp in screenReader.currentHashDetections)
+                foreach (KeyValuePair<FastBitmapHash, int> kvp in screenAnalyzer.currentHashDetections)
                 {
                     TriadGameModifier modOb = kvp.Key.GuideOb as TriadGameModifier;
                     TriadCard cardOb = kvp.Key.GuideOb as TriadCard;
@@ -2035,8 +2074,8 @@ namespace FFTriadBuddy
                 }
 
                 listViewDetectionCards.Items.Clear();
-                screenReader.currentCardState.Sort();
-                foreach (ScreenshotAnalyzer.CardState cardState in screenReader.currentCardState)
+                screenAnalyzer.scannerTriad.cachedCardState.Sort();
+                foreach (ScannerTriad.CardState cardState in screenAnalyzer.scannerTriad.cachedCardState)
                 {
                     ListViewItem lvi = new ListViewItem(cardState.name);
                     lvi.Tag = cardState;
@@ -2064,6 +2103,8 @@ namespace FFTriadBuddy
 
             if (bUseScreenReader)
             {
+                screenAnalyzer.InitializeScreenData();
+
                 overlayForm.InitOverlayLocation(Bounds);
                 gameState.resolvedSpecial = gameSession.specialRules;
             }
@@ -2081,7 +2122,7 @@ namespace FFTriadBuddy
         {
             PlayerSettingsDB.Get().customHashes.Clear();
             PlayerSettingsDB.Get().MarkDirty();
-            screenReader.currentHashDetections.Clear();
+            screenAnalyzer.currentHashDetections.Clear();
             ShowScreenshotState();
         }
 
@@ -2092,14 +2133,14 @@ namespace FFTriadBuddy
 
         private void buttonLocalHashStore_Click(object sender, EventArgs e)
         {
-            if (screenReader != null && (screenReader.unknownHashes.Count > 0) && comboBoxLocalHash.SelectedItem != null)
+            if (screenAnalyzer != null && (screenAnalyzer.unknownHashes.Count > 0) && comboBoxLocalHash.SelectedItem != null)
             {
                 LocalHashComboItem hashComboItem = (LocalHashComboItem)comboBoxLocalHash.SelectedItem;
                 if (hashComboItem != null)
                 {
-                    ImageHashData hashData = new ImageHashData(hashComboItem.SourceObject, screenReader.unknownHashes[0].hashData.Hash, screenReader.unknownHashes[0].hashData.Type);
+                    ImageHashData hashData = new ImageHashData(hashComboItem.SourceObject, screenAnalyzer.unknownHashes[0].hashData.Hash, screenAnalyzer.unknownHashes[0].hashData.Type);
                     PlayerSettingsDB.Get().AddKnownHash(hashData);
-                    screenReader.PopUnknownHash();
+                    screenAnalyzer.PopUnknownHash();
 
                     ShowScreenshotState();
                 }
@@ -2110,7 +2151,7 @@ namespace FFTriadBuddy
         {
             if ((e.KeyCode == Keys.Delete) && listViewDetectionHashes.SelectedIndices.Count == 1)
             {
-                screenReader.RemoveKnownHash(listViewDetectionHashes.SelectedItems[0].Tag as FastBitmapHash);
+                screenAnalyzer.RemoveKnownHash(listViewDetectionHashes.SelectedItems[0].Tag as FastBitmapHash);
                 listViewDetectionHashes.Items.RemoveAt(listViewDetectionHashes.SelectedIndices[0]);
             }
         }
@@ -2127,7 +2168,7 @@ namespace FFTriadBuddy
                 ListViewItem lvi = listViewDetectionCards.GetItemAt(e.Location.X, e.Location.Y);
                 if (lvi != null)
                 {
-                    ScreenshotAnalyzer.CardState cardState = lvi.Tag as ScreenshotAnalyzer.CardState;
+                    ScannerTriad.CardState cardState = lvi.Tag as ScannerTriad.CardState;
                     if (cardState != null && cardState.sideNumber != null)
                     {
                         lvi.Selected = true;
@@ -2150,7 +2191,7 @@ namespace FFTriadBuddy
             bool bCanConfirm = false;
             string previewStr = "(none)";
 
-            ScreenshotAnalyzer.CardState cardState = contextMenuStripCardParser.Tag as ScreenshotAnalyzer.CardState;
+            ScannerTriad.CardState cardState = contextMenuStripCardParser.Tag as ScannerTriad.CardState;
             if (cardState != null &&
                 toolStripComboBoxCardParseUp.Text.Length == 1 &&
                 toolStripComboBoxCardParseLeft.Text.Length == 1 &&
@@ -2196,7 +2237,7 @@ namespace FFTriadBuddy
 
         private void toolStripMenuItemCardParseConfirm_Click(object sender, EventArgs e)
         {
-            ScreenshotAnalyzer.CardState cardState = contextMenuStripCardParser.Tag as ScreenshotAnalyzer.CardState;
+            ScannerTriad.CardState cardState = contextMenuStripCardParser.Tag as ScannerTriad.CardState;
             if (cardState != null && cardState.sideNumber != null && cardState.adjustNumber != null && cardState.sideImage != null)
             {
                 Logger.WriteLine("Updating parser data for " + cardState.name);
