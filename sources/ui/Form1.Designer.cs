@@ -811,6 +811,7 @@
             this.comboBoxNpc.Location = new System.Drawing.Point(46, 7);
             this.comboBoxNpc.Name = "comboBoxNpc";
             this.comboBoxNpc.Size = new System.Drawing.Size(606, 21);
+            this.comboBoxNpc.Sorted = true;
             this.comboBoxNpc.TabIndex = 0;
             this.comboBoxNpc.SelectedIndexChanged += new System.EventHandler(this.comboBoxNpc_SelectedIndexChanged);
             // 
