@@ -112,7 +112,6 @@ namespace FFTriadBuddy
 
             deckOptimizer = new TriadDeckOptimizer();
             deckOptimizer.OnFoundDeck += DeckOptimizer_OnFoundDeck;
-            deckOptimizer.OnUpdateMaxSearchDecks += DeckOptimizer_OnUpdateMaxSearchDecks;
 
             screenAnalyzer = new ScreenAnalyzer();
             overlayForm = new FormOverlay();
@@ -533,15 +532,14 @@ namespace FFTriadBuddy
             TriadGameModifier[] gameMods = new TriadGameModifier[] { (TriadGameModifier)comboBoxRegionRule1.SelectedItem, (TriadGameModifier)comboBoxRegionRule2.SelectedItem };
             List<TriadCard> lockedCards = deckCtrlSetup.GetLockedCards();
 
-            string numOwnedStr = "0";
-            string numPossibleStr = "0";
-            deckOptimizer.PrepareStats(currentNpc, gameMods, lockedCards, out numOwnedStr, out numPossibleStr);
+            deckOptimizer.Initialize(currentNpc, gameMods, lockedCards);
 
-            labelOptNumOwned.Text = numOwnedStr;
-            labelOptNumPossible.Text = numPossibleStr;
+            labelOptNumOwned.Text = PlayerSettingsDB.Get().ownedCards.Count.ToString();
+            labelOptNumPossible.Text = deckOptimizer.GetNumPossibleDecksDesc();
             labelOptNumTested.Text = "0";
             labelOptProgress.Text = "0%";
             tabControlSetupDetails.SelectedTab = tabPageSetupOptimizerStats;
+            timerSetupDetails.Stop();
 
             await deckOptimizer.Process(currentNpc, gameMods, lockedCards);
 
@@ -578,11 +576,6 @@ namespace FFTriadBuddy
         private void buttonOptimizeAbort_Click(object sender, EventArgs e)
         {
             deckOptimizer.AbortProcess();
-        }
-
-        private void DeckOptimizer_OnUpdateMaxSearchDecks(string numPossibleDesc)
-        {
-            BeginInvoke((MethodInvoker)delegate () { labelOptNumPossible.Text = numPossibleDesc; });
         }
 
         private void timerOptimizeDeck_Tick(object sender, EventArgs e)

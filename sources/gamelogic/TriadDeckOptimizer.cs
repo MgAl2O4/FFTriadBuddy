@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -15,44 +16,62 @@ namespace FFTriadBuddy
         private BigInteger numPossibleDecks;
         private BigInteger numTestedDecks;
         private BigInteger numMsElapsed;
+
+        private float scoreAvgSides;
+        private float scoreStdSides;
+        private float scoreMaxSides;
+        private float scoreSameCorners;
+        private float scoreMaxCorner;
+        private float scoreRarity;
         private int numGamesToPlay;
-        private int numRareToBuild;
+        private int numPriorityToBuild;
         private int numCommonToBuild;
+        private int numCommonPctToDropPerPriSlot;
+        private Dictionary<ETriadCardRarity, int> maxSlotsPerRarity;
+        private ETriadCardRarity commonRarity;
         private int[][] permutationList;
-        private bool bUseScoredBuilder;
         private bool bAbort;
-        private bool bAllowPermutationChecks;
+        private bool debugMode;
 
         public delegate void FoundDeckDelegate(TriadDeck deck);
         public delegate void UpdatePossibleCount(string numPossibleDesc);
         public event FoundDeckDelegate OnFoundDeck;
-        public event UpdatePossibleCount OnUpdateMaxSearchDecks;
 
-        private float scoreAvgSides;
-        private float scoreStdSides;
-        private float scoreSameCorners;
-        private float scoreMaxCorner;
-        private float scoreRarity;
-
-        private enum ECardSlotState
+        private struct CardPool
         {
-            LockedRare,
-            LockedCommon,
-            Rare,
-            Common,
-        };
+            public TriadCard[][] priorityLists;
+            public TriadCard[] commonList;
+
+            public int[] deckSlotTypes;
+        }
+        private CardPool currentPool;
+        private TriadGameSession currentSolver;
+        private bool isOrderImportant;
+
+        private const int DeckSlotCommon = -1;
+        private const int DeckSlotLocked = -2;
 
         public TriadDeckOptimizer()
         {
             numGamesToPlay = 2000;
-            numRareToBuild = 10;
+            numPriorityToBuild = 10;
             numCommonToBuild = 20;
-            bUseScoredBuilder = true;
+            numCommonPctToDropPerPriSlot = 10;
+
+            maxSlotsPerRarity = new Dictionary<ETriadCardRarity, int>();
+            maxSlotsPerRarity.Add(ETriadCardRarity.Legendary, 1);
+            maxSlotsPerRarity.Add(ETriadCardRarity.Epic, 2);
+            commonRarity = ETriadCardRarity.Rare;
+
+            debugMode = false;
             bAbort = false;
-            bAllowPermutationChecks = false;
+#if DEBUG
+            debugMode = true;
+#endif // DEBUG
 
             scoreAvgSides = 1.0f;
             scoreStdSides = 0.0f;
+            scoreMaxSides = 0.2f;
             scoreSameCorners = 0.0f;
             scoreMaxCorner = 0.0f;
             scoreRarity = 1.0f;
@@ -85,34 +104,31 @@ namespace FFTriadBuddy
             }
         }
 
-        public void PrepareStats(TriadNpc npc, TriadGameModifier[] regionMods, List<TriadCard> lockedCards, out string numOwnedStr, out string numPossibleStr)
+        public void Initialize(TriadNpc npc, TriadGameModifier[] regionMods, List<TriadCard> lockedCards)
         {
-            bool bIsOrderImportant = false;
-            foreach (TriadGameModifier mod in npc.Rules)
-            {
-                bIsOrderImportant = bIsOrderImportant || mod.IsDeckOrderImportant();
-            }
-            foreach (TriadGameModifier mod in regionMods)
-            {
-                bIsOrderImportant = bIsOrderImportant || mod.IsDeckOrderImportant();
-            }
+            this.npc = npc;
+            numPossibleDecks = 1;
+            numTestedDecks = 0;
+            numMsElapsed = 0;
 
-            //TriadCardDB playerDB = TriadCardDB.Get();
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
 
-            int numOwned = playerDB.ownedCards.Count;
-            numOwnedStr = numOwned.ToString();
+            currentSolver = new TriadGameSession();
+            currentSolver.modifiers.AddRange(npc.Rules);
+            currentSolver.modifiers.AddRange(regionMods);
+            currentSolver.UpdateSpecialRules();
 
-            if (bUseScoredBuilder)
+            isOrderImportant = false;
+            foreach (TriadGameModifier mod in currentSolver.modifiers)
             {
-                UpdatePossibleDeckCount(numRareToBuild, numCommonToBuild, lockedCards, bIsOrderImportant);
-            }
-            else
-            {
-                UpdatePossibleDeckCount(numOwned, bIsOrderImportant);
+                isOrderImportant = isOrderImportant || mod.IsDeckOrderImportant();
             }
 
-            numPossibleStr = numPossibleDecks.ToString("N0");
+            bool foundCards = FindCardPool(playerDB.ownedCards, currentSolver.modifiers, lockedCards);
+            if (foundCards)
+            {
+                UpdatePossibleDeckCount();
+            }
         }
 
         public Task Process(TriadNpc npc, TriadGameModifier[] regionMods, List<TriadCard> lockedCards)
@@ -122,17 +138,7 @@ namespace FFTriadBuddy
             numMsElapsed = 0;
             bAbort = false;
 
-            return Task.Run(() =>
-            {
-                if (bUseScoredBuilder)
-                {
-                    FindDecksScored(regionMods, lockedCards);
-                }
-                else
-                {
-                    FindDecks(regionMods);
-                }
-            });
+            return Task.Run(() => { FindDecksScored(regionMods, lockedCards); });
         }
 
         public void AbortProcess()
@@ -145,73 +151,41 @@ namespace FFTriadBuddy
             return bAbort;
         }
 
-        private void UpdatePossibleDeckCount(int numOwned, bool bIsOrderImportant)
-        {
-            // num combinations = numAll! / (5! * (numAll - 5)!)
-            numPossibleDecks = 1;
-            for (int Idx = 0; Idx < 5; Idx++)
-            {
-                numPossibleDecks *= (numOwned - Idx);
-            }
-
-            int Fact5 = (5 * 4 * 3 * 2 * 1);
-            if (!bIsOrderImportant || !bAllowPermutationChecks)
-            {
-                numPossibleDecks /= Fact5;
-            }
-        }
-
-        private void UpdatePossibleDeckCount(int numRare, int numCommon, List<TriadCard> lockedCards, bool bIsOrderImportant)
-        {
-            int numLocked = 0;
-            foreach (TriadCard card in lockedCards)
-            {
-                if (card != null)
-                {
-                    numLocked++;
-                }
-            }
-
-            if (numLocked > 0)
-            {
-                ETriadCardRarity rareThreshold = GetRareThreshold(PlayerSettingsDB.Get().ownedCards);
-                ECardSlotState[] cardSlots = BuildCardSlots(lockedCards, numRare, numCommon, rareThreshold, bIsOrderImportant);
-                UpdatePossibleDeckCount(numRare, numCommon, cardSlots, bIsOrderImportant);
-            }
-            else
-            {
-                // num possible decks: numRare * (num 4 element combinations from numCommon set)
-                // num 4 elem: numCommon! / (4! * (numCommon - 4)!)
-
-                numPossibleDecks = numRare;
-                for (int Idx = 0; Idx < 4; Idx++)
-                {
-                    numPossibleDecks *= (numCommon - Idx);
-                }
-
-                int Fact4 = (4 * 3 * 2 * 1);
-                if (!bIsOrderImportant || !bAllowPermutationChecks)
-                {
-                    numPossibleDecks /= Fact4;
-                }
-            }
-        }
-
-        private void UpdatePossibleDeckCount(int numRare, int numCommon, ECardSlotState[] slots, bool bIsOrderImportant)
+        private void UpdatePossibleDeckCount()
         {
             numPossibleDecks = 1;
 
-            foreach (ECardSlotState slot in slots)
+            // common slot loops will avoid repeating the same items, include in num iterations
+            int numCommonSlots = 0;
+            for (int idx = 0; idx < currentPool.deckSlotTypes.Length; idx++)
             {
-                switch (slot)
+                int slotType = currentPool.deckSlotTypes[idx];
+                if (slotType == DeckSlotCommon)
                 {
-                    case ECardSlotState.Common: numPossibleDecks *= numCommon; break;
-                    case ECardSlotState.Rare: numPossibleDecks *= numRare; break;
-                    default: break;
+                    numCommonSlots++;
+                }
+                else if (slotType >= 0)
+                {
+                    numPossibleDecks *= currentPool.priorityLists[slotType].Length;
                 }
             }
 
-            // TODO: num permutations once it's supported
+            // num combinations without repetition:
+            //  = (pool! / (pool - common)!) / common!
+            //  = (pool * (pool - 1) * .. * (pool - common + 1) * (pool - common)! / (pool - common)!) / common!
+            //  = (pool * (pool - 1) * .. * (pool - common + 1)) / common!
+
+            if (numCommonSlots > 0)
+            {
+                int FactNumCommon = 1;
+                for (int Idx = 0; Idx < numCommonSlots; Idx++)
+                {
+                    numPossibleDecks *= (currentPool.commonList.Length - Idx);
+                    FactNumCommon *= (Idx + 1);
+                }
+
+                numPossibleDecks /= FactNumCommon;
+            }
         }
 
         private Random GetRandomStream(int Idx0, int Idx1, int Idx2, int Idx3, int Idx4)
@@ -250,12 +224,6 @@ namespace FFTriadBuddy
             public TriadCard card;
             public float score;
 
-            public CardScoreData(TriadCard card, float score)
-            {
-                this.card = card;
-                this.score = score;
-            }
-
             public int CompareTo(CardScoreData other)
             {
                 return -score.CompareTo(other.score);
@@ -267,12 +235,90 @@ namespace FFTriadBuddy
             }
         }
 
-        private void FindCardsToUse(List<TriadCard> allCards, List<TriadGameModifier> modifiers, List<TriadCard> rareList, List<TriadCard> commonList)
+        private bool FindCardPool(List<TriadCard> allCards, List<TriadGameModifier> modifiers, List<TriadCard> lockedCards)
         {
-            ETriadCardRarity limitedRarity = GetRareThreshold(allCards);
-            List<CardScoreData> rareScoredList = new List<CardScoreData>();
-            List<CardScoreData> commonScoredList = new List<CardScoreData>();
+            currentPool = new CardPool();
 
+            int maxRarityNum = Enum.GetValues(typeof(ETriadCardRarity)).Length;
+            int priRarityNum = (int)commonRarity + 1;
+            int[] mapAvailRarity = new int[maxRarityNum];
+
+            // special case: don't include any rare slots with reverse rule if there's enough cards in common list
+            bool hasReverseMod = false;
+            foreach (TriadGameModifier mod in modifiers)
+            {
+                if (mod.GetType() == typeof(TriadGameModifierReverse))
+                {
+                    hasReverseMod = true;
+                    break;
+                }
+            }
+
+            // find number of priority lists based on unique rarity limits 
+            List<ETriadCardRarity> priRarityThr = new List<ETriadCardRarity>();
+            for (int idxR = priRarityNum; idxR < maxRarityNum; idxR++)
+            {
+                ETriadCardRarity testRarity = (ETriadCardRarity)idxR;
+                if (!hasReverseMod && maxSlotsPerRarity.ContainsKey(testRarity) && maxSlotsPerRarity[testRarity] > 0)
+                {
+                    mapAvailRarity[idxR] = maxSlotsPerRarity[testRarity];
+                    mapAvailRarity[idxR - 1] -= maxSlotsPerRarity[testRarity];
+
+                    priRarityThr.Add(testRarity);
+                }
+            }
+
+            if (debugMode) { Logger.WriteLine("FindCardPool> priRarityThr:{0}, maxAvail:[{1},{2},{3},{4},{5}], hasReverseMod:{6}", priRarityThr.Count, mapAvailRarity[0], mapAvailRarity[1], mapAvailRarity[2], mapAvailRarity[3], mapAvailRarity[4], hasReverseMod); }
+
+            // check rarity of locked cards, eliminate pri list when threshold is matched
+            // when multiple pri rarities are locked, start eliminating from pool above
+            // e.g. 2x 4 star locked => 4 star out, 5 star out
+            currentPool.deckSlotTypes = new int[lockedCards.Count];
+            int numLockedCards = 0;
+
+            for (int idx = 0; idx < lockedCards.Count; idx++)
+            {
+                TriadCard card = lockedCards[idx];
+                if (card != null)
+                {
+                    if (card.Rarity > commonRarity)
+                    {
+                        for (int testR = (int)card.Rarity; testR <= maxRarityNum; testR++)
+                        {
+                            if (mapAvailRarity[testR] > 0)
+                            {
+                                mapAvailRarity[testR]--;
+                                break;
+                            }
+                        }
+                    }
+
+                    currentPool.deckSlotTypes[idx] = DeckSlotLocked;
+                    numLockedCards++;
+                }
+                else
+                {
+                    currentPool.deckSlotTypes[idx] = DeckSlotCommon;
+                }
+            }
+
+            if (debugMode) { Logger.WriteLine(">> adjusted for locking, numLocked:{0}, maxAvail:[{1},{2},{3},{4},{5}]", numLockedCards, mapAvailRarity[0], mapAvailRarity[1], mapAvailRarity[2], mapAvailRarity[3], mapAvailRarity[4]); }
+            if (numLockedCards == lockedCards.Count)
+            {
+                return false;
+            }
+
+            List<CardScoreData> commonScoredList = new List<CardScoreData>();
+            List<List<CardScoreData>> priScoredList = new List<List<CardScoreData>>();
+            for (int idxP = 0; idxP < priRarityThr.Count; idxP++)
+            {
+                priScoredList.Add(new List<CardScoreData>());
+            }
+
+            // reverse priority thresholds, idx:0 becomes strongest card
+            priRarityThr.Reverse();
+
+            // assign each owned card to scored lists
             foreach (TriadCard card in allCards)
             {
                 if (card == null || !card.IsValid()) { continue; }
@@ -280,10 +326,12 @@ namespace FFTriadBuddy
                 // try to guess how good card will perform
                 // - avg of sides
                 // - std of sides
+                // - max of sides
                 // - rarity (should be reflected by sides already)
                 // - corners with same number
                 // - max corner number
 
+                int numberMax = Math.Max(Math.Max(card.Sides[0], card.Sides[1]), Math.Max(card.Sides[2], card.Sides[3]));
                 int numberSum = card.Sides[0] + card.Sides[1] + card.Sides[2] + card.Sides[3];
                 float numberAvg = numberSum / 4.0f;
                 float numberMeanSqDiff =
@@ -300,555 +348,219 @@ namespace FFTriadBuddy
                 if (card.Sides[2] == card.Sides[3]) { numCorners++; cornerNum = Math.Max(cornerNum, card.Sides[2]); }
                 if (card.Sides[3] == card.Sides[0]) { numCorners++; cornerNum = Math.Max(cornerNum, card.Sides[3]); }
 
-                float cardScore =
+                CardScoreData scoredCard = new CardScoreData() { card = card };
+                scoredCard.score =
                     (numberAvg * scoreAvgSides) +
                     (numberStd * scoreStdSides) +
+                    (numberMax * scoreMaxSides) +
                     (numCorners * scoreSameCorners) +
                     (cornerNum * scoreMaxCorner) +
                     ((int)card.Rarity * scoreRarity);
 
                 foreach (TriadGameModifier mod in modifiers)
                 {
-                    mod.OnScoreCard(card, ref cardScore);
+                    mod.OnScoreCard(card, ref scoredCard.score);
                 }
 
-                if (card.Rarity >= limitedRarity)
+                for (int idxP = 0; idxP < priRarityThr.Count; idxP++)
                 {
-                    rareScoredList.Add(new CardScoreData(card, cardScore));
+                    if (card.Rarity <= priRarityThr[idxP])
+                    {
+                        priScoredList[idxP].Add(scoredCard);
+                    }
                 }
-                else
+
+                if (card.Rarity <= commonRarity)
                 {
-                    commonScoredList.Add(new CardScoreData(card, cardScore));
+                    commonScoredList.Add(scoredCard);
                 }
             }
 
-            // special case: don't include any rare slots with reverse rule if there's enough cards in common list
-            bool shouldRemoveRares = false;
-            foreach (TriadGameModifier mod in modifiers)
+            if (debugMode) { Logger.WriteLine(">> card lists sorted, common:{0}", commonScoredList.Count); }
+            bool isPoolValid = (commonScoredList.Count > 0);
+            if (isPoolValid)
             {
-                if (mod.GetType() == typeof(TriadGameModifierReverse))
+                int numPriLists = 0;
+                int deckSlotIdx = isOrderImportant ? 1 : 0;
+
+                for (int idx = 0; idx < priScoredList.Count; idx++)
                 {
-                    shouldRemoveRares = (commonScoredList.Count >= 5);
-                    break;
+                    int numAvail = mapAvailRarity[(int)priRarityThr[idx]];
+                    if (debugMode) { Logger.WriteLine("  pri list[{0}]:{1}, rarity:{2}, avail:{3}", idx, priScoredList[idx].Count, priRarityThr[idx], numAvail); }
+                    if ((numAvail > 0) && (priScoredList[idx].Count > 0))
+                    {
+                        // initial deckSlotIdx should be already past only available spot (e.g. all slots but [0] are locked), make sure to wrap around
+                        // find fist available Common slot to overwrite with priority list, repeat numAvail times
+                        for (int idxAvail = 0; idxAvail < numAvail; idxAvail++)
+                        {
+                            for (int idxD = 0; idxD < currentPool.deckSlotTypes.Length; idxD++)
+                            {
+                                if (currentPool.deckSlotTypes[deckSlotIdx] == DeckSlotCommon)
+                                {
+                                    break;
+                                }
+
+                                deckSlotIdx++;
+                            }
+
+                            currentPool.deckSlotTypes[deckSlotIdx] = numPriLists;
+                        }
+
+                        priScoredList[idx].Sort();
+                        numPriLists++;
+                    }
+                    else
+                    {
+                        priScoredList[idx].Clear();
+                    }
+                }
+
+                if (numPriLists > 0)
+                {
+                    currentPool.priorityLists = new TriadCard[numPriLists][];
+                    if (debugMode) { Logger.WriteLine(">> num priority lists:{0}", numPriLists); }
+
+                    int idxP = 0;
+                    for (int idxL = 0; idxL < priScoredList.Count; idxL++)
+                    {
+                        int maxPriorityToUse = Math.Min(numPriorityToBuild, priScoredList[idxL].Count);
+                        if (maxPriorityToUse > 0)
+                        {
+                            currentPool.priorityLists[idxP] = new TriadCard[maxPriorityToUse];
+                            for (int idxC = 0; idxC < maxPriorityToUse; idxC++)
+                            {
+                                currentPool.priorityLists[idxP][idxC] = priScoredList[idxL][idxC].card;
+                            }
+
+                            idxP++;
+                        }
+                    }
+                }
+
+                // adjust pool of common cards based on avail common slots
+                // - all common: use requested size
+                // - scale down 20% per every priority list slot 
+                int numPriSlots = 0;
+                for (int idx = 0; idx < currentPool.deckSlotTypes.Length; idx++)
+                {
+                    numPriSlots += (currentPool.deckSlotTypes[idx] >= 0) ? 1 : 0;
+                }
+
+                int maxCommonToUse = Math.Min(numCommonToBuild - (numCommonToBuild * numPriSlots * numCommonPctToDropPerPriSlot / 100), commonScoredList.Count);
+                if (debugMode) { Logger.WriteLine(">> adjusting common pool based on priSlots:{0} and drop:{1}% => {2}", numPriSlots, numCommonPctToDropPerPriSlot, maxCommonToUse); }
+
+                currentPool.commonList = new TriadCard[maxCommonToUse];
+                for (int idx = 0; idx < currentPool.commonList.Length; idx++)
+                {
+                    currentPool.commonList[idx] = commonScoredList[idx].card;
                 }
             }
 
-            commonScoredList.Sort();
-            rareScoredList.Sort();
-
-            int maxCommonToCopy = Math.Min(shouldRemoveRares ? (numCommonToBuild + numRareToBuild) : numCommonToBuild, commonScoredList.Count);
-            for (int Idx = 0; Idx < maxCommonToCopy; Idx++)
-            {
-                commonList.Add(commonScoredList[Idx].card);
-            }
-
-            int maxRareToCopy = Math.Min(shouldRemoveRares ? 0 : numRareToBuild, rareScoredList.Count);
-            for (int Idx = 0; Idx < maxRareToCopy; Idx++)
-            {
-                rareList.Add(rareScoredList[Idx].card);
-            }
+            if (debugMode) { Logger.WriteLine(">> deck slot types:[{0}, {1}, {2}, {3}, {4}]", currentPool.deckSlotTypes[0], currentPool.deckSlotTypes[1], currentPool.deckSlotTypes[2], currentPool.deckSlotTypes[3], currentPool.deckSlotTypes[4]); }
+            return isPoolValid;
         }
 
-        private void FindDecks(TriadGameModifier[] regionMods)
+        private void FindDecksScored(TriadGameModifier[] regionMods, List<TriadCard> lockedCards)
         {
-            PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
-            //TriadCardDB playerDB = TriadCardDB.Get();
-
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            ETriadCardRarity RarityLimitThr =
-                (playerDB.ownedCards.Count < 30) ? ETriadCardRarity.Uncommon :
-                (playerDB.ownedCards.Count < 60) ? ETriadCardRarity.Rare :
-                ETriadCardRarity.Epic;
-
-            TriadGameSession solver = new TriadGameSession();
-            solver.modifiers.AddRange(npc.Rules);
-            solver.modifiers.AddRange(regionMods);
-            solver.UpdateSpecialRules();
-
-            bool bIsOrderImportant = false;
-            foreach (TriadGameModifier mod in solver.modifiers)
+            if (currentPool.commonList == null && currentPool.priorityLists == null)
             {
-                bIsOrderImportant = bIsOrderImportant || mod.IsDeckOrderImportant();
+                stopwatch.Stop();
+                Logger.WriteLine("Skip deck building, everything was locked");
+
+                optimizedDeck = new TriadDeck(lockedCards);
+                return;
             }
 
             object lockOb = new object();
             int bestScore = 0;
             TriadDeck bestDeck = new TriadDeck(PlayerSettingsDB.Get().starterCards);
 
-            Parallel.For(1, playerDB.ownedCards.Count, Idx1 =>
+            // no more flexible slot count after this point => loop land
+            const int numSlots = 5;
+            TriadCard[][] slotLists = new TriadCard[numSlots][];
+            for (int idx = 0; idx < numSlots; idx++)
             {
-                Parallel.For(Idx1 + 1, playerDB.ownedCards.Count, Idx2 =>
+                slotLists[idx] =
+                    (currentPool.deckSlotTypes[idx] == DeckSlotCommon) ? currentPool.commonList :
+                    (currentPool.deckSlotTypes[idx] >= 0) ? currentPool.priorityLists[currentPool.deckSlotTypes[idx]] :
+                    new TriadCard[1] { lockedCards[idx] };
+            }
+
+            Func<int, int, int, int, int, int> FindLoopStart = (SlotIdx, IdxS0, IdxS1, IdxS2, IdxS3) =>
+            {
+                if (bAbort) { return slotLists[SlotIdx].Length; }
+                if (currentPool.deckSlotTypes[SlotIdx] != DeckSlotCommon) { return 0; }
+
+                if (SlotIdx >= 4 && currentPool.deckSlotTypes[3] == DeckSlotCommon) { return IdxS3 + 1; }
+                if (SlotIdx >= 3 && currentPool.deckSlotTypes[2] == DeckSlotCommon) { return IdxS2 + 1; }
+                if (SlotIdx >= 2 && currentPool.deckSlotTypes[1] == DeckSlotCommon) { return IdxS1 + 1; }
+                if (SlotIdx >= 1 && currentPool.deckSlotTypes[0] == DeckSlotCommon) { return IdxS0 + 1; }
+
+                return 0;
+            };
+
+            Parallel.For(0, slotLists[0].Length, IdxS0 =>
+            //for (int IdxS0 = 0; IdxS0 < slotLists[0].Length; IdxS0++)
+            {
+                int startS1 = FindLoopStart(1, IdxS0, -1, -1, -1);
+                Parallel.For(startS1, slotLists[1].Length, IdxS1 =>
+                //for (int IdxS1 = startS1; IdxS1 < slotLists[1].Length; IdxS1++)
                 {
-                    int rareCounterLv2 =
-                        ((playerDB.ownedCards[Idx1].Rarity >= RarityLimitThr) ? 1 : 0) +
-                        ((playerDB.ownedCards[Idx2].Rarity >= RarityLimitThr) ? 1 : 0);
-                    if (rareCounterLv2 <= 1)
+                    int startS2 = FindLoopStart(2, IdxS0, IdxS1, -1, -1);
+                    Parallel.For(startS2, slotLists[2].Length, IdxS2 =>
+                    //for (int IdxS2 = startS2; IdxS2 < slotLists[2].Length; IdxS2++)
                     {
-                        Parallel.For(Idx2 + 1, playerDB.ownedCards.Count, Idx3 =>
+                        int startS3 = FindLoopStart(3, IdxS0, IdxS1, IdxS2, -1);
+                        for (int IdxS3 = startS3; IdxS3 < slotLists[3].Length; IdxS3++)
                         {
-                            int rareCounterLv3 =
-                                ((playerDB.ownedCards[Idx1].Rarity >= RarityLimitThr) ? 1 : 0) +
-                                ((playerDB.ownedCards[Idx2].Rarity >= RarityLimitThr) ? 1 : 0) +
-                                ((playerDB.ownedCards[Idx3].Rarity >= RarityLimitThr) ? 1 : 0);
-
-                            if (rareCounterLv3 <= 1)
+                            int startS4 = FindLoopStart(4, IdxS0, IdxS1, IdxS2, IdxS3);
+                            for (int IdxS4 = startS4; IdxS4 < slotLists[4].Length; IdxS4++)
                             {
-                                Parallel.For(Idx3 + 1, playerDB.ownedCards.Count, Idx4 =>
+                                TriadCard[] testDeckCards = new TriadCard[] { slotLists[0][IdxS0], slotLists[1][IdxS1], slotLists[2][IdxS2], slotLists[3][IdxS3], slotLists[4][IdxS4] };
+                                if (testDeckCards[0] != testDeckCards[1] &&
+                                    testDeckCards[0] != testDeckCards[2] &&
+                                    testDeckCards[0] != testDeckCards[3] &&
+                                    testDeckCards[0] != testDeckCards[4] &&
+                                    testDeckCards[1] != testDeckCards[2] &&
+                                    testDeckCards[1] != testDeckCards[3] &&
+                                    testDeckCards[1] != testDeckCards[4] &&
+                                    testDeckCards[2] != testDeckCards[3] &&
+                                    testDeckCards[2] != testDeckCards[4] &&
+                                    testDeckCards[3] != testDeckCards[4])
                                 {
-                                    int rareCounterLv4 =
-                                        ((playerDB.ownedCards[Idx1].Rarity >= RarityLimitThr) ? 1 : 0) +
-                                        ((playerDB.ownedCards[Idx2].Rarity >= RarityLimitThr) ? 1 : 0) +
-                                        ((playerDB.ownedCards[Idx3].Rarity >= RarityLimitThr) ? 1 : 0) +
-                                        ((playerDB.ownedCards[Idx4].Rarity >= RarityLimitThr) ? 1 : 0);
-                                    if (rareCounterLv4 <= 1)
+                                    Random randomGen = GetRandomStream(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4);
+                                    // TODO: custom permutation lookup
                                     {
-                                        for (int Idx5 = Idx4 + 1; Idx5 < playerDB.ownedCards.Count; Idx5++)
+                                        TriadDeck testDeck = new TriadDeck(testDeckCards);
+                                        int testScore = GetDeckScore(currentSolver, testDeck, randomGen, 1);
+                                        if (testScore > bestScore)
                                         {
-                                            int rareCounterLv5 = rareCounterLv4 +
-                                                ((playerDB.ownedCards[Idx5].Rarity >= RarityLimitThr) ? 1 : 0);
-                                            if (rareCounterLv5 <= 1)
+                                            lock (lockOb)
                                             {
-                                                TriadCard[] testDeckCards = new TriadCard[] { playerDB.ownedCards[Idx1], playerDB.ownedCards[Idx2], playerDB.ownedCards[Idx3], playerDB.ownedCards[Idx4], playerDB.ownedCards[Idx5] };
-                                                Random randomGen = GetRandomStream(Idx1, Idx2, Idx3, Idx4, Idx5);
-
-                                                if (bIsOrderImportant)
-                                                {
-                                                    if (bAllowPermutationChecks)
-                                                    {
-                                                        for (int IdxP = 0; IdxP < permutationList.Length; IdxP++)
-                                                        {
-                                                            int[] UseOrder = permutationList[IdxP];
-                                                            TriadDeck permDeck = new TriadDeck(new TriadCard[] { testDeckCards[UseOrder[0]], testDeckCards[UseOrder[1]], testDeckCards[UseOrder[2]], testDeckCards[UseOrder[3]], testDeckCards[UseOrder[4]] });
-
-                                                            int testScore = GetDeckScore(solver, permDeck, randomGen, 10);
-                                                            if (testScore > bestScore)
-                                                            {
-                                                                lock (lockOb)
-                                                                {
-                                                                    bestScore = testScore;
-                                                                    bestDeck = permDeck;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        int fixedRareSlot = 2;
-                                                        for (int TestSlotIdx = 0; TestSlotIdx < testDeckCards.Length; TestSlotIdx++)
-                                                        {
-                                                            if (testDeckCards[TestSlotIdx].Rarity > testDeckCards[fixedRareSlot].Rarity)
-                                                            {
-                                                                TriadCard swapOb = testDeckCards[TestSlotIdx];
-                                                                testDeckCards[TestSlotIdx] = testDeckCards[fixedRareSlot];
-                                                                testDeckCards[fixedRareSlot] = swapOb;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-
-                                                {
-                                                    TriadDeck testDeck = new TriadDeck(testDeckCards);
-                                                    int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
-                                                    if (testScore > bestScore)
-                                                    {
-                                                        lock (lockOb)
-                                                        {
-                                                            bestScore = testScore;
-                                                            bestDeck = testDeck;
-                                                        }
-                                                    }
-                                                }
+                                                bestScore = testScore;
+                                                bestDeck = testDeck;
+                                                OnFoundDeck.Invoke(testDeck);
                                             }
-
-                                            numTestedDecks++;
                                         }
                                     }
-                                    else
-                                    {
-                                        numTestedDecks += playerDB.ownedCards.Count - Idx4;
-                                    }
-                                });
+                                }
+
+                                lock (lockOb)
+                                {
+                                    numTestedDecks++;
+                                }
                             }
-                            else
-                            {
-                                numTestedDecks += (playerDB.ownedCards.Count - Idx3) * (playerDB.ownedCards.Count - Idx3 - 1);
-                            }
-                        });
-                    }
-                    else
-                    {
-                        numTestedDecks += (playerDB.ownedCards.Count - Idx2) * (playerDB.ownedCards.Count - Idx2 - 1) * (playerDB.ownedCards.Count - Idx2 - 2);
-                    }
+                        }
+                    });
                 });
             });
 
             stopwatch.Stop();
             Logger.WriteLine("Building list of decks: " + stopwatch.ElapsedMilliseconds + "ms, num:" + numPossibleDecks);
             optimizedDeck = bestDeck;
-        }
-
-        private void FindDecksScored(TriadGameModifier[] regionMods, List<TriadCard> lockedCards)
-        {
-            PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
-            //TriadCardDB playerDB = TriadCardDB.Get();
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            TriadGameSession solver = new TriadGameSession();
-            solver.modifiers.AddRange(npc.Rules);
-            solver.modifiers.AddRange(regionMods);
-            solver.UpdateSpecialRules();
-
-            bool bIsOrderImportant = false;
-            foreach (TriadGameModifier mod in solver.modifiers)
-            {
-                bIsOrderImportant = bIsOrderImportant || mod.IsDeckOrderImportant();
-            }
-
-            List<TriadCard> rareList = new List<TriadCard>();
-            List<TriadCard> commonList = new List<TriadCard>();
-            FindCardsToUse(playerDB.ownedCards, solver.modifiers, rareList, commonList);
-
-            ETriadCardRarity rareThreshold = GetRareThreshold(playerDB.ownedCards);
-            ECardSlotState[] cardSlots = BuildCardSlots(lockedCards, rareList.Count, commonList.Count, rareThreshold, bIsOrderImportant);
-
-            object lockOb = new object();
-            int bestScore = 0;
-            TriadDeck bestDeck = new TriadDeck(PlayerSettingsDB.Get().starterCards);
-
-            List<TriadCard>[] slotLists = new List<TriadCard>[cardSlots.Length];
-            int numLocked = 0;
-            int numRareSlots = 0;
-            for (int Idx = 0; Idx < slotLists.Length; Idx++)
-            {
-                switch (cardSlots[Idx])
-                {
-                    case ECardSlotState.Common:
-                        slotLists[Idx] = commonList;
-                        break;
-                    case ECardSlotState.Rare:
-                        slotLists[Idx] = rareList;
-                        numRareSlots++;
-                        break;
-                    default:
-                        slotLists[Idx] = new List<TriadCard>() { lockedCards[Idx] };
-                        numLocked++;
-                        break;
-                }
-            }
-
-            if (numLocked > 0)
-            {
-                // slower when ran for all 5 slots
-                UpdatePossibleDeckCount(rareList.Count, commonList.Count, cardSlots, bIsOrderImportant);
-
-                //for (int IdxS0 = 0; IdxS0 < slotLists[0].Count; IdxS0++)
-                Parallel.For(0, slotLists[0].Count, IdxS0 =>
-                {
-                    if (!bAbort)
-                    {
-                        //for (int IdxS1 = 0; IdxS1 < slotLists[1].Count; IdxS1++)
-                        Parallel.For(0, slotLists[1].Count, IdxS1 =>
-                        {
-                            if (!bAbort)
-                            {
-                                //for (int IdxS2 = 0; IdxS2 < slotLists[2].Count; IdxS2++)
-                                Parallel.For(0, slotLists[2].Count, IdxS2 =>
-                                {
-                                    if (!bAbort)
-                                    {
-                                        //for (int IdxS3 = 0; IdxS3 < slotLists[3].Count; IdxS3++)
-                                        Parallel.For(0, slotLists[3].Count, IdxS3 =>
-                                        {
-                                            if (!bAbort)
-                                            {
-                                                //for (int IdxS4 = 0; IdxS4 < slotLists[4].Count; IdxS4++)
-                                                Parallel.For(0, slotLists[4].Count, IdxS4 =>
-                                                {
-                                                    if (!bAbort)
-                                                    {
-                                                        TriadCard[] testDeckCards = new TriadCard[] { slotLists[0][IdxS0], slotLists[1][IdxS1], slotLists[2][IdxS2], slotLists[3][IdxS3], slotLists[4][IdxS4] };
-                                                        if (testDeckCards[0] != testDeckCards[1] &&
-                                                            testDeckCards[0] != testDeckCards[2] &&
-                                                            testDeckCards[0] != testDeckCards[3] &&
-                                                            testDeckCards[0] != testDeckCards[4] &&
-                                                            testDeckCards[1] != testDeckCards[2] &&
-                                                            testDeckCards[1] != testDeckCards[3] &&
-                                                            testDeckCards[1] != testDeckCards[4] &&
-                                                            testDeckCards[2] != testDeckCards[3] &&
-                                                            testDeckCards[2] != testDeckCards[4] &&
-                                                            testDeckCards[3] != testDeckCards[4])
-                                                        {
-                                                            Random randomGen = GetRandomStream(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4);
-                                                            // TODO: custom permutation lookup
-                                                            {
-                                                                TriadDeck testDeck = new TriadDeck(testDeckCards);
-                                                                int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
-                                                                if (testScore > bestScore)
-                                                                {
-                                                                    lock (lockOb)
-                                                                    {
-                                                                        bestScore = testScore;
-                                                                        bestDeck = testDeck;
-                                                                        OnFoundDeck.Invoke(testDeck);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-
-                                                        lock (lockOb)
-                                                        {
-                                                            numTestedDecks++;
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-            else
-            {
-                // faster loops when nothing is locked
-                // A: single rare slot, most common case
-                if (numRareSlots == 1)
-                {
-                    UpdatePossibleDeckCount(rareList.Count, commonList.Count, lockedCards, bIsOrderImportant);
-
-                    Parallel.For(0, rareList.Count, IdxR0 =>
-                    {
-                        if (!bAbort)
-                        {
-                            Parallel.For(0, commonList.Count, IdxC1 =>
-                            {
-                                if (!bAbort)
-                                {
-                                    for (int IdxC2 = IdxC1 + 1; IdxC2 < commonList.Count; IdxC2++)
-                                    {
-                                        for (int IdxC3 = IdxC2 + 1; IdxC3 < commonList.Count; IdxC3++)
-                                        {
-                                            for (int IdxC4 = IdxC3 + 1; IdxC4 < commonList.Count; IdxC4++)
-                                            {
-                                                TriadCard[] testDeckCards = new TriadCard[] { rareList[IdxR0], commonList[IdxC1], commonList[IdxC2], commonList[IdxC3], commonList[IdxC4] };
-                                                Random randomGen = GetRandomStream(IdxR0, IdxC1, IdxC2, IdxC3, IdxC4);
-
-                                                if (bIsOrderImportant)
-                                                {
-                                                    if (bAllowPermutationChecks)
-                                                    {
-                                                        for (int IdxP = 0; IdxP < permutationList.Length; IdxP++)
-                                                        {
-                                                            int[] UseOrder = permutationList[IdxP];
-                                                            TriadCard[] permDeckCards = new TriadCard[] { testDeckCards[UseOrder[0]], testDeckCards[UseOrder[1]], testDeckCards[UseOrder[2]], testDeckCards[UseOrder[3]], testDeckCards[UseOrder[4]] };
-                                                            TriadDeck permDeck = new TriadDeck(permDeckCards);
-                                                            int testScore = GetDeckScore(solver, permDeck, randomGen, 10);
-                                                            if (testScore > bestScore)
-                                                            {
-                                                                lock (lockOb)
-                                                                {
-                                                                    bestScore = testScore;
-                                                                    bestDeck = permDeck;
-                                                                    OnFoundDeck.Invoke(permDeck);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        testDeckCards = new TriadCard[] { commonList[IdxC1], rareList[IdxR0], commonList[IdxC2], commonList[IdxC3], commonList[IdxC4] };
-                                                    }
-                                                }
-
-                                                {
-                                                    TriadDeck testDeck = new TriadDeck(testDeckCards);
-                                                    int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
-                                                    if (testScore > bestScore)
-                                                    {
-                                                        lock (lockOb)
-                                                        {
-                                                            bestScore = testScore;
-                                                            bestDeck = testDeck;
-                                                            OnFoundDeck.Invoke(testDeck);
-                                                        }
-                                                    }
-                                                }
-
-                                                lock (lockOb)
-                                                {
-                                                    numTestedDecks++;
-                                                    if (bAbort)
-                                                    {
-                                                        IdxC2 = commonList.Count;
-                                                        IdxC3 = commonList.Count;
-                                                        IdxC4 = commonList.Count;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-                else if (numRareSlots == 0)
-                {
-                    // remove part of common list for faster procesing, normally it would use 1 rare slot (smaller pool)
-                    // randomly for all thta matters...
-                    int maxCommonToUse = commonList.Count * 80 / 100;
-                    Random pruneRng = new Random();
-
-                    while (commonList.Count > maxCommonToUse)
-                    {
-                        int idxToRemove = pruneRng.Next(0, commonList.Count);
-                        commonList.RemoveAt(idxToRemove);
-                    }
-
-                    // call simpler version of max possible combinations, 1 list in use
-                    UpdatePossibleDeckCount(maxCommonToUse, bIsOrderImportant);
-                    OnUpdateMaxSearchDecks?.Invoke(numPossibleDecks.ToString());
-
-                    Parallel.For(0, commonList.Count, IdxC1 =>
-                    {
-                        if (!bAbort)
-                        {
-                            for (int IdxC2 = IdxC1 + 1; IdxC2 < commonList.Count; IdxC2++)
-                            {
-                                for (int IdxC3 = IdxC2 + 1; IdxC3 < commonList.Count; IdxC3++)
-                                {
-                                    for (int IdxC4 = IdxC3 + 1; IdxC4 < commonList.Count; IdxC4++)
-                                    {
-                                        for (int IdxC5 = IdxC4 + 1; IdxC5 < commonList.Count; IdxC5++)
-                                        {
-                                            TriadCard[] testDeckCards = new TriadCard[] { commonList[IdxC1], commonList[IdxC2], commonList[IdxC3], commonList[IdxC4], commonList[IdxC5] };
-                                            Random randomGen = GetRandomStream(IdxC1, IdxC2, IdxC3, IdxC4, IdxC5);
-
-                                            if (bIsOrderImportant && bAllowPermutationChecks)
-                                            {
-                                                for (int IdxP = 0; IdxP < permutationList.Length; IdxP++)
-                                                {
-                                                    int[] UseOrder = permutationList[IdxP];
-                                                    TriadCard[] permDeckCards = new TriadCard[] { testDeckCards[UseOrder[0]], testDeckCards[UseOrder[1]], testDeckCards[UseOrder[2]], testDeckCards[UseOrder[3]], testDeckCards[UseOrder[4]] };
-                                                    TriadDeck permDeck = new TriadDeck(permDeckCards);
-                                                    int testScore = GetDeckScore(solver, permDeck, randomGen, 10);
-                                                    if (testScore > bestScore)
-                                                    {
-                                                        lock (lockOb)
-                                                        {
-                                                            bestScore = testScore;
-                                                            bestDeck = permDeck;
-                                                            OnFoundDeck.Invoke(permDeck);
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            {
-                                                TriadDeck testDeck = new TriadDeck(testDeckCards);
-                                                int testScore = GetDeckScore(solver, testDeck, randomGen, 1);
-                                                if (testScore > bestScore)
-                                                {
-                                                    lock (lockOb)
-                                                    {
-                                                        bestScore = testScore;
-                                                        bestDeck = testDeck;
-                                                        OnFoundDeck.Invoke(testDeck);
-                                                    }
-                                                }
-                                            }
-
-                                            lock (lockOb)
-                                            {
-                                                numTestedDecks++;
-                                                if (bAbort)
-                                                {
-                                                    IdxC2 = commonList.Count;
-                                                    IdxC3 = commonList.Count;
-                                                    IdxC4 = commonList.Count;
-                                                    IdxC5 = commonList.Count;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-                else
-                {
-                    Logger.WriteLine("Unexpected slot setup: " + string.Join(", ", cardSlots) + ", bailing out");
-                }
-            }
-
-            stopwatch.Stop();
-            Logger.WriteLine("Building list of decks: " + stopwatch.ElapsedMilliseconds + "ms, num:" + numPossibleDecks);
-            optimizedDeck = bestDeck;
-        }
-
-        private ETriadCardRarity GetRareThreshold(List<TriadCard> allCards)
-        {
-            return (allCards.Count < 30) ? ETriadCardRarity.Uncommon : (allCards.Count < 60) ? ETriadCardRarity.Rare : ETriadCardRarity.Epic;
-        }
-
-        private ECardSlotState[] BuildCardSlots(List<TriadCard> lockedCards, int numRare, int numCommon, ETriadCardRarity rareThreshold, bool bIsOrderImportant)
-        {
-            ECardSlotState[] slots = new ECardSlotState[lockedCards.Count];
-
-            // assign locked slots
-            int numAssignedRare = 0;
-            for (int Idx = 0; Idx < lockedCards.Count; Idx++)
-            {
-                if (lockedCards[Idx] != null)
-                {
-                    if (lockedCards[Idx].Rarity >= rareThreshold)
-                    {
-                        slots[Idx] = ECardSlotState.LockedRare;
-                        numAssignedRare++;
-                    }
-                    else
-                    {
-                        slots[Idx] = ECardSlotState.LockedCommon;
-                    }
-                }
-                else
-                {
-                    slots[Idx] = ECardSlotState.Common;
-                }
-            }
-
-            // assign rare slot (1st available or 2nd for order rule)
-            if (numAssignedRare == 0 && numRare > 0)
-            {
-                int FirstFreeIdx = 0;
-                int SecondFreeIdx = 0;
-                for (int Idx = 0; Idx < slots.Length; Idx++)
-                {
-                    if (slots[Idx] == ECardSlotState.Common)
-                    {
-                        if (FirstFreeIdx <= 0)
-                        {
-                            FirstFreeIdx = Idx;
-                        }
-                        else if (SecondFreeIdx <= 0)
-                        {
-                            SecondFreeIdx = Idx;
-                        }
-                    }
-                }
-
-                int UseRareIdx = (bIsOrderImportant && SecondFreeIdx <= 3) ? SecondFreeIdx : FirstFreeIdx;
-                slots[UseRareIdx] = ECardSlotState.Rare;
-            }
-
-            return slots;
         }
 
         public int GetProgress()
@@ -865,7 +577,12 @@ namespace FFTriadBuddy
 
         public string GetNumTestedDesc()
         {
-            return numTestedDecks.ToString("N0");
+            return numTestedDecks.ToString("N0", CultureInfo.InvariantCulture);
+        }
+
+        public string GetNumPossibleDecksDesc()
+        {
+            return numPossibleDecks.ToString("N0", CultureInfo.InvariantCulture);
         }
 
         public int GetSecondsRemaining(int ElapsedMs)
