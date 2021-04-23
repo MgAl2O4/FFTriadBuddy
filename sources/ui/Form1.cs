@@ -2093,6 +2093,12 @@ namespace FFTriadBuddy
             ShowScreenshotState();
         }
 
+        private void buttonDiscardHashes_Click(object sender, EventArgs e)
+        {
+            screenAnalyzer.ClearAll();
+            ShowScreenshotState();
+        }
+
         private void comboBoxLocalHash_SelectedIndexChanged(object sender, EventArgs e)
         {
             buttonLocalHashStore.Enabled = comboBoxLocalHash.SelectedIndex != -1;

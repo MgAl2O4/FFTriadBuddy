@@ -273,6 +273,16 @@ namespace FFTriadBuddy
             }
         }
 
+        public void ClearAll()
+        {
+            currentHashMatches.Clear();
+            unknownHashes.Clear();
+            currentScanArea = Rectangle.Empty;
+            activeScanner = null;
+
+            currentState = EState.NoErrors;
+        }
+
         public void ClearKnownHashes()
         {
             currentHashMatches.Clear();

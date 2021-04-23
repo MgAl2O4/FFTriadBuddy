@@ -217,6 +217,8 @@
             this.adjustToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripLearnCard = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonDiscardHashes = new System.Windows.Forms.Button();
+            this.label24 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.panelCloud.SuspendLayout();
@@ -929,6 +931,8 @@
             // 
             // tabPageDetectionLearn
             // 
+            this.tabPageDetectionLearn.Controls.Add(this.label24);
+            this.tabPageDetectionLearn.Controls.Add(this.buttonDiscardHashes);
             this.tabPageDetectionLearn.Controls.Add(this.pictureBoxLocalHash);
             this.tabPageDetectionLearn.Controls.Add(this.labelLocalHashPending);
             this.tabPageDetectionLearn.Controls.Add(this.label23);
@@ -2151,19 +2155,19 @@
             this.deleteAndRelearnToolStripMenuItem,
             this.adjustToolStripMenuItem});
             this.contextMenuStripLearnHash.Name = "contextMenuStripLearnHash";
-            this.contextMenuStripLearnHash.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStripLearnHash.Size = new System.Drawing.Size(118, 48);
             // 
             // deleteAndRelearnToolStripMenuItem
             // 
             this.deleteAndRelearnToolStripMenuItem.Name = "deleteAndRelearnToolStripMenuItem";
-            this.deleteAndRelearnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteAndRelearnToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.deleteAndRelearnToolStripMenuItem.Text = "Delete";
             this.deleteAndRelearnToolStripMenuItem.Click += new System.EventHandler(this.deleteAndRelearnToolStripMenuItem_Click);
             // 
             // adjustToolStripMenuItem
             // 
             this.adjustToolStripMenuItem.Name = "adjustToolStripMenuItem";
-            this.adjustToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.adjustToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.adjustToolStripMenuItem.Text = "Adjust...";
             this.adjustToolStripMenuItem.Click += new System.EventHandler(this.adjustToolStripMenuItem_Click);
             // 
@@ -2180,6 +2184,25 @@
             this.toolStripMenuItem6.Size = new System.Drawing.Size(117, 22);
             this.toolStripMenuItem6.Text = "Adjust...";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
+            // 
+            // buttonDiscardHashes
+            // 
+            this.buttonDiscardHashes.Location = new System.Drawing.Point(9, 117);
+            this.buttonDiscardHashes.Name = "buttonDiscardHashes";
+            this.buttonDiscardHashes.Size = new System.Drawing.Size(75, 23);
+            this.buttonDiscardHashes.TabIndex = 8;
+            this.buttonDiscardHashes.Text = "Discard All";
+            this.buttonDiscardHashes.UseVisualStyleBackColor = true;
+            this.buttonDiscardHashes.Click += new System.EventHandler(this.buttonDiscardHashes_Click);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(90, 122);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(122, 13);
+            this.label24.TabIndex = 9;
+            this.label24.Text = "<< Resets scanner state";
             // 
             // Form1
             // 
@@ -2445,6 +2468,8 @@
         private System.Windows.Forms.ToolStripMenuItem adjustToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripLearnCard;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button buttonDiscardHashes;
     }
 }
 
