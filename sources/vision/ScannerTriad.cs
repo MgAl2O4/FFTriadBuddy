@@ -930,25 +930,103 @@ namespace FFTriadBuddy
             return false;
         }
 
+        private bool FindExactCardTop(FastBitmapHSV bitmap, Rectangle cardRect, string debugName, ECardLocation cardLocation, out int exactTopY)
+        {
+            // look for edge of border, sample 4 points along card width for avg
+            int[] scanX = new int[4]{
+                    cardRect.Left + (cardRect.Width * 20 / 100),
+                    cardRect.Left + (cardRect.Width * 40 / 100),
+                    cardRect.Left + (cardRect.Width * 60 / 100),
+                    cardRect.Left + (cardRect.Width * 80 / 100)};
+
+            int scanEndY = cardRect.Top + 10;
+            int scanStartY = cardRect.Top - 5;
+
+            bool verboseDebug = screenAnalyzer.debugScannerContext == debugName;
+            if (cardLocation == ECardLocation.Board)
+            {
+                // find top of grid cell
+                if (ImageUtils.TraceLine(bitmap, cardRect.Left - 10, scanEndY, 0, -1, 20, colorMatchGridBorder, out Point hitPos, verboseDebug))
+                {
+                    scanStartY = hitPos.Y + 1;
+                }
+            }
+
+            int prevAvgMono = 0;
+            int prevAvgHue = 0;
+
+            for (int scanY = scanStartY; scanY < scanEndY; scanY++)
+            {
+                int avgMono = 0;
+                int avgHue = 0;
+                for (int idxX = 0; idxX < scanX.Length; idxX++)
+                {
+                    FastPixelHSV testPx = bitmap.GetPixel(scanX[idxX], scanY);
+                    avgMono += testPx.GetMonochrome();
+                    avgHue += testPx.GetHue();
+                }
+                avgMono /= scanX.Length;
+                avgHue /= scanX.Length;
+
+                if (prevAvgMono > 0)
+                {
+                    int diffMono = avgMono - prevAvgMono;
+                    int absDiffHue = Math.Abs(avgHue - prevAvgHue);
+
+                    // mono: no abs, look for going darker (low - high = negative)
+                    // hue: abs, jump in hue will be good indicator, esp on red/blue decks
+                    bool foundEdge = (diffMono < -30 && avgMono < 100) || (absDiffHue > 120);
+
+                    if (verboseDebug) { Logger.WriteLine("FindExactCardTop[{0}] scan:{1} = [H:{2},M:{3}] vs prev[H:{4},M:{5}] => {6}", debugName, scanY, avgHue, avgMono, prevAvgHue, prevAvgMono, foundEdge ? " EDGE!" : "nope"); }
+                    if (foundEdge)
+                    {
+                        exactTopY = scanY;
+                        return true;
+                    }
+                }
+
+                prevAvgMono = avgMono;
+                prevAvgHue = avgHue;
+            }
+
+            exactTopY = cardRect.Top;
+            return false;
+        }
+
         private int FindExactCardMidX(FastBitmapHSV bitmap, Rectangle cardRect, string debugName, int exactBottomY)
         {
-            int scanHeight = Math.Min(3, cardRect.Height * 3 / 100);
+            int scanHeight = Math.Min(5, cardRect.Height * 3 / 100);
             int midX = cardRect.X + (cardRect.Width / 2);
             int startX = midX - (cardRect.Width / 8);
             int endX = midX + (cardRect.Width / 8);
 
             bool verboseDebug = screenAnalyzer.debugScannerContext == debugName;
             int bestV = -1;
+            int maxEmpty = scanHeight / 2;
             for (int scanX = startX; scanX < endX; scanX++)
             {
                 int monoV = 0;
+                int numEmpty = 0;
+                bool canCountEmpty = true;
+
                 for (int scanY = 0; scanY < scanHeight; scanY++)
                 {
-                    monoV += bitmap.GetPixel(scanX, exactBottomY - scanY - 1).GetMonochrome() * ((scanY + 1) / scanHeight);
+                    int testMono = bitmap.GetPixel(scanX, exactBottomY - scanY - 1).GetMonochrome();
+                    bool isEmpty = testMono > 100;
+                    numEmpty += (isEmpty && canCountEmpty) ? 1 : 0;
+                    canCountEmpty = canCountEmpty && isEmpty;
+
+                    monoV += testMono * ((scanY + 1) / scanHeight);
                 }
 
-                bool isBetter = (monoV < bestV || bestV < 0);
-                if (verboseDebug) { Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}] = {4}{5}", debugName, scanX, exactBottomY - 1, exactBottomY - scanHeight, monoV, isBetter ? " mid?" : ""); }
+                bool isBetter = (monoV < bestV || bestV < 0) && (numEmpty < maxEmpty);
+                if (verboseDebug)
+                {
+                    Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}], numEmpty:{4} = {5}{6}", debugName, 
+                        scanX, exactBottomY - 1, exactBottomY - scanHeight, 
+                        numEmpty,
+                        monoV, isBetter ? " mid?" : ""); 
+                }
                 if (isBetter)
                 {
                     bestV = monoV;
@@ -972,19 +1050,22 @@ namespace FFTriadBuddy
             cardState.bounds = cardRect;
             cardState.sourceImage = screenAnalyzer.screenReader.cachedScreenshot;
 
+            int exactCardTop = cardRect.Top;
             bool hasExactBottomY = FindExactCardBottom(bitmap, cardRect, debugName, cardLocation, out int exactCardBottom);
-            if (!hasExactBottomY)
+            bool hasExactTopY = hasExactBottomY ? FindExactCardTop(bitmap, cardRect, debugName, cardLocation, out exactCardTop) : false;
+            if (!hasExactBottomY || !hasExactTopY)
             {
                 if (debugMode) { Logger.WriteLine("ParseCard({0}): empty", debugName); }
                 return cardState;
             }
-
+           
             int exactCardMidX = FindExactCardMidX(bitmap, cardRect, debugName, exactCardBottom);
 
             // check if card is hidden based on approx numberbox location
+            int exactCardHeight = exactCardBottom - exactCardTop;
             int numberBoxW = cardRect.Width * 50 / 100;
-            int numberBoxH = cardRect.Height * 20 / 100;
-            Rectangle numberBox = new Rectangle(exactCardMidX - (numberBoxW / 2), exactCardBottom - numberBoxH - (cardRect.Height * 8 / 100), numberBoxW, numberBoxH);
+            int numberBoxH = exactCardHeight * 18 / 100;
+            Rectangle numberBox = new Rectangle(exactCardMidX - (numberBoxW / 2), exactCardBottom - numberBoxH - (exactCardHeight * 9 / 100), numberBoxW, numberBoxH);
 
             float borderPct = ImageUtils.CountFillPct(bitmap, numberBox, colorMatchCardBorder);
             if (borderPct > 0.75f)
@@ -1011,9 +1092,9 @@ namespace FFTriadBuddy
             cardState.sideNumber = new int[4];
             cardState.sideInfo = new CardState.SideInfo[4];
             cardState.sideInfo[0].scanBox = new Rectangle(numberBoxMidX - (digitWidth / 2), numberBox.Top, digitHeight, digitHeight);
-            cardState.sideInfo[1].scanBox = new Rectangle(numberBoxMidX + (digitWidth * 50 / 100), numberBoxMidY - (digitHeight / 2), digitHeight, digitHeight);
+            cardState.sideInfo[1].scanBox = new Rectangle(numberBoxMidX + (digitWidth * 70 / 100), numberBoxMidY - (digitHeight / 2), digitHeight, digitHeight);
             cardState.sideInfo[2].scanBox = new Rectangle(numberBoxMidX - (digitWidth / 2), numberBox.Bottom - digitHeight, digitHeight, digitHeight);
-            cardState.sideInfo[3].scanBox = new Rectangle(numberBoxMidX - (digitWidth * 130 / 100), numberBoxMidY - (digitHeight / 2), digitHeight, digitHeight);
+            cardState.sideInfo[3].scanBox = new Rectangle(numberBoxMidX - (digitWidth * 150 / 100), numberBoxMidY - (digitHeight / 2), digitHeight, digitHeight);
 
             for (int idx = 0; idx < 4; idx++)
             {

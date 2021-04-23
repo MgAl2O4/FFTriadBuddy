@@ -957,7 +957,7 @@ namespace FFTriadBuddy
                     if (endX >= bounds.Width) { endX = bounds.Width - 0.00001f; }
                     float sum = 0.0f;
 
-                    int sumDivNum = 0;
+                    float sumDiv = 0.00001f;
                     for (int srcY = (int)startY; srcY <= (int)endY; srcY++)
                     {
                         float partY = 1.0f;
@@ -973,11 +973,11 @@ namespace FFTriadBuddy
                             FastPixelHSV testPx = bitmap.GetPixel(bounds.Left + srcX, bounds.Top + srcY);
                             float testPxValue = pxFunc(testPx);
                             sum += testPxValue * partY * partX;
-                            sumDivNum++;
+                            sumDiv += partY * partX;
                         }
                     }
 
-                    values[hashX + (hashY * destWidth)] = sum / sumDivNum;
+                    values[hashX + (hashY * destWidth)] = sum / sumDiv;
                 }
             }
 

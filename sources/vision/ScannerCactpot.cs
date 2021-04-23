@@ -137,6 +137,7 @@ namespace FFTriadBuddy
                                     if (HasCactpotMatch(bitmap, CellPosX, CellPosY, cellSize, offsetIn, debugGridMatch))
                                     {
                                         rect = new Rectangle(CellPosX, CellPosY, cellSize * 3, cellSize * 3);
+                                        cachedOffsetIn = offsetIn;
 
                                         bScanning = false;
                                         break;

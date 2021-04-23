@@ -17,7 +17,7 @@ namespace FFTriadBuddy
 
             ScreenAnalyzer.EMode testMode = ScreenAnalyzer.EMode.ResetIntermediateData | ScreenAnalyzer.EMode.DebugScreenshotOnly;
 
-            //RunTests("test/auto/cactpot", testMode | ScreenAnalyzer.EMode.ScanCactpot);
+            RunTests("test/auto/cactpot", testMode | ScreenAnalyzer.EMode.ScanCactpot);
             RunTests("test/auto/triad", testMode | ScreenAnalyzer.EMode.ScanTriad);
         }
 
