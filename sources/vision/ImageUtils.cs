@@ -247,6 +247,11 @@ namespace FFTriadBuddy
             return Pixels[idx];
         }
 
+        public FastPixelHSV GetPixelRaw(int X, int Y)
+        {
+            return Pixels[X + (Y * Width)];
+        }
+
         public void SetPixel(int X, int Y, FastPixelHSV pixel)
         {
             Pixels[X + (Y * Width)] = pixel;
@@ -794,21 +799,24 @@ namespace FFTriadBuddy
 
         public static FastPixelHSV GetAverageColor(FastBitmapHSV bitmap, Rectangle bounds)
         {
-            float hueAcc = 0.0f;
-            float satAcc = 0.0f;
-            float valAcc = 0.0f;
-            float scale = 1.0f / bounds.Width;
+            float scale = 1.0f / (bounds.Width * bounds.Height);
+            float accR = 0.0f;
+            float accG = 0.0f;
+            float accB = 0.0f;
 
-            for (int idx = 0; idx < bounds.Width; idx++)
+            for (int idxY = 0; idxY < bounds.Height; idxY++)
             {
-                FastPixelHSV testPx = bitmap.GetPixel(bounds.X + idx, bounds.Y);
-                hueAcc += testPx.GetHue();
-                satAcc += testPx.GetSaturation();
-                valAcc += testPx.GetValue();
+                for (int idxX = 0; idxX < bounds.Width; idxX++)
+                {
+                    FastPixelHSV testPx = bitmap.GetPixelRaw(bounds.X + idxX, bounds.Y + idxY);
+                    accR += testPx.RawR;
+                    accG += testPx.RawG;
+                    accB += testPx.RawB;
+                }
             }
 
-            FastPixelHSV avgPx = new FastPixelHSV();
-            avgPx.SetHSV((int)(hueAcc * scale), (int)(satAcc * scale), (int)(valAcc * scale));
+            FastPixelHSV avgPx = new FastPixelHSV((byte)(accR * scale), (byte)(accG * scale), (byte)(accB * scale));
+            avgPx.ExpandHSV();
             return avgPx;
         }
 

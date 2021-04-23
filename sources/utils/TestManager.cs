@@ -15,7 +15,7 @@ namespace FFTriadBuddy
             // ML run?
             exportDetectionPatterns = false;
 
-            ScreenAnalyzer.EMode testMode = ScreenAnalyzer.EMode.AlwaysResetCache | ScreenAnalyzer.EMode.DebugScreenshotOnly;
+            ScreenAnalyzer.EMode testMode = ScreenAnalyzer.EMode.AlwaysResetCache | ScreenAnalyzer.EMode.DebugScreenshotOnly | ScreenAnalyzer.EMode.AutoTest;
 
             RunTests("test/auto/cactpot", testMode | ScreenAnalyzer.EMode.ScanCactpot);
             RunTests("test/auto/triad", testMode | ScreenAnalyzer.EMode.ScanTriad);

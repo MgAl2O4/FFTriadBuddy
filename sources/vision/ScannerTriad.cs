@@ -346,7 +346,7 @@ namespace FFTriadBuddy
                             if (cardState.failedMatching)
                             {
 #if DEBUG
-                                if (!debugMode)
+                                if ((screenAnalyzer.currentMode & (ScreenAnalyzer.EMode.Debug | ScreenAnalyzer.EMode.AutoTest)) == ScreenAnalyzer.EMode.None)
                                 {
                                     // auto collect failed card matching
                                     string autoSavePath = Path.Combine(screenAnalyzer.GetDefaultScreenshotPath(), "failed-match-");
@@ -930,7 +930,7 @@ namespace FFTriadBuddy
 
                     // mono: no abs, look for going darker (low - high = negative)
                     // hue: abs, jump in hue will be good indicator, esp on red/blue decks
-                    bool foundEdge = (diffMono < -30 && avgMono < 100) || (absDiffHue > 120);
+                    bool foundEdge = (diffMono < -30 && avgMono < 120) || (absDiffHue > 120);
 
                     if (verboseDebug) { Logger.WriteLine("FindExactCardBottom[{0}] scan:{1} = [H:{2},M:{3}] vs prev[H:{4},M:{5}] => {6}", debugName, scanY, avgHue, avgMono, prevAvgHue, prevAvgMono, foundEdge ? " EDGE!" : "nope"); }
                     if (foundEdge)
@@ -993,7 +993,7 @@ namespace FFTriadBuddy
 
                     // mono: no abs, look for going darker (low - high = negative)
                     // hue: abs, jump in hue will be good indicator, esp on red/blue decks
-                    bool foundEdge = (diffMono < -30 && avgMono < 100) || (absDiffHue > 120);
+                    bool foundEdge = (diffMono < -30 && avgMono < 120) || (absDiffHue > 120);
 
                     if (verboseDebug) { Logger.WriteLine("FindExactCardTop[{0}] scan:{1} = [H:{2},M:{3}] vs prev[H:{4},M:{5}] => {6}", debugName, scanY, avgHue, avgMono, prevAvgHue, prevAvgMono, foundEdge ? " EDGE!" : "nope"); }
                     if (foundEdge)
@@ -1019,6 +1019,14 @@ namespace FFTriadBuddy
             int endX = midX + (cardRect.Width / 8);
 
             bool verboseDebug = screenAnalyzer.debugScannerContext == debugName;
+
+            //Rectangle avgColorRect = new Rectangle(startX, exactBottomY - 1, (endX - startX) / 3, Math.Max(2, scanHeight - 2));
+            //FastPixelHSV avgColor = ImageUtils.GetAverageColor(bitmap, avgColorRect);
+            //int emptyMonoMin = avgColor.GetMonochrome();
+            //if (verboseDebug) { Logger.WriteLine("FindExactCardMidX[{0}] avg: {1}, empty:{2}", debugName, avgColor, emptyMonoMin); }
+            int emptyMonoMin = 100;
+
+            int[] monoVArr = new int[scanHeight];
             int bestV = -1;
             int maxEmpty = scanHeight / 2;
             for (int scanX = startX; scanX < endX; scanX++)
@@ -1030,20 +1038,22 @@ namespace FFTriadBuddy
                 for (int scanY = 0; scanY < scanHeight; scanY++)
                 {
                     int testMono = bitmap.GetPixel(scanX, exactBottomY - scanY - 1).GetMonochrome();
-                    bool isEmpty = testMono > 100;
+                    bool isEmpty = testMono > emptyMonoMin;
                     numEmpty += (isEmpty && canCountEmpty) ? 1 : 0;
                     canCountEmpty = canCountEmpty && isEmpty;
 
-                    monoV += testMono * ((scanY + 1) / scanHeight);
+                    monoV += (int)(testMono * (scanY + 1.0f) / scanHeight);
+                    monoVArr[scanY] = testMono;
                 }
 
-                bool isBetter = (monoV < bestV || bestV < 0) && (numEmpty < maxEmpty);
+                int numEmptyBelow = canCountEmpty ? 0 : numEmpty;
+                bool isBetter = (monoV < bestV || bestV < 0) && (numEmptyBelow <= maxEmpty);
                 if (verboseDebug)
                 {
-                    Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}], numEmpty:{4} = {5}{6}", debugName, 
-                        scanX, exactBottomY - 1, exactBottomY - scanHeight, 
-                        numEmpty,
-                        monoV, isBetter ? " mid?" : ""); 
+                    Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}] = {4}{5}, numEmptyBelow:{6}, list:{7}", debugName,
+                        scanX, exactBottomY - 1, exactBottomY - scanHeight,
+                        monoV, isBetter ? " mid?" : "",
+                        numEmptyBelow, string.Join(",", monoVArr));
                 }
                 if (isBetter)
                 {

@@ -37,6 +37,7 @@ namespace FFTriadBuddy
             DebugSaveMarkup = 0x4,
             AlwaysResetCache = 0x8,
             NeverResetCache = 0x10,            
+            AutoTest = 0x20,
 
             ScanTriad = 0x100,
             ScanCactpot = 0x200,
@@ -57,6 +58,7 @@ namespace FFTriadBuddy
         public FastBitmapHSV cachedFastBitmap;
         public Rectangle scanClipBounds;
         public Rectangle currentScanArea;
+        public EMode currentMode;
 
         public string debugScreenshotPath;
         public string debugScannerContext;
@@ -91,6 +93,7 @@ namespace FFTriadBuddy
 
             bool debugMode = (mode & EMode.Debug) != EMode.None;
             activeScanner = null;
+            currentMode = mode;
 
             // load input
             bool hasInputImage = LoadInputImage(mode, timerStep, scanClipBounds);
