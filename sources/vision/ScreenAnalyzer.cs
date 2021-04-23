@@ -35,7 +35,8 @@ namespace FFTriadBuddy
             Debug = 0x1,
             DebugScreenshotOnly = 0x2,
             DebugSaveMarkup = 0x4,
-            ResetIntermediateData = 0x10,
+            AlwaysResetCache = 0x8,
+            NeverResetCache = 0x10,            
 
             ScanTriad = 0x100,
             ScanCactpot = 0x200,
@@ -103,20 +104,24 @@ namespace FFTriadBuddy
                 if (Logger.IsSuperVerbose()) { Logger.WriteLine("Screenshot: {0}x{1}", screenReader.cachedScreenshot.Width, screenReader.cachedScreenshot.Height); }
 
                 // reset scanner's intermediate data
-                bool wantsCacheReset = (mode & EMode.ResetIntermediateData) != EMode.None;
-                if (wantsCacheReset)
+                bool canResetCache = (mode & EMode.NeverResetCache) == EMode.None;
+                if (canResetCache)
                 {
-                    unknownHashes.Clear();
-                    currentHashMatches.Clear();
-                }
-
-                // invalidate scanner's cache if input image size has changed
-                if (wantsCacheReset || cachedBitmapSize.Width <= 0 || cachedBitmapSize.Width != cachedFastBitmap.Width || cachedBitmapSize.Height != cachedFastBitmap.Height)
-                {
-                    cachedBitmapSize = new Size(cachedFastBitmap.Width, cachedFastBitmap.Height);
-                    foreach (var kvp in mapScanners)
+                    bool forceResetCache = (mode & EMode.AlwaysResetCache) != EMode.None;
+                    if (forceResetCache)
                     {
-                        kvp.Value.InvalidateCache();
+                        unknownHashes.Clear();
+                        currentHashMatches.Clear();
+                    }
+
+                    // invalidate scanner's cache if input image size has changed
+                    if (forceResetCache || cachedBitmapSize.Width <= 0 || cachedBitmapSize.Width != cachedFastBitmap.Width || cachedBitmapSize.Height != cachedFastBitmap.Height)
+                    {
+                        cachedBitmapSize = new Size(cachedFastBitmap.Width, cachedFastBitmap.Height);
+                        foreach (var kvp in mapScanners)
+                        {
+                            kvp.Value.InvalidateCache();
+                        }
                     }
                 }
 

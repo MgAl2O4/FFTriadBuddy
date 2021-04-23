@@ -1512,7 +1512,7 @@ namespace FFTriadBuddy
             if (clipBounds.Width > 0)
             {
                 screenAnalyzer.scanClipBounds = clipBounds;
-                screenAnalyzer.DoWork(mode | ScreenAnalyzer.EMode.ScanTriad, (int)ScannerTriad.EScanMode.TimerOnly);
+                screenAnalyzer.DoWork(mode | ScreenAnalyzer.EMode.ScanTriad | ScreenAnalyzer.EMode.NeverResetCache, (int)ScannerTriad.EScanMode.TimerOnly);
                 screenAnalyzer.scanClipBounds = Rectangle.Empty;
             }
 

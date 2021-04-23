@@ -226,6 +226,7 @@ namespace FFTriadBuddy
                     if ((boardRect.Width > 0) && (gameWindowRect.Width > 0))
                     {
                         bCanAdjustSummaryLocation = false;
+                        boardRect.Offset(0, 50);
 
                         Rectangle boardBoundsLocal = ConvertGameBoundsToLocal(boardRect, 0);
                         int boardLocalMidX = (boardBoundsLocal.Left + boardBoundsLocal.Right) / 2;
@@ -577,19 +578,30 @@ namespace FFTriadBuddy
             bool bDebugMode = false;
             UpdateAutoCaptureMarker();
 
-            if ((screenAnalyzer == null) ||
-                (screenAnalyzer.scannerTriad.cachedGameState == null) ||
-                (bCanStopTurnScan && screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.MissingTimer))
+            bool attemptScan = (screenAnalyzer != null) && (screenAnalyzer.activeScanner == null || screenAnalyzer.activeScanner is ScannerTriad);
+            if (attemptScan)
             {
-                timerTurnScan.Stop();
-                bCanAutoCapture = false;
+                if (timerAutoScanUpkeep.Enabled)
+                {
+                    // always retry in upkeep mode
+                }
+                else if (screenAnalyzer.scannerTriad.cachedGameState == null ||
+                    bCanStopTurnScan && screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.MissingTimer)
+                {
+                    attemptScan = false;
+                    bCanAutoCapture = false;
+
+                    Logger.WriteLine("Auto scan: entering upkeep mode");
+                    timerAutoScanUpkeep.Start();
+                }
             }
-            else
+
+            if (attemptScan)
             {
                 Rectangle timerGameBox = screenAnalyzer.scannerTriad.GetTimerScanBox();
                 screenAnalyzer.scanClipBounds = timerGameBox;
 
-                screenAnalyzer.DoWork(ScreenAnalyzer.EMode.ScanTriad, (int)ScannerTriad.EScanMode.TimerOnly);
+                screenAnalyzer.DoWork(ScreenAnalyzer.EMode.ScanTriad | ScreenAnalyzer.EMode.NeverResetCache, (int)ScannerTriad.EScanMode.TimerOnly);
 
                 screenAnalyzer.scanClipBounds = Rectangle.Empty;
                 bCanStopTurnScan = true;
@@ -598,13 +610,20 @@ namespace FFTriadBuddy
             UpdateStatusDescription();
             if (bDebugMode) { UpdateDebugDetails(); }
 
-            if (screenAnalyzer != null && IsUsingAutoScan())
+            if (screenAnalyzer != null && screenAnalyzer.scannerTriad.cachedGameState != null && IsUsingAutoScan())
             {
-                if (screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.Waiting)
+                ScannerTriad.ETurnState turnState = screenAnalyzer.scannerTriad.cachedGameState.turnState;
+                if (turnState != ScannerTriad.ETurnState.MissingTimer && timerAutoScanUpkeep.Enabled)
+                {
+                    Logger.WriteLine("Auto scan: aborting upkeep mode");
+                    timerAutoScanUpkeep.Stop();
+                }
+
+                if (turnState == ScannerTriad.ETurnState.Waiting)
                 {
                     bCanAutoCapture = true;
                 }
-                else if (screenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.Active)
+                else if (turnState == ScannerTriad.ETurnState.Active)
                 {
                     if (bCanAutoCapture)
                     {
@@ -691,9 +710,18 @@ namespace FFTriadBuddy
 
         private void UpdateAutoCaptureMarker()
         {
-            bool bCanShow = IsUsingAutoScan() &&
-                (screenAnalyzer != null && screenAnalyzer.scannerTriad.cachedGameState != null) &&
-                (screenAnalyzer.scannerTriad.cachedGameState.turnState != ScannerTriad.ETurnState.MissingTimer);
+            bool bCanShow = IsUsingAutoScan() && (screenAnalyzer != null);
+            if (bCanShow)
+            {
+                if (timerAutoScanUpkeep.Enabled)
+                {
+                    // always show during upkeep
+                }
+                else if (screenAnalyzer.scannerTriad.cachedGameState != null)
+                {
+                    bCanShow = (screenAnalyzer.scannerTriad.cachedGameState.turnState != ScannerTriad.ETurnState.MissingTimer);
+                }
+            }
 
             if (bCanShow != bCanDrawCaptureMarker)
             {
@@ -732,6 +760,15 @@ namespace FFTriadBuddy
         private void timerHideSwapWarning_Tick(object sender, EventArgs e)
         {
             panelSwapWarning.Visible = false;
+        }
+
+        private void timerAutoScanUpkeep_Tick(object sender, EventArgs e)
+        {
+            Logger.WriteLine("Auto scan: upkeep mode timed out");
+            timerAutoScanUpkeep.Stop();
+            timerTurnScan.Stop();
+            bCanAutoCapture = false;
+            UpdateAutoCaptureMarker();
         }
 
         private void ShowCactpotLine(Rectangle fromBox, Rectangle toBox)
@@ -807,5 +844,6 @@ namespace FFTriadBuddy
                 }));
             }
         }
+
     }
 }

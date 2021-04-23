@@ -95,9 +95,10 @@
             this.labelCactpot0 = new FFTriadBuddy.HitInvisibleLabel();
             this.panelMarkerLine = new FFTriadBuddy.HitInvisiblePanel();
             this.panelScanResolution = new FFTriadBuddy.HitInvisiblePanel();
-            this.hitInvisibleLabel3 = new FFTriadBuddy.HitInvisibleLabel();
-            this.labelScanResolution = new FFTriadBuddy.HitInvisibleLabel();
             this.checkBoxFullScreenScan = new System.Windows.Forms.CheckBox();
+            this.labelScanResolution = new FFTriadBuddy.HitInvisibleLabel();
+            this.hitInvisibleLabel3 = new FFTriadBuddy.HitInvisibleLabel();
+            this.timerAutoScanUpkeep = new System.Windows.Forms.Timer(this.components);
             this.panelSummary.SuspendLayout();
             this.panelDebug.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureDebugScreen)).BeginInit();
@@ -819,24 +820,6 @@
             this.panelScanResolution.Size = new System.Drawing.Size(214, 47);
             this.panelScanResolution.TabIndex = 13;
             // 
-            // hitInvisibleLabel3
-            // 
-            this.hitInvisibleLabel3.AutoSize = true;
-            this.hitInvisibleLabel3.Location = new System.Drawing.Point(2, 3);
-            this.hitInvisibleLabel3.Name = "hitInvisibleLabel3";
-            this.hitInvisibleLabel3.Size = new System.Drawing.Size(83, 13);
-            this.hitInvisibleLabel3.TabIndex = 0;
-            this.hitInvisibleLabel3.Text = "Scan resolution:";
-            // 
-            // labelScanResolution
-            // 
-            this.labelScanResolution.AutoSize = true;
-            this.labelScanResolution.Location = new System.Drawing.Point(91, 3);
-            this.labelScanResolution.Name = "labelScanResolution";
-            this.labelScanResolution.Size = new System.Drawing.Size(49, 13);
-            this.labelScanResolution.TabIndex = 1;
-            this.labelScanResolution.Text = "waiting...";
-            // 
             // checkBoxFullScreenScan
             // 
             this.checkBoxFullScreenScan.AutoSize = true;
@@ -847,6 +830,29 @@
             this.checkBoxFullScreenScan.Text = "Force full screen scan (see rules)";
             this.checkBoxFullScreenScan.UseVisualStyleBackColor = true;
             this.checkBoxFullScreenScan.CheckedChanged += new System.EventHandler(this.checkBoxFullScreenScan_CheckedChanged);
+            // 
+            // labelScanResolution
+            // 
+            this.labelScanResolution.AutoSize = true;
+            this.labelScanResolution.Location = new System.Drawing.Point(91, 3);
+            this.labelScanResolution.Name = "labelScanResolution";
+            this.labelScanResolution.Size = new System.Drawing.Size(49, 13);
+            this.labelScanResolution.TabIndex = 1;
+            this.labelScanResolution.Text = "waiting...";
+            // 
+            // hitInvisibleLabel3
+            // 
+            this.hitInvisibleLabel3.AutoSize = true;
+            this.hitInvisibleLabel3.Location = new System.Drawing.Point(2, 3);
+            this.hitInvisibleLabel3.Name = "hitInvisibleLabel3";
+            this.hitInvisibleLabel3.Size = new System.Drawing.Size(83, 13);
+            this.hitInvisibleLabel3.TabIndex = 0;
+            this.hitInvisibleLabel3.Text = "Scan resolution:";
+            // 
+            // timerAutoScanUpkeep
+            // 
+            this.timerAutoScanUpkeep.Interval = 30000;
+            this.timerAutoScanUpkeep.Tick += new System.EventHandler(this.timerAutoScanUpkeep_Tick);
             // 
             // FormOverlay
             // 
@@ -965,5 +971,6 @@
         private System.Windows.Forms.CheckBox checkBoxFullScreenScan;
         private HitInvisibleLabel labelScanResolution;
         private HitInvisibleLabel hitInvisibleLabel3;
+        private System.Windows.Forms.Timer timerAutoScanUpkeep;
     }
 }
