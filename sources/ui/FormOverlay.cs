@@ -510,7 +510,12 @@ namespace FFTriadBuddy
                     break;
 
                 default:
-                    if (screenAnalyzer.activeScanner is ScannerTriad)
+                    if (screenAnalyzer.activeScanner == null || screenAnalyzer.activeScanner.cachedGameStateBase == null)
+                    {
+                        string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
+                        SetStatusText(npcDesc + "Ready", SystemIcons.Information);
+                    }
+                    else if (screenAnalyzer.activeScanner is ScannerTriad)
                     {
                         string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
                         switch (screenAnalyzer.scannerTriad.cachedGameState.turnState)

@@ -5,6 +5,7 @@ sources/CloudStorage/GoogleClientIdentifiers.cs
 test/*
 datasource/*
 releases/*
+ml/patternMatch/data/*
 !datasource/!Start.bat
 
 ## Ignore Visual Studio temporary files, build results, and

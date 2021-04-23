@@ -1,10 +1,8 @@
 ﻿using MgAl2O4.Utils;
-using Palit.TLSHSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 
 namespace FFTriadBuddy
 {
@@ -265,101 +263,14 @@ namespace FFTriadBuddy
         }
     }
 
-    public class FastBitmapHash
-    {
-        public HashCollection Hash;
-        public object GuideOb;
-
-        public byte[] Pixels;
-        public int Width;
-        public int Height;
-
-        public Rectangle SourceBounds;
-        public Rectangle ContextBounds;
-        public Point DrawPos;
-
-        public override string ToString()
-        {
-            return "BitmapHash [" + SourceBounds.Left + ", " + SourceBounds.Top + "]..[" + SourceBounds.Right + ", " + SourceBounds.Bottom + "] = " + Hash;
-        }
-    }
-
-    public class ImageHashUnknown
-    {
-        public ImageHashData hashData;
-        public Image sourceImage;
-    }
-
-    public struct ImagePatternDigit : IComparable<ImagePatternDigit>
-    {
-        public byte[] PixelMask;
-        public int Value;
-        public string Hash;
-
-        public static int Width = 10;
-        public static int Height = 8; // bitmask in single byte, don't increase
-
-        public ImagePatternDigit(int value, byte[] pixelMask)
-        {
-            PixelMask = pixelMask;
-            Value = value;
-            Hash = ImageDataDigit.ToHexString(PixelMask);
-        }
-
-        public int CompareTo(ImagePatternDigit other)
-        {
-            return (Value == other.Value) ? Hash.CompareTo(other.Hash) : Value.CompareTo(other.Value);
-        }
-
-        public override string ToString()
-        {
-            return Value + " (" + Hash + ")";
-        }
-    }
-
-    public struct ImageDataDigit
-    {
-        public byte[] Pixels;
-
-        public ImageDataDigit(byte[] pixels)
-        {
-            Pixels = pixels;
-        }
-
-        public static string ToHexString(byte[] pixels)
-        {
-            string desc = "";
-            for (int Idx = 0; Idx < pixels.Length; Idx++)
-            {
-                desc += pixels[Idx].ToString("x2");
-            }
-
-            return desc;
-        }
-
-        public static byte[] FromHexString(string str)
-        {
-            byte[] result = null;
-            if ((str.Length % 2) == 0)
-            {
-                result = new byte[str.Length / 2];
-                for (int Idx = 0; Idx < result.Length; Idx++)
-                {
-                    result[Idx] = Convert.ToByte(str.Substring(Idx * 2, 2), 16);
-                }
-            }
-
-            return result;
-        }
-
-        public override string ToString()
-        {
-            return ToHexString(Pixels);
-        }
-    }
-
     public class ImageUtils
     {
+        public struct HashPreview
+        {
+            public Rectangle bounds;
+            public float[] hashValues;
+        }
+
         public static FastBitmapHSV ConvertToFastBitmap(Bitmap image)
         {
             FastBitmapHSV result = new FastBitmapHSV();
@@ -390,7 +301,7 @@ namespace FFTriadBuddy
             return result;
         }
 
-        public static Bitmap CreateBitmapWithShapes(FastBitmapHSV bitmap, List<Rectangle> listBounds, List<FastBitmapHash> listHashes)
+        public static Bitmap ConvertToBitmap(FastBitmapHSV bitmap)
         {
             Bitmap bmp = new Bitmap(bitmap.Width, bitmap.Height);
             unsafe
@@ -416,48 +327,78 @@ namespace FFTriadBuddy
                 bmp.UnlockBits(bitmapData);
             }
 
-            using (Graphics gBmp = Graphics.FromImage(bmp))
-            {
-                if (listBounds.Count > 0)
-                {
-                    Pen boundsPen = new Pen(Color.Cyan);
-                    gBmp.DrawRectangles(boundsPen, listBounds.ToArray());
-                }
-
-                Pen hashPen = new Pen(Color.Magenta);
-                foreach (FastBitmapHash hashData in listHashes)
-                {
-                    gBmp.DrawRectangle(hashPen, hashData.SourceBounds);
-
-                    if (hashData.Pixels != null)
-                    {
-                        for (int HashX = 0; HashX < hashData.Width; HashX++)
-                        {
-                            for (int HashY = 0; HashY < hashData.Height; HashY++)
-                            {
-                                byte writeValue = hashData.Pixels[HashX + (HashY * hashData.Width)];
-                                int writeValueInt = Math.Min(255, writeValue * 16);
-                                Color writeColor = Color.FromArgb(writeValueInt, 0, 0);
-                                bmp.SetPixel(HashX + hashData.DrawPos.X, HashY + hashData.DrawPos.Y, writeColor);
-                            }
-                        }
-                    }
-                }
-            }
-
             return bmp;
         }
 
-        public static void SaveBitmapWithShapes(FastBitmapHSV bitmap, List<Rectangle> listBounds, List<FastBitmapHash> listHashes, string fileName)
+        public static void DrawDebugShapes(Bitmap bitmap, List<Rectangle> bounds)
         {
-            if (File.Exists(fileName))
+            if (bounds.Count > 0)
             {
-                File.Delete(fileName);
+                using (Graphics gBmp = Graphics.FromImage(bitmap))
+                {
+                    Pen boundsPen = new Pen(Color.Cyan);
+                    gBmp.DrawRectangles(boundsPen, bounds.ToArray());
+                }
             }
-
-            using (Bitmap bmp = CreateBitmapWithShapes(bitmap, listBounds, listHashes))
+        }
+        public static void DrawDebugHashes(Bitmap bitmap, List<HashPreview> hashes)
+        {
+            if (hashes.Count > 0)
             {
-                bmp.Save(AssetManager.Get().CreateFilePath(fileName), ImageFormat.Png);
+                unsafe
+                {
+                    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                    int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+
+                    foreach (var hashPreview in hashes)
+                    {
+                        for (int IdxY = 0; IdxY < hashPreview.bounds.Height; IdxY++)
+                        {
+                            byte* pixels = (byte*)bitmapData.Scan0 + ((hashPreview.bounds.Y + IdxY) * bitmapData.Stride) + (hashPreview.bounds.X * bytesPerPixel);
+
+                            for (int IdxX = 0; IdxX < hashPreview.bounds.Width; IdxX++)
+                            {
+                                float hashValue = hashPreview.hashValues[IdxX + (IdxY * hashPreview.bounds.Width)];
+
+                                int IdxByte = IdxX * bytesPerPixel;
+                                pixels[IdxByte + 3] = 255;
+                                pixels[IdxByte + 2] = (byte)(255 * hashValue);
+                                pixels[IdxByte + 1] = 0;
+                                pixels[IdxByte + 0] = (byte)(255 * hashValue);
+                            }
+                        }
+                    }
+
+
+                    bitmap.UnlockBits(bitmapData);
+                }
+            }
+        }
+
+        public static void DrawDebugHash(Bitmap bitmap, HashPreview hashPreview, Color color)
+        {
+            unsafe
+            {
+                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+
+                for (int IdxY = 0; IdxY < hashPreview.bounds.Height; IdxY++)
+                {
+                    byte* pixels = (byte*)bitmapData.Scan0 + ((hashPreview.bounds.Y + IdxY) * bitmapData.Stride) + (hashPreview.bounds.X * bytesPerPixel);
+
+                    for (int IdxX = 0; IdxX < hashPreview.bounds.Width; IdxX++)
+                    {
+                        float hashValue = hashPreview.hashValues[IdxX + (IdxY * hashPreview.bounds.Width)];
+
+                        int IdxByte = IdxX * bytesPerPixel;
+                        pixels[IdxByte + 3] = 255;
+                        pixels[IdxByte + 2] = (byte)(color.R * hashValue);
+                        pixels[IdxByte + 1] = (byte)(color.G * hashValue);
+                        pixels[IdxByte + 0] = (byte)(color.B * hashValue);
+                    }
+                }
+
+                bitmap.UnlockBits(bitmapData);
             }
         }
 
@@ -960,27 +901,60 @@ namespace FFTriadBuddy
             return (floodBitmap != null);
         }
 
-        public static FastBitmapHash CalculateImageHash(FastBitmapHSV bitmap, Rectangle box, Rectangle contextBox, FastPixelMatch colorMatch, int hashWidth, int hashHeight, bool bNormalizeColors = false)
+        public static float GetPixelFeaturesMono(FastPixelHSV testPx)
         {
-            byte[] hashImage = new byte[hashWidth * hashHeight];
+            return testPx.GetMonochrome() / 255.0f;
+        }
+
+        public static float GetPixelFeaturesHue(FastPixelHSV testPx)
+        {
+            return testPx.GetHue() / 360.0f;
+        }
+
+        public static float GetPixelFeaturesHueMono(FastPixelHSV testPx)
+        {
+            const int hueSteps = 16;
+            const int monoSteps = 16;
+
+            const float monoScale = 1.0f / monoSteps;
+            const float hueScale = monoScale / hueSteps;
+
+            int hueV = testPx.GetHue() / (360 / hueSteps);
+            int monoV = testPx.GetMonochrome() / (256 / monoSteps);
+
+            float pixelV = (hueV * hueScale) + (monoV * monoScale);
+            return pixelV;
+        }
+
+        public static float GetPixelFeaturesM2V2(FastPixelHSV testPx)
+        {
+            float monoV = testPx.GetMonochrome() / 255.0f;
+            float valV = testPx.GetValue() / 100.0f;
+            float pixelV = monoV * monoV * valV * valV;
+            return pixelV;
+        }
+
+        public static float[] ExtractImageFeaturesScaled(FastBitmapHSV bitmap, Rectangle bounds, int destWidth, int destHeight, Func<FastPixelHSV, float> pxFunc)
+        {
+            float[] values = new float[destWidth * destHeight];
 
             // scale to requested size
-            float scaleX = (float)hashWidth / box.Width;
-            float scaleY = (float)hashHeight / box.Height;
+            float scaleX = (float)destWidth / bounds.Width;
+            float scaleY = (float)destHeight / bounds.Height;
             float endY = 0.0f;
 
-            for (int hashY = 0; hashY < hashHeight; hashY++)
+            for (int hashY = 0; hashY < destHeight; hashY++)
             {
                 float startY = endY;
                 endY = (hashY + 1) / scaleY;
-                if (endY >= box.Height) { endY = box.Height - 0.00001f; }
+                if (endY >= bounds.Height) { endY = bounds.Height - 0.00001f; }
                 float endX = 0.0f;
 
-                for (int hashX = 0; hashX < hashWidth; hashX++)
+                for (int hashX = 0; hashX < destWidth; hashX++)
                 {
                     float startX = endX;
                     endX = (hashX + 1) / scaleX;
-                    if (endX >= box.Width) { endX = box.Width - 0.00001f; }
+                    if (endX >= bounds.Width) { endX = bounds.Width - 0.00001f; }
                     float sum = 0.0f;
 
                     int sumDivNum = 0;
@@ -996,52 +970,61 @@ namespace FFTriadBuddy
                             if (srcX == (int)startX) { partX -= startX - srcX; }
                             if (srcX == (int)endX) { partX -= srcX + 1 - endX; }
 
-                            FastPixelHSV valuePx = bitmap.GetPixel(box.Left + srcX, box.Top + srcY);
-                            float srcValueNorm = colorMatch.IsMatching(valuePx) ? (bNormalizeColors ? 1.0f : (valuePx.Monochrome / 255.0f)) : 0.0f;
-                            sum += srcValueNorm * partY * partX;
+                            FastPixelHSV testPx = bitmap.GetPixel(bounds.Left + srcX, bounds.Top + srcY);
+                            float testPxValue = pxFunc(testPx);
+                            sum += testPxValue * partY * partX;
                             sumDivNum++;
                         }
                     }
 
-                    float storeValueNorm = sum / sumDivNum;
-                    hashImage[hashX + (hashY * hashWidth)] = (byte)Math.Min(15, 15 * storeValueNorm);
+                    values[hashX + (hashY * destWidth)] = sum / sumDivNum;
                 }
             }
 
-            TlshBuilder hashBuilder = new TlshBuilder();
-            hashBuilder.Update(hashImage);
-            TlshHash complexHash = hashBuilder.IsValid(false) ? hashBuilder.GetHash(false) : null;
-            ScanLineHash simpleHash = ScanLineHash.CreateFromImage(hashImage, hashWidth, hashHeight);
-            HashCollection hashCollection = new HashCollection(complexHash, simpleHash);
-
-            return new FastBitmapHash
-            {
-                Hash = hashCollection,
-                Height = hashHeight,
-                Width = hashWidth,
-                Pixels = hashImage,
-                SourceBounds = box,
-                ContextBounds = contextBox,
-                DrawPos = new Point(box.Right + 1, box.Top),
-            };
+            return values;
         }
 
-        public static ImageHashUnknown CreateUnknownImageHash(FastBitmapHash hashData, Bitmap sourceImage, EImageHashType hashType)
+        public static void NormalizeImageFeatures(float[] values)
         {
-            Bitmap previewBitmap = new Bitmap(hashData.ContextBounds.Width, hashData.ContextBounds.Height);
+            float maxV = 0.0f;
+            for (int idx = 0; idx < values.Length; idx++)
+            {
+                if (maxV < values[idx])
+                {
+                    maxV = values[idx];
+                }
+            }
+
+            if (maxV > 0.001)
+            {
+                for (int idx = 0; idx < values.Length; idx++)
+                {
+                    values[idx] /= maxV;
+                }
+            }
+        }
+
+        public static Bitmap CreatePreviewImage(Bitmap sourceImage, Rectangle bounds, Rectangle contextBounds)
+        {
+            if (contextBounds.IsEmpty || bounds.Contains(contextBounds))
+            {
+                return sourceImage.Clone(bounds, sourceImage.PixelFormat);
+            }
+
+            Bitmap previewBitmap = sourceImage.Clone(contextBounds, sourceImage.PixelFormat);
             unsafe
             {
-                BitmapData srcBitmapData = sourceImage.LockBits(hashData.ContextBounds, ImageLockMode.ReadOnly, sourceImage.PixelFormat);
+                BitmapData srcBitmapData = sourceImage.LockBits(contextBounds, ImageLockMode.ReadOnly, sourceImage.PixelFormat);
                 BitmapData dstBitmapData = previewBitmap.LockBits(new Rectangle(0, 0, previewBitmap.Width, previewBitmap.Height), ImageLockMode.WriteOnly, previewBitmap.PixelFormat);
                 int srcBytesPerPixel = Image.GetPixelFormatSize(sourceImage.PixelFormat) / 8;
                 int dstBytesPerPixel = Image.GetPixelFormatSize(previewBitmap.PixelFormat) / 8;
 
                 Rectangle relativeInnerBounds = new Rectangle(
-                    hashData.SourceBounds.Left - hashData.ContextBounds.Left,
-                    hashData.SourceBounds.Top - hashData.ContextBounds.Top,
-                    hashData.SourceBounds.Width, hashData.SourceBounds.Height);
+                    bounds.Left - contextBounds.Left,
+                    bounds.Top - contextBounds.Top,
+                    bounds.Width, bounds.Height);
 
-                for (int IdxY = 0; IdxY < hashData.ContextBounds.Height; IdxY++)
+                for (int IdxY = 0; IdxY < contextBounds.Height; IdxY++)
                 {
                     byte* srcPixels = (byte*)srcBitmapData.Scan0 + (IdxY * srcBitmapData.Stride);
                     byte* dstPixels = (byte*)dstBitmapData.Scan0 + (IdxY * dstBitmapData.Stride);
@@ -1050,7 +1033,7 @@ namespace FFTriadBuddy
 
                     int SrcIdx = 0;
                     int DstIdx = 0;
-                    for (int IdxPixel = 0; IdxPixel < hashData.ContextBounds.Width; IdxPixel++)
+                    for (int IdxPixel = 0; IdxPixel < contextBounds.Width; IdxPixel++)
                     {
                         bool bInRange = bInRangeY && (IdxPixel >= relativeInnerBounds.Left) && (IdxPixel <= relativeInnerBounds.Right);
                         int ColorDiv = bInRange ? 1 : 4;
@@ -1070,422 +1053,7 @@ namespace FFTriadBuddy
                 previewBitmap.UnlockBits(dstBitmapData);
             }
 
-            ImageHashUnknown newImageHash = new ImageHashUnknown
-            {
-                hashData = new ImageHashData(null, hashData.Hash, hashType, hashData.GuideOb),
-                sourceImage = previewBitmap
-            };
-
-            return newImageHash;
-        }
-
-        public static object FindMatchingHash(FastBitmapHash hashData, EImageHashType hashType, out int bestDistance, bool bDebugMode = false)
-        {
-            string debugDesc = bDebugMode ? hashData.Hash + " >> " : "";
-            int debugDescParts = 0;
-
-            object bestMatchOb = null;
-            bestDistance = -1;
-
-            bool bIsLocked = PlayerSettingsDB.Get().IsLockedHash(hashData.Hash);
-
-            foreach (ImageHashData hashInfo in PlayerSettingsDB.Get().customHashes)
-            {
-                if (hashInfo.Type == hashType)
-                {
-                    bool bIsMatching = hashInfo.IsHashMatching(hashData.Hash, out int testDistance);
-                    if (bDebugMode)
-                    {
-                        debugDesc += ((hashType == EImageHashType.Card) ? ((TriadCard)hashInfo.Owner).ToShortString() : hashInfo.Owner.ToString()) + ":" + testDistance + ", ";
-                        debugDescParts++;
-                    }
-
-                    if (bIsLocked && testDistance != 0)
-                    {
-                        continue;
-                    }
-
-                    if (bIsMatching && (bestDistance < 0 || bestDistance > testDistance))
-                    {
-                        bestDistance = testDistance;
-                        bestMatchOb = hashInfo.Owner;
-                    }
-                }
-            }
-
-            if (bestDistance < 0)
-            {
-                foreach (ImageHashData hashInfo in ImageHashDB.Get().hashes)
-                {
-                    if (hashInfo.Type == hashType)
-                    {
-                        bool bIsMatching = hashInfo.IsHashMatching(hashData.Hash, out int testDistance);
-                        if (bDebugMode)
-                        {
-                            debugDesc += ((hashType == EImageHashType.Card) ? ((TriadCard)hashInfo.Owner).ToShortString() : hashInfo.Owner.ToString()) + ":" + testDistance + ", ";
-                            debugDescParts++;
-                        }
-
-                        if (bIsLocked && testDistance != 0)
-                        {
-                            continue;
-                        }
-
-                        if (bIsMatching && (bestDistance < 0 || bestDistance > testDistance))
-                        {
-                            bestDistance = testDistance;
-                            bestMatchOb = hashInfo.Owner;
-                        }
-                    }
-                }
-            }
-
-            if (bDebugMode)
-            {
-                if (debugDescParts > 0) { debugDesc = debugDesc.Remove(debugDesc.Length - 2, 2); }
-                debugDesc += " >> ";
-                debugDesc += (bestMatchOb == null) ? "unknown" :
-                    ((hashType == EImageHashType.Card) ? ((TriadCard)bestMatchOb).ToShortString() : bestMatchOb.ToString());
-
-                Logger.WriteLine(debugDesc);
-            }
-
-            return bestMatchOb;
-        }
-
-        public static bool ConditionalAddUnknownHash(ImageHashUnknown newHashToAdd, List<ImageHashUnknown> unknownHashes)
-        {
-            bool bCanAdd = true;
-            foreach (ImageHashUnknown image in unknownHashes)
-            {
-                if (image.hashData.Type == newHashToAdd.hashData.Type)
-                {
-                    bool bIsMatching = image.hashData.IsHashMatching(newHashToAdd.hashData.Hash);
-                    if (bIsMatching)
-                    {
-                        bCanAdd = false;
-                        break;
-                    }
-                }
-            }
-
-            if (bCanAdd)
-            {
-                unknownHashes.Add(newHashToAdd);
-            }
-
-            return bCanAdd;
-        }
-
-        public static float HasPatternMatch(byte[] cachedMatchData, int posX, int posY, int cacheWidth, bool bExact, ImagePatternDigit patternMask, bool bDebugMode = false)
-        {
-            int NumMatching = 0;
-            int NumTotal = 0;
-            for (int IdxY = 0; IdxY < ImagePatternDigit.Height; IdxY++)
-            {
-                string debugDesc = "";
-                int ByteIdx = ((posY + IdxY) * cacheWidth) + posX;
-                for (int IdxX = 0; IdxX < ImagePatternDigit.Width; IdxX++)
-                {
-                    bool bHasMatch = cachedMatchData[ByteIdx] == 1;
-                    bool bWantsMatch = (patternMask.PixelMask[IdxX] & (1 << IdxY)) != 0;
-
-                    if (bExact)
-                    {
-                        NumMatching += (bHasMatch == bWantsMatch) ? (bHasMatch ? 2 : 1) : 0;
-                    }
-                    else
-                    {
-                        NumMatching += (bHasMatch && bWantsMatch) ? 1 : 0;
-                    }
-
-                    NumTotal += bWantsMatch ? 1 : 0;
-                    ByteIdx++;
-
-                    if (bDebugMode) { debugDesc += (bHasMatch ? (bWantsMatch ? "#" : "x") : (bWantsMatch ? "?" : ".")) + " "; }
-                }
-
-                if (bDebugMode) { Logger.WriteLine(debugDesc); }
-            }
-
-            float MatchPct = (float)NumMatching / (bExact ? ((80 - NumTotal) + (NumTotal * 2)) : NumTotal);
-            if (bDebugMode) { Logger.WriteLine("HasPatternMatch: " + patternMask.Value + " at (" + posX + ", " + posY + ") = " + (int)(100 * MatchPct) + "%"); }
-
-            return MatchPct;
-        }
-
-        public static byte[] InitPatternMatchImage(FastBitmapHSV bitmap, Point pos, FastPixelMatch colorMatch, int offsetSize)
-        {
-            int imageWidth = offsetSize + ImagePatternDigit.Width + offsetSize;
-            int imageHeight = offsetSize + ImagePatternDigit.Height + offsetSize;
-            byte[] imageMatch = new byte[imageWidth * imageHeight];
-
-            int ByteIdx = 0;
-            for (int IdxY = 0; IdxY < imageHeight; IdxY++)
-            {
-                for (int IdxX = 0; IdxX < imageWidth; IdxX++)
-                {
-                    FastPixelHSV testPx = bitmap.GetPixel(pos.X + IdxX - offsetSize, pos.Y + IdxY - offsetSize);
-                    imageMatch[ByteIdx] = colorMatch.IsMatching(testPx) ? (byte)1 : (byte)0;
-                    ByteIdx++;
-                }
-            }
-
-            return imageMatch;
-        }
-
-        public static byte[] InitPatternMatchImageScaled(FastBitmapHSV bitmap, Point pos, FastPixelMatch colorMatch, int offsetSize, Size digitSize, bool bDebugMode)
-        {
-            int imageWidth = offsetSize + ImagePatternDigit.Width + offsetSize;
-            int imageHeight = offsetSize + ImagePatternDigit.Height + offsetSize;
-            byte[] imageMatch = new byte[imageWidth * imageHeight];
-
-            int scaledOffset = offsetSize;
-            Rectangle sourceBox = new Rectangle(
-                pos.X - scaledOffset,
-                pos.Y - scaledOffset,
-                scaledOffset + digitSize.Width + scaledOffset,
-                scaledOffset + digitSize.Height + scaledOffset);
-
-            // scale to requested size
-            float scaleX = (float)imageWidth / sourceBox.Width;
-            float scaleY = (float)imageHeight / sourceBox.Height;
-            float endY = 0.0f;
-
-            int ByteIdx = 0;
-            for (int hashY = 0; hashY < imageHeight; hashY++)
-            {
-                float startY = endY;
-                endY = (hashY + 1) / scaleY;
-                if (endY >= sourceBox.Height) { endY = sourceBox.Height - 0.00001f; }
-                float endX = 0.0f;
-
-                for (int hashX = 0; hashX < imageWidth; hashX++)
-                {
-                    float startX = endX;
-                    endX = (hashX + 1) / scaleX;
-                    if (endX >= sourceBox.Width) { endX = sourceBox.Width - 0.00001f; }
-                    float sum = 0.0f;
-
-                    int sumDivNum = 0;
-                    for (int srcY = (int)startY; srcY <= (int)endY; srcY++)
-                    {
-                        float partY = 1.0f;
-                        if (srcY == (int)startY) { partY -= startY - srcY; }
-                        if (srcY == (int)endY) { partY -= srcY + 1 - endY; }
-
-                        for (int srcX = (int)startX; srcX <= (int)endX; srcX++)
-                        {
-                            float partX = 1.0f;
-                            if (srcX == (int)startX) { partX -= startX - srcX; }
-                            if (srcX == (int)endX) { partX -= srcX + 1 - endX; }
-
-                            FastPixelHSV valuePx = bitmap.GetPixel(sourceBox.Left + srcX, sourceBox.Top + srcY);
-                            float srcValueNorm = colorMatch.IsMatching(valuePx) ? 1.0f : 0.0f;
-                            sum += srcValueNorm * partY * partX;
-                            sumDivNum++;
-                        }
-                    }
-
-                    float storeValueNorm = sum / sumDivNum;
-                    imageMatch[ByteIdx] = (storeValueNorm > 0.1f) ? (byte)1 : (byte)0;
-                    ByteIdx++;
-                }
-            }
-
-            if (bDebugMode)
-            {
-                Logger.WriteLine("Original image: " + sourceBox);
-                for (int idxY = sourceBox.Top; idxY < sourceBox.Bottom; idxY++)
-                {
-                    string line = "";
-                    for (int idxX = sourceBox.Left; idxX < sourceBox.Right; idxX++)
-                    {
-                        FastPixelHSV valuePx = bitmap.GetPixel(idxX, idxY);
-                        line += colorMatch.IsMatching(valuePx) ? "# " : ". ";
-                    }
-
-                    Logger.WriteLine(line);
-                }
-
-                Logger.WriteLine("Scaled image: " + imageWidth + "x" + imageHeight);
-                ByteIdx = 0;
-                for (int idxY = 0; idxY < imageHeight; idxY++)
-                {
-                    string line = "";
-                    for (int idxX = 0; idxX < imageWidth; idxX++)
-                    {
-                        line += (imageMatch[ByteIdx] == 1) ? "# " : ". ";
-                        ByteIdx++;
-                    }
-
-                    Logger.WriteLine(line);
-                }
-            }
-
-            return imageMatch;
-        }
-
-        public static int FindPatternMatchInImage(byte[] imageMatch, int offsetSize, Point pos, List<ImagePatternDigit> patterns, out ImageDataDigit digitData, float offCenterPenalty, bool bDebugMode = false)
-        {
-            int imageWidth = offsetSize + ImagePatternDigit.Width + offsetSize;
-            int imageHeight = offsetSize + ImagePatternDigit.Height + offsetSize;
-
-            int bestValue = 0;
-            int bestValueExact = 0;
-            float totalBestScore = 0;
-            float totalBestScoreExact = 0;
-
-            int bestPatternMatchX = 0;
-            int bestPatternExactX = 0;
-            int bestPatternMatchY = 0;
-            int bestPatternExactY = 0;
-            foreach (ImagePatternDigit pattern in patterns)
-            {
-                float bestScore = 0;
-                float bestScoreExact = 0;
-                int bestPosX = 0;
-                int bestPosXExact = 0;
-                int bestPosY = 0;
-                int bestPosYExact = 0;
-
-                /*if (bDebugMode)
-                {
-                    if (pattern.Value == 9)
-                    {
-                        bestScore = HasPatternMatch(imageMatch, offsetSize - 1, offsetSize, imageWidth, true, pattern, true);
-                        bestPosX = pos.X - 1;
-                        bestPosY = pos.Y;
-                    }
-                    else if (pattern.Value == 1)
-                    {
-                        bestScore = HasPatternMatch(imageMatch, offsetSize + 3, offsetSize - 1, imageWidth, true, pattern, true);
-                        bestPosX = pos.X + 3;
-                        bestPosY = pos.Y - 1;
-                    }
-                }
-                else*/
-                {
-                    for (int offsetX = -offsetSize; offsetX <= offsetSize; offsetX++)
-                    {
-                        for (int offsetY = -offsetSize; offsetY <= offsetSize; offsetY++)
-                        {
-                            float testScore = HasPatternMatch(imageMatch, offsetX + offsetSize, offsetY + offsetSize, imageWidth, false, pattern);
-                            testScore -= (Math.Abs(offsetX) + Math.Abs(offsetY)) * offCenterPenalty;
-                            if (testScore > bestScore)
-                            {
-                                bestPosX = pos.X + offsetX;
-                                bestPosY = pos.Y + offsetY;
-                                bestScore = testScore;
-                            }
-
-                            float testScoreExact = HasPatternMatch(imageMatch, offsetX + offsetSize, offsetY + offsetSize, imageWidth, true, pattern);
-                            if (testScoreExact > bestScoreExact)
-                            {
-                                bestPosXExact = pos.X + offsetX;
-                                bestPosYExact = pos.Y + offsetY;
-                                bestScoreExact = testScoreExact;
-                            }
-                        }
-                    }
-                }
-
-                if (bestScore > totalBestScore)
-                {
-                    totalBestScore = bestScore;
-                    bestValue = pattern.Value;
-
-                    bestPatternMatchX = bestPosX - pos.X + offsetSize;
-                    bestPatternMatchY = bestPosY - pos.Y + offsetSize;
-                }
-
-                if (bestScoreExact > totalBestScoreExact)
-                {
-                    totalBestScoreExact = bestScoreExact;
-                    bestValueExact = pattern.Value;
-
-                    bestPatternExactX = bestPosXExact - pos.X + offsetSize;
-                    bestPatternExactY = bestPosYExact - pos.Y + offsetSize;
-                }
-
-                if (bDebugMode)
-                {
-                    Logger.WriteLine("FindPatternMatch: " + pattern.Value +
-                        " best at (" + bestPosX + ", " + bestPosY + ") = " + (int)(100 * bestScore) + "%," +
-                        " exact at (" + bestPosXExact + ", " + bestPosYExact + ") = " + (int)(100 * bestScoreExact) + "%");
-                }
-            }
-
-            bool useExactMatch = false;
-            int selectedDigit = 0;
-            if (totalBestScoreExact > 0.95)
-            {
-                selectedDigit = bestValueExact;
-                useExactMatch = true;
-            }
-            else if (totalBestScore > 0.8)
-            {
-                selectedDigit = bestValue;
-                useExactMatch = false;
-            }
-            else if (totalBestScoreExact > 0.8)
-            {
-                selectedDigit = bestValueExact;
-                useExactMatch = true;
-            }
-
-            {
-                int cacheMatchX = useExactMatch ? bestPatternExactX : bestPatternMatchX;
-                int cacheMatchY = useExactMatch ? bestPatternExactY : bestPatternMatchY;
-
-                byte[] digitDataPixels = new byte[ImagePatternDigit.Width];
-                for (int IdxX = 0; IdxX < ImagePatternDigit.Width; IdxX++)
-                {
-                    int Value = 0;
-                    int ByteIdx = (cacheMatchY * imageWidth) + cacheMatchX + IdxX;
-                    for (int IdxY = 0; IdxY < ImagePatternDigit.Height; IdxY++)
-                    {
-                        Value |= (imageMatch[ByteIdx + (IdxY * imageWidth)] != 0) ? (1 << IdxY) : 0;
-                    }
-
-                    digitDataPixels[IdxX] = (byte)Value;
-                }
-
-                digitData = new ImageDataDigit(digitDataPixels);
-
-                if (bDebugMode)
-                {
-                    Logger.WriteLine("Selected digit: " + selectedDigit);
-                    for (int IdxY = 0; IdxY < ImagePatternDigit.Height; IdxY++)
-                    {
-                        string debugDesc = "";
-                        for (int IdxX = 0; IdxX < ImagePatternDigit.Width; IdxX++)
-                        {
-                            byte ColValue = digitDataPixels[IdxX];
-                            byte RowMask = (byte)(1 << IdxY);
-                            debugDesc += ((ColValue & RowMask) != 0 ? "#" : ".") + " ";
-                        }
-
-                        Logger.WriteLine(debugDesc);
-                    }
-                }
-            }
-
-            return selectedDigit;
-        }
-
-        public static int FindPatternMatch(FastBitmapHSV bitmap, Point pos, FastPixelMatch colorMatch, List<ImagePatternDigit> patterns, out ImageDataDigit digitData, bool bDebugMode = false)
-        {
-            const int offsetSize = 5;
-            byte[] imageMatch = InitPatternMatchImage(bitmap, pos, colorMatch, offsetSize);
-            return FindPatternMatchInImage(imageMatch, offsetSize, pos, patterns, out digitData, 0, bDebugMode);
-        }
-
-        public static int FindPatternMatchScaled(FastBitmapHSV bitmap, Point pos, Size digitSize, FastPixelMatch colorMatch, List<ImagePatternDigit> patterns, out ImageDataDigit digitData, bool bDebugMode = false)
-        {
-            const int offsetSize = 5;
-            byte[] imageMatch = InitPatternMatchImageScaled(bitmap, pos, colorMatch, offsetSize, digitSize, bDebugMode);
-            return FindPatternMatchInImage(imageMatch, offsetSize, pos, patterns, out digitData, 0.2f, bDebugMode);
+            return previewBitmap;
         }
     }
 }

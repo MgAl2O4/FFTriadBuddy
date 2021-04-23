@@ -34,13 +34,14 @@ namespace FFTriadBuddy
             None = 0x0,
             Debug = 0x1,
             DebugScreenshotOnly = 0x2,
-            ResetIntermediateData = 0x4,
+            DebugSaveMarkup = 0x4,
+            ResetIntermediateData = 0x10,
 
             ScanTriad = 0x100,
             ScanCactpot = 0x200,
 
             ScanAll = ScanCactpot | ScanTriad,
-            Default = ResetIntermediateData | ScanAll,
+            Default = ScanAll,
         }
 
         public ScreenReader screenReader;
@@ -50,16 +51,17 @@ namespace FFTriadBuddy
         public Dictionary<EMode, ScannerBase> mapScanners;
         public ScannerBase activeScanner;
 
-        public List<ImageHashUnknown> unknownHashes;
-        public Dictionary<FastBitmapHash, int> currentHashDetections;
+        public List<ImageHashData> unknownHashes;
+        public List<ImageHashData> currentHashMatches;
+        public FastBitmapHSV cachedFastBitmap;
         public Rectangle scanClipBounds;
         public Rectangle currentScanArea;
-        
+
         public string debugScreenshotPath;
         public string debugScannerContext;
 
         private EState currentState = EState.NoInputImage;
-        private Size currentImageSize;
+        private Size cachedBitmapSize;
 
         public ScreenAnalyzer()
         {
@@ -67,8 +69,8 @@ namespace FFTriadBuddy
             scannerCactpot = new ScannerCactpot();
             scannerTriad = new ScannerTriad();
 
-            unknownHashes = new List<ImageHashUnknown>();
-            currentHashDetections = new Dictionary<FastBitmapHash, int>();
+            unknownHashes = new List<ImageHashData>();
+            currentHashMatches = new List<ImageHashData>();
 
             mapScanners = new Dictionary<EMode, ScannerBase>();
             mapScanners.Add(EMode.ScanTriad, scannerTriad);
@@ -95,25 +97,26 @@ namespace FFTriadBuddy
             {
                 // convert to HSL representation
                 timerStep.Restart();
-                FastBitmapHSV bitmap = ImageUtils.ConvertToFastBitmap(screenReader.cachedScreenshot);
+                cachedFastBitmap = ImageUtils.ConvertToFastBitmap(screenReader.cachedScreenshot);
                 timerStep.Stop();
                 if (debugMode) { Logger.WriteLine("Screenshot convert: " + timerStep.ElapsedMilliseconds + "ms"); }
                 if (Logger.IsSuperVerbose()) { Logger.WriteLine("Screenshot: {0}x{1}", screenReader.cachedScreenshot.Width, screenReader.cachedScreenshot.Height); }
 
                 // reset scanner's intermediate data
-                if ((mode & EMode.ResetIntermediateData) != EMode.None)
+                bool wantsCacheReset = (mode & EMode.ResetIntermediateData) != EMode.None;
+                if (wantsCacheReset)
                 {
                     unknownHashes.Clear();
-                    currentHashDetections.Clear();
+                    currentHashMatches.Clear();
+                }
 
-                    // invalidate scanner's cache if input image size has changed
-                    if (currentImageSize.Width <= 0 || currentImageSize.Width != bitmap.Width || currentImageSize.Height != bitmap.Height)
+                // invalidate scanner's cache if input image size has changed
+                if (wantsCacheReset || cachedBitmapSize.Width <= 0 || cachedBitmapSize.Width != cachedFastBitmap.Width || cachedBitmapSize.Height != cachedFastBitmap.Height)
+                {
+                    cachedBitmapSize = new Size(cachedFastBitmap.Width, cachedFastBitmap.Height);
+                    foreach (var kvp in mapScanners)
                     {
-                        currentImageSize = new Size(bitmap.Width, bitmap.Height);
-                        foreach (var kvp in mapScanners)
-                        {
-                            kvp.Value.InvalidateCache();
-                        }
+                        kvp.Value.InvalidateCache();
                     }
                 }
 
@@ -122,12 +125,12 @@ namespace FFTriadBuddy
                 // pass 1: check if cache is still valid for requested scanner
                 foreach (var kvp in mapScanners)
                 {
-                    if ((kvp.Key & mode) != EMode.None && kvp.Value.HasValidCache(bitmap, scannerFlags))
+                    if ((kvp.Key & mode) != EMode.None && kvp.Value.HasValidCache(cachedFastBitmap, scannerFlags))
                     {
                         bool scanned = false;
                         try
                         {
-                            scanned = kvp.Value.DoWork(bitmap, scannerFlags, timerStep, debugMode);
+                            scanned = kvp.Value.DoWork(cachedFastBitmap, scannerFlags, timerStep, debugMode);
                         }
                         catch (Exception ex)
                         {
@@ -160,7 +163,7 @@ namespace FFTriadBuddy
                             bool scanned = false;
                             try
                             {
-                                scanned = kvp.Value.DoWork(bitmap, scannerFlags, timerStep, debugMode);
+                                scanned = kvp.Value.DoWork(cachedFastBitmap, scannerFlags, timerStep, debugMode);
                             }
                             catch (Exception ex)
                             {
@@ -180,10 +183,11 @@ namespace FFTriadBuddy
                 }
 
                 // save debug markup if needed
-                if (debugMode && activeScanner != null)
+                if ((activeScanner != null) && ((mode & EMode.DebugSaveMarkup) != EMode.None))
                 {
                     List<Rectangle> debugBounds = new List<Rectangle>();
-                    activeScanner.AppendDebugShapes(debugBounds);
+                    List<ImageUtils.HashPreview> debugHashes = new List<ImageUtils.HashPreview>();
+                    activeScanner.AppendDebugShapes(debugBounds, debugHashes);
 
                     if (currentScanArea.Width > 0) { debugBounds.Add(currentScanArea); }
 
@@ -195,9 +199,12 @@ namespace FFTriadBuddy
                         File.Delete(imagePath);
                     }
 
-                    using (Bitmap bmp = ImageUtils.CreateBitmapWithShapes(bitmap, debugBounds, activeScanner.debugHashes))
+                    using (Bitmap markupBitmap = ImageUtils.ConvertToBitmap(cachedFastBitmap))
                     {
-                        bmp.Save(imagePath, ImageFormat.Png);
+                        ImageUtils.DrawDebugShapes(markupBitmap, debugBounds);
+                        ImageUtils.DrawDebugHashes(markupBitmap, debugHashes);
+
+                        markupBitmap.Save(imagePath, ImageFormat.Png);
                     }
 
                     timerStep.Stop();
@@ -215,16 +222,41 @@ namespace FFTriadBuddy
 
         public EState GetCurrentState() { return currentState; }
 
-        public void OnUnknownHashAdded()
-        {
-            currentState = EState.UnknownHash;
-        }
-
         public void OnScannerError()
         {
             if (currentState != EState.UnknownHash)
             {
                 currentState = EState.ScannerErrors;
+            }
+        }
+
+        public void AddImageHash(ImageHashData hashData)
+        {
+            hashData.sourceImage = screenReader.cachedScreenshot;
+            if (hashData.isKnown)
+            {
+                currentHashMatches.Add(hashData);
+            }
+            else
+            {
+                bool alreadyAdded = false;
+                foreach (ImageHashData testHash in unknownHashes)
+                {
+                    if (testHash.type == hashData.type && testHash.ownerOb == hashData.ownerOb)
+                    {
+                        if (testHash.IsMatching(hashData, 0, out int dummyDistance))
+                        {
+                            alreadyAdded = true;
+                        }
+                    }
+                }
+
+                Logger.WriteLine("Unknown image hash, type:{0}, new:{1}", hashData.type, !alreadyAdded);
+                if (!alreadyAdded)
+                {
+                    unknownHashes.Add(hashData);
+                    currentState = EState.UnknownHash;
+                }
             }
         }
 
@@ -241,9 +273,9 @@ namespace FFTriadBuddy
             }
         }
 
-        public void RemoveKnownHash(FastBitmapHash hashToRemove)
+        public void ClearKnownHashes()
         {
-            PlayerSettingsDB.Get().AddLockedHash(new ImageHashData(hashToRemove.GuideOb, hashToRemove.Hash, EImageHashType.None));
+            currentHashMatches.Clear();
         }
 
         public Rectangle ConvertGameToScreen(Rectangle gameBounds)
@@ -282,7 +314,7 @@ namespace FFTriadBuddy
 #if DEBUG
             if (string.IsNullOrEmpty(debugScreenshotPath))
             {
-                debugScreenshotPath = imagePath + "screenshot-source-4.jpg";
+                debugScreenshotPath = imagePath + "screenshot-source-9.jpg";
             }
 #endif
 
@@ -312,7 +344,16 @@ namespace FFTriadBuddy
             }
 
             perfTimer.Stop();
-            if (debugMode) { Logger.WriteLine("Screenshot load: " + perfTimer.ElapsedMilliseconds + "ms"); }
+            if (debugMode) 
+            {
+                string logFile = "";
+                if (!string.IsNullOrEmpty(debugScreenshotPath))
+                {
+                    logFile = " <<= " + Path.GetFileName(debugScreenshotPath);
+                }
+
+                Logger.WriteLine("Screenshot load: {0}ms {1}", perfTimer.ElapsedMilliseconds, logFile);
+            }
 
             return result;
         }

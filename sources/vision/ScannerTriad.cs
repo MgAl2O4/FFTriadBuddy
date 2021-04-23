@@ -39,23 +39,58 @@ namespace FFTriadBuddy
             }
         }
 
+        public enum ECardLocation
+        {
+            BlueDeck,
+            RedDeck,
+            Board,
+        }
+
+        public enum ECardState
+        {
+            None,
+            Hidden,
+            Locked,
+            Visible,
+            PlacedRed,
+            PlacedBlue,
+        }
+
         public class CardState : IComparable<CardState>
         {
+            public struct SideInfo
+            {
+                public float matchPct;
+                public int matchNum;
+                public bool hasOverride;
+                public Rectangle scanBox;
+                public float[] hashValues;
+            }
+
             public TriadCard card;
             public string name;
             public int[] sideNumber;
-            public int[] adjustNumber;
-            public ImageDataDigit[] sideImage;
             public bool failedMatching;
+
+            public ECardState state;
+            public ECardLocation location;
+            public int locationContext;
+            public Rectangle scanBox;
+            public Rectangle bounds;
+            public Bitmap sourceImage;
+            public ImageHashData cardImageHash;
+            public SideInfo[] sideInfo;
 
             public int CompareTo(CardState other)
             {
-                if (failedMatching == other.failedMatching)
-                {
-                    return name.CompareTo(other.name);
-                }
+                return (failedMatching != other.failedMatching) ? (failedMatching ? -1 : 1) :
+                    (location != other.location) ? location.CompareTo(other.location) :
+                    locationContext.CompareTo(other.locationContext);
+            }
 
-                return failedMatching ? -1 : 1;
+            public override string ToString()
+            {
+                return string.Format("{0}: {1} [{2}]", name, card, state);
             }
         }
 
@@ -92,12 +127,12 @@ namespace FFTriadBuddy
         private Rectangle[] cachedBlueCards;
         private Rectangle[] cachedRedCards;
         private Rectangle[] cachedBoardCards;
-        private List<ImagePatternDigit> digitMasks = new List<ImagePatternDigit>();
-        private TriadCard failedMatchCard = new TriadCard(-1, "failedMatch", "", ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0, 0);
 
         public GameState cachedGameState;
         public List<CardState> cachedCardState = new List<CardState>();
         public EScanError cachedScanError = EScanError.NoErrors;
+
+        private static Size digitHashSize = new Size(10, 10);
 
         private FastPixelMatch colorMatchGridBorder = new FastPixelMatchMono(0, 150);
         private FastPixelMatch colorMatchGridField = new FastPixelMatchMono(170, 255);
@@ -110,23 +145,17 @@ namespace FFTriadBuddy
         private FastPixelMatch colorMatchCardOwnerBlue = new FastPixelMatchHueMono(200, 280, 150, 255);
         private FastPixelMatch colorMatchTimerBox = new FastPixelMatchHSV(40, 60, 10, 40, 0, 100);
         private FastPixelMatch colorMatchTimerActive = new FastPixelMatchMono(80, 255);
+        private MLClassifierTriadDigit classifierTriadDigit;
 
         public ScannerTriad()
         {
-            digitMasks.Add(new ImagePatternDigit(1, new byte[] { 0x00, 0x00, 0x00, 0x02, 0x02, 0x03, 0xff, 0x00, 0x00, 0x00 }));
-            digitMasks.Add(new ImagePatternDigit(2, new byte[] { 0xc2, 0xa1, 0x91, 0x91, 0x91, 0x89, 0x89, 0x89, 0x8e, 0x80 }));
-            digitMasks.Add(new ImagePatternDigit(3, new byte[] { 0x22, 0x43, 0x81, 0x81, 0x89, 0x89, 0x89, 0x89, 0x5f, 0x76 }));
-            digitMasks.Add(new ImagePatternDigit(4, new byte[] { 0x20, 0x30, 0x28, 0x24, 0x20, 0x20, 0x21, 0xff, 0x20, 0x20 }));
-            digitMasks.Add(new ImagePatternDigit(5, new byte[] { 0x4e, 0x09, 0x89, 0x89, 0x89, 0x89, 0x89, 0x09, 0x79, 0x00 }));
-            digitMasks.Add(new ImagePatternDigit(6, new byte[] { 0x7e, 0x09, 0x89, 0x89, 0x89, 0x89, 0x89, 0x09, 0x79, 0x00 }));
-            digitMasks.Add(new ImagePatternDigit(7, new byte[] { 0x01, 0x01, 0x01, 0xc1, 0x31, 0x09, 0x05, 0x03, 0x03, 0x00 }));
-            digitMasks.Add(new ImagePatternDigit(8, new byte[] { 0x76, 0x09, 0x89, 0x89, 0x89, 0x89, 0x89, 0x89, 0x5f, 0x00 }));
-            digitMasks.Add(new ImagePatternDigit(9, new byte[] { 0x06, 0x51, 0x91, 0x91, 0x91, 0x91, 0x91, 0x91, 0x7f, 0x3e }));
-            digitMasks.Add(new ImagePatternDigit(10, new byte[] { 0xe0, 0x70, 0x3c, 0x26, 0x23, 0x21, 0x23, 0x2e, 0x38, 0x60 }));
+            classifierTriadDigit = new MLClassifierTriadDigit();
+            classifierTriadDigit.InitializeModel();
         }
 
         public override void InvalidateCache()
         {
+            base.InvalidateCache();
             cachedGridBox = Rectangle.Empty;
             cachedBlueCards = null;
             cachedRedCards = null;
@@ -149,10 +178,11 @@ namespace FFTriadBuddy
         public Rectangle GetTimerScanBox() { return cachedTimerScanBox; }
         public Rectangle GetBlueCardBox(int idx) { return cachedBlueCards[idx]; }
         public Rectangle GetBoardCardBox(int idx) { return cachedBoardCards[idx]; }
+        public static Size GetDigitHashSize() { return digitHashSize; }
 
-        public override void AppendDebugShapes(List<Rectangle> shapes)
+        public override void AppendDebugShapes(List<Rectangle> shapes, List<ImageUtils.HashPreview> hashes)
         {
-            base.AppendDebugShapes(shapes);
+            base.AppendDebugShapes(shapes, hashes);
             if (cachedGridBox.Width > 0) { shapes.Add(cachedGridBox); }
             if (cachedRuleBox.Width > 0) { shapes.Add(cachedRuleBox); }
             if (cachedTimerBox.Width > 0) { shapes.Add(cachedTimerBox); }
@@ -233,6 +263,7 @@ namespace FFTriadBuddy
                 cachedGameState = null;
                 if (cachedBoardCards != null)
                 {
+                    screenAnalyzer.ClearKnownHashes();
                     cachedGameState = new GameState();
                     cachedGameStateBase = cachedGameState;
 
@@ -241,36 +272,43 @@ namespace FFTriadBuddy
                     bool bCanContinue = (screenAnalyzer.GetCurrentState() != ScreenAnalyzer.EState.UnknownHash) || debugMode;
                     if (bCanContinue)
                     {
-                        bool bHasFailedCardMatch = false;
-
                         cachedScanError = EScanError.NoErrors;
                         cachedCardState.Clear();
-
-                        List<ImagePatternDigit> listDigits = new List<ImagePatternDigit>();
-                        listDigits.AddRange(digitMasks);
-                        listDigits.AddRange(PlayerSettingsDB.Get().customDigits);
 
                         {
                             perfTimer.Restart();
 
-                            bool[] greyedOutBlue = new bool[5];
-                            int numGreyedOutBlue = 0;
+                            bool hasLockedBlueCards = false;
                             for (int Idx = 0; Idx < 5; Idx++)
                             {
-                                cachedGameState.blueDeck[Idx] = ParseCard(bitmap, cachedBlueCards[Idx], listDigits, "blue" + Idx, out greyedOutBlue[Idx]);
-                                cachedGameState.redDeck[Idx] = ParseCard(bitmap, cachedRedCards[Idx], listDigits, "red" + Idx, out bool dummyFlag);
-                                numGreyedOutBlue += greyedOutBlue[Idx] ? 1 : 0;
-                                bHasFailedCardMatch = bHasFailedCardMatch || (cachedGameState.blueDeck[Idx] == failedMatchCard) || (cachedGameState.redDeck[Idx] == failedMatchCard);
+                                CardState blueCardState = ParseCard(bitmap, cachedBlueCards[Idx], "blue" + Idx, ECardLocation.BlueDeck);
+                                blueCardState.locationContext = Idx;
+                                cachedCardState.Add(blueCardState);
+
+                                CardState redCardState = ParseCard(bitmap, cachedRedCards[Idx], "red" + Idx, ECardLocation.RedDeck);
+                                redCardState.location = ECardLocation.RedDeck;
+                                redCardState.locationContext = Idx;
+                                cachedCardState.Add(redCardState);
+
+                                cachedGameState.blueDeck[Idx] = blueCardState.card;
+                                cachedGameState.redDeck[Idx] = redCardState.card;
+                                if (blueCardState.state == ECardState.Locked)
+                                {
+                                    hasLockedBlueCards = true;
+                                }
                             }
 
                             cachedGameState.forcedBlueCard = null;
-                            if (numGreyedOutBlue > 0)
+                            if (hasLockedBlueCards)
                             {
                                 for (int Idx = 0; Idx < 5; Idx++)
                                 {
-                                    if (cachedGameState.blueDeck[Idx] != null && !greyedOutBlue[Idx])
+                                    if (cachedCardState[Idx].card != null &&
+                                        cachedCardState[Idx].state == ECardState.Visible &&
+                                        cachedCardState[Idx].location == ECardLocation.BlueDeck)
                                     {
-                                        cachedGameState.forcedBlueCard = cachedGameState.blueDeck[Idx];
+                                        cachedGameState.forcedBlueCard = cachedCardState[Idx].card;
+                                        break;
                                     }
                                 }
                             }
@@ -284,23 +322,32 @@ namespace FFTriadBuddy
 
                             for (int Idx = 0; Idx < 9; Idx++)
                             {
-                                cachedGameState.board[Idx] = ParseCard(bitmap, cachedBoardCards[Idx], listDigits, "board" + Idx, out bool dummyFlag);
-                                bHasFailedCardMatch = bHasFailedCardMatch || (cachedGameState.board[Idx] == failedMatchCard);
+                                CardState boardCardState = ParseCard(bitmap, cachedBoardCards[Idx], "board" + Idx, ECardLocation.Board);
+                                boardCardState.locationContext = Idx;
 
-                                if (cachedGameState.board[Idx] != null)
+                                cachedGameState.board[Idx] = boardCardState.card;
+                                if (boardCardState.state == ECardState.Visible || boardCardState.card != null)
                                 {
                                     int gridCellLeft = cachedGridBox.Left + ((Idx % 3) * cachedGridBox.Width / 3);
                                     cachedGameState.boardOwner[Idx] = ParseCardOwner(bitmap, cachedBoardCards[Idx], gridCellLeft, "board" + Idx);
+
+                                    boardCardState.state = (cachedGameState.boardOwner[Idx] == ETriadCardOwner.Blue) ? ECardState.PlacedBlue : ECardState.PlacedRed;
                                 }
+
+                                cachedCardState.Add(boardCardState);
                             }
 
                             perfTimer.Stop();
                             if (debugMode) { Logger.WriteLine("Parse board: " + perfTimer.ElapsedMilliseconds + "ms"); }
                         }
 
-                        if (bHasFailedCardMatch)
+                        foreach (CardState cardState in cachedCardState)
                         {
-                            cachedScanError = EScanError.FailedCardMatching;
+                            if (cardState.failedMatching)
+                            {
+                                cachedScanError = EScanError.FailedCardMatching;
+                                break;
+                            }
                         }
                     }
                 }
@@ -790,42 +837,29 @@ namespace FFTriadBuddy
                 Point boundsH = ImageUtils.TraceBoundsH(bitmap, new Rectangle(rulesRect.Left, span.X, rulesRect.Width, span.Y), colorMatchRuleText, span.Y * 2);
                 if (boundsH.Y > 5)
                 {
+                    const int hashWidth = 64;
+                    const int hashHeight = 8;
+
                     Rectangle ruleTextBox = new Rectangle(boundsH.X, span.X, boundsH.Y, span.Y);
-                    FastBitmapHash ruleHashData = ImageUtils.CalculateImageHash(bitmap, ruleTextBox, rulesRect, colorMatchRuleText, 64, 8);
+                    float[] values = ImageUtils.ExtractImageFeaturesScaled(bitmap, ruleTextBox, hashWidth, hashHeight, testPx => colorMatchRuleText.IsMatching(testPx) ? 1.0f : 0.0f);
 
-                    TriadGameModifier bestModOb = (TriadGameModifier)ImageUtils.FindMatchingHash(ruleHashData, EImageHashType.Rule, out int bestDistance, debugMode);
-                    if (bestModOb == null)
+                    ImageHashData rulePattern = new ImageHashData() { type = EImageHashType.Rule, previewBounds = ruleTextBox, previewContextBounds = rulesRect };
+                    rulePattern.CalculateHash(values);
+
+                    ImageHashData foundPattern = ImageHashDB.Get().FindBestMatch(rulePattern, 100, out int matchDistance);
+                    if (foundPattern != null)
                     {
-                        Bitmap cachedScreenshot = screenAnalyzer.screenReader.cachedScreenshot;
+                        rulePattern.ownerOb = foundPattern.ownerOb;
+                        rulePattern.matchDistance = matchDistance;
+                        rulePattern.isKnown = true;
 
-                        bool isValid =
-                            (ruleHashData.ContextBounds.Top >= 0) &&
-                            (ruleHashData.ContextBounds.Left >= 0) &&
-                            (ruleHashData.ContextBounds.Bottom < cachedScreenshot.Height) &&
-                            (ruleHashData.ContextBounds.Right < cachedScreenshot.Width);
-
-                        if (isValid)
-                        {
-                            if (ImageUtils.ConditionalAddUnknownHash(
-                                ImageUtils.CreateUnknownImageHash(ruleHashData, cachedScreenshot, EImageHashType.Rule), screenAnalyzer.unknownHashes))
-                            {
-                                screenAnalyzer.OnUnknownHashAdded();
-                            }
-                        }
-                        else
-                        {
-                            Logger.WriteLine("ParseRules ERROR: out of bounds! screenshot:" + cachedScreenshot.Width + "x" + cachedScreenshot.Height + ", hashContext:" + ruleHashData.ContextBounds + ", ruleBox:" + rulesRect + ", fastBitmap:" + bitmap.Width + "x" + bitmap.Height);
-                        }
-                    }
-                    else
-                    {
-                        ruleHashData.GuideOb = bestModOb;
-                        screenAnalyzer.currentHashDetections.Add(ruleHashData, bestDistance);
-
-                        rules.Add(bestModOb);
+                        rules.Add((TriadGameModifier)foundPattern.ownerOb);
                     }
 
-                    debugHashes.Add(ruleHashData);
+                    screenAnalyzer.AddImageHash(rulePattern);
+
+                    Rectangle previewBounds = new Rectangle(ruleTextBox.Right + 10, ruleTextBox.Top, hashWidth, hashHeight);
+                    debugHashes.Add(new ImageUtils.HashPreview() { hashValues = values, bounds = previewBounds });
                 }
             }
 
@@ -833,160 +867,186 @@ namespace FFTriadBuddy
             if (debugMode) { Logger.WriteLine("ParseRules: " + stopwatch.ElapsedMilliseconds + "ms"); }
         }
 
-        private TriadCard ParseCard(FastBitmapHSV bitmap, Rectangle cardRect, List<ImagePatternDigit> digitList, string debugName, out bool bIsGreyedOut)
+        private bool FindExactCardBottom(FastBitmapHSV bitmap, Rectangle cardRect, string debugName, ECardLocation cardLocation, out int exactBottomY)
         {
-            bIsGreyedOut = false;
-
-            bool bIsBoardCard = debugName.StartsWith("board");
-            if (bIsBoardCard)
-            {
-                int gridCellHalfHeight = cachedGridBox.Height / 6;
-                int cardMidY = (cardRect.Top + cardRect.Bottom) / 2;
-                int scanStartY = Math.Min(cardMidY - gridCellHalfHeight, cardRect.Top - 2);
-                int scanEndY = cardRect.Top + 2;
-
-                // look for edge of border, sample 4 points along card width for avg
-                int[] scanX = new int[4]{ 
+            // look for edge of border, sample 4 points along card width for avg
+            int[] scanX = new int[4]{
                     cardRect.Left + (cardRect.Width * 20 / 100),
                     cardRect.Left + (cardRect.Width * 40 / 100),
                     cardRect.Left + (cardRect.Width * 60 / 100),
                     cardRect.Left + (cardRect.Width * 80 / 100)};
 
-                bool verboseDebug = debugMode && debugName == screenAnalyzer.debugScannerContext;
-                bool foundEdge = false;
-                int prevAvgMono = 0;
-                int prevAvgHue = 0;
+            int scanEndY = cardRect.Bottom - 10;
+            int scanStartY = cardRect.Bottom + 5;
 
-                for (int scanY = scanStartY; scanY < scanEndY; scanY++)
-                {
-                    int avgMono = 0;
-                    int avgHue = 0;
-                    for (int idxX = 0; idxX < scanX.Length; idxX++)
-                    {
-                        FastPixelHSV testPx = bitmap.GetPixel(scanX[idxX], scanY);
-                        avgMono += testPx.GetMonochrome();
-                        avgHue += testPx.GetHue();
-                    }
-                    avgMono /= scanX.Length;
-                    avgHue /= scanX.Length;
-
-                    if (prevAvgMono > 0)
-                    {
-                        int diffMono = avgMono - prevAvgMono;
-                        foundEdge = (diffMono < -50);
-
-                        if (verboseDebug) { Logger.WriteLine("ParseCard[{0}] scan:{1} = [H:{2},M:{3}] vs prev[H:{4},M:{5}] => {6}", debugName, scanY, avgHue, avgMono, prevAvgHue, prevAvgMono, foundEdge ? " EDGE!" : "nope"); }
-                        if (foundEdge)
-                        {
-                            break;
-                        }
-                    }
-
-                    prevAvgMono = avgMono;
-                    prevAvgHue = avgHue;
-                }
-
-                if (!foundEdge)
-                {
-                    if (debugMode) { Logger.WriteLine("ParseCard(" + debugName + "): empty"); }
-                    return null;
-                }
-            }
-            else
+            bool verboseDebug = screenAnalyzer.debugScannerContext == debugName;
+            if (cardLocation == ECardLocation.Board)
             {
-                int MidX = (cardRect.Left + cardRect.Right) / 2;
-                int borderMatchCount = 0;
-                for (int PosY = 0; PosY < 10; PosY++)
+                // find bottom of grid cell
+                if (ImageUtils.TraceLine(bitmap, cardRect.Left - 10, scanEndY, 0, 1, 20, colorMatchGridBorder, out Point hitPos, verboseDebug))
                 {
-                    FastPixelHSV testPx = bitmap.GetPixel(MidX, PosY + cardRect.Top);
-                    borderMatchCount += colorMatchCardBorder.IsMatching(testPx) ? 1 : 0;
-                }
-
-                bool bHasCard = borderMatchCount >= 4;
-                if (!bHasCard)
-                {
-                    if (debugMode) { Logger.WriteLine("ParseCard(" + debugName + "): empty, counter:" + borderMatchCount); }
-                    return null;
+                    scanStartY = hitPos.Y - 1;
                 }
             }
+
+            int prevAvgMono = 0;
+            int prevAvgHue = 0;
+
+            for (int scanY = scanStartY; scanY > scanEndY; scanY--)
+            {
+                int avgMono = 0;
+                int avgHue = 0;
+                for (int idxX = 0; idxX < scanX.Length; idxX++)
+                {
+                    FastPixelHSV testPx = bitmap.GetPixel(scanX[idxX], scanY);
+                    avgMono += testPx.GetMonochrome();
+                    avgHue += testPx.GetHue();
+                }
+                avgMono /= scanX.Length;
+                avgHue /= scanX.Length;
+
+                if (prevAvgMono > 0)
+                {
+                    int diffMono = avgMono - prevAvgMono;
+                    int absDiffHue = Math.Abs(avgHue - prevAvgHue);
+
+                    // mono: no abs, look for going darker (low - high = negative)
+                    // hue: abs, jump in hue will be good indicator, esp on red/blue decks
+                    bool foundEdge = (diffMono < -30 && avgMono < 100) || (absDiffHue > 120);
+
+                    if (verboseDebug) { Logger.WriteLine("FindExactCardBottom[{0}] scan:{1} = [H:{2},M:{3}] vs prev[H:{4},M:{5}] => {6}", debugName, scanY, avgHue, avgMono, prevAvgHue, prevAvgMono, foundEdge ? " EDGE!" : "nope"); }
+                    if (foundEdge)
+                    {
+                        exactBottomY = scanY;
+                        return true;
+                    }
+                }
+
+                prevAvgMono = avgMono;
+                prevAvgHue = avgHue;
+            }
+
+            exactBottomY = cardRect.Bottom;
+            return false;
+        }
+
+        private int FindExactCardMidX(FastBitmapHSV bitmap, Rectangle cardRect, string debugName, int exactBottomY)
+        {
+            int scanHeight = Math.Min(3, cardRect.Height * 3 / 100);
+            int midX = cardRect.X + (cardRect.Width / 2);
+            int startX = midX - (cardRect.Width / 8);
+            int endX = midX + (cardRect.Width / 8);
+
+            bool verboseDebug = screenAnalyzer.debugScannerContext == debugName;
+            int bestV = -1;
+            for (int scanX = startX; scanX < endX; scanX++)
+            {
+                int monoV = 0;
+                for (int scanY = 0; scanY < scanHeight; scanY++)
+                {
+                    monoV += bitmap.GetPixel(scanX, exactBottomY - scanY - 1).GetMonochrome() * ((scanY + 1) / scanHeight);
+                }
+
+                bool isBetter = (monoV < bestV || bestV < 0);
+                if (verboseDebug) { Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}] = {4}{5}", debugName, scanX, exactBottomY - 1, exactBottomY - scanHeight, monoV, isBetter ? " mid?" : ""); }
+                if (isBetter)
+                {
+                    bestV = monoV;
+                    midX = scanX;
+                }
+            }
+
+            return midX;
+        }
+
+        private float[] ExtractCardNumberPattern(FastBitmapHSV bitmap, Rectangle scanBoxNumber)
+        {
+            return ImageUtils.ExtractImageFeaturesScaled(bitmap, scanBoxNumber, digitHashSize.Width, digitHashSize.Height, ImageUtils.GetPixelFeaturesM2V2);
+        }
+
+        private CardState ParseCard(FastBitmapHSV bitmap, Rectangle cardRect, string debugName, ECardLocation cardLocation)
+        {
+            CardState cardState = new CardState();
+            cardState.name = debugName;
+            cardState.location = cardLocation;
+            cardState.bounds = cardRect;
+            cardState.sourceImage = screenAnalyzer.screenReader.cachedScreenshot;
+
+            bool hasExactBottomY = FindExactCardBottom(bitmap, cardRect, debugName, cardLocation, out int exactCardBottom);
+            if (!hasExactBottomY)
+            {
+                if (debugMode) { Logger.WriteLine("ParseCard({0}): empty", debugName); }
+                return cardState;
+            }
+
+            int exactCardMidX = FindExactCardMidX(bitmap, cardRect, debugName, exactCardBottom);
 
             // check if card is hidden based on approx numberbox location
-            Rectangle numberBox = new Rectangle(cardRect.Left + (cardRect.Width * 27 / 100),    // moved slightly off center to right
-                cardRect.Top + (cardRect.Height * 74 / 100),
-                cardRect.Width * 50 / 100,
-                cardRect.Height * 18 / 100);
+            int numberBoxW = cardRect.Width * 50 / 100;
+            int numberBoxH = cardRect.Height * 20 / 100;
+            Rectangle numberBox = new Rectangle(exactCardMidX - (numberBoxW / 2), exactCardBottom - numberBoxH - (cardRect.Height * 8 / 100), numberBoxW, numberBoxH);
 
             float borderPct = ImageUtils.CountFillPct(bitmap, numberBox, colorMatchCardBorder);
             if (borderPct > 0.75f)
             {
-                if (debugMode) { Logger.WriteLine("ParseCard(" + debugName + "): hidden, fill:" + (int)(100 * borderPct) + "%"); }
-                return TriadCardDB.Get().hiddenCard;
+                if (debugMode) { Logger.WriteLine("ParseCard({0}): hidden, fill:{1:P0}", debugName, borderPct); }
+                cardState.state = ECardState.Hidden;
+
+                return cardState;
             }
 
             ImageUtils.FindColorRange(bitmap, numberBox, out int minMono, out int maxMono);
-            FastPixelMatch colorMatchNumAdjusted = (maxMono < 220) ? new FastPixelMatchMono((byte)(maxMono * 85 / 100), 255) : colorMatchCardNumber;
-            bIsGreyedOut = (maxMono < 220);
+            FastPixelMatch colorMatchNumAdjusted = (maxMono < 200) ? new FastPixelMatchMono((byte)(maxMono * 85 / 100), 255) : colorMatchCardNumber;
+            cardState.state = (maxMono < 200) ? ECardState.Locked : ECardState.Visible;
+            cardState.scanBox = numberBox;
 
             // find numbers
             if (debugMode) { debugShapes.Add(new Rectangle(numberBox.Left - 1, numberBox.Top - 1, numberBox.Width + 2, numberBox.Height + 2)); }
 
             int numberBoxMidX = (numberBox.Left + numberBox.Right) / 2;
             int numberBoxMidY = (numberBox.Top + numberBox.Bottom) / 2;
-            int approxCardHeight = numberBox.Height * 45 / 100;
-            int approxCardWidth = numberBox.Width / 3;
+            int digitHeight = numberBox.Height * 50 / 100;
+            int digitWidth = digitHeight * digitHashSize.Width / digitHashSize.Height;
 
-            CardState detectionState = new CardState();
-            detectionState.sideImage = new ImageDataDigit[4];
-            int[] CardNumbers = new int[4] { 0, 0, 0, 0 };
+            cardState.sideNumber = new int[4];
+            cardState.sideInfo = new CardState.SideInfo[4];
+            cardState.sideInfo[0].scanBox = new Rectangle(numberBoxMidX - (digitWidth / 2), numberBox.Top, digitHeight, digitHeight);
+            cardState.sideInfo[1].scanBox = new Rectangle(numberBoxMidX + (digitWidth * 50 / 100), numberBoxMidY - (digitHeight / 2), digitHeight, digitHeight);
+            cardState.sideInfo[2].scanBox = new Rectangle(numberBoxMidX - (digitWidth / 2), numberBox.Bottom - digitHeight, digitHeight, digitHeight);
+            cardState.sideInfo[3].scanBox = new Rectangle(numberBoxMidX - (digitWidth * 130 / 100), numberBoxMidY - (digitHeight / 2), digitHeight, digitHeight);
 
-            bool debugNumberMatching = debugName == screenAnalyzer.debugScannerContext;
-
-            // number match tries to avoid scaling and hopes that 100% UI scale will create digits fitting 8x10 boxes
-            // check if numberbox height is roughly (2x digit height + 2x offset:2) = 20
-            // - yes: yay, go and match pixel perfect digits
-            // - nope: assume digit box with height 50% of number box and width to keep 8x10 ratio
-            int heightCheckError = numberBox.Height - (ImagePatternDigit.Height * 2) - 4;
-            if (heightCheckError < 5)
+            for (int idx = 0; idx < 4; idx++)
             {
-                Point[] cardScanAnchors = new Point[4]
-                {
-                    new Point(numberBoxMidX - (approxCardWidth / 2), numberBox.Top),
-                    new Point(numberBoxMidX - (approxCardWidth / 2), numberBox.Bottom - approxCardHeight),
-                    new Point(numberBoxMidX + (approxCardWidth * 40 / 100), numberBoxMidY - (approxCardHeight / 2)),
-                    new Point(numberBoxMidX - (approxCardWidth * 110 / 100), numberBoxMidY - (approxCardHeight / 2)),
-                };
+                float[] values = ExtractCardNumberPattern(bitmap, cardState.sideInfo[idx].scanBox);
+                ImageUtils.NormalizeImageFeatures(values);
 
-                for (int Idx = 0; Idx < 4; Idx++)
+                ImageHashData digitPattern = new ImageHashData() { type = EImageHashType.CardNumber, previewBounds = cardState.sideInfo[idx].scanBox, previewContextBounds = numberBox, isKnown = true };
+                digitPattern.CalculateHash(values);
+
+                cardState.sideInfo[idx].matchNum = classifierTriadDigit.Calculate(values, out cardState.sideInfo[idx].matchPct);
+
+                // allow overwrites in case there is a user defined value, must be exact match
+                ImageHashData overridePattern = ImageHashDB.Get().FindExactMatch(digitPattern);
+                if (overridePattern != null)
                 {
-                    CardNumbers[Idx] = ImageUtils.FindPatternMatch(bitmap, cardScanAnchors[Idx], colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx], debugNumberMatching);
+                    cardState.sideNumber[idx] = (int)overridePattern.ownerOb;
+                    cardState.sideInfo[idx].hasOverride = true;
                 }
+                else
+                {
+                    cardState.sideNumber[idx] = cardState.sideInfo[idx].matchNum;
+                    digitPattern.isAuto = true;
+                }
+
+                cardState.sideInfo[idx].hashValues = values;
+                screenAnalyzer.AddImageHash(digitPattern);
+
+                Rectangle previewBounds = new Rectangle(cardState.sideInfo[idx].scanBox.X + numberBox.Width, cardState.sideInfo[idx].scanBox.Y, digitHashSize.Width, digitHashSize.Height);
+                debugHashes.Add(new ImageUtils.HashPreview() { hashValues = values, bounds = previewBounds });
+                debugShapes.Add(cardState.sideInfo[idx].scanBox);
             }
-            else
-            {
-                int sadDigitHeight = numberBox.Height * 45 / 100;
-                int sadDigitWidth = sadDigitHeight * ImagePatternDigit.Width / ImagePatternDigit.Height;
-                Size sadDigitSize = new Size(sadDigitWidth, sadDigitHeight);
 
-                Point[] cardScanAnchors = new Point[4]
-                {
-                    new Point(numberBoxMidX - (sadDigitWidth / 2), numberBox.Top),
-                    new Point(numberBoxMidX - (sadDigitWidth / 2), numberBox.Bottom - sadDigitHeight),
-                    new Point(numberBoxMidX + (sadDigitWidth / 2) + 2, numberBoxMidY - (sadDigitHeight / 2)),
-                    new Point(numberBoxMidX - (sadDigitWidth * 3 / 2) - 2, numberBoxMidY - (sadDigitHeight / 2)),
-                };
-
-                const int inactiveThr = 220 * 80 / 100;
-                colorMatchNumAdjusted = new FastPixelMatchMono((byte)(maxMono * 80 / 100), 255);
-                bIsGreyedOut = (maxMono < inactiveThr);
-
-                for (int Idx = 0; Idx < 4; Idx++)
-                {
-                    CardNumbers[Idx] = ImageUtils.FindPatternMatchScaled(bitmap, cardScanAnchors[Idx], sadDigitSize, colorMatchNumAdjusted, digitList, out detectionState.sideImage[Idx], debugNumberMatching);
-                    debugShapes.Add(new Rectangle(cardScanAnchors[Idx], sadDigitSize));
-                }
-            };
-
-            TriadCard foundCard = TriadCardDB.Get().Find(CardNumbers[0], CardNumbers[1], CardNumbers[2], CardNumbers[3]);
+            TriadCard foundCard = TriadCardDB.Get().Find(cardState.sideNumber[0], cardState.sideNumber[1], cardState.sideNumber[2], cardState.sideNumber[3]);
             if (debugMode)
             {
                 string descFoundCards = "";
@@ -1011,51 +1071,39 @@ namespace FFTriadBuddy
                     descFoundCards = "none";
                 }
 
-                Logger.WriteLine("ParseCard(" + debugName + "): " + CardNumbers[0] + ", " + CardNumbers[2] + ", " + CardNumbers[1] + ", " + CardNumbers[3] + " => " + descFoundCards);
+                Logger.WriteLine("ParseCard({0}): {1}-{2}-{3}-{4} => {5}", debugName,
+                    cardState.sideNumber[0], cardState.sideNumber[1], cardState.sideNumber[2], cardState.sideNumber[3],
+                    descFoundCards);
             }
 
             // more than one card found
             if (foundCard != null && foundCard.SameNumberId >= 0)
             {
-                Rectangle cardHashBox = new Rectangle(cardRect.Left + (cardRect.Width * 15 / 100), cardRect.Top + (cardRect.Height * 70 / 100),
-                    cardRect.Width * 70 / 100, cardRect.Height * 25 / 100);
+                Rectangle cardHashBox = new Rectangle(cardRect.Left + (cardRect.Width * 15 / 100), cardRect.Top + (cardRect.Height * 70 / 100), cardRect.Width * 70 / 100, cardRect.Height * 25 / 100);
+                float[] values = ImageUtils.ExtractImageFeaturesScaled(bitmap, cardHashBox, 32, 8, ImageUtils.GetPixelFeaturesMono);
 
-                FastPixelMatch colorMatchAll = new FastPixelMatchMono(0, 255);
-                FastBitmapHash cardHashData = ImageUtils.CalculateImageHash(bitmap, cardHashBox, cardRect, colorMatchAll, 32, 8);
-                cardHashData.GuideOb = foundCard;
+                ImageHashData cardPattern = new ImageHashData() { type = EImageHashType.CardImage, previewBounds = cardHashBox, previewContextBounds = cardRect };
+                cardPattern.CalculateHash(values);
+                cardPattern.ownerOb = foundCard;
 
-                TriadCard bestCardOb = (TriadCard)ImageUtils.FindMatchingHash(cardHashData, EImageHashType.Card, out int bestDistance, debugMode);
-                if (bestCardOb == null)
+                ImageHashData foundPattern = ImageHashDB.Get().FindBestMatch(cardPattern, 100, out int matchDistance);
+                if (foundPattern != null)
                 {
-                    if (ImageUtils.ConditionalAddUnknownHash(
-                        ImageUtils.CreateUnknownImageHash(cardHashData, screenAnalyzer.screenReader.cachedScreenshot, EImageHashType.Card), screenAnalyzer.unknownHashes))
-                    {
-                        screenAnalyzer.OnUnknownHashAdded();
-                    }
-                }
-                else
-                {
-                    foundCard = bestCardOb;
-
-                    cardHashData.GuideOb = bestCardOb;
-                    screenAnalyzer.currentHashDetections.Add(cardHashData, bestDistance);
+                    cardPattern.ownerOb = foundPattern.ownerOb;
+                    cardPattern.matchDistance = matchDistance;
+                    cardPattern.isKnown = true;
                 }
 
-                debugHashes.Add(cardHashData);
+                cardState.cardImageHash = cardPattern;
+                screenAnalyzer.AddImageHash(cardPattern);
+
+                debugHashes.Add(new ImageUtils.HashPreview() { hashValues = values, bounds = cardHashBox });
             }
 
-            detectionState.name = debugName;
-            detectionState.card = foundCard;
-            detectionState.failedMatching = (foundCard == null);
-            detectionState.sideNumber = new int[4] { CardNumbers[0], CardNumbers[1], CardNumbers[2], CardNumbers[3] };
-            cachedCardState.Add(detectionState);
-
-            if (foundCard == null)
-            {
-                foundCard = failedMatchCard;
-            }
-
-            return foundCard;
+            cardState.name = debugName;
+            cardState.card = foundCard;
+            cardState.failedMatching = (foundCard == null);
+            return cardState;
         }
 
         private ETriadCardOwner ParseCardOwner(FastBitmapHSV bitmap, Rectangle cardRect, int gridCellLeft, string debugName)
@@ -1098,25 +1146,15 @@ namespace FFTriadBuddy
 
         #region Validation
 
-        private enum EVerifyCardState
-        {
-            None,
-            Hidden,
-            Locked,
-            Visible,
-            PlacedRed,
-            PlacedBlue,
-        }
-
         private class VerifyCard
         {
-            public EVerifyCardState state;
+            public ECardState state;
             public int[] sides;
             public int mod;
 
             public VerifyCard()
             {
-                state = EVerifyCardState.None;
+                state = ECardState.None;
                 sides = new int[4] { 0, 0, 0, 0 };
                 mod = 0;
             }
@@ -1155,12 +1193,12 @@ namespace FFTriadBuddy
             VerifyCard cardData = new VerifyCard();
 
             string stateDesc = cardOb["state"] as JsonParser.StringValue;
-            if (stateDesc == "empty") cardData.state = EVerifyCardState.None;
-            else if (stateDesc == "hidden") cardData.state = EVerifyCardState.Hidden;
-            else if (stateDesc == "locked") cardData.state = EVerifyCardState.Locked;
-            else if (stateDesc == "visible") cardData.state = EVerifyCardState.Visible;
-            else if (stateDesc == "red") cardData.state = EVerifyCardState.PlacedRed;
-            else if (stateDesc == "blue") cardData.state = EVerifyCardState.PlacedBlue;
+            if (stateDesc == "empty") cardData.state = ECardState.None;
+            else if (stateDesc == "hidden") cardData.state = ECardState.Hidden;
+            else if (stateDesc == "locked") cardData.state = ECardState.Locked;
+            else if (stateDesc == "visible") cardData.state = ECardState.Visible;
+            else if (stateDesc == "red") cardData.state = ECardState.PlacedRed;
+            else if (stateDesc == "blue") cardData.state = ECardState.PlacedBlue;
 
             if (cardOb.entries.ContainsKey("sides"))
             {
@@ -1216,7 +1254,7 @@ namespace FFTriadBuddy
 
         private static Dictionary<string, TriadGameModifier> mapValidationRules;
 
-        public override void ValidateScan(string configPath, ScreenAnalyzer.EMode mode)
+        public override void ValidateScan(string configPath, ScreenAnalyzer.EMode mode, MLDataExporter dataExporter)
         {
             string testName = Path.GetFileNameWithoutExtension(configPath);
 
@@ -1227,154 +1265,181 @@ namespace FFTriadBuddy
                 throw new Exception(exceptionMsg);
             }
 
-            // fixup missing rules
-            int numAddedRules = 0;
-            for (int ruleIdx = 0; ruleIdx < configData.rules.Length; ruleIdx++)
+            List<ImageHashData> unknownRulePatterns = new List<ImageHashData>();
+            for (int idx = 0; idx < screenAnalyzer.unknownHashes.Count; idx++)
             {
-                int readRuleIdx = ruleIdx - numAddedRules;
-                bool hasMatchingRule = false;
-
-                if (readRuleIdx < cachedGameState.mods.Count)
+                ImageHashData testHash = screenAnalyzer.unknownHashes[idx];
+                switch (testHash.type)
                 {
-                    string readRuleName = cachedGameState.mods[readRuleIdx].GetName();
-                    hasMatchingRule = readRuleName == configData.rules[ruleIdx];
+                    case EImageHashType.Rule: unknownRulePatterns.Add(testHash); break;
+                    default: break;
                 }
+            }
 
-                if (!hasMatchingRule)
+            List<ImageHashData> matchedRulePatterns = new List<ImageHashData>();
+            for (int idx = 0; idx < screenAnalyzer.currentHashMatches.Count; idx++)
+            {
+                ImageHashData testHash = screenAnalyzer.currentHashMatches[idx];
+                switch (testHash.type)
                 {
-                    if (mapValidationRules == null)
+                    case EImageHashType.Rule: matchedRulePatterns.Add(testHash); break;
+                    default: break;
+                }
+            }
+
+            int numRulesScanned = cachedGameState.mods.Count + unknownRulePatterns.Count;
+            if (numRulesScanned != configData.rules.Length)
+            {
+                string exceptionMsg = string.Format("Test {0} failed! Rules known:{1} + unknown:{2}, total:{3}, expected:{4}",
+                    testName,
+                    cachedGameState.mods.Count, unknownRulePatterns.Count, numRulesScanned,
+                    configData.rules.Length);
+                throw new Exception(exceptionMsg);
+            }
+
+            if (dataExporter != null)
+            {
+                int numAddedRules = 0;
+                for (int ruleIdx = 0; ruleIdx < configData.rules.Length; ruleIdx++)
+                {
+                    int readRuleIdx = ruleIdx - numAddedRules;
+                    bool hasMatchingRule = false;
+
+                    if (readRuleIdx < cachedGameState.mods.Count)
                     {
-                        mapValidationRules = new Dictionary<string, TriadGameModifier>();
-                        foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
-                        {
-                            if (type.IsSubclassOf(typeof(TriadGameModifier)))
-                            {
-                                TriadGameModifier modInstance = (TriadGameModifier)Activator.CreateInstance(type);
-                                mapValidationRules.Add(modInstance.GetName(), modInstance);
-                            }
-                        }
+                        string readRuleName = cachedGameState.mods[readRuleIdx].GetName();
+                        hasMatchingRule = readRuleName == configData.rules[ruleIdx];
                     }
 
-                    if (screenAnalyzer.unknownHashes.Count > 0)
+                    if (!hasMatchingRule)
                     {
-                        ImageHashData hashData = new ImageHashData(mapValidationRules[configData.rules[ruleIdx]], screenAnalyzer.unknownHashes[0].hashData.Hash, screenAnalyzer.unknownHashes[0].hashData.Type);
-                        PlayerSettingsDB.Get().AddKnownHash(hashData);
+                        if (mapValidationRules == null)
+                        {
+                            mapValidationRules = new Dictionary<string, TriadGameModifier>();
+                            foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
+                            {
+                                if (type.IsSubclassOf(typeof(TriadGameModifier)))
+                                {
+                                    TriadGameModifier modInstance = (TriadGameModifier)Activator.CreateInstance(type);
+                                    mapValidationRules.Add(modInstance.GetName(), modInstance);
+                                }
+                            }
+                        }
+
+                        ImageHashData rulePattern;
+                        if (numAddedRules >= unknownRulePatterns.Count)
+                        {
+                            rulePattern = matchedRulePatterns[ruleIdx];
+                            // don't increment numAddedRules, it's for unknown hashes only
+                        }
+                        else
+                        {
+                            rulePattern = unknownRulePatterns[numAddedRules];
+                            numAddedRules++;
+                        }
+
+                        rulePattern.ownerOb = mapValidationRules[configData.rules[ruleIdx]];
+                        PlayerSettingsDB.Get().AddKnownHash(rulePattern);
                         PlayerSettingsDB.Get().Save();
 
-                        screenAnalyzer.PopUnknownHash();
-                        numAddedRules++;
+                        Logger.WriteLine("Exported rule pattern:{0}", rulePattern.ownerOb);
+                    }
+                }
+            }
+            else if (unknownRulePatterns.Count > 0)
+            {
+                string exceptionMsg = string.Format("Test {0} failed! Rules not recognized, unknown:{1}", testName, unknownRulePatterns.Count);
+                throw new Exception(exceptionMsg);
+            }
+
+            Action<VerifyCard, ECardLocation, int> ValidateCard = (verifyCard, cardLocation, locationCtx) =>
+            {
+                CardState detectedCard = null;
+                foreach (var testState in cachedCardState)
+                {
+                    if (testState.location == cardLocation && testState.locationContext == locationCtx)
+                    {
+                        detectedCard = testState;
+                        break;
+                    }
+                }
+
+                string debugCardName = ((cardLocation == ECardLocation.BlueDeck) ? "blue" : (cardLocation == ECardLocation.RedDeck) ? "red" : "board") + locationCtx;
+                if (detectedCard == null)
+                {
+                    screenAnalyzer.debugScannerContext = debugCardName;
+                    string exceptionMsg = string.Format("Test {0} failed! {1}[{2}] is missing card, expected:{3}",
+                        testName, cardLocation, locationCtx, verifyCard.state);
+
+                    throw new Exception(exceptionMsg);
+                }
+
+                if (detectedCard.state != verifyCard.state)
+                {
+                    screenAnalyzer.debugScannerContext = debugCardName;
+                    string exceptionMsg = string.Format("Test {0} failed! {1}[{2}] got:{3}, expected:{4}",
+                        testName, cardLocation, locationCtx, detectedCard.state, verifyCard.state);
+
+                    throw new Exception(exceptionMsg);
+                }
+
+                if (verifyCard.state == ECardState.Locked ||
+                    verifyCard.state == ECardState.Visible ||
+                    verifyCard.state == ECardState.PlacedBlue ||
+                    verifyCard.state == ECardState.PlacedRed)
+                {
+                    if (dataExporter != null)
+                    {
+                        // generate additional sample images by offseting source bounds a few pixels
+                        const int offsetExt = 1;
+                        int numPatterns = 0;
+
+                        for (int offsetX = -offsetExt; offsetX <= offsetExt; offsetX++)
+                        {
+                            for (int offsetY = -offsetExt; offsetY <= offsetExt; offsetY++)
+                            {
+                                for (int sideIdx = 0; sideIdx < 4; sideIdx++)
+                                {
+                                    Rectangle offsetBounds = detectedCard.sideInfo[sideIdx].scanBox;
+                                    offsetBounds.Offset(offsetX, offsetY);
+
+                                    float[] exportValues = ExtractCardNumberPattern(screenAnalyzer.cachedFastBitmap, offsetBounds);
+                                    dataExporter.ExportValues(exportValues, verifyCard.sides[sideIdx]);
+                                    numPatterns++;
+                                }
+                            }
+                        }
+
+                        Logger.WriteLine("Exported ML entries:{0}", numPatterns);
                     }
                     else
                     {
-                        string exceptionMsg = string.Format("Test {0} failed! Can't match rules!", testName);
-                        throw new Exception(exceptionMsg);
+                        if (detectedCard.sideNumber[0] != verifyCard.sides[0] ||
+                            detectedCard.sideNumber[1] != verifyCard.sides[1] ||
+                            detectedCard.sideNumber[2] != verifyCard.sides[2] ||
+                            detectedCard.sideNumber[3] != verifyCard.sides[3])
+                        {
+                            screenAnalyzer.debugScannerContext = debugCardName;
+                            string exceptionMsg = string.Format("Test {0} failed! {1}[{2}] got:[{3},{4},{5},{6}], expected:[{7},{8},{9},{10}]",
+                                testName, cardLocation, locationCtx,
+                                detectedCard.sideNumber[0], detectedCard.sideNumber[1], detectedCard.sideNumber[2], detectedCard.sideNumber[3],
+                                verifyCard.sides[0], verifyCard.sides[1], verifyCard.sides[2], verifyCard.sides[3]);
+                            //throw new Exception(exceptionMsg);
+                            Logger.WriteLine(exceptionMsg);
+                        }
                     }
                 }
-            }
+            };
 
-            // verify decks
-            TriadCard lockedBlueCard = cachedGameState.forcedBlueCard;
             for (int idx = 0; idx < 5; idx++)
             {
-                TriadCard blueCard = cachedGameState.blueDeck[idx];
-                EVerifyCardState blueState =
-                    (blueCard == null) ? EVerifyCardState.None :
-                    blueCard.Name == failedMatchCard.Name ? EVerifyCardState.Visible :
-                    !blueCard.IsValid() ? EVerifyCardState.Hidden :
-                    (lockedBlueCard == null || lockedBlueCard == blueCard) ? EVerifyCardState.Visible :
-                    EVerifyCardState.Locked;
-
-                if (blueState != configData.deckBlue[idx].state)
-                {
-                    screenAnalyzer.debugScannerContext = "blue" + idx;
-                    string exceptionMsg = string.Format("Test {0} failed! Deck Blue[{1}] got:{2}, expected:{3}",
-                        testName, idx,
-                        blueState,
-                        configData.deckBlue[idx].state);
-
-                    throw new Exception(exceptionMsg);
-                }
-
-                if (blueCard != null &&
-                    (blueCard.Sides[0] != configData.deckBlue[idx].sides[0] ||
-                    blueCard.Sides[1] != configData.deckBlue[idx].sides[1] ||
-                    blueCard.Sides[2] != configData.deckBlue[idx].sides[2] ||
-                    blueCard.Sides[3] != configData.deckBlue[idx].sides[3]))
-                {
-                    screenAnalyzer.debugScannerContext = "blue" + idx;
-                    string exceptionMsg = string.Format("Test {0} failed! Deck Blue[{1}] got:[{2},{3},{4},{5}], expected:[{6},{7},{8},{9}]",
-                        testName, idx,
-                        blueCard.Sides[0], blueCard.Sides[1], blueCard.Sides[2], blueCard.Sides[3],
-                        configData.deckBlue[idx].sides[0], configData.deckBlue[idx].sides[1], configData.deckBlue[idx].sides[2], configData.deckBlue[idx].sides[3]);
-                    throw new Exception(exceptionMsg);
-                }
-
-                TriadCard redCard = cachedGameState.redDeck[idx];
-                EVerifyCardState redState =
-                    (redCard == null) ? EVerifyCardState.None :
-                    redCard.Name == failedMatchCard.Name ? EVerifyCardState.Visible :
-                    !redCard.IsValid() ? EVerifyCardState.Hidden :
-                    EVerifyCardState.Visible;
-
-                if (configData.deckRed[idx].state == EVerifyCardState.Locked) { configData.deckRed[idx].state = EVerifyCardState.Visible; }
-                if (redState != configData.deckRed[idx].state)
-                {
-                    screenAnalyzer.debugScannerContext = "red" + idx;
-                    string exceptionMsg = string.Format("Test {0} failed! Deck Red[{1}] got:{2}, expected:{3}",
-                        testName, idx,
-                        redState,
-                        configData.deckRed[idx].state);
-                    throw new Exception(exceptionMsg);
-                }
-
-                if (redCard != null &&
-                    (redCard.Sides[0] != configData.deckRed[idx].sides[0] ||
-                    redCard.Sides[1] != configData.deckRed[idx].sides[1] ||
-                    redCard.Sides[2] != configData.deckRed[idx].sides[2] ||
-                    redCard.Sides[3] != configData.deckRed[idx].sides[3]))
-                {
-                    screenAnalyzer.debugScannerContext = "red" + idx;
-                    string exceptionMsg = string.Format("Test {0} failed! Deck Red[{1}] got:[{2},{3},{4},{5}], expected:[{6},{7},{8},{9}]",
-                        testName, idx,
-                        redCard.Sides[0], redCard.Sides[1], redCard.Sides[2], redCard.Sides[3],
-                        configData.deckRed[idx].sides[0], configData.deckRed[idx].sides[1], configData.deckRed[idx].sides[2], configData.deckRed[idx].sides[3]);
-                    throw new Exception(exceptionMsg);
-                }
+                ValidateCard(configData.deckBlue[idx], ECardLocation.BlueDeck, idx);
+                ValidateCard(configData.deckRed[idx], ECardLocation.RedDeck, idx);
             }
 
-            // verify board
             for (int idx = 0; idx < 9; idx++)
             {
-                TriadCard testCard = cachedGameState.board[idx];
-                EVerifyCardState cardState =
-                    (testCard == null) ? EVerifyCardState.None :
-                    cachedGameState.boardOwner[idx] == ETriadCardOwner.Red ? EVerifyCardState.PlacedRed :
-                    cachedGameState.boardOwner[idx] == ETriadCardOwner.Blue ? EVerifyCardState.PlacedBlue :
-                    EVerifyCardState.None;
-
-                if (cardState != configData.board[idx].state)
-                {
-                    screenAnalyzer.debugScannerContext = "board" + idx;
-                    string exceptionMsg = string.Format("Test {0} failed! Board[{1}] got:{2}, expected:{3}",
-                        testName, idx,
-                        cardState,
-                        configData.board[idx].state);
-                    throw new Exception(exceptionMsg);
-                }
-
-                if (testCard != null &&
-                    (testCard.Sides[0] != configData.board[idx].sides[0] ||
-                    testCard.Sides[1] != configData.board[idx].sides[1] ||
-                    testCard.Sides[2] != configData.board[idx].sides[2] ||
-                    testCard.Sides[3] != configData.board[idx].sides[3]))
-                {
-                    screenAnalyzer.debugScannerContext = "board" + idx;
-                    string exceptionMsg = string.Format("Test {0} failed! Board[{1}] got:[{2},{3},{4},{5}], expected:[{6},{7},{8},{9}]",
-                        testName, idx,
-                        testCard.Sides[0], testCard.Sides[1], testCard.Sides[2], testCard.Sides[3],
-                        configData.board[idx].sides[0], configData.board[idx].sides[1], configData.board[idx].sides[2], configData.board[idx].sides[3]);
-                    throw new Exception(exceptionMsg);
-                }
+                ValidateCard(configData.board[idx], ECardLocation.Board, idx);
             }
         }
 

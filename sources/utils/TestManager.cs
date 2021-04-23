@@ -8,8 +8,13 @@ namespace FFTriadBuddy
     public class TestManager
     {
 #if DEBUG
+        private static bool exportDetectionPatterns;
+
         public static void RunTests()
         {
+            // ML run?
+            exportDetectionPatterns = false;
+
             ScreenAnalyzer.EMode testMode = ScreenAnalyzer.EMode.ResetIntermediateData | ScreenAnalyzer.EMode.DebugScreenshotOnly;
 
             //RunTests("test/auto/cactpot", testMode | ScreenAnalyzer.EMode.ScanCactpot);
@@ -19,6 +24,7 @@ namespace FFTriadBuddy
         public static void RunTests(string path, ScreenAnalyzer.EMode mode)
         {
             ScreenAnalyzer screenAnalyzer = new ScreenAnalyzer();
+            MLDataExporter dataExporter = null;
 
             ScannerBase scannerOb = null;
             foreach (var kvp in screenAnalyzer.mapScanners)
@@ -33,6 +39,13 @@ namespace FFTriadBuddy
             if (scannerOb == null)
             {
                 throw new Exception("Test failed! Can't find scanner for requested type:" + mode);
+            }
+
+            if (exportDetectionPatterns)
+            {
+                dataExporter = new MLDataExporter();
+                dataExporter.exportPath = AssetManager.Get().CreateFilePath("ml/patternMatch/data");
+                dataExporter.StartDataExport((mode & ScreenAnalyzer.EMode.ScanAll).ToString());
             }
 
             string testRoot = AssetManager.Get().CreateFilePath(path);
@@ -56,20 +69,26 @@ namespace FFTriadBuddy
                     try
                     {
                         screenAnalyzer.DoWork(mode);
-                        scannerOb.ValidateScan(configPath, mode);
+                        scannerOb.ValidateScan(configPath, mode, dataExporter);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Logger.WriteLine("Exception:" + ex);
                         bNeedsDebugRun = true;
                     }
 
                     // retry, don't catch exceptions
-                    if (bNeedsDebugRun)
+                    if (bNeedsDebugRun && !exportDetectionPatterns)
                     {
                         screenAnalyzer.DoWork(mode | ScreenAnalyzer.EMode.Debug);
-                        scannerOb.ValidateScan(configPath, mode | ScreenAnalyzer.EMode.Debug);
+                        scannerOb.ValidateScan(configPath, mode | ScreenAnalyzer.EMode.Debug, null);
                     }
                 }
+            }
+
+            if (exportDetectionPatterns)
+            {
+                dataExporter.FinishDataExport("ml-" + Path.GetFileNameWithoutExtension(path) + ".json");
             }
         }
 #endif // DEBUG

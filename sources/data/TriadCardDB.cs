@@ -212,7 +212,7 @@ namespace FFTriadBuddy
             return null;
         }
 
-        public TriadCard Find(int numUp, int numDown, int numLeft, int numRight)
+        public TriadCard Find(int numUp, int numLeft, int numDown, int numRight)
         {
             foreach (TriadCard testCard in cards)
             {

@@ -11,7 +11,6 @@ namespace FFTriadBuddy
         public List<TriadCard> ownedCards;
         public List<TriadNpc> completedNpcs;
         public List<ImageHashData> customHashes;
-        public List<ImagePatternDigit> customDigits;
         public TriadCard[] starterCards;
         public Dictionary<TriadNpc, TriadDeck> lastDeck;
         public List<TriadDeckNamed> favDecks;
@@ -22,7 +21,7 @@ namespace FFTriadBuddy
         public bool isDirty;
         public string DBPath;
         public string cloudToken;
-        private List<ImageHashData> lockedHashes;
+
         private static PlayerSettingsDB instance = new PlayerSettingsDB();
 
         public delegate void UpdatedDelegate(bool bCards, bool bNpcs, bool bDecks);
@@ -37,8 +36,6 @@ namespace FFTriadBuddy
             favDecks = new List<TriadDeckNamed>();
             starterCards = new TriadCard[5];
             customHashes = new List<ImageHashData>();
-            customDigits = new List<ImagePatternDigit>();
-            lockedHashes = new List<ImageHashData>();
             useAutoScan = false;
             useFullScreenCapture = false;
             useCloudStorage = false;
@@ -155,14 +152,6 @@ namespace FFTriadBuddy
                             {
                                 customHashes.Add(customHash);
                             }
-                            else
-                            {
-                                ImagePatternDigit customDigit = ImageHashDB.Get().LoadDigitEntry(testElem);
-                                if (customDigit.Value > 0)
-                                {
-                                    customDigits.Add(customDigit);
-                                }
-                            }
                         }
                     }
                     catch (Exception ex)
@@ -265,12 +254,7 @@ namespace FFTriadBuddy
                 if (imageHashesOb != null)
                 {
                     customHashes = ImageHashDB.Get().LoadImageHashes(imageHashesOb);
-                }
-
-                JsonParser.ArrayValue digitHashesArr = (JsonParser.ArrayValue)jsonOb["digits", null];
-                if (digitHashesArr != null)
-                {
-                    customDigits = ImageHashDB.Get().LoadDigitHashes(digitHashesArr);
+                    ImageHashDB.Get().hashes.AddRange(customHashes);
                 }
             }
             catch (Exception ex)
@@ -450,12 +434,8 @@ namespace FFTriadBuddy
                 if (!bLimitedMode)
                 {
                     jsonWriter.WriteObjectStart("images");
-                    ImageHashDB.Get().StoreImageHashes(customHashes, jsonWriter);
+                    ImageHashDB.Get().StoreHashes(customHashes, jsonWriter);
                     jsonWriter.WriteObjectEnd();
-
-                    jsonWriter.WriteArrayStart("digits");
-                    ImageHashDB.Get().StoreDigitHashes(customDigits, jsonWriter);
-                    jsonWriter.WriteArrayEnd();
                 }
 
                 jsonWriter.WriteObjectEnd();
@@ -546,79 +526,36 @@ namespace FFTriadBuddy
             }
         }
 
-        public void AddLockedHash(ImageHashData hashData)
-        {
-            if (!IsLockedHash(hashData))
-            {
-                for (int Idx = 0; Idx < customHashes.Count; Idx++)
-                {
-                    customHashes[Idx].IsHashMatching(hashData, out int testDistance);
-
-                    // exact match only
-                    if (testDistance == 0)
-                    {
-                        customHashes.RemoveAt(Idx);
-                        MarkDirty();
-                        break;
-                    }
-                }
-
-                lockedHashes.Add(hashData);
-            }
-        }
-
-        public bool IsLockedHash(HashCollection hash)
-        {
-            foreach (ImageHashData testData in lockedHashes)
-            {
-                testData.IsHashMatching(hash, out int testDistance);
-
-                // exact match only
-                if (testDistance == 0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool IsLockedHash(ImageHashData hashData)
-        {
-            return IsLockedHash(hashData.Hash);
-        }
-
         public void AddKnownHash(ImageHashData hashData)
         {
-            for (int Idx = 0; Idx < lockedHashes.Count; Idx++)
+            foreach (ImageHashData testHash in customHashes)
             {
-                lockedHashes[Idx].IsHashMatching(hashData, out int testDistance);
-
-                // exact match only
-                if (testDistance == 0)
+                if (hashData.IsMatching(testHash, 0, out int dummyDistance))
                 {
-                    lockedHashes.RemoveAt(Idx);
-                    break;
-                }
-            }
-
-            customHashes.Add(hashData);
-            MarkDirty();
-        }
-
-        public void AddKnownDigit(ImagePatternDigit digitData)
-        {
-            for (int Idx = 0; Idx < customDigits.Count; Idx++)
-            {
-                if (customDigits[Idx].Hash == digitData.Hash)
-                {
-                    customDigits[Idx] = digitData;
+                    Logger.WriteLine("Adding hash ({0}: {1}) failed! Colision with already known ({2}: {3})", hashData.type, hashData.ownerOb, testHash.type, testHash.ownerOb);
                     return;
                 }
             }
 
-            customDigits.Add(digitData);
+            customHashes.Add(hashData);
+            ImageHashDB.Get().hashes.Add(hashData);
+
             MarkDirty();
+        }
+
+        public void RemoveKnownHash(ImageHashData hashData)
+        {
+            for (int idx = customHashes.Count - 1; idx >= 0; idx--)
+            {
+                ImageHashData testHash = customHashes[idx];
+                if (hashData.IsMatching(testHash, 0, out int dummyDistance))
+                {
+                    customHashes.RemoveAt(idx);
+                    ImageHashDB.Get().hashes.Remove(testHash);
+
+                    MarkDirty();
+                }
+            }
         }
     }
 }

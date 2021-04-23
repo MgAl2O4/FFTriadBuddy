@@ -186,7 +186,7 @@ namespace FFTriadBuddy
             try
             {
                 AssetManager assets = AssetManager.Get();
-                if (assets.Init())
+                if (assets.Init(Properties.Resources.assets))
                 {
                     bResult = TriadCardDB.Get().Load();
                     bResult = bResult && TriadNpcDB.Get().Load();
@@ -1503,7 +1503,10 @@ namespace FFTriadBuddy
                 mode |= ScreenAnalyzer.EMode.DebugScreenshotOnly;
             }
 
-            screenAnalyzer.DoWork(mode | ScreenAnalyzer.EMode.ScanAll);
+            //screenAnalyzer.unknownHashes.Clear();
+            //screenAnalyzer.currentHashMatches.Clear();
+
+            screenAnalyzer.DoWork(mode | ScreenAnalyzer.EMode.ScanAll | ScreenAnalyzer.EMode.DebugSaveMarkup);
 
             Rectangle clipBounds = screenAnalyzer.scannerTriad.GetTimerScanBox();
             if (clipBounds.Width > 0)
@@ -1894,47 +1897,7 @@ namespace FFTriadBuddy
             tabControlScreenDetection.SelectedTab = tabPageDetectionInfo;
         }
 
-        class LocalHashComboItem : IComparable
-        {
-            public object SourceObject;
-            string Description;
-
-            public LocalHashComboItem(TriadGameModifier mod)
-            {
-                SourceObject = mod;
-                Description = mod.ToString();
-            }
-
-            public LocalHashComboItem(TriadCard card)
-            {
-                SourceObject = card;
-                Description = card.Name;
-            }
-
-            public LocalHashComboItem(CactpotNumberHash number)
-            {
-                SourceObject = number;
-                Description = number.ToString();
-            }
-
-            public LocalHashComboItem(int number)
-            {
-                SourceObject = number;
-                Description = (number == 10) ? "A" : number.ToString();
-            }
-
-            public int CompareTo(object obj)
-            {
-                return Description.CompareTo(obj.ToString());
-            }
-
-            public override string ToString()
-            {
-                return Description;
-            }
-        }
-
-        private void ShowScreenshotState()
+        private void UpdateScreenshotStatus()
         {
             ScreenAnalyzer.EState showState = screenAnalyzer.GetCurrentState();
             Color useBackColor = screenshotStateFailureColor;
@@ -1991,102 +1954,112 @@ namespace FFTriadBuddy
             }
 
             panelScreenshotState.BackColor = useBackColor;
+        }
 
-            // keep outside bUseScreenReader scope for debug mode updates
+        private void UpdateScreenshotListUnknown()
+        {
+            labelLocalHashPending.Text = (screenAnalyzer.unknownHashes.Count > 1) ?
+                ("(there " + (screenAnalyzer.unknownHashes.Count == 2 ? "is" : "are") + " " + (screenAnalyzer.unknownHashes.Count - 1) + " more pending)") :
+                "";
+
+            ImageHashData hashData = screenAnalyzer.unknownHashes[0];
+            labelLocalHashType.Text = hashData.type.ToString();
+            pictureBoxLocalHash.Image = hashData.previewImage;
+
+            comboBoxLocalHash.SelectedIndex = -1;
+            comboBoxLocalHash.Items.Clear();
+            comboBoxLocalHash.Items.AddRange(FormAdjustHash.GenerateHashOwnerOptions(hashData).ToArray());
+            comboBoxLocalHash.Text = "(select match)";
+            comboBoxLocalHash_SelectedIndexChanged(null, null);
+
+            if (tabControl1.SelectedTab != tabPageScreenshot)
+            {
+                tabControl1.SelectTab(tabPageScreenshot);
+            }
+        }
+
+        private void UpdateScreenshotListKnown()
+        {
+            pictureBoxLocalHash.Image = null;
+
+            listViewDetectionHashes.Items.Clear();
+            foreach (var hashData in screenAnalyzer.currentHashMatches)
+            {
+                if (hashData.type == EImageHashType.CardNumber || hashData.type == EImageHashType.CardImage) { continue; }
+
+                bool isExactMatch = hashData.matchDistance == 0;
+                TriadGameModifier modOb = hashData.ownerOb as TriadGameModifier;
+                TriadCard cardOb = hashData.ownerOb as TriadCard;
+
+                ListViewItem lvi = new ListViewItem(hashData.isAuto ? "Auto" : isExactMatch ? "Exact" : "Similar");
+                lvi.Tag = hashData;
+                lvi.SubItems.Add(
+                    (modOb != null) ? "Rule: " + modOb.GetName() :
+                    (cardOb != null) ? "Card: " + cardOb.ToShortString() :
+                    "Number: " + (int)hashData.ownerOb);
+
+                listViewDetectionHashes.Items.Add(lvi);
+            }
+
+            listViewDetectionCards.Items.Clear();
+            screenAnalyzer.scannerTriad.cachedCardState.Sort();
+            foreach (ScannerTriad.CardState cardState in screenAnalyzer.scannerTriad.cachedCardState)
+            {
+                if (cardState.state == ScannerTriad.ECardState.None ||
+                    cardState.state == ScannerTriad.ECardState.Hidden)
+                {
+                    continue;
+                }
+
+                string friendlyDesc =
+                    (cardState.location == ScannerTriad.ECardLocation.BlueDeck) ? "Blue " + (cardState.locationContext + 1) :
+                    (cardState.location == ScannerTriad.ECardLocation.RedDeck) ? "Red " + (cardState.locationContext + 1) :
+                    string.Format("Board {0} {1}",
+                        cardState.locationContext < 3 ? "top" : (cardState.locationContext < 6) ? "mid" : "bot",
+                        (cardState.locationContext % 3) + 1);
+
+                ListViewItem lvi = new ListViewItem(friendlyDesc);
+                lvi.Tag = cardState;
+
+                lvi.SubItems.Add((cardState.sideNumber == null) ? "" :
+                    (cardState.sideNumber[0] + "-" + cardState.sideNumber[1] + "-" + cardState.sideNumber[2] + "-" + cardState.sideNumber[3]));
+
+                lvi.SubItems.Add(cardState.card == null ? "not detected!" : cardState.card.Name);
+                lvi.BackColor = (cardState.card == null) ? Color.MistyRose : SystemColors.Window;
+
+                listViewDetectionCards.Items.Add(lvi);
+            }
+
+            listViewDetectionHashes.Enabled = listViewDetectionHashes.Items.Count > 0;
+            listViewDetectionCards.Enabled = listViewDetectionCards.Items.Count > 0;
+        }
+
+        private void ShowScreenshotState()
+        {
+            ScreenAnalyzer.EState showState = screenAnalyzer.GetCurrentState();
+            UpdateScreenshotStatus();
+
             if ((showState == ScreenAnalyzer.EState.UnknownHash) && (screenAnalyzer.unknownHashes.Count > 0))
             {
                 tabControlScreenDetection.SelectedTab = tabPageDetectionLearn;
                 labelDeleteLastHint.Visible = false;
-                labelLocalHashPending.Text = (screenAnalyzer.unknownHashes.Count > 1) ?
-                    ("(there " + (screenAnalyzer.unknownHashes.Count == 2 ? "is" : "are") + " " + (screenAnalyzer.unknownHashes.Count - 1) + " more pending)") :
-                    "";
 
-                ImageHashData hashData = screenAnalyzer.unknownHashes[0].hashData;
-                labelLocalHashType.Text = hashData.Type.ToString();
-                pictureBoxLocalHash.Image = screenAnalyzer.unknownHashes[0].sourceImage;
+                UpdateScreenshotListUnknown();
+            }
+            else if ((screenAnalyzer.currentHashMatches.Count > 0) || (screenAnalyzer.scannerTriad.cachedCardState.Count > 0))
+            {
+                tabControlScreenDetection.SelectedTab = tabPageDetectionHistory;
+                labelDeleteLastHint.Visible = true;
 
-                comboBoxLocalHash.SelectedIndex = -1;
-                comboBoxLocalHash.Items.Clear();
-                switch (hashData.Type)
-                {
-                    case EImageHashType.Rule:
-                        foreach (TriadGameModifier mod in ImageHashDB.Get().modObjects)
-                        {
-                            comboBoxLocalHash.Items.Add(new LocalHashComboItem(mod));
-                        }
-                        break;
-
-                    case EImageHashType.Card:
-                        foreach (TriadCard card in TriadCardDB.Get().sameNumberMap[((TriadCard)hashData.GuideOb).SameNumberId])
-                        {
-                            comboBoxLocalHash.Items.Add(new LocalHashComboItem(card));
-                        }
-                        break;
-
-                    case EImageHashType.Cactpot:
-                        foreach (CactpotNumberHash number in CactpotGame.hashDB)
-                        {
-                            comboBoxLocalHash.Items.Add(new LocalHashComboItem(number));
-                        }
-                        break;
-
-                    default: break;
-                }
-
-                comboBoxLocalHash.Text = "(select match)";
-                comboBoxLocalHash_SelectedIndexChanged(null, null);
-
-                if (tabControl1.SelectedTab != tabPageScreenshot)
-                {
-                    tabControl1.SelectTab(tabPageScreenshot);
-                }
+                UpdateScreenshotListKnown();
             }
             else
             {
-                bool hasAnyDetection = (screenAnalyzer.currentHashDetections.Count > 0) || (screenAnalyzer.scannerTriad.cachedCardState.Count > 0);
-                tabControlScreenDetection.SelectedTab = hasAnyDetection ? tabPageDetectionHistory : tabPageDetectionInfo;
-                labelDeleteLastHint.Visible = true;
-                pictureBoxLocalHash.Image = null;
-
-                listViewDetectionHashes.Items.Clear();
-                foreach (KeyValuePair<FastBitmapHash, int> kvp in screenAnalyzer.currentHashDetections)
-                {
-                    TriadGameModifier modOb = kvp.Key.GuideOb as TriadGameModifier;
-                    TriadCard cardOb = kvp.Key.GuideOb as TriadCard;
-                    CactpotNumberHash cactpotOb = kvp.Key.GuideOb as CactpotNumberHash;
-
-                    ListViewItem lvi = new ListViewItem(kvp.Value == 0 ? "Exact" : "Similar");
-                    lvi.Tag = kvp.Key;
-                    lvi.SubItems.Add(
-                        (modOb != null) ? "Rule: " + modOb.GetName() :
-                        (cardOb != null) ? "Card: " + cardOb.ToShortString() :
-                        (cactpotOb != null) ? "Cactpot: " + cactpotOb.ToString() :
-                        "unknown type");
-
-                    listViewDetectionHashes.Items.Add(lvi);
-                }
-
-                listViewDetectionCards.Items.Clear();
-                screenAnalyzer.scannerTriad.cachedCardState.Sort();
-                foreach (ScannerTriad.CardState cardState in screenAnalyzer.scannerTriad.cachedCardState)
-                {
-                    ListViewItem lvi = new ListViewItem(cardState.name);
-                    lvi.Tag = cardState;
-
-                    lvi.SubItems.Add((cardState.sideNumber == null) ? "" :
-                        (cardState.sideNumber[0] + "-" + cardState.sideNumber[2] + "-" + cardState.sideNumber[1] + "-" + cardState.sideNumber[3]));
-                    lvi.SubItems.Add(cardState.card == null ? "not detected!" : cardState.card.Name);
-
-                    lvi.BackColor = (cardState.card == null) ? Color.MistyRose : SystemColors.Window;
-
-                    listViewDetectionCards.Items.Add(lvi);
-                }
+                tabControlScreenDetection.SelectedTab = tabPageDetectionInfo;
+                labelDeleteLastHint.Visible = false;
             }
 
             buttonLocalHashRemove.Enabled = PlayerSettingsDB.Get().customHashes.Count > 0;
-            labelDeleteLastHint.Text =
-                (listViewDetectionHashes.Items.Count > 0) ? "^ Delete entry to learn again" :
-                "";
         }
 
         private void checkBoxUseScreenshots_CheckedChanged(object sender, EventArgs e)
@@ -2113,9 +2086,10 @@ namespace FFTriadBuddy
 
         private void buttonRemoveLocalHashes_Click(object sender, EventArgs e)
         {
+            ImageHashDB.Get().Load();
             PlayerSettingsDB.Get().customHashes.Clear();
             PlayerSettingsDB.Get().MarkDirty();
-            screenAnalyzer.currentHashDetections.Clear();
+            screenAnalyzer.currentHashMatches.Clear();
             ShowScreenshotState();
         }
 
@@ -2128,24 +2102,17 @@ namespace FFTriadBuddy
         {
             if (screenAnalyzer != null && (screenAnalyzer.unknownHashes.Count > 0) && comboBoxLocalHash.SelectedItem != null)
             {
-                LocalHashComboItem hashComboItem = (LocalHashComboItem)comboBoxLocalHash.SelectedItem;
+                FormAdjustHash.HashOwnerItem hashComboItem = (FormAdjustHash.HashOwnerItem)comboBoxLocalHash.SelectedItem;
                 if (hashComboItem != null)
                 {
-                    ImageHashData hashData = new ImageHashData(hashComboItem.SourceObject, screenAnalyzer.unknownHashes[0].hashData.Hash, screenAnalyzer.unknownHashes[0].hashData.Type);
+                    ImageHashData hashData = screenAnalyzer.unknownHashes[0];
+                    hashData.ownerOb = hashComboItem.SourceObject;
+
                     PlayerSettingsDB.Get().AddKnownHash(hashData);
                     screenAnalyzer.PopUnknownHash();
 
                     ShowScreenshotState();
                 }
-            }
-        }
-
-        private void listViewDetectionHistory_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyCode == Keys.Delete) && listViewDetectionHashes.SelectedIndices.Count == 1)
-            {
-                screenAnalyzer.RemoveKnownHash(listViewDetectionHashes.SelectedItems[0].Tag as FastBitmapHash);
-                listViewDetectionHashes.Items.RemoveAt(listViewDetectionHashes.SelectedIndices[0]);
             }
         }
 
@@ -2162,86 +2129,84 @@ namespace FFTriadBuddy
                 if (lvi != null)
                 {
                     ScannerTriad.CardState cardState = lvi.Tag as ScannerTriad.CardState;
-                    if (cardState != null && cardState.sideNumber != null)
+                    if (cardState != null)
+                    {
+                        toolStripMenuItem6.Enabled = (cardState.state == ScannerTriad.ECardState.Locked ||
+                            cardState.state == ScannerTriad.ECardState.Visible ||
+                            cardState.state == ScannerTriad.ECardState.PlacedBlue ||
+                            cardState.state == ScannerTriad.ECardState.PlacedRed);
+                        
+                        lvi.Selected = true;
+                        contextMenuStripLearnCard.Tag = cardState;
+                        contextMenuStripLearnCard.Show(listViewDetectionCards, e.Location, ToolStripDropDownDirection.BelowRight);
+                    }
+                }
+            }
+        }
+
+        private void listViewDetectionHashes_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ListViewItem lvi = listViewDetectionHashes.GetItemAt(e.Location.X, e.Location.Y);
+                if (lvi != null)
+                {
+                    ImageHashData hashData = lvi.Tag as ImageHashData;
+                    if (hashData != null)
                     {
                         lvi.Selected = true;
-                        contextMenuStripCardParser.Tag = cardState;
 
-                        toolStripMenuItemCardParseTitle.Text = "Adjust detection for: " + cardState.name;
-                        toolStripComboBoxCardParseUp.Text = (cardState.sideNumber[0] == 10) ? "A" : cardState.sideNumber[0].ToString();
-                        toolStripComboBoxCardParseDown.Text = (cardState.sideNumber[1] == 10) ? "A" : cardState.sideNumber[1].ToString();
-                        toolStripComboBoxCardParseLeft.Text = (cardState.sideNumber[2] == 10) ? "A" : cardState.sideNumber[2].ToString();
-                        toolStripComboBoxCardParseRight.Text = (cardState.sideNumber[3] == 10) ? "A" : cardState.sideNumber[3].ToString();
+                        // only exact matches can be deleted
+                        deleteAndRelearnToolStripMenuItem.Enabled = (hashData.matchDistance == 0) && !hashData.isAuto;
 
-                        contextMenuStripCardParser.Show(listViewDetectionCards, e.Location, ToolStripDropDownDirection.BelowRight);
+                        contextMenuStripLearnHash.Tag = hashData;
+                        contextMenuStripLearnHash.Show(listViewDetectionHashes, e.Location, ToolStripDropDownDirection.BelowRight);
                     }
                 }
             }
         }
 
-        private void toolStripComboBoxCard_TextChanged(object sender, EventArgs e)
+        private void toolStripMenuItem6_Click(object sender, EventArgs e)
         {
-            bool bCanConfirm = false;
-            string previewStr = "(none)";
+            ScannerTriad.CardState cardState = contextMenuStripLearnCard.Tag as ScannerTriad.CardState;
+            Logger.WriteLine("Adjust card: {0}", cardState.name);
 
-            ScannerTriad.CardState cardState = contextMenuStripCardParser.Tag as ScannerTriad.CardState;
-            if (cardState != null &&
-                toolStripComboBoxCardParseUp.Text.Length == 1 &&
-                toolStripComboBoxCardParseLeft.Text.Length == 1 &&
-                toolStripComboBoxCardParseDown.Text.Length == 1 &&
-                toolStripComboBoxCardParseRight.Text.Length == 1)
+            FormAdjustCard adjustForm = new FormAdjustCard();
+            adjustForm.InitializeForCard(cardState);
+
+            DialogResult result = adjustForm.ShowDialog();
+            if (result == DialogResult.OK)
             {
-                int numUp = 0;
-                int numLeft = 0;
-                int numDown = 0;
-                int numRight = 0;
-
-                if (!int.TryParse(toolStripComboBoxCardParseUp.Text, out numUp)) { if (toolStripComboBoxCardParseUp.Text.Equals("A", StringComparison.InvariantCultureIgnoreCase)) { numUp = 10; } }
-                if (!int.TryParse(toolStripComboBoxCardParseLeft.Text, out numLeft)) { if (toolStripComboBoxCardParseLeft.Text.Equals("A", StringComparison.InvariantCultureIgnoreCase)) { numLeft = 10; } }
-                if (!int.TryParse(toolStripComboBoxCardParseDown.Text, out numDown)) { if (toolStripComboBoxCardParseDown.Text.Equals("A", StringComparison.InvariantCultureIgnoreCase)) { numDown = 10; } }
-                if (!int.TryParse(toolStripComboBoxCardParseRight.Text, out numRight)) { if (toolStripComboBoxCardParseRight.Text.Equals("A", StringComparison.InvariantCultureIgnoreCase)) { numRight = 10; } }
-
-                cardState.adjustNumber = new int[4] { numUp, numDown, numLeft, numRight };
-
-                TriadCard foundCard = TriadCardDB.Get().Find(numUp, numDown, numLeft, numRight);
-                if (foundCard != null)
-                {
-                    if (foundCard.SameNumberId < 0)
-                    {
-                        previewStr = foundCard.Name;
-                    }
-                    else
-                    {
-                        foreach (TriadCard card in TriadCardDB.Get().sameNumberMap[foundCard.SameNumberId])
-                        {
-                            previewStr += card.Name + ", ";
-                        }
-
-                        previewStr = previewStr.Remove(previewStr.Length - 2, 2);
-                    }
-
-                    bCanConfirm = true;
-                }
+                // force refresh list to show result of user actions
+                ShowScreenshotState();
             }
-
-            toolStripMenuItemCardParsePreview.Text = "Current match: " + previewStr;
-            toolStripMenuItemCardParseConfirm.Enabled = bCanConfirm;
         }
 
-        private void toolStripMenuItemCardParseConfirm_Click(object sender, EventArgs e)
+        private void deleteAndRelearnToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScannerTriad.CardState cardState = contextMenuStripCardParser.Tag as ScannerTriad.CardState;
-            if (cardState != null && cardState.sideNumber != null && cardState.adjustNumber != null && cardState.sideImage != null)
+            ImageHashData hashData = contextMenuStripLearnHash.Tag as ImageHashData;
+            Logger.WriteLine("Delete hash: {0}", hashData);
+
+            PlayerSettingsDB.Get().RemoveKnownHash(hashData);
+
+            // remove from screen analyzer and update list to show result of user actions
+            screenAnalyzer.currentHashMatches.Remove(hashData);
+            ShowScreenshotState();
+        }
+
+        private void adjustToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ImageHashData hashData = contextMenuStripLearnHash.Tag as ImageHashData;
+            Logger.WriteLine("Adjust hash: {0}", hashData);
+
+            FormAdjustHash adjustForm = new FormAdjustHash();
+            adjustForm.InitializeForHash(hashData);
+
+            DialogResult result = adjustForm.ShowDialog();
+            if (result == DialogResult.OK)
             {
-                Logger.WriteLine("Updating parser data for " + cardState.name);
-                for (int Idx = 0; Idx < 4; Idx++)
-                {
-                    if (cardState.sideNumber[Idx] != cardState.adjustNumber[Idx])
-                    {
-                        Logger.WriteLine(">> new pattern for digit:" + (cardState.adjustNumber[Idx] == 10 ? "A" : cardState.adjustNumber[Idx].ToString()));
-                        PlayerSettingsDB.Get().AddKnownDigit(new ImagePatternDigit(cardState.adjustNumber[Idx], cardState.sideImage[Idx].Pixels));
-                    }
-                }
+                // force refresh list to show result of user actions
+                ShowScreenshotState();
             }
         }
 

@@ -208,20 +208,15 @@
             this.contextMenuStripFindNpc = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripFindNpcText = new System.Windows.Forms.ToolStripTextBox();
-            this.contextMenuStripCardParser = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemCardParseTitle = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripComboBoxCardParseUp = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripComboBoxCardParseLeft = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripComboBoxCardParseDown = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripComboBoxCardParseRight = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripMenuItemCardParsePreview = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItemCardParseConfirm = new System.Windows.Forms.ToolStripMenuItem();
             this.timerOptimizationDeckUpdate = new System.Windows.Forms.Timer(this.components);
             this.labelUpdateNotify = new System.Windows.Forms.Label();
             this.timerSetupDetails = new System.Windows.Forms.Timer(this.components);
             this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStripLearnHash = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteAndRelearnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adjustToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripLearnCard = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.panelCloud.SuspendLayout();
@@ -257,7 +252,8 @@
             this.contextMenuStripSelectNpc.SuspendLayout();
             this.contextMenuStripFindCard.SuspendLayout();
             this.contextMenuStripFindNpc.SuspendLayout();
-            this.contextMenuStripCardParser.SuspendLayout();
+            this.contextMenuStripLearnHash.SuspendLayout();
+            this.contextMenuStripLearnCard.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -856,9 +852,9 @@
             this.labelDeleteLastHint.AutoSize = true;
             this.labelDeleteLastHint.Location = new System.Drawing.Point(8, 219);
             this.labelDeleteLastHint.Name = "labelDeleteLastHint";
-            this.labelDeleteLastHint.Size = new System.Drawing.Size(140, 13);
+            this.labelDeleteLastHint.Size = new System.Drawing.Size(153, 13);
             this.labelDeleteLastHint.TabIndex = 10;
-            this.labelDeleteLastHint.Text = "^ Delete entry to learn again";
+            this.labelDeleteLastHint.Text = "^ Right click on lists for options";
             // 
             // label21
             // 
@@ -1063,7 +1059,7 @@
             // columnHeader8
             // 
             this.columnHeader8.Text = "Type";
-            this.columnHeader8.Width = 79;
+            this.columnHeader8.Width = 86;
             // 
             // columnHeader9
             // 
@@ -1092,7 +1088,7 @@
             this.listViewDetectionHashes.TabIndex = 0;
             this.listViewDetectionHashes.UseCompatibleStateImageBehavior = false;
             this.listViewDetectionHashes.View = System.Windows.Forms.View.Details;
-            this.listViewDetectionHashes.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewDetectionHistory_KeyDown);
+            this.listViewDetectionHashes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewDetectionHashes_MouseDown);
             // 
             // columnHeader6
             // 
@@ -2118,119 +2114,6 @@
             this.toolStripFindNpcText.Size = new System.Drawing.Size(100, 23);
             this.toolStripFindNpcText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindNpcText_KeyDown);
             // 
-            // contextMenuStripCardParser
-            // 
-            this.contextMenuStripCardParser.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemCardParseTitle,
-            this.toolStripSeparator1,
-            this.toolStripComboBoxCardParseUp,
-            this.toolStripComboBoxCardParseLeft,
-            this.toolStripComboBoxCardParseDown,
-            this.toolStripComboBoxCardParseRight,
-            this.toolStripMenuItemCardParsePreview,
-            this.toolStripSeparator2,
-            this.toolStripMenuItemCardParseConfirm});
-            this.contextMenuStripCardParser.Name = "contextMenuStripCardParser";
-            this.contextMenuStripCardParser.Size = new System.Drawing.Size(182, 190);
-            // 
-            // toolStripMenuItemCardParseTitle
-            // 
-            this.toolStripMenuItemCardParseTitle.Enabled = false;
-            this.toolStripMenuItemCardParseTitle.Name = "toolStripMenuItemCardParseTitle";
-            this.toolStripMenuItemCardParseTitle.Size = new System.Drawing.Size(181, 22);
-            this.toolStripMenuItemCardParseTitle.Text = "Adjust detections";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(178, 6);
-            // 
-            // toolStripComboBoxCardParseUp
-            // 
-            this.toolStripComboBoxCardParseUp.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "A"});
-            this.toolStripComboBoxCardParseUp.Name = "toolStripComboBoxCardParseUp";
-            this.toolStripComboBoxCardParseUp.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBoxCardParseUp.TextChanged += new System.EventHandler(this.toolStripComboBoxCard_TextChanged);
-            // 
-            // toolStripComboBoxCardParseLeft
-            // 
-            this.toolStripComboBoxCardParseLeft.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "A"});
-            this.toolStripComboBoxCardParseLeft.Name = "toolStripComboBoxCardParseLeft";
-            this.toolStripComboBoxCardParseLeft.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBoxCardParseLeft.TextChanged += new System.EventHandler(this.toolStripComboBoxCard_TextChanged);
-            // 
-            // toolStripComboBoxCardParseDown
-            // 
-            this.toolStripComboBoxCardParseDown.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "A"});
-            this.toolStripComboBoxCardParseDown.Name = "toolStripComboBoxCardParseDown";
-            this.toolStripComboBoxCardParseDown.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBoxCardParseDown.TextChanged += new System.EventHandler(this.toolStripComboBoxCard_TextChanged);
-            // 
-            // toolStripComboBoxCardParseRight
-            // 
-            this.toolStripComboBoxCardParseRight.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "A"});
-            this.toolStripComboBoxCardParseRight.Name = "toolStripComboBoxCardParseRight";
-            this.toolStripComboBoxCardParseRight.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBoxCardParseRight.TextChanged += new System.EventHandler(this.toolStripComboBoxCard_TextChanged);
-            // 
-            // toolStripMenuItemCardParsePreview
-            // 
-            this.toolStripMenuItemCardParsePreview.Enabled = false;
-            this.toolStripMenuItemCardParsePreview.Name = "toolStripMenuItemCardParsePreview";
-            this.toolStripMenuItemCardParsePreview.Size = new System.Drawing.Size(181, 22);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(178, 6);
-            // 
-            // toolStripMenuItemCardParseConfirm
-            // 
-            this.toolStripMenuItemCardParseConfirm.Name = "toolStripMenuItemCardParseConfirm";
-            this.toolStripMenuItemCardParseConfirm.Size = new System.Drawing.Size(181, 22);
-            this.toolStripMenuItemCardParseConfirm.Text = "Confirm";
-            this.toolStripMenuItemCardParseConfirm.Click += new System.EventHandler(this.toolStripMenuItemCardParseConfirm_Click);
-            // 
             // timerOptimizationDeckUpdate
             // 
             this.timerOptimizationDeckUpdate.Interval = 500;
@@ -2261,6 +2144,42 @@
             // 
             this.timerCloudSave.Interval = 10000;
             this.timerCloudSave.Tick += new System.EventHandler(this.timerCloudSave_Tick);
+            // 
+            // contextMenuStripLearnHash
+            // 
+            this.contextMenuStripLearnHash.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteAndRelearnToolStripMenuItem,
+            this.adjustToolStripMenuItem});
+            this.contextMenuStripLearnHash.Name = "contextMenuStripLearnHash";
+            this.contextMenuStripLearnHash.Size = new System.Drawing.Size(181, 70);
+            // 
+            // deleteAndRelearnToolStripMenuItem
+            // 
+            this.deleteAndRelearnToolStripMenuItem.Name = "deleteAndRelearnToolStripMenuItem";
+            this.deleteAndRelearnToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteAndRelearnToolStripMenuItem.Text = "Delete";
+            this.deleteAndRelearnToolStripMenuItem.Click += new System.EventHandler(this.deleteAndRelearnToolStripMenuItem_Click);
+            // 
+            // adjustToolStripMenuItem
+            // 
+            this.adjustToolStripMenuItem.Name = "adjustToolStripMenuItem";
+            this.adjustToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.adjustToolStripMenuItem.Text = "Adjust...";
+            this.adjustToolStripMenuItem.Click += new System.EventHandler(this.adjustToolStripMenuItem_Click);
+            // 
+            // contextMenuStripLearnCard
+            // 
+            this.contextMenuStripLearnCard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem6});
+            this.contextMenuStripLearnCard.Name = "contextMenuStripLearnHash";
+            this.contextMenuStripLearnCard.Size = new System.Drawing.Size(118, 26);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(117, 22);
+            this.toolStripMenuItem6.Text = "Adjust...";
+            this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
             // Form1
             // 
@@ -2331,7 +2250,8 @@
             this.contextMenuStripFindCard.PerformLayout();
             this.contextMenuStripFindNpc.ResumeLayout(false);
             this.contextMenuStripFindNpc.PerformLayout();
-            this.contextMenuStripCardParser.ResumeLayout(false);
+            this.contextMenuStripLearnHash.ResumeLayout(false);
+            this.contextMenuStripLearnCard.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2469,16 +2389,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripCardParser;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCardParseTitle;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxCardParseUp;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxCardParseLeft;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxCardParseDown;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBoxCardParseRight;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCardParsePreview;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCardParseConfirm;
         private System.Windows.Forms.CheckBox checkBoxDebugScreenshotForceCached;
         private System.Windows.Forms.Timer timerOptimizationDeckUpdate;
         private System.Windows.Forms.Button buttonOptimizeAbort;
@@ -2530,6 +2440,11 @@
         private FavDeckCtrl favDeckCtrl2;
         private System.Windows.Forms.Button buttonAddFav;
         private System.Windows.Forms.ColumnHeader columnHeaderSO;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripLearnHash;
+        private System.Windows.Forms.ToolStripMenuItem deleteAndRelearnToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adjustToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripLearnCard;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
     }
 }
 

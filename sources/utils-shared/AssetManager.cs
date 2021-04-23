@@ -1,9 +1,8 @@
-﻿using MgAl2O4.Utils;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 
-namespace FFTriadBuddy
+namespace MgAl2O4.Utils
 {
     public class AssetManager
     {
@@ -17,12 +16,11 @@ namespace FFTriadBuddy
             return instance;
         }
 
-        public bool Init()
+        public bool Init(byte[] zipContent)
         {
             bool bResult = false;
             try
             {
-                byte[] zipContent = Properties.Resources.assets;
                 resourceReader = new MemoryStream(zipContent);
                 assetArchive = new ZipArchive(resourceReader);
                 bResult = assetArchive.Entries.Count > 0;

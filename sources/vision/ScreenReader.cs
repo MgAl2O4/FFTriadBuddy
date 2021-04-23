@@ -44,7 +44,7 @@ namespace FFTriadBuddy
         {
             if (File.Exists(path))
             {
-                if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
+                //if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
 
                 cachedScreenshot = new Bitmap(path);
                 if (cachedScreenshot != null)
@@ -226,7 +226,7 @@ namespace FFTriadBuddy
                 cachedGameWindow = bounds;
                 if (useVerboseLogs) { Logger.WriteLine("TakeScreenshot: bounds " + cachedGameWindow); }
 
-                if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
+                //if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
                 cachedScreenshot = new Bitmap(cachedGameWindow.Width, cachedGameWindow.Height, PixelFormat.Format32bppArgb);
 
                 using (Graphics g = Graphics.FromImage(cachedScreenshot))
@@ -282,7 +282,7 @@ namespace FFTriadBuddy
             {
                 if (useVerboseLogs) { Logger.WriteLine("TakeScreenshotPartial: bounds " + bounds); }
 
-                if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
+                //if (cachedScreenshot != null) { cachedScreenshot.Dispose(); }
                 cachedScreenshot = new Bitmap(innerBounds.Width, innerBounds.Height, PixelFormat.Format32bppArgb);
 
                 using (Graphics g = Graphics.FromImage(cachedScreenshot))

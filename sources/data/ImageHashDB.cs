@@ -2,119 +2,140 @@
 using Palit.TLSHSharp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Xml;
 
 namespace FFTriadBuddy
 {
     public enum EImageHashType
     {
-        None,
+        CardNumber,
+        CardImage,
         Rule,
-        Card,
         Cactpot,
     }
 
-    public class HashCollection
+    public class ImageHashData : IComparable
     {
-        public readonly TlshHash ComplexHash;
-        public readonly ScanLineHash SimpleHash;
+        public byte[] hashMD5;
+        public TlshHash hashTLSH;
+        public EImageHashType type;
 
-        public HashCollection(TlshHash complexHash, ScanLineHash simpleHash)
-        {
-            ComplexHash = complexHash;
-            SimpleHash = simpleHash;
-        }
+        public object ownerOb;
 
-        public HashCollection(string complexHashStr, string simpleHashStr)
-        {
-            ComplexHash = string.IsNullOrEmpty(complexHashStr) ? null : TlshHash.FromTlshStr(complexHashStr);
-            SimpleHash = string.IsNullOrEmpty(simpleHashStr) ? null : ScanLineHash.FromString(simpleHashStr);
-        }
+        public bool isAuto;
+        public bool isKnown;
 
-        public bool IsMatching(HashCollection other, out int distance)
-        {
-            distance = FindDistance(other);
-            int maxMatchDistance = (ComplexHash != null) ? 19 : 0;
-            return distance <= maxMatchDistance;
-        }
+        public int matchDistance;
+        public Image previewImage;
+        public Bitmap sourceImage;
+        public Rectangle previewBounds;
+        public Rectangle previewContextBounds;
 
-        public int FindDistance(HashCollection other)
+        public void CalculateHash(byte[] data)
         {
-            if (ComplexHash != null && other.ComplexHash != null)
+            TlshBuilder hashBuilder = new TlshBuilder();
+            hashBuilder.Update(data);
+            hashTLSH = hashBuilder.IsValid(false) ? hashBuilder.GetHash(false) : null;
+
+            using (MD5 md5Builder = MD5.Create())
             {
-                return ComplexHash.TotalDiff(other.ComplexHash, false);
+                hashMD5 = md5Builder.ComputeHash(data);
+            }
+        }
+
+        public void CalculateHash(float[] data)
+        {
+            byte[] byteData = new byte[data.Length * sizeof(float)];
+            Buffer.BlockCopy(data, 0, byteData, 0, byteData.Length);
+            CalculateHash(byteData);
+        }
+
+        private static int GetHexVal(char hex)
+        {
+            return (hex >= 'a' && hex <= 'f') ? (hex - 'a' + 10) :
+                (hex >= 'A' && hex <= 'F') ? (hex - 'A' + 10) :
+                hex;
+        }
+
+        public void LoadFromString(string descTLSH, string descBuffer)
+        {
+            if (!string.IsNullOrEmpty(descTLSH))
+            {
+                hashTLSH = TlshHash.FromTlshStr(descTLSH);
             }
 
-            if (SimpleHash != null && other.SimpleHash != null)
+            if (!string.IsNullOrEmpty(descBuffer))
             {
-                return SimpleHash.GetDistance(other.SimpleHash);
+                hashMD5 = new byte[descBuffer.Length / 2];
+                for (int idx = 0; idx < descBuffer.Length; idx++)
+                {
+                    hashMD5[idx / 2] = (byte)((GetHexVal(descBuffer[idx]) << 4) + GetHexVal(descBuffer[idx]));
+                }
+            }
+        }
+
+        public bool IsMatching(ImageHashData other, int maxDistance, out int matchDistance)
+        {
+            matchDistance = GetHashDistance(other);
+            return matchDistance <= maxDistance;
+        }
+
+        public int GetHashDistance(ImageHashData other)
+        {
+            if (hashMD5 != null && other.hashMD5 != null && hashMD5.Length == other.hashMD5.Length)
+            {
+                bool isMatching = true;
+                for (int idx = 0; idx < hashMD5.Length; idx++)
+                {
+                    if (hashMD5[idx] != other.hashMD5[idx])
+                    {
+                        isMatching = false;
+                        break;
+                    }
+                }
+
+                if (isMatching)
+                {
+                    return 0;
+                }
+            }
+
+            if (hashTLSH != null && other.hashTLSH != null)
+            {
+                return hashTLSH.TotalDiff(other.hashTLSH, false);
             }
 
             return int.MaxValue;
         }
 
-        public override string ToString()
+        public void UpdatePreviewImage()
         {
-            return (ComplexHash != null) ? ("C:" + ComplexHash) : ("S:" + SimpleHash);
-        }
-    }
-
-    public class ImageHashData : IComparable
-    {
-        public readonly object Owner;
-        public readonly EImageHashType Type;
-        public readonly HashCollection Hash;
-        public object GuideOb;
-
-        public ImageHashData(object owner, HashCollection hash, EImageHashType type)
-        {
-            Owner = owner;
-            Hash = hash;
-            Type = type;
-        }
-
-        public ImageHashData(object owner, HashCollection hash, EImageHashType type, object guideOb)
-        {
-            Owner = owner;
-            Hash = hash;
-            Type = type;
-            GuideOb = guideOb;
+            if (previewImage == null)
+            {
+                previewImage = ImageUtils.CreatePreviewImage(sourceImage, previewBounds, previewContextBounds);
+            }
         }
 
         public int CompareTo(object obj)
         {
             ImageHashData otherOb = (ImageHashData)obj;
-            return (otherOb == null) ? 1 :
-                (Type != otherOb.Type) ? Type.CompareTo(otherOb.Type) :
-                Hash.ToString().CompareTo(otherOb.Hash.ToString());
+            if (otherOb == null) { return 1; }
+            if (type != otherOb.type) { return type.CompareTo(otherOb.type); }
+
+            return ownerOb.ToString().CompareTo(otherOb.ownerOb.ToString());
         }
 
-        public bool IsHashMatching(HashCollection testHash)
+        public bool IsValid()
         {
-            int dummyDistance = 0;
-            return Hash.IsMatching(testHash, out dummyDistance);
-        }
-
-        public bool IsHashMatching(HashCollection testHash, out int distance)
-        {
-            return Hash.IsMatching(testHash, out distance);
-        }
-
-        public bool IsHashMatching(ImageHashData testHashData)
-        {
-            int dummyDistance = 0;
-            return Hash.IsMatching(testHashData.Hash, out dummyDistance);
-        }
-
-        public bool IsHashMatching(ImageHashData testHashData, out int distance)
-        {
-            return Hash.IsMatching(testHashData.Hash, out distance);
+            return (hashMD5 != null) || (hashTLSH != null);
         }
 
         public override string ToString()
         {
-            return Type + ": " + Owner;
+            return type + ": " + ownerOb;
         }
     }
 
@@ -141,7 +162,6 @@ namespace FFTriadBuddy
         public bool Load()
         {
             hashes.Clear();
-            CactpotGame.InititalizeHashDB();
 
             modObjects.Clear();
             foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
@@ -161,7 +181,7 @@ namespace FFTriadBuddy
                 {
                     XmlElement testElem = (XmlElement)testNode;
                     ImageHashData hashEntry = LoadHashEntry(testElem);
-                    if (hashEntry != null)
+                    if (hashEntry != null && hashEntry.IsValid())
                     {
                         hashes.Add(hashEntry);
                     }
@@ -179,72 +199,41 @@ namespace FFTriadBuddy
         public ImageHashData LoadHashEntry(XmlElement xmlElem)
         {
             ImageHashData result = null;
-            if (xmlElem != null && xmlElem.Name == "hash" && xmlElem.HasAttribute("type") && (xmlElem.HasAttribute("value") || xmlElem.HasAttribute("valueS")))
+            if (xmlElem != null && xmlElem.Name == "hash" && xmlElem.HasAttribute("type") && (xmlElem.HasAttribute("value") || xmlElem.HasAttribute("valueB")))
             {
                 string typeName = xmlElem.GetAttribute("type");
 
                 string hashValueC = xmlElem.HasAttribute("value") ? xmlElem.GetAttribute("value") : null;
-                string hashValueS = xmlElem.HasAttribute("valueS") ? xmlElem.GetAttribute("valueS") : null;
-
-                HashCollection hashData = new HashCollection(hashValueC, hashValueS);
+                string hashValueB = xmlElem.HasAttribute("valueB") ? xmlElem.GetAttribute("valueB") : null;
 
                 if (typeName.Equals("rule", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string ruleName = xmlElem.GetAttribute("name");
-                    TriadGameModifier ruleMod = ParseRule(ruleName);
 
-                    result = new ImageHashData(ruleMod, hashData, EImageHashType.Rule);
+                    result = new ImageHashData() { type = EImageHashType.Rule, isKnown = true };
+                    result.ownerOb = ParseRule(ruleName);
+                    result.LoadFromString(hashValueC, hashValueB);
                 }
                 else if (typeName.Equals("card", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string cardIdName = xmlElem.GetAttribute("id");
                     int cardId = int.Parse(cardIdName);
-                    TriadCard cardOb = TriadCardDB.Get().cards[cardId];
 
-                    result = new ImageHashData(cardOb, hashData, EImageHashType.Card);
+                    result = new ImageHashData() { type = EImageHashType.CardImage, isKnown = true };
+                    result.ownerOb = TriadCardDB.Get().cards[cardId];
+                    result.LoadFromString(hashValueC, hashValueB);
                 }
                 else if (typeName.Equals("cactpot", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string numIdName = xmlElem.GetAttribute("id");
-                    int numId = int.Parse(numIdName);
-                    if (numId >= 1 && numId <= 9)
-                    {
-                        result = new ImageHashData(CactpotGame.hashDB[numId - 1], hashData, EImageHashType.Cactpot);
-                    }
+
+                    result = new ImageHashData() { type = EImageHashType.Cactpot, isKnown = true };
+                    result.ownerOb = int.Parse(numIdName);
+                    result.LoadFromString(hashValueC, hashValueB);
                 }
             }
 
             return result;
-        }
-
-        public ImagePatternDigit LoadDigitEntry(XmlElement xmlElem)
-        {
-            ImagePatternDigit result = new ImagePatternDigit(-1, null);
-
-            if (xmlElem != null && xmlElem.Name == "digit" && xmlElem.HasAttribute("type") && xmlElem.HasAttribute("value"))
-            {
-                string typeName = xmlElem.GetAttribute("type");
-                string hashValue = xmlElem.GetAttribute("value");
-
-                result = new ImagePatternDigit(int.Parse(typeName), ImageDataDigit.FromHexString(hashValue));
-            }
-
-            return result;
-        }
-
-        public List<ImagePatternDigit> LoadDigitHashes(JsonParser.ArrayValue jsonArr)
-        {
-            List<ImagePatternDigit> list = new List<ImagePatternDigit>();
-            foreach (JsonParser.Value value in jsonArr.entries)
-            {
-                JsonParser.ObjectValue jsonOb = (JsonParser.ObjectValue)value;
-                string hashValue = (JsonParser.StringValue)jsonOb["hash"];
-
-                ImagePatternDigit digitHash = new ImagePatternDigit((JsonParser.IntValue)jsonOb["id"], ImageDataDigit.FromHexString(hashValue));
-                list.Add(digitHash);
-            }
-
-            return list;
         }
 
         public List<ImageHashData> LoadImageHashes(JsonParser.ObjectValue jsonOb)
@@ -252,7 +241,7 @@ namespace FFTriadBuddy
             List<ImageHashData> list = new List<ImageHashData>();
 
             string[] enumArr = Enum.GetNames(typeof(EImageHashType));
-            foreach (KeyValuePair<string, JsonParser.Value> kvp in jsonOb.entries)
+            foreach (var kvp in jsonOb.entries)
             {
                 EImageHashType groupType = (EImageHashType)Array.IndexOf(enumArr, kvp.Key);
                 JsonParser.ArrayValue typeArr = (JsonParser.ArrayValue)kvp.Value;
@@ -262,20 +251,39 @@ namespace FFTriadBuddy
                     JsonParser.ObjectValue jsonHashOb = (JsonParser.ObjectValue)value;
                     string idStr = jsonHashOb["id"];
 
-                    object hashOwner = null;
-                    switch (groupType)
+                    bool hasIdNum = int.TryParse(idStr, out int idNum);
+                    bool needsIdNum = (groupType != EImageHashType.Rule);
+                    if (hasIdNum != needsIdNum)
                     {
-                        case EImageHashType.Rule: hashOwner = ParseRule(idStr); break;
-                        case EImageHashType.Card: hashOwner = TriadCardDB.Get().cards[int.Parse(idStr)]; break;
-                        case EImageHashType.Cactpot: hashOwner = CactpotGame.hashDB[int.Parse(idStr) - 1]; break;
-                        default: break;
+                        continue;
                     }
 
-                    if (hashOwner != null)
+                    ImageHashData hashEntry = new ImageHashData() { type = groupType, isKnown = true };
+                    switch (groupType)
                     {
-                        HashCollection hashes = new HashCollection(jsonHashOb["hashC", JsonParser.StringValue.Empty], jsonHashOb["hashS", JsonParser.StringValue.Empty]);
-                        ImageHashData hashEntry = new ImageHashData(hashOwner, hashes, groupType);
-                        list.Add(hashEntry);
+                        case EImageHashType.Rule:
+                            hashEntry.ownerOb = ParseRule(idStr);
+                            break;
+
+                        case EImageHashType.CardImage:
+                            hashEntry.ownerOb = TriadCardDB.Get().cards[idNum];
+                            break;
+
+                        default:
+                            hashEntry.ownerOb = idNum;
+                            break;
+                    }
+
+                    if (hashEntry.ownerOb != null)
+                    {
+                        string descHashTLSH = jsonHashOb["hashC", JsonParser.StringValue.Empty];
+                        string descHashMd5 = jsonHashOb["hashB", JsonParser.StringValue.Empty];
+
+                        hashEntry.LoadFromString(descHashTLSH, descHashMd5);
+                        if (hashEntry.IsValid())
+                        {
+                            list.Add(hashEntry);
+                        }
                     }
                 }
             }
@@ -283,51 +291,36 @@ namespace FFTriadBuddy
             return list;
         }
 
-        public void StoreDigitHashes(List<ImagePatternDigit> entries, JsonWriter jsonWriter)
-        {
-            entries.Sort();
-            foreach (ImagePatternDigit entry in entries)
-            {
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WriteInt(entry.Value, "id");
-                jsonWriter.WriteString(entry.Hash, "hash");
-                jsonWriter.WriteObjectEnd();
-            }
-        }
-
-        public void StoreImageHashes(List<ImageHashData> entries, JsonWriter jsonWriter)
+        public void StoreHashes(List<ImageHashData> entries, JsonWriter jsonWriter)
         {
             foreach (EImageHashType subType in Enum.GetValues(typeof(EImageHashType)))
             {
-                if (subType != EImageHashType.None)
+                List<ImageHashData> sortedSubtypeList = entries.FindAll(x => x.type == subType);
+                sortedSubtypeList.Sort();
+
+                jsonWriter.WriteArrayStart(subType.ToString());
+                foreach (ImageHashData entry in sortedSubtypeList)
                 {
-                    List<ImageHashData> sortedSubtypeList = entries.FindAll(x => x.Type == subType);
-                    sortedSubtypeList.Sort();
-
-                    jsonWriter.WriteArrayStart(subType.ToString());
-                    foreach (ImageHashData entry in sortedSubtypeList)
+                    jsonWriter.WriteObjectStart();
+                    switch (subType)
                     {
-                        jsonWriter.WriteObjectStart();
-                        switch (subType)
-                        {
-                            case EImageHashType.Card: jsonWriter.WriteString(((TriadCard)entry.Owner).Id.ToString(), "id"); break;
-                            default: jsonWriter.WriteString(entry.Owner.ToString(), "id"); break;
-                        }
-
-                        if (entry.Hash.ComplexHash != null)
-                        {
-                            jsonWriter.WriteString(entry.Hash.ComplexHash.ToString(), "hashC");
-                        }
-
-                        if (entry.Hash.SimpleHash != null)
-                        {
-                            jsonWriter.WriteString(entry.Hash.SimpleHash.ToString(), "hashS");
-                        }
-
-                        jsonWriter.WriteObjectEnd();
+                        case EImageHashType.CardImage: jsonWriter.WriteString(((TriadCard)entry.ownerOb).Id.ToString(), "id"); break;
+                        default: jsonWriter.WriteString(entry.ownerOb.ToString(), "id"); break;
                     }
-                    jsonWriter.WriteArrayEnd();
+
+                    if (entry.hashTLSH != null)
+                    {
+                        jsonWriter.WriteString(entry.hashTLSH.ToString(), "hashC");
+                    }
+                    else
+                    {
+                        string hexStr = BitConverter.ToString(entry.hashMD5).ToLower();
+                        jsonWriter.WriteString(hexStr, "hashB");
+                    }
+
+                    jsonWriter.WriteObjectEnd();
                 }
+                jsonWriter.WriteArrayEnd();
             }
         }
 
@@ -349,6 +342,36 @@ namespace FFTriadBuddy
             }
 
             return result;
+        }
+
+        public ImageHashData FindExactMatch(ImageHashData hashData)
+        {
+            return FindBestMatch(hashData, 0, out int dummyV);
+        }
+
+        public ImageHashData FindBestMatch(ImageHashData hashData, int maxDistance, out int matchDistance)
+        {
+            int bestDistance = 0;
+            int bestIdx = -1;
+
+            for (int idx = 0; idx < hashes.Count; idx++)
+            {
+                if (hashes[idx].type == hashData.type)
+                {
+                    int distance = hashes[idx].GetHashDistance(hashData);
+                    if (distance <= maxDistance)
+                    {
+                        if (bestIdx < 0 || bestDistance > distance)
+                        {
+                            bestIdx = idx;
+                            bestDistance = distance;
+                        }
+                    }
+                }
+            }
+
+            matchDistance = bestDistance;
+            return (bestIdx < 0) ? null : hashes[bestIdx];
         }
     }
 }

@@ -46,6 +46,10 @@ namespace FFTriadBuddy
         public EUpdateFlags OnNewScan(ScannerTriad.GameState screenGame, TriadNpc selectedNpc)
         {
             EUpdateFlags updateFlags = EUpdateFlags.None;
+            if (screenGame == null)
+            {
+                return updateFlags;
+            }
 
             // check if game from screenshot can be continuation of cached one
             // is current state a continuation of last one?

@@ -5,34 +5,8 @@ using System.Diagnostics;
 
 namespace FFTriadBuddy
 {
-    public class CactpotNumberHash : IComparable
-    {
-        public readonly int number;
-
-        public CactpotNumberHash(int number)
-        {
-            this.number = number;
-        }
-
-        public int CompareTo(CactpotNumberHash otherNum)
-        {
-            return (otherNum != null) ? number.CompareTo(otherNum.number) : 0;
-        }
-
-        public int CompareTo(object obj)
-        {
-            return CompareTo((CactpotNumberHash)obj);
-        }
-
-        public override string ToString()
-        {
-            return number.ToString();
-        }
-    }
-
     public class CactpotGame
     {
-        public static List<CactpotNumberHash> hashDB;
         private static readonly int[,] cachedSolverData = new int[,] { { 2, 2, 2, 4, 4, 4, 4, 2, 2 }, { 4, 4, 4, 6, 4, 4, 4, 0, 0 }, { 0, 0, 0, 4, 4, 4, 4, 0, 0 }, { 4, 4, 4, 2, 2, 4, 4, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 4, 4, 4, 0, 0, 4, 4, 2, 2 }, { 0, 0, 0, 4, 4, 4, 4, 0, 0 }, { 4, 4, 4, 0, 0, 4, 4, 6, 6 }, { 2, 2, 2, 4, 4, 4, 4, 2, 2 } };
         private static readonly int[] payouts = new int[] {
             0, 0, 0, 0, 0, 0, // 0..5 - padding
@@ -56,15 +30,6 @@ namespace FFTriadBuddy
             1800, // 23
             3600, // 24
         };
-
-        public static void InititalizeHashDB()
-        {
-            hashDB = new List<CactpotNumberHash>();
-            for (int Idx = 1; Idx <= 9; Idx++)
-            {
-                hashDB.Add(new CactpotNumberHash(Idx));
-            }
-        }
 
         private static IEnumerable<List<int>> Permutate(List<int> seq, int count)
         {
