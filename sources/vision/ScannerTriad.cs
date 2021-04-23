@@ -345,6 +345,24 @@ namespace FFTriadBuddy
                         {
                             if (cardState.failedMatching)
                             {
+#if DEBUG
+                                if (!debugMode)
+                                {
+                                    // auto collect failed card matching
+                                    string autoSavePath = Path.Combine(screenAnalyzer.GetDefaultScreenshotPath(), "failed-match-");
+                                    for (int idx = 1; idx < 1000000; idx++)
+                                    {
+                                        string testPath = autoSavePath + idx + ".jpg";
+                                        if (!File.Exists(testPath))
+                                        {
+                                            Logger.WriteLine("Saving failed match screenshot: " + Path.GetFileName(testPath));
+                                            screenAnalyzer.screenReader.cachedScreenshot.Save(testPath);
+                                            break;
+                                        }
+                                    }
+                                }
+#endif // DEBUG
+
                                 cachedScanError = EScanError.FailedCardMatching;
                                 break;
                             }

@@ -304,7 +304,7 @@ namespace FFTriadBuddy
             currentState = (screenReader.currentState == ScreenReader.EState.NoErrors) ? EState.NoErrors : EState.NoInputImage;
         }
 
-        private string GetDefaultScreenshotPath()
+        public string GetDefaultScreenshotPath()
         {
             string imagePath = AssetManager.Get().CreateFilePath("test/");
             if (!Directory.Exists(imagePath))
@@ -329,7 +329,7 @@ namespace FFTriadBuddy
 #if DEBUG
             if (string.IsNullOrEmpty(debugScreenshotPath))
             {
-                debugScreenshotPath = imagePath + "screenshot-source-9.jpg";
+                debugScreenshotPath = imagePath + "failed-match-1.jpg";
             }
 #endif
 

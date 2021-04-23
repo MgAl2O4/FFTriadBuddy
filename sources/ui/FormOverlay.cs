@@ -591,8 +591,15 @@ namespace FFTriadBuddy
                     attemptScan = false;
                     bCanAutoCapture = false;
 
-                    Logger.WriteLine("Auto scan: entering upkeep mode");
-                    timerAutoScanUpkeep.Start();
+                    if (Visible)
+                    {
+                        Logger.WriteLine("Auto scan: entering upkeep mode");
+                        timerAutoScanUpkeep.Start();
+                    }
+                    else
+                    {
+                        timerTurnScan.Stop();
+                    }
                 }
             }
 
@@ -615,7 +622,7 @@ namespace FFTriadBuddy
                 ScannerTriad.ETurnState turnState = screenAnalyzer.scannerTriad.cachedGameState.turnState;
                 if (turnState != ScannerTriad.ETurnState.MissingTimer && timerAutoScanUpkeep.Enabled)
                 {
-                    Logger.WriteLine("Auto scan: aborting upkeep mode");
+                    Logger.WriteLine("Auto scan: aborting upkeep mode (scanned)");
                     timerAutoScanUpkeep.Stop();
                 }
 
@@ -734,6 +741,12 @@ namespace FFTriadBuddy
         private void checkBoxAutoScan_CheckedChanged(object sender, EventArgs e)
         {
             UpdateAutoCaptureMarker();
+
+            if (timerAutoScanUpkeep.Enabled)
+            {
+                Logger.WriteLine("Auto scan: aborting upkeep mode (disabled)");
+                timerAutoScanUpkeep.Stop();
+            }
         }
 
         private void buttonCapture_Paint(object sender, PaintEventArgs e)
