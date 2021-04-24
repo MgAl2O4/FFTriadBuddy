@@ -30,6 +30,7 @@ namespace FFTriadBuddy
         private bool bHasRestartRule;
         private bool bHasOpenRule;
         public int swappedBlueCardIdx;
+        public bool logScan;
 
         public TriadGameScreenMemory()
         {
@@ -41,6 +42,7 @@ namespace FFTriadBuddy
             bHasSwapRule = false;
             swappedBlueCardIdx = -1;
             lastScanNpc = null;
+            logScan = true;
         }
 
         public EUpdateFlags OnNewScan(ScannerTriad.GameState screenGame, TriadNpc selectedNpc)
@@ -66,13 +68,13 @@ namespace FFTriadBuddy
                     if (!bWasNull && bIsNull)
                     {
                         bContinuesPrevState = false;
-                        Logger.WriteLine("Can't continue previous state: board[" + Idx + "] disappeared ");
+                        if (logScan) { Logger.WriteLine("Can't continue previous state: board[" + Idx + "] disappeared "); }
                     }
                 }
             }
             else
             {
-                Logger.WriteLine("Can't continue previous state: npc changed");
+                if (logScan) { Logger.WriteLine("Can't continue previous state: npc changed"); }
             }
 
             bool bModsChanged = (gameSession.modifiers.Count != screenGame.mods.Count) || !gameSession.modifiers.All(screenGame.mods.Contains);
@@ -106,7 +108,7 @@ namespace FFTriadBuddy
 
                 updateFlags |= EUpdateFlags.Modifiers;
                 bContinuesPrevState = false;
-                Logger.WriteLine("Can't continue previous state: modifiers changed");
+                if (logScan) { Logger.WriteLine("Can't continue previous state: modifiers changed"); }
 
                 deckRed.SetSwappedCard(null, -1);
             }
@@ -116,7 +118,7 @@ namespace FFTriadBuddy
             if (bRemoveBlueHistory)
             {
                 blueDeckHistory.Clear();
-                if (bHasSwapRule) { Logger.WriteLine("Blue deck history cleared"); }
+                if (bHasSwapRule && logScan) { Logger.WriteLine("Blue deck history cleared"); }
             }
 
             bool bRedDeckChanged = (lastScanNpc != selectedNpc) || !IsDeckMatching(deckRed, screenGame.redDeck) || (deckRed.deck != selectedNpc.Deck);
@@ -154,7 +156,7 @@ namespace FFTriadBuddy
                 {
                     bBoardChanged = true;
                     gameState.board[Idx] = new TriadCardInstance(screenGame.board[Idx], screenGame.boardOwner[Idx]);
-                    Logger.WriteLine("  board update: [" + Idx + "] " + gameState.board[Idx].owner + ": " + gameState.board[Idx].card.Name);
+                    if (logScan) { Logger.WriteLine("  board update: [" + Idx + "] " + gameState.board[Idx].owner + ": " + gameState.board[Idx].card.Name); }
                 }
                 else if (!bWasNull && bIsNull)
                 {
@@ -190,12 +192,15 @@ namespace FFTriadBuddy
                 updateFlags |= DetectSwapOnGameStart();
             }
 
-            Logger.WriteLine("OnNewScan> board:" + (bBoardChanged ? "changed" : "same") +
-                ", blue:" + (bBlueDeckChanged ? "changed" : "same") +
-                ", red:" + (bRedDeckChanged ? "changed" : "same") +
-                ", mods:" + (bModsChanged ? "changed" : "same") +
-                ", continuePrev:" + bContinuesPrevState +
-                " => " + ((updateFlags != EUpdateFlags.None) ? ("UPDATE[" + updateFlags + "]") : "skip"));
+            if (logScan)
+            {
+                Logger.WriteLine("OnNewScan> board:" + (bBoardChanged ? "changed" : "same") +
+                    ", blue:" + (bBlueDeckChanged ? "changed" : "same") +
+                    ", red:" + (bRedDeckChanged ? "changed" : "same") +
+                    ", mods:" + (bModsChanged ? "changed" : "same") +
+                    ", continuePrev:" + bContinuesPrevState +
+                    " => " + ((updateFlags != EUpdateFlags.None) ? ("UPDATE[" + updateFlags + "]") : "skip"));
+            }
 
             return updateFlags;
         }
@@ -679,5 +684,106 @@ namespace FFTriadBuddy
             Logger.WriteLine("IsSuddenDeathRestart? numMismatchedCards:" + numMismatchedCards + ", numVisibleCards:" + numVisibleCards);
             return bHasOpenAndMismatched || bHasOpenAndShouldnt;
         }
+
+        #region Validation
+
+        private static Dictionary<string, TriadGameModifier> mapValidationRules;
+
+        public static void RunTest(string configPath)
+        {
+            string testName = System.IO.Path.GetFileNameWithoutExtension(configPath);
+
+            string configText = System.IO.File.ReadAllText(configPath);
+            JsonParser.ObjectValue rootOb = JsonParser.ParseJson(configText);
+            ScannerTriad.VerifyConfig configData = new ScannerTriad.VerifyConfig();
+            configData.Load(rootOb);
+
+            // setup npc & modifiers
+            TriadNpc testNpc = TriadNpcDB.Get().Find(configData.npc);
+            if (testNpc == null)
+            {
+                string exceptionMsg = string.Format("Test {0} failed! Can't find npc: {1}", testName, configData.npc);
+                throw new Exception(exceptionMsg);
+            }
+
+            ScannerTriad.GameState screenGame = new ScannerTriad.GameState();
+            if (mapValidationRules == null)
+            {
+                mapValidationRules = new Dictionary<string, TriadGameModifier>();
+                foreach (TriadGameModifier mod in ImageHashDB.Get().modObjects)
+                {
+                    mapValidationRules.Add(mod.GetName(), mod);
+                }
+            }
+
+            foreach (string modName in configData.rules)
+            {
+                screenGame.mods.Add(mapValidationRules[modName]);
+            }
+
+            Func<ScannerTriad.VerifyCard, TriadCard> ConvertToTriadCard = configCard =>
+            {
+                if (configCard.state == ScannerTriad.ECardState.None) { return null; }
+                if (configCard.state == ScannerTriad.ECardState.Hidden) { return TriadCardDB.Get().hiddenCard; }
+
+                TriadCard matchingCard = !string.IsNullOrEmpty(configCard.name) ? 
+                    TriadCardDB.Get().Find(configCard.name) : 
+                    TriadCardDB.Get().Find(configCard.sides[0], configCard.sides[1], configCard.sides[2], configCard.sides[3]);
+                
+                if (matchingCard == null)
+                {
+                    string exceptionMsg = string.Format("Test {0} failed! Can't match validation card: '{1}' [{2},{3},{4},{5}]", testName,
+                        configCard.name, configCard.sides[0], configCard.sides[1], configCard.sides[2], configCard.sides[3]);
+                    throw new Exception(exceptionMsg);
+                }
+
+                return matchingCard;
+            };
+
+            bool needsLockedBlue = false;
+            for (int idx = 0; idx < 5; idx++)
+            {
+                screenGame.blueDeck[idx] = ConvertToTriadCard(configData.deckBlue[idx]);
+                screenGame.redDeck[idx] = ConvertToTriadCard(configData.deckRed[idx]);
+
+                if (configData.deckBlue[idx].state == ScannerTriad.ECardState.Locked)
+                {
+                    needsLockedBlue = true;
+                }
+            }
+
+            if (needsLockedBlue)
+            {
+                for (int idx = 0; idx < 5; idx++)
+                {
+                    if (configData.deckBlue[idx].state == ScannerTriad.ECardState.Visible)
+                    {
+                        screenGame.forcedBlueCard = screenGame.blueDeck[idx];
+                        break;
+                    }
+                }
+            }
+
+            for (int idx = 0; idx < 9; idx++)
+            {
+                screenGame.board[idx] = ConvertToTriadCard(configData.board[idx]);
+                screenGame.boardOwner[idx] =
+                    configData.board[idx].state == ScannerTriad.ECardState.PlacedBlue ? ETriadCardOwner.Blue :
+                    configData.board[idx].state == ScannerTriad.ECardState.PlacedRed ? ETriadCardOwner.Red :
+                    ETriadCardOwner.Unknown;
+            }
+
+            TriadGameScreenMemory screenMemory = new TriadGameScreenMemory { logScan = false };
+            screenMemory.OnNewScan(screenGame, testNpc);
+            screenMemory.gameSession.SolverFindBestMove(screenMemory.gameState, out int solverBoardPos, out TriadCard solverTriadCard, out TriadGameResultChance bestChance);
+
+            if (bestChance.expectedResult == ETriadGameState.BlueLost && bestChance.winChance <= 0.0f && bestChance.drawChance <= 0.0f)
+            {
+                string exceptionMsg = string.Format("Test {0} failed! Can't find move!", testName);
+                throw new Exception(exceptionMsg);
+            }
+        }
+
+        #endregion
     }
 }

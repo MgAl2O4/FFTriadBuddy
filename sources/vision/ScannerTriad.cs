@@ -1257,10 +1257,11 @@ namespace FFTriadBuddy
 
         #region Validation
 
-        private class VerifyCard
+        public class VerifyCard
         {
             public ECardState state;
             public int[] sides;
+            public string name;
             public int mod;
 
             public VerifyCard()
@@ -1276,10 +1277,41 @@ namespace FFTriadBuddy
                     state, sides[0], sides[1], sides[2], sides[3],
                     mod == 0 ? "" : (mod > 0 ? ("+" + mod) : mod.ToString()));
             }
+
+            public void Load(JsonParser.ObjectValue cardOb)
+            {
+                string stateDesc = cardOb["state"] as JsonParser.StringValue;
+                if (stateDesc == "empty") state = ECardState.None;
+                else if (stateDesc == "hidden") state = ECardState.Hidden;
+                else if (stateDesc == "locked") state = ECardState.Locked;
+                else if (stateDesc == "visible") state = ECardState.Visible;
+                else if (stateDesc == "red") state = ECardState.PlacedRed;
+                else if (stateDesc == "blue") state = ECardState.PlacedBlue;
+
+                if (cardOb.entries.ContainsKey("sides"))
+                {
+                    JsonParser.ArrayValue sidesArr = cardOb.entries["sides"] as JsonParser.ArrayValue;
+                    for (int idx = 0; idx < 4; idx++)
+                    {
+                        sides[idx] = sidesArr.entries[idx] as JsonParser.IntValue;
+                    }
+                }
+
+                if (cardOb.entries.ContainsKey("name"))
+                {
+                    name = cardOb["name"] as JsonParser.StringValue;
+                }
+
+                if (cardOb.entries.ContainsKey("mod"))
+                {
+                    mod = cardOb["mod"] as JsonParser.IntValue;
+                }
+            }
         }
 
-        private class VerifyConfig
+        public class VerifyConfig
         {
+            public string npc;
             public string[] rules;
             public VerifyCard[] deckBlue;
             public VerifyCard[] deckRed;
@@ -1297,70 +1329,42 @@ namespace FFTriadBuddy
             {
                 return (rules == null) ? "No rules" : string.Join(", ", rules);
             }
-        }
 
-        private static VerifyCard ParseConfigCardData(JsonParser.ObjectValue cardOb)
-        {
-            VerifyCard cardData = new VerifyCard();
-
-            string stateDesc = cardOb["state"] as JsonParser.StringValue;
-            if (stateDesc == "empty") cardData.state = ECardState.None;
-            else if (stateDesc == "hidden") cardData.state = ECardState.Hidden;
-            else if (stateDesc == "locked") cardData.state = ECardState.Locked;
-            else if (stateDesc == "visible") cardData.state = ECardState.Visible;
-            else if (stateDesc == "red") cardData.state = ECardState.PlacedRed;
-            else if (stateDesc == "blue") cardData.state = ECardState.PlacedBlue;
-
-            if (cardOb.entries.ContainsKey("sides"))
+            public virtual void Load(JsonParser.ObjectValue configOb)
             {
-                JsonParser.ArrayValue sidesArr = cardOb.entries["sides"] as JsonParser.ArrayValue;
-                for (int idx = 0; idx < 4; idx++)
+                JsonParser.ArrayValue ruleArr = configOb.entries["rules"] as JsonParser.ArrayValue;
+                rules = new string[ruleArr.entries.Count];
+                for (int idx = 0; idx < ruleArr.entries.Count; idx++)
                 {
-                    cardData.sides[idx] = sidesArr.entries[idx] as JsonParser.IntValue;
+                    rules[idx] = ruleArr.entries[idx] as JsonParser.StringValue;
+                }
+
+                if (configOb.entries.ContainsKey("npc"))
+                {
+                    npc = configOb["npc"] as JsonParser.StringValue;
+                }
+
+                JsonParser.ArrayValue deckRedArr = configOb.entries["deckRed"] as JsonParser.ArrayValue;
+                for (int idx = 0; idx < deckRedArr.entries.Count; idx++)
+                {
+                    deckRed[idx] = new VerifyCard();
+                    deckRed[idx].Load(deckRedArr.entries[idx] as JsonParser.ObjectValue);
+                }
+
+                JsonParser.ArrayValue deckBlueArr = configOb.entries["deckBlue"] as JsonParser.ArrayValue;
+                for (int idx = 0; idx < deckBlueArr.entries.Count; idx++)
+                {
+                    deckBlue[idx] = new VerifyCard();
+                    deckBlue[idx].Load(deckBlueArr.entries[idx] as JsonParser.ObjectValue);
+                }
+
+                JsonParser.ArrayValue boardArr = configOb.entries["board"] as JsonParser.ArrayValue;
+                for (int idx = 0; idx < boardArr.entries.Count; idx++)
+                {
+                    board[idx] = new VerifyCard();
+                    board[idx].Load(boardArr.entries[idx] as JsonParser.ObjectValue);
                 }
             }
-
-            if (cardOb.entries.ContainsKey("mod"))
-            {
-                cardData.mod = cardOb["mod"] as JsonParser.IntValue;
-            }
-
-            return cardData;
-        }
-
-        private static VerifyConfig LoadValidationConfig(string configPath)
-        {
-            VerifyConfig configData = new VerifyConfig();
-            string configText = File.ReadAllText(configPath);
-
-            JsonParser.ObjectValue rootOb = JsonParser.ParseJson(configText);
-
-            JsonParser.ArrayValue ruleArr = rootOb.entries["rules"] as JsonParser.ArrayValue;
-            configData.rules = new string[ruleArr.entries.Count];
-            for (int idx = 0; idx < ruleArr.entries.Count; idx++)
-            {
-                configData.rules[idx] = ruleArr.entries[idx] as JsonParser.StringValue;
-            }
-
-            JsonParser.ArrayValue deckRedArr = rootOb.entries["deckRed"] as JsonParser.ArrayValue;
-            for (int idx = 0; idx < deckRedArr.entries.Count; idx++)
-            {
-                configData.deckRed[idx] = ParseConfigCardData(deckRedArr.entries[idx] as JsonParser.ObjectValue);
-            }
-
-            JsonParser.ArrayValue deckBlueArr = rootOb.entries["deckBlue"] as JsonParser.ArrayValue;
-            for (int idx = 0; idx < deckBlueArr.entries.Count; idx++)
-            {
-                configData.deckBlue[idx] = ParseConfigCardData(deckBlueArr.entries[idx] as JsonParser.ObjectValue);
-            }
-
-            JsonParser.ArrayValue boardArr = rootOb.entries["board"] as JsonParser.ArrayValue;
-            for (int idx = 0; idx < boardArr.entries.Count; idx++)
-            {
-                configData.board[idx] = ParseConfigCardData(boardArr.entries[idx] as JsonParser.ObjectValue);
-            }
-
-            return configData;
         }
 
         private static Dictionary<string, TriadGameModifier> mapValidationRules;
@@ -1369,12 +1373,16 @@ namespace FFTriadBuddy
         {
             string testName = Path.GetFileNameWithoutExtension(configPath);
 
-            VerifyConfig configData = LoadValidationConfig(configPath);
-            if (configData == null || cachedGameState == null)
+            if (cachedGameState == null)
             {
                 string exceptionMsg = string.Format("Test {0} failed! Scan results:{1}, config path: {2}", testName, cachedGameState, configPath);
                 throw new Exception(exceptionMsg);
             }
+
+            string configText = File.ReadAllText(configPath);
+            JsonParser.ObjectValue rootOb = JsonParser.ParseJson(configText);
+            VerifyConfig configData = new VerifyConfig();
+            configData.Load(rootOb);
 
             List<ImageHashData> unknownRulePatterns = new List<ImageHashData>();
             for (int idx = 0; idx < screenAnalyzer.unknownHashes.Count; idx++)
@@ -1427,13 +1435,9 @@ namespace FFTriadBuddy
                         if (mapValidationRules == null)
                         {
                             mapValidationRules = new Dictionary<string, TriadGameModifier>();
-                            foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
+                            foreach (TriadGameModifier mod in ImageHashDB.Get().modObjects)
                             {
-                                if (type.IsSubclassOf(typeof(TriadGameModifier)))
-                                {
-                                    TriadGameModifier modInstance = (TriadGameModifier)Activator.CreateInstance(type);
-                                    mapValidationRules.Add(modInstance.GetName(), modInstance);
-                                }
+                                mapValidationRules.Add(mod.GetName(), mod);
                             }
                         }
 

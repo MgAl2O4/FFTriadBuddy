@@ -19,6 +19,7 @@ namespace FFTriadBuddy
 
             RunTests("test/auto/cactpot", testMode | ScreenAnalyzer.EMode.ScanCactpot);
             RunTests("test/auto/triad", testMode | ScreenAnalyzer.EMode.ScanTriad);
+            RunTriadSolverTests("test/auto/triad-solver");
         }
 
         public static void RunTests(string path, ScreenAnalyzer.EMode mode)
@@ -89,6 +90,17 @@ namespace FFTriadBuddy
             if (exportDetectionPatterns)
             {
                 dataExporter.FinishDataExport("ml-" + Path.GetFileNameWithoutExtension(path) + ".json");
+            }
+        }
+
+        public static void RunTriadSolverTests(string path)
+        {
+            string testRoot = AssetManager.Get().CreateFilePath(path);
+            IEnumerable<string> configPaths = Directory.EnumerateFiles(testRoot, "*.json");
+            foreach (var configPath in configPaths)
+            {
+                Logger.WriteLine("==> Testing: " + Path.GetFileNameWithoutExtension(configPath));
+                TriadGameScreenMemory.RunTest(configPath);
             }
         }
 #endif // DEBUG
