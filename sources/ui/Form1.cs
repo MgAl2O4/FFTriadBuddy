@@ -1963,6 +1963,8 @@ namespace FFTriadBuddy
                 "";
 
             ImageHashData hashData = screenAnalyzer.unknownHashes[0];
+            hashData.UpdatePreviewImage();
+
             labelLocalHashType.Text = hashData.type.ToString();
             pictureBoxLocalHash.Image = hashData.previewImage;
 
@@ -1980,8 +1982,6 @@ namespace FFTriadBuddy
 
         private void UpdateScreenshotListKnown()
         {
-            pictureBoxLocalHash.Image = null;
-
             listViewDetectionHashes.Items.Clear();
             foreach (var hashData in screenAnalyzer.currentHashMatches)
             {

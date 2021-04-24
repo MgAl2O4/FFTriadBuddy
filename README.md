@@ -17,4 +17,11 @@ Features:
 
 Program will attempt to auto update on startup from this repository.
 
+## Bug reports
+
+Bug happens. Whenever it's related to Play: Screenshot mode not recognizing images/cards correctly, please include a screenshot in bug report. Ideally, the one saved by tool in secret-debug-mode, which is exact input image for processing.
+* make sure that game show broken state and board is not obscured
+* switch to Play: Simulate tab, press [F12] and hit "Apply rule" button
+* look for screenshot-source-xx.jpg file, saved next to tool's executable
+
 Contact: MgAl2O4@protonmail.com

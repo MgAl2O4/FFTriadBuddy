@@ -591,7 +591,7 @@ namespace FFTriadBuddy
                     attemptScan = false;
                     bCanAutoCapture = false;
 
-                    if (Visible)
+                    if (Visible && checkBoxAutoScan.Checked)
                     {
                         Logger.WriteLine("Auto scan: entering upkeep mode");
                         timerAutoScanUpkeep.Start();

@@ -260,7 +260,9 @@ namespace FFTriadBuddy
                     }
                 }
 
+                cachedGameStateBase = null;
                 cachedGameState = null;
+
                 if (cachedBoardCards != null)
                 {
                     screenAnalyzer.ClearKnownHashes();
