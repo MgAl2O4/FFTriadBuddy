@@ -1102,6 +1102,7 @@ namespace FFTriadBuddy
             {
                 if (debugMode) { Logger.WriteLine("ParseCard({0}): hidden, fill:{1:P0}", debugName, borderPct); }
                 cardState.state = ECardState.Hidden;
+                cardState.card = TriadCardDB.Get().hiddenCard;
 
                 return cardState;
             }
