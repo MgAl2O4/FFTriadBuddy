@@ -71,7 +71,7 @@ namespace FFTriadBuddy
 
             scoreAvgSides = 1.0f;
             scoreStdSides = 0.0f;
-            scoreMaxSides = 0.2f;
+            scoreMaxSides = 0.1f;
             scoreSameCorners = 0.0f;
             scoreMaxCorner = 0.0f;
             scoreRarity = 1.0f;
@@ -235,6 +235,105 @@ namespace FFTriadBuddy
             }
         }
 
+        private void ApplyAscentionFilter(List<CardScoreData> commonScoredList, List<List<CardScoreData>> priScoredList)
+        {
+            Func<CardScoreData, float> FindCardAscValue = scoredEntry => scoredEntry.score;
+
+            int maxCardTypes = Enum.GetValues(typeof(ETriadCardType)).Length;
+            int maxLists = priScoredList.Count + 1;
+            List<float>[,] mapCardAscValues = new List<float>[maxCardTypes, maxLists];
+            
+            for (int idxL = 0; idxL < priScoredList.Count + 1; idxL++)
+            {
+                for (int idxT = 0; idxT < maxCardTypes; idxT++)
+                {
+                    mapCardAscValues[idxT, idxL] = new List<float>();
+                }
+
+                if (idxL > 0)
+                {
+                    foreach (var scoredEntry in priScoredList[idxL - 1])
+                    {
+                        mapCardAscValues[(int)scoredEntry.card.Type, idxL].Add(FindCardAscValue(scoredEntry));
+                    }
+                }
+            }
+
+            foreach (var scoredEntry in commonScoredList)
+            {
+                if (scoredEntry.card.Type != ETriadCardType.None)
+                {
+                    mapCardAscValues[(int)scoredEntry.card.Type, 0].Add(FindCardAscValue(scoredEntry));
+                }
+            }
+
+            ETriadCardType bestType = ETriadCardType.None;
+            float bestScore = 0;
+
+            if (debugMode) { Logger.WriteLine("Ascension filter..."); }
+            for (int idxT = 0; idxT < maxCardTypes; idxT++)
+            {
+                if (idxT == (int)ETriadCardType.None)
+                {
+                    continue;
+                }
+
+                float[] typePartialScores = new float[maxLists];
+                float typeScore = 0;
+                for (int idxL = 0; idxL < maxLists; idxL++)
+                {
+                    for (int cardIdx = 0; cardIdx < mapCardAscValues[idxT, idxL].Count; cardIdx++)
+                    {
+                        typePartialScores[idxL] += mapCardAscValues[idxT, idxL][cardIdx];
+                    }
+
+                    if (mapCardAscValues[idxT, idxL].Count == 0)
+                    {
+                        typePartialScores[idxL] = 0;
+                    }
+                    else
+                    {
+                        typePartialScores[idxL] /= mapCardAscValues[idxT, idxL].Count;
+                    }
+
+                    typeScore += typePartialScores[idxL];
+                }
+                typeScore /= maxLists;
+
+                if (debugMode) { Logger.WriteLine("  [{0}]: score:{1} ({2})", (ETriadCardType)idxT, typeScore, string.Join(", ", typePartialScores)); }
+                if (bestScore <= 0.0f || typeScore > bestScore)
+                {
+                    bestScore = typeScore;
+                    bestType = (ETriadCardType)idxT;
+                }
+            }
+
+            if (bestType != ETriadCardType.None)
+            {
+                if (debugMode) { Logger.WriteLine("  best: {0}", bestType); }
+                Action<CardScoreData, ETriadCardType> IncreaseScoreForType = (scoredEntry, cardType) =>
+                {
+                    if (scoredEntry.card.Type == cardType)
+                    {
+                        scoredEntry.score += 1000.0f;
+                    }
+                };
+
+                foreach (var scoredEntry in commonScoredList)
+                {
+                    IncreaseScoreForType(scoredEntry, bestType);
+                }
+
+                foreach (var priList in priScoredList)
+                {
+                    foreach (var scoredEntry in priList)
+                    {
+                        IncreaseScoreForType(scoredEntry, bestType);
+                    }
+                }
+            }
+        }
+
         private bool FindCardPool(List<TriadCard> allCards, List<TriadGameModifier> modifiers, List<TriadCard> lockedCards)
         {
             currentPool = new CardPool();
@@ -245,12 +344,16 @@ namespace FFTriadBuddy
 
             // special case: don't include any rare slots with reverse rule if there's enough cards in common list
             bool hasReverseMod = false;
+            bool hasAscensionMod = false;
             foreach (TriadGameModifier mod in modifiers)
             {
                 if (mod.GetType() == typeof(TriadGameModifierReverse))
                 {
                     hasReverseMod = true;
-                    break;
+                }
+                else if (mod.GetType() == typeof(TriadGameModifierAscention))
+                {
+                    hasAscensionMod = true;
                 }
             }
 
@@ -268,7 +371,12 @@ namespace FFTriadBuddy
                 }
             }
 
-            if (debugMode) { Logger.WriteLine("FindCardPool> priRarityThr:{0}, maxAvail:[{1},{2},{3},{4},{5}], hasReverseMod:{6}", priRarityThr.Count, mapAvailRarity[0], mapAvailRarity[1], mapAvailRarity[2], mapAvailRarity[3], mapAvailRarity[4], hasReverseMod); }
+            if (debugMode) 
+            {
+                Logger.WriteLine("FindCardPool> priRarityThr:{0}, maxAvail:[{1},{2},{3},{4},{5}], reverse:{6}, ascention:{7}", priRarityThr.Count, 
+                    mapAvailRarity[0], mapAvailRarity[1], mapAvailRarity[2], mapAvailRarity[3], mapAvailRarity[4], 
+                    hasReverseMod, hasAscensionMod); 
+            }
 
             // check rarity of locked cards, eliminate pri list when threshold is matched
             // when multiple pri rarities are locked, start eliminating from pool above
@@ -406,13 +514,19 @@ namespace FFTriadBuddy
                             currentPool.deckSlotTypes[deckSlotIdx] = numPriLists;
                         }
 
-                        priScoredList[idx].Sort();
                         numPriLists++;
                     }
                     else
                     {
                         priScoredList[idx].Clear();
                     }
+                }
+
+                // ascension modifier special case: same type across all pools is best
+                // aply after priority lists were trimmed
+                if (hasAscensionMod)
+                {
+                    ApplyAscentionFilter(commonScoredList, priScoredList);
                 }
 
                 if (numPriLists > 0)
@@ -427,6 +541,8 @@ namespace FFTriadBuddy
                         if (maxPriorityToUse > 0)
                         {
                             currentPool.priorityLists[idxP] = new TriadCard[maxPriorityToUse];
+                            priScoredList[idxL].Sort();
+
                             for (int idxC = 0; idxC < maxPriorityToUse; idxC++)
                             {
                                 currentPool.priorityLists[idxP][idxC] = priScoredList[idxL][idxC].card;
@@ -450,6 +566,8 @@ namespace FFTriadBuddy
                 if (debugMode) { Logger.WriteLine(">> adjusting common pool based on priSlots:{0} and drop:{1}% => {2}", numPriSlots, numCommonPctToDropPerPriSlot, maxCommonToUse); }
 
                 currentPool.commonList = new TriadCard[maxCommonToUse];
+                commonScoredList.Sort();
+
                 for (int idx = 0; idx < currentPool.commonList.Length; idx++)
                 {
                     currentPool.commonList[idx] = commonScoredList[idx].card;
