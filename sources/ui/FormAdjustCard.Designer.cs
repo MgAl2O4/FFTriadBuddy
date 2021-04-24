@@ -52,6 +52,8 @@ namespace FFTriadBuddy
             this.labelDescL = new System.Windows.Forms.Label();
             this.labelDescD = new System.Windows.Forms.Label();
             this.labelDescR = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.labelStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownU)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownL)).BeginInit();
@@ -340,12 +342,31 @@ namespace FFTriadBuddy
             this.labelDescR.Size = new System.Drawing.Size(0, 13);
             this.labelDescR.TabIndex = 23;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 102);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 13);
+            this.label7.TabIndex = 24;
+            this.label7.Text = "Status:";
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Location = new System.Drawing.Point(58, 102);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(0, 13);
+            this.labelStatus.TabIndex = 25;
+            // 
             // FormAdjustCard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(319, 281);
+            this.Controls.Add(this.labelStatus);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.labelDescR);
             this.Controls.Add(this.labelDescD);
             this.Controls.Add(this.labelDescL);
@@ -417,5 +438,7 @@ namespace FFTriadBuddy
         private System.Windows.Forms.Label labelDescL;
         private System.Windows.Forms.Label labelDescD;
         private System.Windows.Forms.Label labelDescR;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label labelStatus;
     }
 }

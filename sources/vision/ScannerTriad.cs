@@ -303,7 +303,7 @@ namespace FFTriadBuddy
                             cachedGameState.forcedBlueCard = null;
                             if (hasLockedBlueCards)
                             {
-                                for (int Idx = 0; Idx < 5; Idx++)
+                                for (int Idx = 0; Idx < cachedCardState.Count; Idx++)
                                 {
                                     if (cachedCardState[Idx].card != null &&
                                         cachedCardState[Idx].state == ECardState.Visible &&
@@ -1183,9 +1183,9 @@ namespace FFTriadBuddy
                     descFoundCards = "none";
                 }
 
-                Logger.WriteLine("ParseCard({0}): {1}-{2}-{3}-{4} => {5}", debugName,
+                Logger.WriteLine("ParseCard({0}): {1}-{2}-{3}-{4} => {5}{6}", debugName,
                     cardState.sideNumber[0], cardState.sideNumber[1], cardState.sideNumber[2], cardState.sideNumber[3],
-                    descFoundCards);
+                    descFoundCards, (cardState.state == ECardState.Locked) ? " (locked)" : "");
             }
 
             // more than one card found

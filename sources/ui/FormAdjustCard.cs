@@ -30,6 +30,7 @@ namespace FFTriadBuddy
             numericUpDownL.Value = cardState.sideNumber[1];
             numericUpDownD.Value = cardState.sideNumber[2];
             numericUpDownR.Value = cardState.sideNumber[3];
+            labelStatus.Text = cardState.state.ToString();
 
             PictureBox[] hashPreviewBox = new PictureBox[4] { pictureBoxU, pictureBoxL, pictureBoxD, pictureBoxR };
             Label[] sideInfoLabel = new Label[4] { labelDescU, labelDescL, labelDescD, labelDescR };
