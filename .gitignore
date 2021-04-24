@@ -1,7 +1,7 @@
 *.json
 *.lnk
 sources/assets.zip
-sources/CloudStorage/GoogleClientIdentifiers.cs
+sources/googleapi/GoogleClientIdentifiers.cs
 test/*
 datasource/*
 releases/*
