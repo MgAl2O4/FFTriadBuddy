@@ -263,8 +263,9 @@ namespace FFTriadBuddy
                 if (!alreadyAdded)
                 {
                     unknownHashes.Add(hashData);
-                    currentState = EState.UnknownHash;
                 }
+
+                currentState = EState.UnknownHash;
             }
         }
 
