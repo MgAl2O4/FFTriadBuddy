@@ -27,7 +27,7 @@ namespace FFTriadBuddy
 
         public GameState cachedGameState;
 
-        private FastPixelMatch colorMatchBack = new FastPixelMatchMono(0, 80);
+        private FastPixelMatch colorMatchBack = new FastPixelMatchMono(0, 100);
         private FastPixelMatch colorMatchCircleFade = new FastPixelMatchHueMono(30, 60, 40, 140);
         private FastPixelMatch colorMatchCircleFadeH = new FastPixelMatchHueMono(160, 200, 40, 255);
         private FastPixelMatch colorMatchCircleOut = new FastPixelMatchHueMono(30, 60, 80, 255);
@@ -81,6 +81,8 @@ namespace FFTriadBuddy
             }
 
             cachedGameState = null;
+            cachedGameStateBase = null;
+
             if (cachedCircles != null)
             {
                 screenAnalyzer.ClearKnownHashes();
