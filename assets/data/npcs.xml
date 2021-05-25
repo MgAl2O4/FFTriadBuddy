@@ -787,4 +787,12 @@
     <reward id="309" />
     <reward id="310" />
   </npc>
+  <npc id="102" name="Sladkey" location="Gangos (6, 7)">
+    <deckA id0="321" id1="325" id2="208" id3="322" id4="0" />
+    <deckV id0="250" id1="229" id2="209" id3="299" id4="0" />
+    <rule name="Same" />
+    <rule name="Swap" />
+    <reward id="321" />
+    <reward id="322" />
+  </npc>
 </root>

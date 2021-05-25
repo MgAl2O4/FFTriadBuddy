@@ -319,7 +319,11 @@
   <card id="317" name="Keeper of the Keys" icon="082817.png" rarity="Uncommon" type="None" up="5" lt="4" dn="4" rt="7" sort="303" group="0" />
   <card id="318" name="Lunar Bahamut" icon="082818.png" rarity="Rare" type="Primal" up="8" lt="2" dn="8" rt="4" sort="304" group="0" />
   <card id="319" name="Valens van Varro" icon="082819.png" rarity="Rare" type="Garlean" up="7" lt="5" dn="8" rt="3" sort="305" group="0" />
+  <card id="320" name="Lunar Ifrit" icon="082820.png" rarity="Rare" type="Primal" up="8" lt="3" dn="4" rt="7" sort="309" group="0" />
+  <card id="321" name="4th-make Shemhazai" icon="082821.png" rarity="Rare" type="None" up="1" lt="6" dn="7" rt="8" sort="310" group="0" />
+  <card id="322" name="4th-make Cuchulainn" icon="082822.png" rarity="Rare" type="None" up="8" lt="1" dn="7" rt="6" sort="311" group="0" />
   <card id="323" name="G-Warrior" icon="082823.png" rarity="Epic" type="None" up="9" lt="1" dn="7" rt="8" sort="306" group="0" />
   <card id="324" name="The Diamond Weapon" icon="082824.png" rarity="Epic" type="Garlean" up="9" lt="8" dn="7" rt="1" sort="307" group="0" />
+  <card id="325" name="The Diablo Armament" icon="082825.png" rarity="Epic" type="None" up="4" lt="4" dn="9" rt="9" sort="312" group="0" />
   <card id="326" name="2B" icon="082826.png" rarity="Legendary" type="None" up="6" lt="10" dn="4" rt="8" sort="308" group="0" />
 </root>
