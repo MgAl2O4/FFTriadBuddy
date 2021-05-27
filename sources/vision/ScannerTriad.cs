@@ -135,7 +135,7 @@ namespace FFTriadBuddy
         private static Size digitHashSize = new Size(10, 10);
 
         private FastPixelMatch colorMatchGridBorder = new FastPixelMatchMono(0, 150);
-        private FastPixelMatch colorMatchGridField = new FastPixelMatchMono(170, 255);
+        private FastPixelMatch colorMatchGridField = new FastPixelMatchMono(150, 255);
         private FastPixelMatch colorMatchRuleBox = new FastPixelMatchMono(20, 80);
         private FastPixelMatch colorMatchRuleText = new FastPixelMatchMono(150, 255);
         private FastPixelMatch colorMatchCardBorder = new FastPixelMatchHSV(20, 40, 0, 100, 0, 100);
@@ -1019,6 +1019,7 @@ namespace FFTriadBuddy
             int midX = cardRect.X + (cardRect.Width / 2);
             int startX = midX - (cardRect.Width / 8);
             int endX = midX + (cardRect.Width / 8);
+            int startY = exactBottomY - scanHeight + 1;
 
             bool verboseDebug = screenAnalyzer.debugScannerContext == debugName;
 
@@ -1028,39 +1029,72 @@ namespace FFTriadBuddy
             //if (verboseDebug) { Logger.WriteLine("FindExactCardMidX[{0}] avg: {1}, empty:{2}", debugName, avgColor, emptyMonoMin); }
             int emptyMonoMin = 100;
 
-            int[] monoVArr = new int[scanHeight];
-            int bestV = -1;
-            int maxEmpty = scanHeight / 2;
+            // follow bottom of card's frame and look for dark line doing ^ shape in the middle
+            // move scan up if bottom part raises and shows dark match immediately (keep raised for everything on right)
+            // abort when 5 samples are lower than best OR scan hits the darker part due to being raised too high
+
+            int testSpanH = scanHeight * 3 / 2;
+            int[] monoVArr = new int[testSpanH];
+            int bestH = 0;
+            int bestXMin = 0;
+            int bestXMax = 0;
+            int abortCounter = 5;
+            bool canContinueX = false;
+
+            int offsetH = 0;
             for (int scanX = startX; scanX < endX; scanX++)
             {
-                int monoV = 0;
-                int numEmpty = 0;
-                bool canCountEmpty = true;
-
-                for (int scanY = 0; scanY < scanHeight; scanY++)
+                int spanH = 0;
+                for (; spanH < testSpanH; spanH++)
                 {
-                    int testMono = bitmap.GetPixel(scanX, exactBottomY - scanY - 1).GetMonochrome();
+                    int testMono = bitmap.GetPixel(scanX, startY - offsetH - spanH).GetMonochrome();
                     bool isEmpty = testMono > emptyMonoMin;
-                    numEmpty += (isEmpty && canCountEmpty) ? 1 : 0;
-                    canCountEmpty = canCountEmpty && isEmpty;
+                    if (spanH == 0 && !isEmpty && offsetH < scanHeight)
+                    {
+                        spanH--;
+                        offsetH++;
+                        continue;
+                    }
 
-                    monoV += (int)(testMono * (scanY + 1.0f) / scanHeight);
-                    monoVArr[scanY] = testMono;
+                    monoVArr[spanH] = testMono;
+
+                    if (!isEmpty)
+                    {
+                        break;
+                    }
                 }
 
-                int numEmptyBelow = canCountEmpty ? 0 : numEmpty;
-                bool isBetter = (monoV < bestV || bestV < 0) && (numEmptyBelow <= maxEmpty);
+                spanH += offsetH;
                 if (verboseDebug)
                 {
-                    Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}] = {4}{5}, numEmptyBelow:{6}, list:{7}", debugName,
-                        scanX, exactBottomY - 1, exactBottomY - scanHeight,
-                        monoV, isBetter ? " mid?" : "",
-                        numEmptyBelow, string.Join(",", monoVArr));
+                    Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}] = {4} offset:{5}, ac:{6}, list:{7}{8}", debugName,
+                        scanX, startY - offsetH, startY - testSpanH - offsetH,
+                        spanH, offsetH, abortCounter, 
+                        string.Join(",", monoVArr),
+                        (spanH == offsetH) || (abortCounter == 0) ? " <= STOP" : "");
                 }
-                if (isBetter)
+                if (spanH == offsetH || abortCounter == 0)
                 {
-                    bestV = monoV;
-                    midX = scanX;
+                    break;
+                }
+
+                if (bestH < spanH)
+                {
+                    bestH = spanH;
+                    bestXMin = scanX;
+                    bestXMax = scanX;
+                    midX = (bestXMin + bestXMax) / 2;
+                    canContinueX = true;
+                }
+                else if (bestH == spanH && canContinueX)
+                {
+                    bestXMax = scanX;
+                    midX = (bestXMin + bestXMax) / 2;
+                }
+                else
+                {
+                    canContinueX = false;
+                    if (bestH > 1) { abortCounter--; }
                 }
             }
 
