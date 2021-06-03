@@ -45,8 +45,18 @@ namespace FFTriadBuddy
         public FormAdjustHash()
         {
             InitializeComponent();
+            ApplyLocalization();
         }
 
+        private void ApplyLocalization()
+        {
+            Text = loc.strings.AdjustForm_Title;
+            label1.Text = loc.strings.AdjustForm_Current;
+            label4.Text = loc.strings.AdjustForm_Distance;
+            label2.Text = loc.strings.AdjustForm_HashList;
+            buttonOk.Text = loc.strings.AdjustForm_SaveButton;
+            buttonCancel.Text = loc.strings.AdjustForm_CancelButton;
+        }
         static public List<object> GenerateHashOwnerOptions(ImageHashData hashData)
         {
             List<object> list = new List<object>();
@@ -95,9 +105,11 @@ namespace FFTriadBuddy
         {
             hashData.UpdatePreviewImage();
 
-            labelHashOrg.Text = (hashData.ownerOb != null) ? hashData.ownerOb.ToString() : "unknown";
-            labelDistance.Text = hashData.isAuto ? "N/A" : hashData.matchDistance.ToString();
-            labelDescDistance.Text = hashData.isAuto ? "<= Classifier based " : hashData.matchDistance == 0 ? "<= Exact match" : "<= Lower is more accurate";
+            labelHashOrg.Text = (hashData.ownerOb != null) ? hashData.ownerOb.ToString() : loc.strings.AdjustForm_Dynamic_UnknownOwner;
+            labelDistance.Text = hashData.isAuto ? loc.strings.AdjustForm_Dynamic_Distance_NotAvail : hashData.matchDistance.ToString();
+            labelDescDistance.Text = hashData.isAuto ? loc.strings.AdjustForm_Dynamic_Distance_Classifier : 
+                hashData.matchDistance == 0 ? loc.strings.AdjustForm_Dynamic_Distance_Exact :
+                loc.strings.AdjustForm_Dynamic_Distance_DefaultHint;
             pictureBox1.Image = hashData.previewImage;
 
             comboBoxOwner.Items.Clear();

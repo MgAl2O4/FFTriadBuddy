@@ -34,6 +34,7 @@ namespace FFTriadBuddy
         public FormOverlay()
         {
             InitializeComponent();
+            ApplyLocalization();
 
             cactpotBoard = new HitInvisibleLabel[9] { labelCactpot0, labelCactpot1, labelCactpot2, labelCactpot3, labelCactpot4, labelCactpot5, labelCactpot6, labelCactpot7, labelCactpot8 };
             boardControls = new CardCtrl[9] { cardCtrl1, cardCtrl2, cardCtrl3, cardCtrl4, cardCtrl5, cardCtrl6, cardCtrl7, cardCtrl8, cardCtrl9 };
@@ -95,6 +96,23 @@ namespace FFTriadBuddy
             UpdateStatusDescription();
         }
 
+        private void ApplyLocalization()
+        {
+            buttonCapture.Text = loc.strings.OverlayForm_Capture_Button;
+            labelStatus.Text = loc.strings.OverlayForm_Capture_Status;
+            checkBoxDetails.Text = loc.strings.OverlayForm_Capture_Details;
+            checkBoxAutoScan.Text = loc.strings.OverlayForm_Capture_AutoScan;
+            hitInvisibleLabel2.Text = loc.strings.OverlayForm_CardInfo_Swapped;
+            labelSwapWarningText.Text = loc.strings.OverlayForm_DeckInfo_Mismatch;
+            labelScanId.Text = string.Format(loc.strings.OverlayForm_Details_ScanId, 0);
+            label1.Text = loc.strings.OverlayForm_Details_RedDeck;
+            labelNumPlaced.Text = string.Format(loc.strings.OverlayForm_Details_RedPlacedAll, 0);
+            labelUnknownPlaced.Text = string.Format(loc.strings.OverlayForm_Details_RedPlacedVariable, 0);
+            labelNpc.Text = string.Format(loc.strings.OverlayForm_Details_Npc, loc.strings.OverlayForm_Dynamic_NpcUnknown);
+            labelRules.Text = string.Format(loc.strings.OverlayForm_Details_Rules, loc.strings.OverlayForm_Dynamic_NpcUnknown);
+            label2.Text = loc.strings.OverlayForm_Details_RedInfo;
+        }
+
         public void InitializeAssets(ImageList cardImageList)
         {
             cardImages = cardImageList;
@@ -144,7 +162,7 @@ namespace FFTriadBuddy
             }
 
             scanId++;
-            labelScanId.Text = "Scan Id: " + scanId;
+            labelScanId.Text = string.Format(loc.strings.OverlayForm_Details_ScanId, scanId);
             Logger.WriteLine("Capture " + labelScanId.Text);
 
             // multi monitor setup: make sure that overlay and game and on the same monitor
@@ -282,7 +300,8 @@ namespace FFTriadBuddy
                     desc += mod.ToString() + ", ";
                 }
 
-                labelRules.Text = "Rules: " + ((desc.Length > 2) ? desc.Remove(desc.Length - 2, 2) : "unknown");
+                labelRules.Text = string.Format(loc.strings.OverlayForm_Details_Rules,
+                    (desc.Length > 2) ? desc.Remove(desc.Length - 2, 2) : loc.strings.OverlayForm_Dynamic_NpcUnknown);
             }
 
             if ((updateFlags & TriadGameScreenMemory.EUpdateFlags.BlueDeck) != TriadGameScreenMemory.EUpdateFlags.None)
@@ -417,8 +436,9 @@ namespace FFTriadBuddy
             npc = inNpc;
 
             UpdateStatusDescription();
-            labelNpc.Text = "NPC: " + ((npc != null) ? npc.ToString() : "unknown");
-            labelRules.Text = "Rules: npc changed, waiting for scan...";
+
+            labelNpc.Text = string.Format(loc.strings.OverlayForm_Details_Npc, (npc != null) ? npc.ToString() : loc.strings.OverlayForm_Dynamic_NpcUnknown);
+            labelRules.Text = string.Format(loc.strings.OverlayForm_Details_Rules, loc.strings.OverlayForm_Dynamic_RulesWaiting);
         }
 
         public void UpdateOverlayLocation(int localX, int localY)
@@ -482,29 +502,29 @@ namespace FFTriadBuddy
                 case ScreenAnalyzer.EState.NoInputImage:
                     switch (screenAnalyzer.screenReader.currentState)
                     {
-                        case ScreenReader.EState.MissingGameProcess: SetStatusText("Game is not running", SystemIcons.Error); break;
-                        case ScreenReader.EState.MissingGameWindow: SetStatusText("Can't find game window", SystemIcons.Error); break;
-                        default: SetStatusText("Can't retrieve image to analyze", SystemIcons.Error); break;
+                        case ScreenReader.EState.MissingGameProcess: SetStatusText(loc.strings.OverlayForm_Dynamic_Status_MissingGameProcess, SystemIcons.Error); break;
+                        case ScreenReader.EState.MissingGameWindow: SetStatusText(loc.strings.OverlayForm_Dynamic_Status_MissingGameWindow, SystemIcons.Error); break;
+                        default: SetStatusText(loc.strings.OverlayForm_Dynamic_Status_NoInputImage, SystemIcons.Error); break;
                     }
                     break;
 
                 case ScreenAnalyzer.EState.NoScannerMatch:
-                    SetStatusText("Can't find minigame window", SystemIcons.Error);
+                    SetStatusText(loc.strings.OverlayForm_Dynamic_Status_NoScannerMatch, SystemIcons.Error);
                     break;
 
                 case ScreenAnalyzer.EState.UnknownHash:
-                    SetStatusText("Unknown pattern! Check Play:Screenshot for details", SystemIcons.Warning);
+                    SetStatusText(loc.strings.OverlayForm_Dynamic_Status_UnknownHash, SystemIcons.Warning);
                     break;
 
                 case ScreenAnalyzer.EState.ScannerErrors:
-                    SetStatusText("Failed to recognize minigame", SystemIcons.Error);
+                    SetStatusText(loc.strings.OverlayForm_Dynamic_Status_ScannerErrors, SystemIcons.Error);
                     if (screenAnalyzer.activeScanner is ScannerTriad)
                     {
                         switch (screenAnalyzer.scannerTriad.cachedScanError)
                         {
-                            case ScannerTriad.EScanError.MissingGrid: SetStatusText("Can't find board", SystemIcons.Error); break;
-                            case ScannerTriad.EScanError.MissingCards: SetStatusText("Can't find blue deck", SystemIcons.Error); break;
-                            case ScannerTriad.EScanError.FailedCardMatching: SetStatusText("Unknown cards! Check Play:Screenshot for details", SystemIcons.Warning); break;
+                            case ScannerTriad.EScanError.MissingGrid: SetStatusText(loc.strings.OverlayForm_Dynamic_Status_MissingGrid, SystemIcons.Error); break;
+                            case ScannerTriad.EScanError.MissingCards: SetStatusText(loc.strings.OverlayForm_Dynamic_Status_MissingCards, SystemIcons.Error); break;
+                            case ScannerTriad.EScanError.FailedCardMatching: SetStatusText(loc.strings.OverlayForm_Dynamic_Status_FailedCardMatching, SystemIcons.Warning); break;
                             default: break;
                         }
                     }
@@ -514,35 +534,35 @@ namespace FFTriadBuddy
                     if (screenAnalyzer.activeScanner == null || screenAnalyzer.activeScanner.cachedGameStateBase == null)
                     {
                         string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
-                        SetStatusText(npcDesc + "Ready", SystemIcons.Information);
+                        SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_Ready, SystemIcons.Information);
                     }
                     else if (screenAnalyzer.activeScanner is ScannerTriad)
                     {
                         string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
                         switch (screenAnalyzer.scannerTriad.cachedGameState.turnState)
                         {
-                            case ScannerTriad.ETurnState.MissingTimer: SetStatusText(npcDesc + "Ready", SystemIcons.Information); break;
-                            case ScannerTriad.ETurnState.Waiting: SetStatusText(npcDesc + "Waiting for blue turn", SystemIcons.Shield); break;
+                            case ScannerTriad.ETurnState.MissingTimer: SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_Ready, SystemIcons.Information); break;
+                            case ScannerTriad.ETurnState.Waiting: SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_WaitingForTurn, SystemIcons.Shield); break;
                             default:
                                 if (IsUsingAutoScan() && IsCursorInScanArea())
                                 {
-                                    SetStatusText("Move cursor away from scan zone!", SystemIcons.Warning);
+                                    SetStatusText(loc.strings.OverlayForm_Dynamic_Status_AutoScanMouseOverBoard, SystemIcons.Warning);
                                 }
                                 else
                                 {
-                                    SetStatusText(npcDesc + "Ready (active turn!)", SystemIcons.Information);
+                                    SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_ActiveTurn, SystemIcons.Information);
                                 }
                                 break;
                         }
                     }
                     else if (screenAnalyzer.activeScanner is ScannerCactpot)
                     {
-                        SetStatusText("Mini cactpot: Ready", SystemIcons.Information);
+                        SetStatusText(loc.strings.OverlayForm_Dynamic_Status_CactpotReady, SystemIcons.Information);
                     }
                     else
                     {
                         string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
-                        SetStatusText(npcDesc + "Ready", SystemIcons.Information);
+                        SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_Ready, SystemIcons.Information);
                     }
                     break;
             }
@@ -662,9 +682,6 @@ namespace FFTriadBuddy
 
         private void UpdateRedDeckDetails(TriadDeckInstanceScreen deck)
         {
-            string NumPlacedPrefix = "All placed: ";
-            string VarPlacedPrefix = "Var placed: ";
-
             if (deck == null || deck.deck == null)
             {
                 for (int Idx = 0; Idx < redDeckKnownCards.Length; Idx++)
@@ -674,8 +691,8 @@ namespace FFTriadBuddy
                     deckCtrlRed.SetTransparent(Idx, false);
                 }
 
-                labelNumPlaced.Text = NumPlacedPrefix + "0";
-                labelUnknownPlaced.Text = VarPlacedPrefix + "0";
+                labelNumPlaced.Text = string.Format(loc.strings.OverlayForm_Details_RedPlacedAll, "0");
+                labelUnknownPlaced.Text = string.Format(loc.strings.OverlayForm_Details_RedPlacedVariable, "0");
             }
             else
             {
@@ -710,8 +727,8 @@ namespace FFTriadBuddy
                     deckCtrlRed.SetTransparent(Idx, bIsUsed);
                 }
 
-                labelNumPlaced.Text = NumPlacedPrefix + deck.numPlaced;
-                labelUnknownPlaced.Text = VarPlacedPrefix + deck.numUnknownPlaced;
+                labelNumPlaced.Text = string.Format(loc.strings.OverlayForm_Details_RedPlacedAll, deck.numPlaced);
+                labelUnknownPlaced.Text = string.Format(loc.strings.OverlayForm_Details_RedPlacedVariable, deck.numUnknownPlaced);
             }
         }
 

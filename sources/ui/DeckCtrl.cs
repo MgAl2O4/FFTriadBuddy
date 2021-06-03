@@ -82,8 +82,16 @@ namespace FFTriadBuddy
             cardTileSpacing = 6;
 
             InitializeComponent();
+            ApplyLocalization();
 
             toolStripMenuOnlyOwned.Checked = true;
+        }
+
+        private void ApplyLocalization()
+        {
+            toolStripMenuItem2.Text = loc.strings.DeckCtrl_CtxMenu_PickCard;
+            toolStripMenuOnlyOwned.Text = loc.strings.DeckCtrl_CtxMenu_UseOnlyOwned;
+            toolStripMenuLockOptimization.Text = loc.strings.DeckCtrl_CtxMenu_LockForOptimization;
         }
 
         protected override void WndProc(ref Message m)

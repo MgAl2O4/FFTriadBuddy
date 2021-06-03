@@ -42,7 +42,7 @@ namespace FFTriadBuddy
 
                 deckCtrl.SetDeck(deckInfo);
                 labelTitle.Text = deckInfo.Name;
-                buttonEdit.Text = "Edit";
+                buttonEdit.Text = loc.strings.FavDeckCtrl_Edit;
 
                 if (deckChanged)
                 {

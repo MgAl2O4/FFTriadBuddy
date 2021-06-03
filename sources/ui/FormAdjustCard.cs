@@ -12,6 +12,21 @@ namespace FFTriadBuddy
         public FormAdjustCard()
         {
             InitializeComponent();
+            ApplyLocalization();
+        }
+
+        private void ApplyLocalization()
+        {
+            Text = loc.strings.AdjustForm_Title;
+            label1.Text = loc.strings.AdjustForm_Current;
+            label3.Text = loc.strings.AdjustForm_CardUp;
+            label4.Text = loc.strings.AdjustForm_CardLeft;
+            label5.Text = loc.strings.AdjustForm_CardDown;
+            label6.Text = loc.strings.AdjustForm_CardRight;
+            label7.Text = loc.strings.AdjustForm_CardStatus;
+            label2.Text = loc.strings.AdjustForm_CardList;
+            buttonOk.Text = loc.strings.AdjustForm_SaveButton;
+            buttonCancel.Text = loc.strings.AdjustForm_CancelButton;
         }
 
         public void InitializeForCard(ScannerTriad.CardState cardState)
@@ -22,7 +37,7 @@ namespace FFTriadBuddy
         private void FormAdjustCard_Load(object sender, EventArgs e)
         {
             labelCurrentCard.Text = string.Format("{0} [{1}-{2}-{3}-{4}]",
-                (cardState.card != null) ? cardState.card.Name : "unknown",
+                (cardState.card != null) ? cardState.card.Name : loc.strings.AdjustForm_Dynamic_UnknownOwner,
                 cardState.sideNumber[0], cardState.sideNumber[1], cardState.sideNumber[2], cardState.sideNumber[3]);
 
             skipNumUpdate = true;
@@ -47,7 +62,8 @@ namespace FFTriadBuddy
 
                 hashPreviewBox[idx].Image = bitmap;
 
-                sideInfoLabel[idx].Text = cardState.sideInfo[idx].hasOverride ? "custom" : string.Format("auto: {0:P0}", cardState.sideInfo[idx].matchPct);
+                sideInfoLabel[idx].Text = cardState.sideInfo[idx].hasOverride ? loc.strings.AdjustForm_Dynamic_Digit_Override :
+                    string.Format("{0}: {1:P0}", loc.strings.AdjustForm_Dynamic_Digit_Default, cardState.sideInfo[idx].matchPct);
             }
 
             pictureBoxNumBox.Image = ImageUtils.CreatePreviewImage(cardState.sourceImage, cardState.bounds, Rectangle.Empty);

@@ -52,6 +52,7 @@ namespace FFTriadBuddy
         public Form1()
         {
             InitializeComponent();
+            ApplyLocalization();
 
             bSuspendSetupUpdates = false;
             bSuspendNpcContextUpdates = false;
@@ -156,6 +157,109 @@ namespace FFTriadBuddy
                         return false;
                 }
             }
+        }
+
+        private void ApplyLocalization()
+        {
+            Text = loc.strings.App_Title;
+            labelUpdateNotify.Text = loc.strings.MainForm_UpdateNotify;
+
+            // setup
+            tabPageSetup.Text = loc.strings.MainForm_Setup_Title;
+            checkBoxUseCloudSaves.Text = loc.strings.MainForm_Setup_Cloud_Desc;
+            buttonCloudAuth.Text = loc.strings.MainForm_Setup_Cloud_AuthButton;
+            buttonAddFav.Text = loc.strings.MainForm_Setup_Fav_AddSlotButton;
+            groupBox1.Text = loc.strings.MainForm_Setup_OptimizeStats_Title;
+            label4.Text = loc.strings.MainForm_Setup_Rules_Region1;
+            label5.Text = loc.strings.MainForm_Setup_Rules_Region2;
+            label10.Text = loc.strings.MainForm_Setup_OptimizerStats_NumOwned;
+            label11.Text = loc.strings.MainForm_Setup_OptimizerStats_NumPossible;
+            label12.Text = loc.strings.MainForm_Setup_OptimizerStats_NumTested;
+            label13.Text = loc.strings.MainForm_Setup_OptimizerStats_TimeLeft;
+            label16.Text = loc.strings.MainForm_Setup_OptimizerStats_Progress;
+            label18.Text = loc.strings.MainForm_Setup_Rules_TournamentRules;
+            label20.Text = loc.strings.MainForm_Setup_Rules_Tournament;
+            toolTip1.SetToolTip(checkBoxSetupRules, loc.strings.MainForm_Setup_RulesToggle);
+            label3.Text = loc.strings.MainForm_Setup_NPC;
+            labelLocationPre.Text = loc.strings.MainForm_Setup_NPC_Location;
+            labelLevelPre.Text = loc.strings.MainForm_Setup_NPC_DeckPower;
+            label6.Text = loc.strings.MainForm_Setup_NPC_Rules;
+            label7.Text = loc.strings.MainForm_Setup_NPC_WinChance;
+            label8.Text = loc.strings.MainForm_Setup_Deck_Title;
+            buttonOptimize.Text = loc.strings.MainForm_Setup_Deck_OptimizeStartButton;
+            buttonOptimizeAbort.Text = loc.strings.MainForm_Setup_Deck_OptimizeAbortButton;
+
+            // screenshot
+            tabPageScreenshot.Text = loc.strings.MainForm_Screenshot_Title;
+            labelDeleteLastHint.Text = loc.strings.MainForm_Screenshot_ListHint;
+            label21.Text = loc.strings.MainForm_Screenshot_RemovePatternsTitle;
+            buttonLocalHashRemove.Text = loc.strings.MainForm_Screenshot_RemovePatternsButton;
+            checkBoxUseScreenshots.Text = loc.strings.MainForm_Screenshot_CurrentState;
+            label19.Text = loc.strings.MainForm_Screenshot_Learn_Type;
+            label22.Text = loc.strings.MainForm_Screenshot_Learn_DetectList;
+            label23.Text = loc.strings.MainForm_Screenshot_Learn_SourceImage;
+            label24.Text = loc.strings.MainForm_Screenshot_Learn_DiscardAllInfo;
+            buttonDiscardHashes.Text = loc.strings.MainForm_Screenshot_Learn_DiscardAllButton;
+            buttonLocalHashStore.Text = loc.strings.MainForm_Screenshot_Learn_SaveButton;
+            columnHeader6.Text = loc.strings.MainForm_Screenshot_History_HashColumnType;
+            columnHeader7.Text = loc.strings.MainForm_Screenshot_History_HashColumnDetection;
+            columnHeader8.Text = loc.strings.MainForm_Screenshot_History_CardsColumnType;
+            columnHeader9.Text = loc.strings.MainForm_Screenshot_History_CardsColumnSides;
+            columnHeader10.Text = loc.strings.MainForm_Screenshot_History_CardsColumnDetection;
+            textBox1.Text = loc.strings.MainForm_Screenshot_InfoLines;
+
+            // simulate
+            tabPagePlay.Text = loc.strings.MainForm_Simulate_Title;
+            labelGameStateHint.Text = loc.strings.MainForm_Simulate_Game_ListHint;
+            labelRouletteDesc1.Text = loc.strings.MainForm_Simulate_Roulette_Rule1;
+            labelRouletteDesc2.Text = loc.strings.MainForm_Simulate_Roulette_Rule2;
+            labelRouletteDesc3.Text = loc.strings.MainForm_Simulate_Roulette_Rule3;
+            labelRouletteDesc4.Text = loc.strings.MainForm_Simulate_Roulette_Rule4;
+            buttonConfirmRuleRoulette.Text = loc.strings.MainForm_Simulate_Game_ApplyRuleButton;
+            label15.Text = loc.strings.MainForm_Simulate_Random_Info;
+            buttonConfirmRuleRandom.Text = loc.strings.MainForm_Simulate_Game_ApplyRuleButton;
+            buttonConfirmRuleSwap.Text = loc.strings.MainForm_Simulate_Game_ApplyRuleButton;
+            checkBoxDebugScreenshotForceCached.Text = loc.strings.MainForm_Simulate_Debug_ForceCached;
+            label17.Text = loc.strings.MainForm_Simulate_Debug_Info;
+            label2.Text = loc.strings.MainForm_Simulate_WinChance;
+            label1.Text = loc.strings.MainForm_Simulate_RuleList;
+            labelRules.Text = loc.strings.MainForm_Dynamic_RuleListEmpty;
+            buttonReset.Text = loc.strings.MainForm_Simulate_ResetButton;
+            buttonUndoRed.Text = loc.strings.MainForm_Simulate_UndoRedMoveButton;
+            labelSpecialRules.Text = loc.strings.MainForm_Simulate_Game_SpecialRule;
+
+            // cards
+            tabPageCards.Text = loc.strings.MainForm_Cards_Title;
+            tabPageCardsList.Text = loc.strings.MainForm_Cards_ListTitle;
+            tabPageCardsIcons.Text = loc.strings.MainForm_Cards_IconsTitle;
+            label9.Text = loc.strings.MainForm_Cards_NumOwned;
+            columnHeaderN.Text = loc.strings.MainForm_Cards_List_ColumnName;
+            columnHeaderO.Text = loc.strings.MainForm_Cards_List_ColumnOwned;
+            columnHeaderP.Text = loc.strings.MainForm_Cards_List_ColumnPower;
+            columnHeaderR.Text = loc.strings.MainForm_Cards_List_ColumnRarity;
+            columnHeaderSO.Text = loc.strings.MainForm_Cards_List_ColumnId;
+            columnHeaderT.Text = loc.strings.MainForm_Cards_List_ColumnType;
+
+            // npcs
+            tabPageNpcs.Text = loc.strings.MainForm_Npcs_Title;
+            label14.Text = loc.strings.MainForm_Npcs_NumKnown;
+            columnHeader1.Text = loc.strings.MainForm_Npcs_List_ColumnName;
+            columnHeader2.Text = loc.strings.MainForm_Npcs_List_ColumnPower;
+            columnHeader3.Text = loc.strings.MainForm_Npcs_List_ColumnLocation;
+            columnHeader4.Text = loc.strings.MainForm_Npcs_List_ColumnRules;
+            columnHeader5.Text = loc.strings.MainForm_Npcs_List_ColumnCompleted;
+            columnHeader11.Text = loc.strings.MainForm_Npcs_List_ColumnReward;
+
+            // context menus
+            toolStripMenuItem4.Text = loc.strings.MainForm_CtxMenu_CardInfo_NpcReward;
+            toolStripMenuFindCardOnline.Text = loc.strings.MainForm_CtxMenu_CardInfo_FindOnline;
+            selectNpcToPlayToolStripMenuItem.Text = loc.strings.MainForm_CtxMenu_SelectNpc_Select;
+            toolStripMenuItem3.Text = loc.strings.MainForm_CtxMenu_SelectNpc_Rewards;
+            toolStripMenuItem1.Text = loc.strings.MainForm_CtxMenu_FindCard;
+            toolStripMenuItem2.Text = loc.strings.MainForm_CtxMenu_FindNpc;
+            toolStripMenuItem6.Text = loc.strings.MainForm_CtxMenu_Learn_Adjust;
+            deleteAndRelearnToolStripMenuItem.Text = loc.strings.MainForm_CtxMenu_Learn_Delete;
+            adjustToolStripMenuItem.Text = loc.strings.MainForm_CtxMenu_Learn_Adjust;
         }
 
         private void RunUpdateCheck()
@@ -487,10 +591,10 @@ namespace FFTriadBuddy
         {
             ETriadDeckState deckState = playerDeck.GetDeckState();
             string deckStateDesc =
-                (deckState == ETriadDeckState.MissingCards) ? "Missing cards!" :
-                (deckState == ETriadDeckState.HasDuplicates) ? "Found duplicate cards!" :
-                (deckState == ETriadDeckState.TooMany4Star) ? "More than two 4+ star!" :
-                (deckState == ETriadDeckState.TooMany5Star) ? "Only one 5 star allowed!" :
+                (deckState == ETriadDeckState.MissingCards) ? loc.strings.MainForm_Dynamic_DeckState_MissingCards :
+                (deckState == ETriadDeckState.HasDuplicates) ? loc.strings.MainForm_Dynamic_DeckState_HasDuplicates :
+                (deckState == ETriadDeckState.TooMany4Star) ? loc.strings.MainForm_Dynamic_DeckState_TooMany4Star :
+                (deckState == ETriadDeckState.TooMany5Star) ? loc.strings.MainForm_Dynamic_DeckState_TooMany5Star :
                 "";
 
             labelDeckState.Text = deckStateDesc;
@@ -514,7 +618,7 @@ namespace FFTriadBuddy
             labelLocation.Text = currentNpc.Location;
             labelLevel.Text = currentNpc.Deck.GetPower().ToString();
             labelDescChance.Text = labelChance.Text;
-            labelDescRules.Text = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : "(none)";
+            labelDescRules.Text = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : loc.strings.MainForm_Dynamic_RuleListEmpty;
             labelDescRules.Enabled = checkBoxSetupRules.Checked;
         }
 
@@ -552,7 +656,7 @@ namespace FFTriadBuddy
             buttonOptimize.Enabled = true;
             progressBarDeck.Visible = false;
             timerOptimizeDeck.Enabled = false;
-            labelOptProgress.Text = deckOptimizer.IsAborted() ? ("aborted at " + deckOptimizer.GetProgress() + "%") : "100%";
+            labelOptProgress.Text = deckOptimizer.IsAborted() ? string.Format(loc.strings.MainForm_Dynamic_Setup_OptimizerProgressAborted, deckOptimizer.GetProgress() * 0.01f) : "100%";
             labelOptTimeLeft.Text = "--";
 
             playerDeck = deckOptimizer.optimizedDeck;
@@ -632,7 +736,7 @@ namespace FFTriadBuddy
                 }
             }
 
-            labelTournamentRules.Text = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : "(none)";
+            labelTournamentRules.Text = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : loc.strings.MainForm_Dynamic_RuleListEmpty;
 
             if (!bSuspendSetupUpdates)
             {
@@ -787,6 +891,7 @@ namespace FFTriadBuddy
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
             TriadCardDB cardsDB = TriadCardDB.Get();
 
+            string locCardOwned = loc.strings.MainForm_Dynamic_CardOwnedColumn;
             foreach (TriadCard card in cardsDB.cards)
             {
                 if (card == null)
@@ -812,7 +917,7 @@ namespace FFTriadBuddy
                     GetCardPowerDesc(card.Sides[(int)ETriadGameSide.Right]) + "]";
 
                 bool bIsOwned = playerDB.ownedCards.Contains(card);
-                string ownedDesc = bIsOwned ? "Yes" : "";
+                string ownedDesc = bIsOwned ? locCardOwned : "";
                 string sortOrder = card.SortOrder.ToString();
 
                 ListViewItem cardListItem = new ListViewItem(new string[] { card.Name, rarityDesc, powerDesc, typeDesc, ownedDesc, sortOrder });
@@ -889,6 +994,7 @@ namespace FFTriadBuddy
 
             if (card == null) { bSuspendCardContextUpdates = true; }
 
+            string locCardOwned = loc.strings.MainForm_Dynamic_CardOwnedColumn;
             foreach (ListViewItem lvi in listViewCards.Items)
             {
                 if (card == null)
@@ -896,13 +1002,13 @@ namespace FFTriadBuddy
                     TriadCard cardTag = (TriadCard)lvi.Tag;
                     bIsOwned = playerDB.ownedCards.Contains(cardTag);
 
-                    lvi.SubItems[4].Text = bIsOwned ? "Yes" : "";
+                    lvi.SubItems[4].Text = bIsOwned ? locCardOwned : "";
                     lvi.BackColor = bIsOwned ? Color.FromArgb(0xb8, 0xfc, 0xd2) : SystemColors.Window;
                     lvi.Checked = bIsOwned;
                 }
                 else if (lvi.Tag == card)
                 {
-                    lvi.SubItems[4].Text = bIsOwned ? "Yes" : "";
+                    lvi.SubItems[4].Text = bIsOwned ? locCardOwned : "";
                     lvi.BackColor = bIsOwned ? Color.FromArgb(0xb8, 0xfc, 0xd2) : SystemColors.Window;
                     lvi.Checked = bIsOwned;
 
@@ -1079,7 +1185,7 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    ToolStripMenuItem npcDescItem = new ToolStripMenuItem("(none)");
+                    ToolStripMenuItem npcDescItem = new ToolStripMenuItem(loc.strings.MainForm_Dynamic_RuleListEmpty);
                     npcDescItem.Enabled = false;
 
                     contextMenuStripCardInfo.Items.Insert(contextMenuStripCardInfo.Items.Count - 2, npcDescItem);
@@ -1127,6 +1233,7 @@ namespace FFTriadBuddy
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
             TriadNpcDB npcsDB = TriadNpcDB.Get();
 
+            string locCompleted = loc.strings.MainForm_Dynamic_NpcCompletedColumn;
             foreach (TriadNpc npc in npcsDB.npcs)
             {
                 if (npc == null)
@@ -1140,10 +1247,10 @@ namespace FFTriadBuddy
                     ruleDesc += mod + ", ";
                 }
 
-                ruleDesc = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : "(none)";
+                ruleDesc = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : loc.strings.MainForm_Dynamic_RuleListEmpty;
 
                 bool bIsCompleted = playerDB.completedNpcs.Contains(npc);
-                string completedDesc = bIsCompleted ? "Yes" : "";
+                string completedDesc = bIsCompleted ? locCompleted : "";
 
                 string rewardDesc = "";
                 foreach (TriadCard card in npc.Rewards)
@@ -1222,7 +1329,7 @@ namespace FFTriadBuddy
             TriadNpc npc = (TriadNpc)e.Item.Tag;
             bool bIsCompleted = e.Item.Checked;
 
-            e.Item.SubItems[4].Text = bIsCompleted ? "Yes" : "";
+            e.Item.SubItems[4].Text = bIsCompleted ? loc.strings.MainForm_Dynamic_NpcCompletedColumn : "";
             e.Item.BackColor = bIsCompleted ? Color.FromArgb(0xb8, 0xfc, 0xd2) : SystemColors.Window;
 
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
@@ -1391,7 +1498,7 @@ namespace FFTriadBuddy
                 }
             }
 
-            labelRules.Text = (ruleDesc.Length > 0) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : "(none)";
+            labelRules.Text = (ruleDesc.Length > 0) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : loc.strings.MainForm_Dynamic_RuleListEmpty;
         }
 
         private void showSpecialRuleUI(ETriadGameSpecialMod specialMod, bool bSpecialActive)
@@ -1526,7 +1633,7 @@ namespace FFTriadBuddy
         {
             bool bCanSwap = deckCtrlSwapBlue.HasActiveCard() && deckCtrlSwapRed.HasActiveCard();
             buttonConfirmRuleSwap.Enabled = bCanSwap;
-            buttonConfirmRuleSwap.Text = bCanSwap ? "Apply Rule" : "Select one card from each deck to swap";
+            buttonConfirmRuleSwap.Text = bCanSwap ? loc.strings.MainForm_Simulate_Game_ApplyRuleButton  : loc.strings.MainForm_Dynamic_Simulate_SwapRuleButton;
         }
 
         private void ShowGameData(TriadGameData gameData)
@@ -1600,21 +1707,21 @@ namespace FFTriadBuddy
                 listViewRedDeck.Items.Add(cardListItem);
             }
 
-            buttonReset.Text = (gameData.numCardsPlaced == 0) ? "Blue starts" : "Reset";
+            buttonReset.Text = (gameData.numCardsPlaced == 0) ? loc.strings.MainForm_Dynamic_Simulate_BlueStartButton : loc.strings.MainForm_Simulate_ResetButton;
             buttonUndoRed.Enabled = (gameUndoRed.Count > 0);
-            buttonUndoRed.Text = (gameData.numCardsPlaced == 0) ? "Red start: drag && drop card on board" : "Undo last Red move";
+            buttonUndoRed.Text = (gameData.numCardsPlaced == 0) ? loc.strings.MainForm_Dynamic_Simulate_RedStartButton : loc.strings.MainForm_Simulate_UndoRedMoveButton;
 
             if (gameState.state == ETriadGameState.BlueWins)
             {
-                labelChance.Text = "yay!";
+                labelChance.Text = loc.strings.MainForm_Dynamic_Simulate_EndGame_BlueWin;
             }
             else if (gameState.state == ETriadGameState.BlueLost)
             {
-                labelChance.Text = "lost";
+                labelChance.Text = loc.strings.MainForm_Dynamic_Simulate_EndGame_BlueLost;
             }
             else if (gameState.state == ETriadGameState.BlueDraw)
             {
-                labelChance.Text = "draw";
+                labelChance.Text = loc.strings.MainForm_Dynamic_Simulate_EndGame_BlueDraw;
             }
 
             bool bHasLastRedReminder = false;
@@ -1628,13 +1735,13 @@ namespace FFTriadBuddy
 
             if (bHasLastRedReminder && !timerGameStateHint.Enabled)
             {
-                labelGameStateHint.Text = "[Place last red card to trigger modifier]";
+                labelGameStateHint.Text = loc.strings.MainForm_Dynamic_Simulate_LastCardHint;
                 labelGameStateHint.BackColor = gameHintLabelHighlightColor;
                 timerGameStateHint.Enabled = true;
             }
             else if (!bHasLastRedReminder && timerGameStateHint.Enabled)
             {
-                labelGameStateHint.Text = "[Drag && drop cards on board]";
+                labelGameStateHint.Text = loc.strings.MainForm_Simulate_Game_ListHint;
                 labelGameStateHint.BackColor = gameHintLabelColor;
                 timerGameStateHint.Enabled = false;
             }
@@ -1663,7 +1770,7 @@ namespace FFTriadBuddy
                 if ((gameSession.specialRules & ETriadGameSpecialMod.BlueCardSelection) != ETriadGameSpecialMod.None)
                 {
                     toolTip1.ShowAlways = true;
-                    toolTip1.Show("Click to change card", panelBlueDeck, 0, -10, 3000);
+                    toolTip1.Show(loc.strings.MainForm_Dynamic_Simulate_ChangeBlueHint, panelBlueDeck, 0, -10, 3000);
                     gameUndoBlue = new TriadGameData(gameState);
                 }
 
@@ -1678,7 +1785,9 @@ namespace FFTriadBuddy
                     gameState.bDebugRules = false;
 
                     SetHighlightedCard(boardControls[bestNextPos]);
-                    labelChance.Text = (bestChance.expectedResult == ETriadGameState.BlueDraw) ? (bestChance.drawChance.ToString("P2") + " (DRAW)") : bestChance.winChance.ToString("P2");
+                    labelChance.Text = (bestChance.expectedResult == ETriadGameState.BlueDraw) ?
+                        (bestChance.drawChance.ToString("P2") + " " + loc.strings.MainForm_Dynamic_Simulate_ChanceIsDraw) :
+                        bestChance.winChance.ToString("P2");
                 }
                 else
                 {
@@ -1714,7 +1823,9 @@ namespace FFTriadBuddy
                 {
                     if (bHasMove)
                     {
-                        labelChance.Text = (bestChance.expectedResult == ETriadGameState.BlueDraw) ? (bestChance.drawChance.ToString("P2") + " (DRAW)") : bestChance.winChance.ToString("P2");
+                        labelChance.Text = (bestChance.expectedResult == ETriadGameState.BlueDraw) ?
+                            (bestChance.drawChance.ToString("P2") + " " + loc.strings.MainForm_Dynamic_Simulate_ChanceIsDraw) :
+                            bestChance.winChance.ToString("P2");
                     }
                     else
                     {
@@ -1909,37 +2020,37 @@ namespace FFTriadBuddy
                     case ScreenAnalyzer.EState.NoInputImage:
                         switch (screenAnalyzer.screenReader.currentState)
                         {
-                            case ScreenReader.EState.MissingGameProcess: labelScreenshotState.Text = "Game is not running"; break;
-                            case ScreenReader.EState.MissingGameWindow: labelScreenshotState.Text = "Can't find game window"; break;
-                            default: labelScreenshotState.Text = "Can't retrieve image to analyze"; break;
+                            case ScreenReader.EState.MissingGameProcess: labelScreenshotState.Text = loc.strings.OverlayForm_Dynamic_Status_MissingGameProcess; break;
+                            case ScreenReader.EState.MissingGameWindow: labelScreenshotState.Text = loc.strings.OverlayForm_Dynamic_Status_MissingGameWindow; break;
+                            default: labelScreenshotState.Text = loc.strings.OverlayForm_Dynamic_Status_NoInputImage; break;
                         }
                         break;
 
                     case ScreenAnalyzer.EState.NoScannerMatch:
-                        labelScreenshotState.Text = "Can't find minigame window";
+                        labelScreenshotState.Text = loc.strings.OverlayForm_Dynamic_Status_NoScannerMatch;
                         break;
 
                     case ScreenAnalyzer.EState.UnknownHash:
-                        labelScreenshotState.Text = "Can't recognize pattern! See details below";
+                        labelScreenshotState.Text = loc.strings.MainForm_Dynamic_Screenshot_Status_UnknownHash;
                         useBackColor = screenshotStateWaitingColor;
                         break;
 
                     case ScreenAnalyzer.EState.ScannerErrors:
-                        labelScreenshotState.Text = "Failed to recognize minigame";
+                        labelScreenshotState.Text = loc.strings.OverlayForm_Dynamic_Status_ScannerErrors;
                         if (screenAnalyzer.activeScanner is ScannerTriad)
                         {
                             switch (screenAnalyzer.scannerTriad.cachedScanError)
                             {
-                                case ScannerTriad.EScanError.MissingGrid: labelScreenshotState.Text = "Can't find board! Try resetting UI position, turning off reshade, etc..."; break;
-                                case ScannerTriad.EScanError.MissingCards: labelScreenshotState.Text = "Can't find blue deck! Try resetting UI position, turning off reshade, etc..."; break;
-                                case ScannerTriad.EScanError.FailedCardMatching: labelScreenshotState.Text = "Failed to recognize some of cards! Game state won't be accurate"; break;
+                                case ScannerTriad.EScanError.MissingGrid: labelScreenshotState.Text = loc.strings.MainForm_Dynamic_Screenshot_Status_MissingGridOrCards; break;
+                                case ScannerTriad.EScanError.MissingCards: labelScreenshotState.Text = loc.strings.MainForm_Dynamic_Screenshot_Status_MissingGridOrCards; break;
+                                case ScannerTriad.EScanError.FailedCardMatching: labelScreenshotState.Text = loc.strings.MainForm_Dynamic_Screenshot_Status_FailedCardMatching; break;
                                 default: break;
                             }
                         }
                         break;
 
                     case ScreenAnalyzer.EState.NoErrors:
-                        labelScreenshotState.Text = "Active";
+                        labelScreenshotState.Text = loc.strings.MainForm_Dynamic_Screenhot_Status_NoErrors;
                         useBackColor = screenshotStateActiveColor;
                         break;
 
@@ -1950,7 +2061,7 @@ namespace FFTriadBuddy
             }
             else
             {
-                labelScreenshotState.Text = "Disabled";
+                labelScreenshotState.Text = loc.strings.MainForm_Dynamic_Screenshot_Status_Disabled;
             }
 
             panelScreenshotState.BackColor = useBackColor;
@@ -1958,8 +2069,9 @@ namespace FFTriadBuddy
 
         private void UpdateScreenshotListUnknown()
         {
-            labelLocalHashPending.Text = (screenAnalyzer.unknownHashes.Count > 1) ?
-                ("(there " + (screenAnalyzer.unknownHashes.Count == 2 ? "is" : "are") + " " + (screenAnalyzer.unknownHashes.Count - 1) + " more pending)") :
+            labelLocalHashPending.Text =
+                (screenAnalyzer.unknownHashes.Count > 2) ? string.Format(loc.strings.MainForm_Screenshot_Learn_PendingPlural, screenAnalyzer.unknownHashes.Count - 1) :
+                (screenAnalyzer.unknownHashes.Count == 2) ? loc.strings.MainForm_Screenshot_Learn_PendingSingular :
                 "";
 
             ImageHashData hashData = screenAnalyzer.unknownHashes[0];
@@ -1971,7 +2083,7 @@ namespace FFTriadBuddy
             comboBoxLocalHash.SelectedIndex = -1;
             comboBoxLocalHash.Items.Clear();
             comboBoxLocalHash.Items.AddRange(FormAdjustHash.GenerateHashOwnerOptions(hashData).ToArray());
-            comboBoxLocalHash.Text = "(select match)";
+            comboBoxLocalHash.Text = loc.strings.MainForm_Dynamic_Screenshot_SelectDetectionMatch;
             comboBoxLocalHash_SelectedIndexChanged(null, null);
 
             if (tabControl1.SelectedTab != tabPageScreenshot)
@@ -1991,12 +2103,16 @@ namespace FFTriadBuddy
                 TriadGameModifier modOb = hashData.ownerOb as TriadGameModifier;
                 TriadCard cardOb = hashData.ownerOb as TriadCard;
 
-                ListViewItem lvi = new ListViewItem(hashData.isAuto ? "Auto" : isExactMatch ? "Exact" : "Similar");
+                string matchType = hashData.isAuto ? loc.strings.MainForm_Dynamic_Screenshot_MatchType_Auto :
+                    isExactMatch ? loc.strings.MainForm_Dynamic_Screenshot_MatchType_Exact :
+                    loc.strings.MainForm_Dynamic_Screenshot_MatchType_Similar;
+
+                ListViewItem lvi = new ListViewItem(matchType);
                 lvi.Tag = hashData;
                 lvi.SubItems.Add(
-                    (modOb != null) ? "Rule: " + modOb.GetName() :
-                    (cardOb != null) ? "Card: " + cardOb.ToShortString() :
-                    "Number: " + (int)hashData.ownerOb);
+                    (modOb != null) ? loc.strings.MainForm_Dynamic_Screenshot_HashType_Rule + ": " + modOb.GetName() :
+                    (cardOb != null) ? loc.strings.MainForm_Dynamic_Screenshot_HashType_Card + ": " + cardOb.ToShortString() :
+                    loc.strings.MainForm_Dynamic_Screenshot_HashType_Number + ": " + (int)hashData.ownerOb);
 
                 listViewDetectionHashes.Items.Add(lvi);
             }
@@ -2012,10 +2128,12 @@ namespace FFTriadBuddy
                 }
 
                 string friendlyDesc =
-                    (cardState.location == ScannerTriad.ECardLocation.BlueDeck) ? "Blue " + (cardState.locationContext + 1) :
-                    (cardState.location == ScannerTriad.ECardLocation.RedDeck) ? "Red " + (cardState.locationContext + 1) :
-                    string.Format("Board {0} {1}",
-                        cardState.locationContext < 3 ? "top" : (cardState.locationContext < 6) ? "mid" : "bot",
+                    (cardState.location == ScannerTriad.ECardLocation.BlueDeck) ? string.Format(loc.strings.MainForm_Dynamic_Screenshot_CardLocation_BlueDeck, cardState.locationContext + 1) :
+                    (cardState.location == ScannerTriad.ECardLocation.RedDeck) ? string.Format(loc.strings.MainForm_Dynamic_Screenshot_CardLocation_RedDeck, cardState.locationContext + 1) :
+                    string.Format(loc.strings.MainForm_Dynamic_Screenshot_CardLocation_Board,
+                        cardState.locationContext < 3 ? loc.strings.MainForm_Dynamic_Screenshot_BoardRow_Top : 
+                            (cardState.locationContext < 6) ? loc.strings.MainForm_Dynamic_Screenshot_BoardRow_Middle :
+                            loc.strings.MainForm_Dynamic_Screenshot_BoardRow_Bottom,
                         (cardState.locationContext % 3) + 1);
 
                 ListViewItem lvi = new ListViewItem(friendlyDesc);
@@ -2024,7 +2142,7 @@ namespace FFTriadBuddy
                 lvi.SubItems.Add((cardState.sideNumber == null) ? "" :
                     (cardState.sideNumber[0] + "-" + cardState.sideNumber[1] + "-" + cardState.sideNumber[2] + "-" + cardState.sideNumber[3]));
 
-                lvi.SubItems.Add(cardState.card == null ? "not detected!" : cardState.card.Name);
+                lvi.SubItems.Add(cardState.card == null ? loc.strings.MainForm_Dynamic_Screenshot_CardNotDetected : cardState.card.Name);
                 lvi.BackColor = (cardState.card == null) ? Color.MistyRose : SystemColors.Window;
 
                 listViewDetectionCards.Items.Add(lvi);
@@ -2263,7 +2381,7 @@ namespace FFTriadBuddy
 
             if (cloudStorage.GetState() == GoogleDriveService.EState.NoErrors && (bCards || bNpcs || bDecks))
             {
-                labelCloudState.Text = "Cloud save applied";
+                labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudSave_Loaded;
             }
         }
 
@@ -2330,22 +2448,22 @@ namespace FFTriadBuddy
                     GoogleDriveService.EState showState = (forcedState != GoogleDriveService.EState.NoErrors) ? forcedState : cloudStorage.GetState();
                     switch (showState)
                     {
-                        case GoogleDriveService.EState.NoErrors: labelCloudState.Text = "active"; break;
-                        case GoogleDriveService.EState.ApiFailure: labelCloudState.Text = "API call failed"; break;
-                        case GoogleDriveService.EState.NotAuthorized: labelCloudState.Text = "Auth required"; bEnabledAuthButton = true; break;
-                        case GoogleDriveService.EState.AuthInProgress: labelCloudState.Text = "authorizing..."; break;
-                        case GoogleDriveService.EState.NotInitialized: labelCloudState.Text = "scanning..."; break;
+                        case GoogleDriveService.EState.NoErrors: labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_NoErrors; break;
+                        case GoogleDriveService.EState.ApiFailure: labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_ApiFailure; break;
+                        case GoogleDriveService.EState.NotAuthorized: labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_NotAuthorized; bEnabledAuthButton = true; break;
+                        case GoogleDriveService.EState.AuthInProgress: labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_AuthInProgress; break;
+                        case GoogleDriveService.EState.NotInitialized: labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_NotInitialized; break;
                         default: labelCloudState.Text = ""; break;
                     }
                 }
                 else
                 {
-                    labelCloudState.Text = "database failure";
+                    labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_NoDatabase;
                 }
             }
             else
             {
-                labelCloudState.Text = "disabled, local only";
+                labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_Disabled;
             }
 
             buttonCloudAuth.Visible = bEnabledAuthButton;
@@ -2361,7 +2479,7 @@ namespace FFTriadBuddy
                 Logger.WriteLine("Loaded cloud save, API response: " + cloudStorage.GetLastApiResponse());
                 if (cloudStorage.GetState() == GoogleDriveService.EState.NoErrors)
                 {
-                    labelCloudState.Text = "synchronized";
+                    labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_Synced;
                 }
             }
             catch (Exception ex)
@@ -2390,7 +2508,7 @@ namespace FFTriadBuddy
                     Logger.WriteLine("Created cloud save, API response: " + cloudStorage.GetLastApiResponse());
                     if (cloudStorage.GetState() == GoogleDriveService.EState.NoErrors)
                     {
-                        labelCloudState.Text = "stored";
+                        labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_Uploaded;
                     }
                 }
                 catch (Exception ex)
@@ -2410,7 +2528,7 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    labelCloudState.Text = "synchronized";
+                    labelCloudState.Text = loc.strings.MainForm_Dynamic_Setup_CloudStatus_Synced;
                 }
             }
         }

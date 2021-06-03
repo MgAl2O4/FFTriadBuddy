@@ -11,9 +11,19 @@ namespace FFTriadBuddy
         public FormFavEdit()
         {
             InitializeComponent();
+            ApplyLocalization();
 
             deckCtrl1.clickAction = EDeckCtrlAction.Pick;
             deckCtrl1.allowRearrange = true;
+        }
+
+        private void ApplyLocalization()
+        {
+            Text = loc.strings.FavDeckForm_Title;
+            label1.Text = loc.strings.FavDeckForm_Info;
+            label2.Text = loc.strings.FavDeckForm_Name;
+            buttonAdd.Text = loc.strings.FavDeckForm_AddButton;
+            buttonRemove.Text = loc.strings.FavDeckForm_RemoveButton;
         }
 
         public void InitDeck(int slotIdx, TriadDeck copyFrom, ImageList cardImages, ImageList cardTypes, ImageList cardRarity)
@@ -24,12 +34,12 @@ namespace FFTriadBuddy
             if (slotIdx < playerDB.favDecks.Count)
             {
                 deck = playerDB.favDecks[slotIdx];
-                buttonAdd.Text = "Update";
+                buttonAdd.Text = loc.strings.FavDeckForm_Dynamic_UpdateButton;
             }
             else
             {
                 deck = new TriadDeckNamed(copyFrom);
-                deck.Name = "Fav #" + (slotIdx + 1).ToString();
+                deck.Name = string.Format(loc.strings.FavDeckForm_Dynamic_AutoName, slotIdx + 1);
             }
 
             deckCtrl1.SetImageLists(cardImages, cardTypes, cardRarity);
@@ -49,7 +59,7 @@ namespace FFTriadBuddy
 
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            DialogResult ret = MessageBox.Show("Favorite deck will be removed, do you want to continue?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult ret = MessageBox.Show(loc.strings.FavDeckForm_Dynamic_RemoveMsg, Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (ret == DialogResult.Yes)
             {
                 DialogResult = DialogResult.No;

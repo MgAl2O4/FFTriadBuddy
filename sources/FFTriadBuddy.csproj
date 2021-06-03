@@ -85,6 +85,11 @@
     <Compile Include="gamelogic\TriadGameScreenMemory.cs" />
     <Compile Include="googleapi\GoogleDriveService.cs" />
     <Compile Include="googleapi\GoogleOAuth2.cs" />
+    <Compile Include="loc\strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="ui\FormAdjustCard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,6 +173,10 @@
     <Compile Include="vision\ScannerCactpot.cs" />
     <Compile Include="vision\ScreenReader.cs" />
     <Compile Include="vision\ImageUtils.cs" />
+    <EmbeddedResource Include="loc\strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
