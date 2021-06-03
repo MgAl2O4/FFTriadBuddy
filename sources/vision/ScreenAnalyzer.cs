@@ -36,7 +36,7 @@ namespace FFTriadBuddy
             DebugScreenshotOnly = 0x2,
             DebugSaveMarkup = 0x4,
             AlwaysResetCache = 0x8,
-            NeverResetCache = 0x10,            
+            NeverResetCache = 0x10,
             AutoTest = 0x20,
 
             ScanTriad = 0x100,
@@ -363,7 +363,7 @@ namespace FFTriadBuddy
             }
 
             perfTimer.Stop();
-            if (debugMode) 
+            if (debugMode)
             {
                 string logFile = "";
                 if (!string.IsNullOrEmpty(debugScreenshotPath))

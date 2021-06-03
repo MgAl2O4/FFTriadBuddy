@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 
 namespace FFTriadBuddy
 {
@@ -1069,7 +1068,7 @@ namespace FFTriadBuddy
                 {
                     Logger.WriteLine("FindExactCardMidX[{0}] scan:[{1},{2}..{3}] = {4} offset:{5}, ac:{6}, list:{7}{8}", debugName,
                         scanX, startY - offsetH, startY - testSpanH - offsetH,
-                        spanH, offsetH, abortCounter, 
+                        spanH, offsetH, abortCounter,
                         string.Join(",", monoVArr),
                         (spanH == offsetH) || (abortCounter == 0) ? " <= STOP" : "");
                 }
@@ -1122,7 +1121,7 @@ namespace FFTriadBuddy
                 if (debugMode) { Logger.WriteLine("ParseCard({0}): empty", debugName); }
                 return cardState;
             }
-           
+
             int exactCardMidX = FindExactCardMidX(bitmap, cardRect, debugName, exactCardBottom);
 
             // check if card is hidden based on approx numberbox location

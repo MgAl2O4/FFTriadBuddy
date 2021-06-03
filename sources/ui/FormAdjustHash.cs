@@ -107,7 +107,7 @@ namespace FFTriadBuddy
 
             labelHashOrg.Text = (hashData.ownerOb != null) ? hashData.ownerOb.ToString() : loc.strings.AdjustForm_Dynamic_UnknownOwner;
             labelDistance.Text = hashData.isAuto ? loc.strings.AdjustForm_Dynamic_Distance_NotAvail : hashData.matchDistance.ToString();
-            labelDescDistance.Text = hashData.isAuto ? loc.strings.AdjustForm_Dynamic_Distance_Classifier : 
+            labelDescDistance.Text = hashData.isAuto ? loc.strings.AdjustForm_Dynamic_Distance_Classifier :
                 hashData.matchDistance == 0 ? loc.strings.AdjustForm_Dynamic_Distance_Exact :
                 loc.strings.AdjustForm_Dynamic_Distance_DefaultHint;
             pictureBox1.Image = hashData.previewImage;
@@ -127,7 +127,7 @@ namespace FFTriadBuddy
                     break;
                 }
             }
-            
+
             if (!foundSelection) { comboBoxOwner_SelectedIndexChanged(null, null); }
         }
 

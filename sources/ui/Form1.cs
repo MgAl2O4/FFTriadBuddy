@@ -1633,7 +1633,7 @@ namespace FFTriadBuddy
         {
             bool bCanSwap = deckCtrlSwapBlue.HasActiveCard() && deckCtrlSwapRed.HasActiveCard();
             buttonConfirmRuleSwap.Enabled = bCanSwap;
-            buttonConfirmRuleSwap.Text = bCanSwap ? loc.strings.MainForm_Simulate_Game_ApplyRuleButton  : loc.strings.MainForm_Dynamic_Simulate_SwapRuleButton;
+            buttonConfirmRuleSwap.Text = bCanSwap ? loc.strings.MainForm_Simulate_Game_ApplyRuleButton : loc.strings.MainForm_Dynamic_Simulate_SwapRuleButton;
         }
 
         private void ShowGameData(TriadGameData gameData)
@@ -2131,7 +2131,7 @@ namespace FFTriadBuddy
                     (cardState.location == ScannerTriad.ECardLocation.BlueDeck) ? string.Format(loc.strings.MainForm_Dynamic_Screenshot_CardLocation_BlueDeck, cardState.locationContext + 1) :
                     (cardState.location == ScannerTriad.ECardLocation.RedDeck) ? string.Format(loc.strings.MainForm_Dynamic_Screenshot_CardLocation_RedDeck, cardState.locationContext + 1) :
                     string.Format(loc.strings.MainForm_Dynamic_Screenshot_CardLocation_Board,
-                        cardState.locationContext < 3 ? loc.strings.MainForm_Dynamic_Screenshot_BoardRow_Top : 
+                        cardState.locationContext < 3 ? loc.strings.MainForm_Dynamic_Screenshot_BoardRow_Top :
                             (cardState.locationContext < 6) ? loc.strings.MainForm_Dynamic_Screenshot_BoardRow_Middle :
                             loc.strings.MainForm_Dynamic_Screenshot_BoardRow_Bottom,
                         (cardState.locationContext % 3) + 1);
@@ -2259,7 +2259,7 @@ namespace FFTriadBuddy
                             cardState.state == ScannerTriad.ECardState.Visible ||
                             cardState.state == ScannerTriad.ECardState.PlacedBlue ||
                             cardState.state == ScannerTriad.ECardState.PlacedRed);
-                        
+
                         lvi.Selected = true;
                         contextMenuStripLearnCard.Tag = cardState;
                         contextMenuStripLearnCard.Show(listViewDetectionCards, e.Location, ToolStripDropDownDirection.BelowRight);

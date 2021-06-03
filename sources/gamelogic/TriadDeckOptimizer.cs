@@ -242,7 +242,7 @@ namespace FFTriadBuddy
             int maxCardTypes = Enum.GetValues(typeof(ETriadCardType)).Length;
             int maxLists = priScoredList.Count + 1;
             List<float>[,] mapCardAscValues = new List<float>[maxCardTypes, maxLists];
-            
+
             for (int idxL = 0; idxL < priScoredList.Count + 1; idxL++)
             {
                 for (int idxT = 0; idxT < maxCardTypes; idxT++)
@@ -371,11 +371,11 @@ namespace FFTriadBuddy
                 }
             }
 
-            if (debugMode) 
+            if (debugMode)
             {
-                Logger.WriteLine("FindCardPool> priRarityThr:{0}, maxAvail:[{1},{2},{3},{4},{5}], reverse:{6}, ascention:{7}", priRarityThr.Count, 
-                    mapAvailRarity[0], mapAvailRarity[1], mapAvailRarity[2], mapAvailRarity[3], mapAvailRarity[4], 
-                    hasReverseMod, hasAscensionMod); 
+                Logger.WriteLine("FindCardPool> priRarityThr:{0}, maxAvail:[{1},{2},{3},{4},{5}], reverse:{6}, ascention:{7}", priRarityThr.Count,
+                    mapAvailRarity[0], mapAvailRarity[1], mapAvailRarity[2], mapAvailRarity[3], mapAvailRarity[4],
+                    hasReverseMod, hasAscensionMod);
             }
 
             // check rarity of locked cards, eliminate pri list when threshold is matched

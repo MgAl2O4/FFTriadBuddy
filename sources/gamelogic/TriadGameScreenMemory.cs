@@ -726,10 +726,10 @@ namespace FFTriadBuddy
                 if (configCard.state == ScannerTriad.ECardState.None) { return null; }
                 if (configCard.state == ScannerTriad.ECardState.Hidden) { return TriadCardDB.Get().hiddenCard; }
 
-                TriadCard matchingCard = !string.IsNullOrEmpty(configCard.name) ? 
-                    TriadCardDB.Get().Find(configCard.name) : 
+                TriadCard matchingCard = !string.IsNullOrEmpty(configCard.name) ?
+                    TriadCardDB.Get().Find(configCard.name) :
                     TriadCardDB.Get().Find(configCard.sides[0], configCard.sides[1], configCard.sides[2], configCard.sides[3]);
-                
+
                 if (matchingCard == null)
                 {
                     string exceptionMsg = string.Format("Test {0} failed! Can't match validation card: '{1}' [{2},{3},{4},{5}]", testName,
