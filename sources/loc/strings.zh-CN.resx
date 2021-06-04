@@ -199,7 +199,7 @@
     <value>卡组收藏将被移除，是否继续？</value>
   </data>
   <data name="FavDeckForm_Dynamic_UpdateButton" xml:space="preserve">
-    <value>升级</value>
+    <value>更新</value>
   </data>
   <data name="FavDeckForm_Info" xml:space="preserve">
     <value>卡组收藏，点击下方幻卡查看选项：</value>
