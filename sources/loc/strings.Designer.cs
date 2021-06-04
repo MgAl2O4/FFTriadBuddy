@@ -349,6 +349,33 @@ namespace FFTriadBuddy.loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ffxiv_dx11.
+        /// </summary>
+        internal static string Game_ProcessName_DX11 {
+            get {
+                return ResourceManager.GetString("Game_ProcessName_DX11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ffxiv.
+        /// </summary>
+        internal static string Game_ProcessName_DX9 {
+            get {
+                return ResourceManager.GetString("Game_ProcessName_DX9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FINAL FANTASY.
+        /// </summary>
+        internal static string Game_WindowNamePrefix {
+            get {
+                return ResourceManager.GetString("Game_WindowNamePrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Icons.
         /// </summary>
         internal static string MainForm_Cards_IconsTitle {

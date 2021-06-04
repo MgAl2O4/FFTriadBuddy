@@ -213,6 +213,15 @@
   <data name="FavDeckForm_Title" xml:space="preserve">
     <value>Edit favorite deck</value>
   </data>
+  <data name="Game_ProcessName_DX11" xml:space="preserve">
+    <value>ffxiv_dx11</value>
+  </data>
+  <data name="Game_ProcessName_DX9" xml:space="preserve">
+    <value>ffxiv</value>
+  </data>
+  <data name="Game_WindowNamePrefix" xml:space="preserve">
+    <value>FINAL FANTASY</value>
+  </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
     <value>Icons</value>
   </data>

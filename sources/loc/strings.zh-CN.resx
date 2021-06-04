@@ -213,6 +213,15 @@
   <data name="FavDeckForm_Title" xml:space="preserve">
     <value>编辑卡组收藏</value>
   </data>
+  <data name="Game_ProcessName_DX11" xml:space="preserve">
+    <value>ffxiv_dx11</value>
+  </data>
+  <data name="Game_ProcessName_DX9" xml:space="preserve">
+    <value>ffxiv</value>
+  </data>
+  <data name="Game_WindowNamePrefix" xml:space="preserve">
+    <value>最终幻想</value>
+  </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
     <value>图示</value>
   </data>

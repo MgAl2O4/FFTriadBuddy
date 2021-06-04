@@ -103,13 +103,14 @@ namespace FFTriadBuddy
         {
             HandleRef WindowHandle = new HandleRef();
             bool useVerboseLogs = Logger.IsSuperVerbose();
+            string wndNamePrefix = loc.strings.Game_WindowNamePrefix;
 
-            if (cachedProcess == null || !cachedProcess.MainWindowTitle.StartsWith("FINAL FANTASY"))
+            if (cachedProcess == null || !cachedProcess.MainWindowTitle.StartsWith(wndNamePrefix))
             {
-                Process[] processes = Process.GetProcessesByName("ffxiv_dx11");
+                Process[] processes = Process.GetProcessesByName(loc.strings.Game_ProcessName_DX11);
                 if (processes.Length == 0)
                 {
-                    processes = Process.GetProcessesByName("ffxiv");
+                    processes = Process.GetProcessesByName(loc.strings.Game_ProcessName_DX9);
                 }
 
                 if (useVerboseLogs) { Logger.WriteLine("FindGameWindow: process list to check: " + processes.Length); }
@@ -117,7 +118,7 @@ namespace FFTriadBuddy
                 cachedProcess = null;
                 foreach (Process p in processes)
                 {
-                    bool hasMatchingTitle = p.MainWindowTitle.StartsWith("FINAL FANTASY");
+                    bool hasMatchingTitle = p.MainWindowTitle.StartsWith(wndNamePrefix);
                     if (useVerboseLogs)
                     {
                         Logger.WriteLine(">> pid:{0}, name:{1}, window:'{2}', hwnd:0x{3:x} => {4}",
