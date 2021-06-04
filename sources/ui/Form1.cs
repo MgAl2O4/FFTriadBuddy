@@ -3,6 +3,7 @@ using MgAl2O4.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -292,10 +293,13 @@ namespace FFTriadBuddy
                 AssetManager assets = AssetManager.Get();
                 if (assets.Init(Properties.Resources.assets))
                 {
+                    LocalizationDB.SetCurrentUserLanguage(CultureInfo.CurrentCulture.Name);
+
                     bResult = TriadCardDB.Get().Load();
                     bResult = bResult && TriadNpcDB.Get().Load();
                     bResult = bResult && ImageHashDB.Get().Load();
                     bResult = bResult && TriadTournamentDB.Get().Load();
+                    bResult = bResult && LocalizationDB.Get().Load();
 
                     if (bResult)
                     {
@@ -303,6 +307,13 @@ namespace FFTriadBuddy
                         if (!bLoadedSettings)
                         {
                             Logger.WriteLine("Warning: failed to load player settings!");
+                        }
+
+                        var forcedLang = PlayerSettingsDB.Get().forcedLanguage;
+                        if (!string.IsNullOrEmpty(forcedLang))
+                        {
+                            CultureInfo.CurrentUICulture = new CultureInfo(forcedLang);
+                            LocalizationDB.SetCurrentUserLanguage(forcedLang);
                         }
 
                         TriadCardDB cardDB = TriadCardDB.Get();
@@ -445,7 +456,52 @@ namespace FFTriadBuddy
 
             public override string ToString()
             {
-                return Card.Name;
+                return Card.Name.GetLocalized();
+            }
+        }
+
+        class RulePickerOb
+        {
+            public readonly TriadGameModifier Rule;
+
+            public RulePickerOb(TriadGameModifier rule)
+            {
+                Rule = rule;
+            }
+
+            public override string ToString()
+            {
+                return Rule.GetLocalizedName();
+            }
+        }
+
+        class NpcPickerOb
+        {
+            public readonly TriadNpc Npc;
+
+            public NpcPickerOb(TriadNpc npc)
+            {
+                Npc = npc;
+            }
+
+            public override string ToString()
+            {
+                return Npc.Name.GetLocalized();
+            }
+        }
+
+        class TournamentPickerOb
+        {
+            public readonly TriadTournament Tournament;
+
+            public TournamentPickerOb(TriadTournament tournament)
+            {
+                Tournament = tournament;
+            }
+
+            public override string ToString()
+            {
+                return Tournament.Name.GetLocalized();
             }
         }
 
@@ -454,11 +510,18 @@ namespace FFTriadBuddy
             bSuspendSetupUpdates = true;
 
             comboBoxNpc.Items.Clear();
+            NpcPickerOb defNpcEntry = null;
             foreach (TriadNpc npc in TriadNpcDB.Get().npcs)
             {
                 if (npc != null)
                 {
-                    comboBoxNpc.Items.Add(npc);
+                    var npcOb = new NpcPickerOb(npc);
+                    comboBoxNpc.Items.Add(npcOb);
+
+                    if (npc.Name.GetCodeName().Equals("Triple Triad Master", StringComparison.OrdinalIgnoreCase))
+                    {
+                        defNpcEntry = npcOb;
+                    }
                 }
             }
 
@@ -467,7 +530,7 @@ namespace FFTriadBuddy
             {
                 if (tournament != null)
                 {
-                    comboBoxTournamentType.Items.Add(tournament);
+                    comboBoxTournamentType.Items.Add(new TournamentPickerOb(tournament));
                 }
             }
 
@@ -476,28 +539,19 @@ namespace FFTriadBuddy
                 comboBoxTournamentType.SelectedIndex = 0;
             }
 
-            List<TriadGameModifier> modObjects = new List<TriadGameModifier>();
-            TriadGameModifier modNone = null;
-            foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
+            List<RulePickerOb> modObjects = new List<RulePickerOb>();
+            RulePickerOb modNone = null;
+            foreach (var mod in TriadGameModifierDB.Get().mods)
             {
-                if (type.IsSubclassOf(typeof(TriadGameModifier)))
+                var ruleOb = new RulePickerOb(mod.Clone());
+                modObjects.Add(ruleOb);
+
+                if (mod is TriadGameModifierNone)
                 {
-                    if (type == typeof(TriadGameModifierRoulette))
-                    {
-                        // roulette is special, don't include in roulette resolve dropdowns
-                        continue;
-                    }
-
-                    TriadGameModifier modNew = (TriadGameModifier)Activator.CreateInstance(type);
-                    modObjects.Add(modNew);
-
-                    if (type == typeof(TriadGameModifierNone))
-                    {
-                        modNone = modNew;
-                    }
+                    modNone = ruleOb;
                 }
             }
-            modObjects.Sort();
+            modObjects.Sort((a, b) => a.Rule.CompareTo(b.Rule));
 
             comboBoxRoulette1.Items.Clear();
             comboBoxRoulette2.Items.Clear();
@@ -509,16 +563,16 @@ namespace FFTriadBuddy
             comboBoxRoulette4.Items.AddRange(modObjects.ToArray());
 
             // roulette: each region combo needs to use different instance, so they can be resolved separately
-            TriadGameModifier modRoulette = new TriadGameModifierRoulette();
+            var modRoulette = new RulePickerOb(new TriadGameModifierRoulette());
             modObjects.Add(modRoulette);
-            modObjects.Sort();
+            modObjects.Sort((a, b) => a.Rule.CompareTo(b.Rule));
 
             comboBoxRegionRule1.Items.Clear();
             comboBoxRegionRule2.Items.Clear();
             comboBoxRegionRule1.Items.AddRange(modObjects.ToArray());
 
             int roulettePos = modObjects.IndexOf(modRoulette);
-            modObjects[roulettePos] = new TriadGameModifierRoulette();
+            modObjects[roulettePos] = new RulePickerOb(new TriadGameModifierRoulette());
 
             comboBoxRegionRule2.Items.AddRange(modObjects.ToArray());
             comboBoxRegionRule1.SelectedItem = modNone;
@@ -526,8 +580,7 @@ namespace FFTriadBuddy
 
             // set npc - triggers game UI update & async evals
             bSuspendSetupUpdates = false;
-            TriadNpc npcToSelect = TriadNpcDB.Get().Find("Triple Triad Master");
-            comboBoxNpc.SelectedItem = npcToSelect;
+            comboBoxNpc.SelectedItem = defNpcEntry;
 
             updateDeckState();
         }
@@ -556,7 +609,7 @@ namespace FFTriadBuddy
 
         private void comboBoxNpc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TriadNpc newSelectedNpc = (TriadNpc)comboBoxNpc.SelectedItem;
+            TriadNpc newSelectedNpc = ((NpcPickerOb)comboBoxNpc.SelectedItem).Npc;
             if (newSelectedNpc != currentNpc)
             {
                 PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
@@ -611,11 +664,11 @@ namespace FFTriadBuddy
             {
                 if (mod.GetType() != typeof(TriadGameModifierNone))
                 {
-                    ruleDesc += mod.ToString() + ", ";
+                    ruleDesc += mod.GetLocalizedName() + ", ";
                 }
             }
 
-            labelLocation.Text = currentNpc.Location;
+            labelLocation.Text = currentNpc.GetLocationDesc();
             labelLevel.Text = currentNpc.Deck.GetPower().ToString();
             labelDescChance.Text = labelChance.Text;
             labelDescRules.Text = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : loc.strings.MainForm_Dynamic_RuleListEmpty;
@@ -633,7 +686,12 @@ namespace FFTriadBuddy
             progressBarDeck.Value = 0;
             timerOptimizeDeck.Enabled = true;
 
-            TriadGameModifier[] gameMods = new TriadGameModifier[] { (TriadGameModifier)comboBoxRegionRule1.SelectedItem, (TriadGameModifier)comboBoxRegionRule2.SelectedItem };
+            var regionWrapper1 = (RulePickerOb)comboBoxRegionRule1.SelectedItem;
+            var regionWrapper2 = (RulePickerOb)comboBoxRegionRule2.SelectedItem;
+            TriadGameModifier[] gameMods = new TriadGameModifier[] {
+                (regionWrapper1 != null) ? regionWrapper1.Rule : null,
+                (regionWrapper2 != null) ? regionWrapper2.Rule : null
+            };
             List<TriadCard> lockedCards = deckCtrlSetup.GetLockedCards();
 
             deckOptimizer.Initialize(currentNpc, gameMods, lockedCards);
@@ -724,14 +782,14 @@ namespace FFTriadBuddy
         {
             string ruleDesc = "";
 
-            TriadTournament currentTournament = (TriadTournament)comboBoxTournamentType.SelectedItem;
+            TournamentPickerOb currentTournament = (TournamentPickerOb)comboBoxTournamentType.SelectedItem;
             if (currentTournament != null)
             {
-                foreach (TriadGameModifier mod in currentTournament.Rules)
+                foreach (TriadGameModifier mod in currentTournament.Tournament.Rules)
                 {
                     if (mod.GetType() != typeof(TriadGameModifierNone))
                     {
-                        ruleDesc += mod.ToString() + ", ";
+                        ruleDesc += mod.GetLocalizedName() + ", ";
                     }
                 }
             }
@@ -890,6 +948,7 @@ namespace FFTriadBuddy
 
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
             TriadCardDB cardsDB = TriadCardDB.Get();
+            LocalizationDB locDB = LocalizationDB.Get();
 
             string locCardOwned = loc.strings.MainForm_Dynamic_CardOwnedColumn;
             foreach (TriadCard card in cardsDB.cards)
@@ -905,12 +964,7 @@ namespace FFTriadBuddy
                     rarityDesc += " *";
                 }
 
-                string typeDesc = "";
-                if (card.Type != ETriadCardType.None)
-                {
-                    typeDesc = card.Type.ToString();
-                }
-
+                string typeDesc = locDB.mapCardTypes[card.Type].GetLocalized();
                 string powerDesc = "[" + GetCardPowerDesc(card.Sides[(int)ETriadGameSide.Up]) + ", " +
                     GetCardPowerDesc(card.Sides[(int)ETriadGameSide.Left]) + ", " +
                     GetCardPowerDesc(card.Sides[(int)ETriadGameSide.Down]) + ", " +
@@ -920,7 +974,7 @@ namespace FFTriadBuddy
                 string ownedDesc = bIsOwned ? locCardOwned : "";
                 string sortOrder = card.SortOrder.ToString();
 
-                ListViewItem cardListItem = new ListViewItem(new string[] { card.Name, rarityDesc, powerDesc, typeDesc, ownedDesc, sortOrder });
+                ListViewItem cardListItem = new ListViewItem(new string[] { card.Name.GetLocalized(), rarityDesc, powerDesc, typeDesc, ownedDesc, sortOrder });
                 cardListItem.Checked = bIsOwned;
                 cardListItem.Tag = card;
 
@@ -1176,7 +1230,7 @@ namespace FFTriadBuddy
                 {
                     foreach (TriadNpc npc in rewardNpc)
                     {
-                        ToolStripMenuItem npcDescItem = new ToolStripMenuItem(npc.Name);
+                        ToolStripMenuItem npcDescItem = new ToolStripMenuItem(npc.Name.GetLocalized());
                         npcDescItem.Tag = npc;
                         npcDescItem.Click += OnCardInfoNpcClicked;
 
@@ -1244,7 +1298,7 @@ namespace FFTriadBuddy
                 string ruleDesc = "";
                 foreach (TriadGameModifier mod in npc.Rules)
                 {
-                    ruleDesc += mod + ", ";
+                    ruleDesc += mod.GetLocalizedName() + ", ";
                 }
 
                 ruleDesc = (ruleDesc.Length > 2) ? ruleDesc.Remove(ruleDesc.Length - 2, 2) : loc.strings.MainForm_Dynamic_RuleListEmpty;
@@ -1257,14 +1311,14 @@ namespace FFTriadBuddy
                 {
                     if (!playerDB.ownedCards.Contains(card))
                     {
-                        rewardDesc += card.Name + ", ";
+                        rewardDesc += card.Name.GetLocalized() + ", ";
                     }
                 }
 
                 rewardDesc = (rewardDesc.Length > 2) ? rewardDesc.Remove(rewardDesc.Length - 2, 2) : "";
                 string deckPowerDesc = npc.Deck.GetPower().ToString();
 
-                ListViewItem npcListItem = new ListViewItem(new string[] { npc.Name, deckPowerDesc, npc.Location, ruleDesc, completedDesc, rewardDesc });
+                ListViewItem npcListItem = new ListViewItem(new string[] { npc.Name.GetLocalized(), deckPowerDesc, npc.GetLocationDesc(), ruleDesc, completedDesc, rewardDesc });
                 npcListItem.Checked = bIsCompleted;
                 npcListItem.Tag = npc;
 
@@ -1288,7 +1342,7 @@ namespace FFTriadBuddy
                     {
                         if (!playerDB.ownedCards.Contains(card))
                         {
-                            rewardDesc += card.Name + ", ";
+                            rewardDesc += card.Name.GetLocalized() + ", ";
                         }
                     }
 
@@ -1371,7 +1425,7 @@ namespace FFTriadBuddy
                         bool bIsRewardOwned = playerDB.ownedCards.Contains(contextNpc.Rewards[Idx]);
 
                         rewardItems[Idx].Visible = true;
-                        rewardItems[Idx].Text = contextNpc.Rewards[Idx].Name;
+                        rewardItems[Idx].Text = contextNpc.Rewards[Idx].Name.GetLocalized();
                         rewardItems[Idx].Checked = bIsRewardOwned;
                     }
                     else
@@ -1462,15 +1516,18 @@ namespace FFTriadBuddy
                 }
                 else
                 {
-                    TriadTournament currentTournament = (TriadTournament)comboBoxTournamentType.SelectedItem;
+                    TournamentPickerOb currentTournament = (TournamentPickerOb)comboBoxTournamentType.SelectedItem;
                     if (currentTournament != null)
                     {
-                        gameSession.modifiers.AddRange(currentTournament.Rules);
+                        gameSession.modifiers.AddRange(currentTournament.Tournament.Rules);
                     }
                 }
 
-                gameSession.modifiers.Add((TriadGameModifier)comboBoxRegionRule1.SelectedItem);
-                gameSession.modifiers.Add((TriadGameModifier)comboBoxRegionRule2.SelectedItem);
+                var regionWrapper1 = (RulePickerOb)comboBoxRegionRule1.SelectedItem;
+                var regionWrapper2 = (RulePickerOb)comboBoxRegionRule2.SelectedItem;
+                if (regionWrapper1 != null) { gameSession.modifiers.Add(regionWrapper1.Rule); }
+                if (regionWrapper2 != null) { gameSession.modifiers.Add(regionWrapper2.Rule); }
+
                 foreach (TriadGameModifier mod in gameSession.modifiers)
                 {
                     mod.OnMatchInit();
@@ -1480,7 +1537,7 @@ namespace FFTriadBuddy
                 if (bUseScreenReader) { gameState.resolvedSpecial = gameSession.specialRules; }
 
                 updateGameRulesDesc();
-                Text = orgTitle + ": " + currentNpc.Name + versionTitle;
+                Text = orgTitle + ": " + currentNpc.Name.GetLocalized() + versionTitle;
 
                 UpdateFavDeckSolvers();
                 ResetGame();
@@ -1494,7 +1551,7 @@ namespace FFTriadBuddy
             {
                 if (mod.GetType() != typeof(TriadGameModifierNone))
                 {
-                    ruleDesc += mod.ToString() + ", ";
+                    ruleDesc += mod.GetLocalizedName() + ", ";
                 }
             }
 
@@ -1534,8 +1591,7 @@ namespace FFTriadBuddy
                     {
                         if (mod.GetType() == typeof(TriadGameModifierRoulette))
                         {
-                            TriadGameModifierRoulette rouletteMod = (TriadGameModifierRoulette)mod;
-                            rouletteCombos[rouletteIdx].Tag = rouletteMod;
+                            rouletteCombos[rouletteIdx].Tag = new RulePickerOb(mod);
                             rouletteCombos[rouletteIdx].Visible = true;
                             rouletteLabels[rouletteIdx].Visible = true;
                             rouletteIdx++;
@@ -1698,9 +1754,9 @@ namespace FFTriadBuddy
             List<TriadCard> redCards = gameData.deckRed.GetAvailableCards();
             foreach (TriadCard card in redCards)
             {
-                ListViewItem cardListItem = new ListViewItem(card.Name, card.Id)
+                ListViewItem cardListItem = new ListViewItem(card.Name.GetLocalized(), card.Id)
                 {
-                    ToolTipText = card.Name,
+                    ToolTipText = card.Name.GetLocalized(),
                     Tag = card
                 };
 
@@ -1777,7 +1833,7 @@ namespace FFTriadBuddy
                 bool bHasMove = gameSession.SolverFindBestMove(gameState, out int bestNextPos, out TriadCard bestNextCard, out TriadGameResultChance bestChance);
                 if (bHasMove)
                 {
-                    Logger.WriteLine("Blue> [" + bestNextPos + "] " + bestNextCard.Name + ", " +
+                    Logger.WriteLine("Blue> [" + bestNextPos + "] " + bestNextCard.Name.GetCodeName() + ", " +
                         ((bestChance.expectedResult == ETriadGameState.BlueDraw) ? ("draw " + bestChance.drawChance.ToString("P2")) : ("win " + bestChance.winChance.ToString("P2"))));
 
                     gameState.bDebugRules = true;
@@ -1852,7 +1908,7 @@ namespace FFTriadBuddy
 
                     if (gameSession.forcedBlueCard != newForcedCard && !blueDeckEx.IsPlaced(deckSlotIdx))
                     {
-                        Logger.WriteLine("Force blue card: " + newForcedCard.Name);
+                        Logger.WriteLine("Force blue card: " + newForcedCard.Name.GetCodeName());
                         gameSession.forcedBlueCard = newForcedCard;
 
                         gameState = gameUndoBlue;
@@ -1872,7 +1928,7 @@ namespace FFTriadBuddy
                 gameSession.forcedBlueCard = null;
                 TriadGameData newUndoState = new TriadGameData(gameState);
 
-                Logger.WriteLine("Red> [" + boardPos + "] " + card.Name);
+                Logger.WriteLine("Red> [" + boardPos + "] " + card.Name.GetCodeName());
                 gameState.bDebugRules = true;
                 bool bPlaced = gameSession.PlaceCard(gameState, card, ETriadCardOwner.Red, boardPos);
                 gameState.bDebugRules = false;
@@ -1990,7 +2046,8 @@ namespace FFTriadBuddy
             ComboBox senderCombo = (ComboBox)sender;
             if (senderCombo.SelectedItem != null)
             {
-                TriadGameModifierRoulette rouletteMod = (TriadGameModifierRoulette)senderCombo.Tag;
+                var modWrapper = (RulePickerOb)senderCombo.Tag;
+                TriadGameModifierRoulette rouletteMod = (TriadGameModifierRoulette)modWrapper.Rule;
                 Type modifierType = senderCombo.SelectedItem.GetType();
                 TriadGameModifier modNew = (TriadGameModifier)Activator.CreateInstance(modifierType);
 
@@ -2110,8 +2167,8 @@ namespace FFTriadBuddy
                 ListViewItem lvi = new ListViewItem(matchType);
                 lvi.Tag = hashData;
                 lvi.SubItems.Add(
-                    (modOb != null) ? loc.strings.MainForm_Dynamic_Screenshot_HashType_Rule + ": " + modOb.GetName() :
-                    (cardOb != null) ? loc.strings.MainForm_Dynamic_Screenshot_HashType_Card + ": " + cardOb.ToShortString() :
+                    (modOb != null) ? loc.strings.MainForm_Dynamic_Screenshot_HashType_Rule + ": " + modOb.GetLocalizedName() :
+                    (cardOb != null) ? loc.strings.MainForm_Dynamic_Screenshot_HashType_Card + ": " + cardOb.ToShortLocalizedString() :
                     loc.strings.MainForm_Dynamic_Screenshot_HashType_Number + ": " + (int)hashData.ownerOb);
 
                 listViewDetectionHashes.Items.Add(lvi);
@@ -2142,7 +2199,7 @@ namespace FFTriadBuddy
                 lvi.SubItems.Add((cardState.sideNumber == null) ? "" :
                     (cardState.sideNumber[0] + "-" + cardState.sideNumber[1] + "-" + cardState.sideNumber[2] + "-" + cardState.sideNumber[3]));
 
-                lvi.SubItems.Add(cardState.card == null ? loc.strings.MainForm_Dynamic_Screenshot_CardNotDetected : cardState.card.Name);
+                lvi.SubItems.Add(cardState.card == null ? loc.strings.MainForm_Dynamic_Screenshot_CardNotDetected : cardState.card.Name.GetLocalized());
                 lvi.BackColor = (cardState.card == null) ? Color.MistyRose : SystemColors.Window;
 
                 listViewDetectionCards.Items.Add(lvi);

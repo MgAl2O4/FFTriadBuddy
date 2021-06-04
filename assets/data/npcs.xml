@@ -1,797 +1,797 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <npc id="1" name="Aurifort of the Three Clubs" location="The Gold Saucer (4, 8)">
+  <npc id="1" mx="4" my="8">
     <deckA id0="51" id1="24" id2="37" id3="0" id4="0" />
     <deckV id0="27" id1="20" id2="16" id3="12" id4="0" />
-    <rule name="Three Open" />
-    <rule name="Order" />
+    <rule id="3" />
+    <rule id="11" />
     <reward id="27" />
     <reward id="12" />
   </npc>
-  <npc id="2" name="Baderon" location="Limsa Lominsa Upper Decks (12, 11)">
+  <npc id="2" mx="12" my="11">
     <deckA id0="28" id1="29" id2="30" id3="0" id4="0" />
     <deckV id0="49" id1="21" id2="27" id3="18" id4="17" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="29" />
     <reward id="18" />
   </npc>
-  <npc id="3" name="Botan" location="Kugane (8, 15)">
+  <npc id="3" mx="8" my="15">
     <deckA id0="227" id1="236" id2="199" id3="0" id4="0" />
     <deckV id0="226" id1="223" id2="34" id3="0" id4="0" />
-    <rule name="Plus" />
-    <rule name="Roulette" />
+    <rule id="8" />
+    <rule id="1" />
     <reward id="227" />
     <reward id="236" />
     <reward id="223" />
     <reward id="226" />
   </npc>
-  <npc id="4" name="Buscarron" location="South Shroud (18, 20)">
+  <npc id="4" mx="18" my="20">
     <deckA id0="66" id1="52" id2="43" id3="0" id4="0" />
     <deckV id0="48" id1="42" id2="39" id3="44" id4="0" />
-    <rule name="Order" />
+    <rule id="11" />
     <reward id="48" />
     <reward id="44" />
     <reward id="23" />
   </npc>
-  <npc id="5" name="Dominiac" location="Coerthas Western Highlands (17, 23)">
+  <npc id="5" mx="17" my="23">
     <deckA id0="101" id1="96" id2="0" id3="0" id4="0" />
     <deckV id0="89" id1="88" id2="86" id3="38" id4="93" />
-    <rule name="Order" />
+    <rule id="11" />
     <reward id="101" />
     <reward id="86" />
   </npc>
-  <npc id="6" name="Elaisse" location="The Pillars (8, 11)">
+  <npc id="6" mx="8" my="11">
     <deckA id0="102" id1="0" id2="0" id3="0" id4="0" />
     <deckV id0="91" id1="65" id2="66" id3="63" id4="67" />
-    <rule name="Chaos" />
-    <rule name="Plus" />
+    <rule id="12" />
+    <rule id="8" />
     <reward id="102" />
     <reward id="142" />
   </npc>
-  <npc id="7" name="Ercanbald" location="Rhalgr's Reach (10, 10)">
+  <npc id="7" mx="10" my="10">
     <deckA id0="48" id1="186" id2="170" id3="0" id4="0" />
     <deckV id0="34" id1="14" id2="5" id3="0" id4="0" />
     <reward id="186" />
     <reward id="86" />
   </npc>
-  <npc id="8" name="F'hobhas" location="Central Thanalan (24, 14)">
+  <npc id="8" mx="24" my="14">
     <deckA id0="45" id1="36" id2="14" id3="0" id4="0" />
     <deckV id0="23" id1="13" id2="18" id3="5" id4="6" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="36" />
   </npc>
-  <npc id="9" name="Flichoirel the Lordling" location="The Battlehall (4, 4)">
+  <npc id="9" mx="4" my="4">
     <deckA id0="167" id1="139" id2="0" id3="0" id4="0" />
     <deckV id0="94" id1="38" id2="86" id3="95" id4="45" />
     <reward id="167" />
     <reward id="155" />
   </npc>
-  <npc id="10" name="Fufulupa" location="Western Thanalan (23, 17)">
+  <npc id="10" mx="23" my="17">
     <deckA id0="33" id1="28" id2="2" id3="0" id4="0" />
     <deckV id0="67" id1="46" id2="19" id3="20" id4="13" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="46" />
     <reward id="25" />
   </npc>
-  <npc id="11" name="Garima" location="The Fringes (28, 20)">
+  <npc id="11" mx="28" my="20">
     <deckA id0="138" id1="185" id2="48" id3="0" id4="0" />
     <deckV id0="108" id1="145" id2="19" id3="205" id4="0" />
-    <rule name="Plus" />
-    <rule name="Ascension" />
+    <rule id="8" />
+    <rule id="9" />
     <reward id="185" />
     <reward id="205" />
   </npc>
-  <npc id="12" name="Gegeruju" location="Eastern La Noscea (34, 31)">
+  <npc id="12" mx="34" my="31">
     <deckA id0="63" id1="56" id2="49" id3="0" id4="0" />
     <deckV id0="65" id1="66" id2="55" id3="31" id4="30" />
-    <rule name="Swap" />
-    <rule name="Sudden Death" />
+    <rule id="13" />
+    <rule id="4" />
     <reward id="56" />
     <reward id="49" />
   </npc>
-  <npc id="13" name="Gibrillont" location="Foundation (13, 12)">
+  <npc id="13" mx="13" my="12">
     <deckA id0="89" id1="56" id2="0" id3="0" id4="0" />
     <deckV id0="88" id1="62" id2="50" id3="58" id4="19" />
-    <rule name="Roulette" />
+    <rule id="1" />
     <reward id="88" />
   </npc>
-  <npc id="14" name="Guhtwint of the Three Diamonds" location="The Gold Saucer (4, 7)">
+  <npc id="14" mx="4" my="7">
     <deckA id0="38" id1="26" id2="6" id3="0" id4="0" />
     <deckV id0="27" id1="13" id2="11" id3="8" id4="0" />
-    <rule name="Three Open" />
-    <rule name="Plus" />
+    <rule id="3" />
+    <rule id="8" />
     <reward id="27" />
     <reward id="13" />
   </npc>
-  <npc id="15" name="Gyoei" location="Yanxia (16, 32)">
+  <npc id="15" mx="16" my="32">
     <deckA id0="92" id1="141" id2="183" id3="0" id4="0" />
     <deckV id0="169" id1="17" id2="5" id3="248" id4="0" />
-    <rule name="Reverse" />
-    <rule name="Plus" />
+    <rule id="5" />
+    <rule id="8" />
     <reward id="183" />
     <reward id="248" />
   </npc>
-  <npc id="16" name="Hab" location="Southern Thanalan (25, 41)">
+  <npc id="16" mx="25" my="41">
     <deckA id0="62" id1="45" id2="0" id3="0" id4="0" />
     <deckV id0="67" id1="52" id2="46" id3="34" id4="3" />
-    <rule name="Descension" />
+    <rule id="10" />
     <reward id="62" />
     <reward id="46" />
     <reward id="45" />
   </npc>
-  <npc id="17" name="Hachinan" location="Yanxia (27, 13)">
+  <npc id="17" mx="27" my="13">
     <deckA id0="238" id1="192" id2="180" id3="176" id4="0" />
     <deckV id0="175" id1="198" id2="201" id3="156" id4="171" />
-    <rule name="Ascension" />
-    <rule name="Fallen Ace" />
+    <rule id="9" />
+    <rule id="6" />
     <reward id="238" />
     <reward id="201" />
   </npc>
-  <npc id="18" name="hall overseer" location="The Battlehall (4, 4)">
+  <npc id="18" mx="4" my="4">
     <deckA id0="73" id1="120" id2="59" id3="0" id4="0" />
     <deckV id0="65" id1="58" id2="95" id3="0" id4="0" />
-    <rule name="Fallen Ace" />
-    <rule name="Chaos" />
+    <rule id="6" />
+    <rule id="12" />
     <reward id="73" />
     <reward id="160" />
   </npc>
-  <npc id="19" name="Helmhart" location="Eastern Thanalan (20, 21)">
+  <npc id="19" mx="20" my="21">
     <deckA id0="45" id1="34" id2="11" id3="0" id4="0" />
     <deckV id0="60" id1="41" id2="22" id3="27" id4="2" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="22" />
     <reward id="34" />
   </npc>
-  <npc id="20" name="Hetsukaze" location="Kugane (8, 14)">
+  <npc id="20" mx="8" my="14">
     <deckA id0="243" id1="237" id2="242" id3="245" id4="0" />
     <deckV id0="226" id1="236" id2="227" id3="223" id4="0" />
-    <rule name="Plus" />
-    <rule name="Same" />
+    <rule id="8" />
+    <rule id="7" />
     <reward id="243" />
     <reward id="237" />
     <reward id="242" />
     <reward id="245" />
   </npc>
-  <npc id="21" name="Hokushin" location="Kugane (14, 11)">
+  <npc id="21" mx="14" my="11">
     <deckA id0="231" id1="239" id2="211" id3="0" id4="0" />
     <deckV id0="183" id1="187" id2="62" id3="184" id4="0" />
-    <rule name="Plus" />
-    <rule name="Swap" />
+    <rule id="8" />
+    <rule id="13" />
     <reward id="239" />
     <reward id="231" />
   </npc>
-  <npc id="22" name="House Fortemps manservant" location="Fortemps Manor (6, 6)">
+  <npc id="22" mx="6" my="6">
     <deckA id0="121" id1="133" id2="134" id3="95" id4="93" />
     <deckV id0="0" id1="0" id2="0" id3="0" id4="0" />
-    <rule name="Three Open" />
-    <rule name="Plus" />
+    <rule id="3" />
+    <rule id="8" />
     <reward id="121" />
     <reward id="133" />
     <reward id="134" />
   </npc>
-  <npc id="23" name="idle imperial" location="Azys Lla (28, 31)">
+  <npc id="23" mx="28" my="31">
     <deckA id0="83" id1="97" id2="0" id3="0" id4="0" />
     <deckV id0="47" id1="40" id2="91" id3="32" id4="92" />
-    <rule name="Swap" />
-    <rule name="Chaos" />
+    <rule id="13" />
+    <rule id="12" />
     <reward id="91" />
     <reward id="119" />
     <reward id="151" />
     <reward id="148" />
   </npc>
-  <npc id="24" name="imperial deserter" location="The Lochs (33, 30)">
+  <npc id="24" mx="33" my="30">
     <deckA id0="66" id1="167" id2="198" id3="0" id4="0" />
     <deckV id0="180" id1="88" id2="48" id3="207" id4="0" />
-    <rule name="Fallen Ace" />
+    <rule id="6" />
     <reward id="198" />
     <reward id="207" />
     <reward id="192" />
   </npc>
-  <npc id="25" name="indolent imperial" location="Mor Dhona (12, 17)">
+  <npc id="25" mx="12" my="17">
     <deckA id0="64" id1="61" id2="47" id3="0" id4="0" />
     <deckV id0="42" id1="31" id2="32" id3="37" id4="27" />
-    <rule name="Ascension" />
+    <rule id="9" />
     <reward id="64" />
     <reward id="47" />
     <reward id="31" />
     <reward id="32" />
   </npc>
-  <npc id="26" name="Ironworks hand" location="Rhalgr's Reach (14, 11)">
+  <npc id="26" mx="14" my="11">
     <deckA id0="247" id1="197" id2="240" id3="0" id4="0" />
     <deckV id0="13" id1="85" id2="33" id3="58" id4="100" />
-    <rule name="Roulette" />
-    <rule name="Roulette" />
+    <rule id="1" />
+    <rule id="1" />
     <reward id="247" />
     <reward id="240" />
     <reward id="197" />
   </npc>
-  <npc id="27" name="Isobe" location="The Ruby Sea (21, 20)">
+  <npc id="27" mx="21" my="20">
     <deckA id0="220" id1="60" id2="62" id3="0" id4="0" />
     <deckV id0="212" id1="140" id2="167" id3="151" id4="152" />
-    <rule name="Plus" />
-    <rule name="Swap" />
+    <rule id="8" />
+    <rule id="13" />
     <reward id="212" />
     <reward id="220" />
   </npc>
-  <npc id="28" name="Joellaut" location="Coerthas Central Highlands (13, 16)">
+  <npc id="28" mx="13" my="16">
     <deckA id0="38" id1="33" id2="2" id3="0" id4="0" />
     <deckV id0="59" id1="26" id2="14" id3="12" id4="15" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="59" />
     <reward id="15" />
   </npc>
-  <npc id="29" name="Jonas of the Three Spades" location="The Gold Saucer (5, 7)">
+  <npc id="29" mx="5" my="7">
     <deckA id0="23" id1="3" id2="4" id3="0" id4="0" />
     <deckV id0="26" id1="11" id2="15" id3="20" id4="0" />
-    <rule name="All Open" />
-    <rule name="Same" />
+    <rule id="2" />
+    <rule id="7" />
     <reward id="15" />
     <reward id="20" />
   </npc>
-  <npc id="30" name="Kaizan" location="The Ruby Sea (22, 9)">
+  <npc id="30" mx="22" my="9">
     <deckA id0="193" id1="91" id2="25" id3="0" id4="0" />
     <deckV id0="149" id1="23" id2="121" id3="94" id4="0" />
-    <rule name="Swap" />
-    <rule name="Descension" />
+    <rule id="13" />
+    <rule id="10" />
     <reward id="193" />
   </npc>
-  <npc id="31" name="Kikimo" location="Kugane (9, 14)">
+  <npc id="31" mx="9" my="14">
     <deckA id0="219" id1="139" id2="64" id3="0" id4="0" />
     <deckV id0="58" id1="129" id2="113" id3="163" id4="0" />
-    <rule name="Swap" />
-    <rule name="Fallen Ace" />
+    <rule id="13" />
+    <rule id="6" />
     <reward id="219" />
   </npc>
-  <npc id="32" name="King Elmer III" location="The Gold Saucer (4, 8)">
+  <npc id="32" mx="4" my="8">
     <deckA id0="61" id1="50" id2="45" id3="0" id4="0" />
     <deckV id0="62" id1="41" id2="39" id3="49" id4="0" />
-    <rule name="Plus" />
+    <rule id="8" />
     <reward id="61" />
     <reward id="45" />
   </npc>
-  <npc id="33" name="Kiuka" location="The Doman Enclave (6, 5)">
+  <npc id="33" mx="6" my="5">
     <deckA id0="202" id1="153" id2="59" id3="0" id4="0" />
     <deckV id0="56" id1="92" id2="84" id3="0" id4="0" />
-    <rule name="Chaos" />
+    <rule id="12" />
     <reward id="202" />
   </npc>
-  <npc id="34" name="Klynthota" location="Mor Dhona (30, 14)">
+  <npc id="34" mx="30" my="14">
     <deckA id0="140" id1="135" id2="132" id3="0" id4="0" />
     <deckV id0="58" id1="33" id2="47" id3="0" id4="0" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="132" />
     <reward id="135" />
     <reward id="140" />
     <reward id="150" />
   </npc>
-  <npc id="35" name="Kotokaze" location="Kugane (10, 10)">
+  <npc id="35" mx="10" my="10">
     <deckA id0="87" id1="187" id2="2" id3="0" id4="0" />
     <deckV id0="28" id1="29" id2="30" id3="0" id4="0" />
-    <rule name="Same" />
+    <rule id="7" />
     <reward id="187" />
   </npc>
-  <npc id="36" name="Landenel" location="South Shroud (17, 28)">
+  <npc id="36" mx="17" my="28">
     <deckA id0="52" id1="41" id2="66" id3="0" id4="0" />
     <deckV id0="40" id1="32" id2="13" id3="0" id4="0" />
-    <rule name="Fallen Ace" />
-    <rule name="Chaos" />
+    <rule id="6" />
+    <rule id="12" />
     <reward id="52" />
     <reward id="41" />
   </npc>
-  <npc id="37" name="Laniaitte" location="The Sea of Clouds (17, 37)">
+  <npc id="37" mx="17" my="37">
     <deckA id0="103" id1="98" id2="0" id3="0" id4="0" />
     <deckV id0="104" id1="93" id2="58" id3="89" id4="96" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="103" />
     <reward id="104" />
   </npc>
-  <npc id="38" name="Lewena" location="Gold Saucer (4, 6)">
+  <npc id="38" mx="5" my="6">
     <deckA id0="73" id1="70" id2="0" id3="0" id4="0" />
     <deckV id0="74" id1="52" id2="42" id3="40" id4="41" />
-    <rule name="Fallen Ace" />
-    <rule name="Chaos" />
+    <rule id="6" />
+    <rule id="12" />
     <reward id="70" />
     <reward id="72" />
     <reward id="73" />
   </npc>
-  <npc id="39" name="Linu Vali" location="The Sea of Clouds (7, 14)">
+  <npc id="39" mx="7" my="14">
     <deckA id0="98" id1="82" id2="0" id3="0" id4="0" />
     <deckV id0="123" id1="103" id2="81" id3="86" id4="104" />
-    <rule name="Reverse" />
-    <rule name="Chaos" />
+    <rule id="5" />
+    <rule id="12" />
     <reward id="123" />
     <reward id="98" />
     <reward id="147" />
   </npc>
-  <npc id="40" name="Maisenta" location="New Gridania (12, 11)">
+  <npc id="40" mx="12" my="11">
     <deckA id0="36" id1="7" id2="10" id3="0" id4="0" />
     <deckV id0="24" id1="16" id2="8" id3="0" id4="0" />
-    <rule name="All Open" />
+    <rule id="2" />
     <reward id="16" />
     <reward id="8" />
   </npc>
-  <npc id="41" name="Marcechamp" location="The Dravanian Forelands (32, 23)">
+  <npc id="41" mx="32" my="23">
     <deckA id0="14" id1="81" id2="0" id3="0" id4="0" />
     <deckV id0="90" id1="3" id2="55" id3="43" id4="84" />
-    <rule name="Reverse" />
-    <rule name="Plus" />
+    <rule id="5" />
+    <rule id="8" />
     <reward id="90" />
   </npc>
-  <npc id="42" name="Marcette" location="Central Shroud (17, 19)">
+  <npc id="42" mx="17" my="19">
     <deckA id0="52" id1="53" id2="57" id3="0" id4="0" />
     <deckV id0="44" id1="47" id2="42" id3="38" id4="35" />
-    <rule name="Chaos" />
+    <rule id="12" />
     <reward id="42" />
     <reward id="35" />
   </npc>
-  <npc id="43" name="Marielle" location="The Sea of Clouds (15, 38)">
+  <npc id="43" mx="15" my="38">
     <deckA id0="63" id1="86" id2="65" id3="93" id4="96" />
     <deckV id0="0" id1="0" id2="0" id3="0" id4="0" />
-    <rule name="Order" />
+    <rule id="11" />
     <reward id="93" />
     <reward id="143" />
   </npc>
-  <npc id="44" name="Masatsuchi" location="Yanxia (30, 20)">
+  <npc id="44" mx="30" my="20">
     <deckA id0="218" id1="136" id2="97" id3="0" id4="0" />
     <deckV id0="211" id1="115" id2="123" id3="0" id4="0" />
-    <rule name="Same" />
+    <rule id="7" />
     <reward id="211" />
     <reward id="218" />
   </npc>
-  <npc id="45" name="Master Mogzin" location="The Churning Mists (16, 29)">
+  <npc id="45" mx="16" my="29">
     <deckA id0="153" id1="43" id2="0" id3="0" id4="0" />
     <deckV id0="90" id1="99" id2="108" id3="124" id4="20" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="153" />
     <reward id="146" />
     <reward id="43" />
     <reward id="124" />
   </npc>
-  <npc id="46" name="Memeroon" location="Upper La Noscea (15, 24)">
+  <npc id="46" mx="15" my="24">
     <deckA id0="37" id1="14" id2="1" id3="0" id4="0" />
     <deckV id0="21" id1="2" id2="7" id3="12" id4="0" />
-    <rule name="All Open" />
+    <rule id="2" />
     <reward id="37" />
     <reward id="14" />
     <reward id="2" />
     <reward id="128" />
   </npc>
-  <npc id="47" name="Mero Roggo" location="The Dravanian Hinterlands (13, 37)">
+  <npc id="47" mx="13" my="37">
     <deckA id0="251" id1="94" id2="161" id3="130" id4="0" />
     <deckV id0="92" id1="107" id2="106" id3="111" id4="233" />
-    <rule name="Plus" />
-    <rule name="Roulette" />
+    <rule id="8" />
+    <rule id="1" />
     <reward id="251" />
     <reward id="94" />
     <reward id="161" />
     <reward id="130" />
   </npc>
-  <npc id="48" name="Midnight Dew" location="Idyllshire (6, 7)">
+  <npc id="48" mx="6" my="7">
     <deckA id0="88" id1="100" id2="0" id3="0" id4="0" />
     <deckV id0="92" id1="97" id2="86" id3="99" id4="49" />
-    <rule name="Roulette" />
-    <rule name="Roulette" />
+    <rule id="1" />
+    <rule id="1" />
     <reward id="92" />
     <reward id="111" />
   </npc>
-  <npc id="49" name="Mimidoa" location="Lower La Noscea (25, 35)">
+  <npc id="49" mx="25" my="35">
     <deckA id0="54" id1="33" id2="19" id3="0" id4="0" />
     <deckV id0="37" id1="25" id2="15" id3="13" id4="20" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="33" />
     <reward id="21" />
   </npc>
-  <npc id="50" name="Mogmill" location="The Churning Mists (28, 35)">
+  <npc id="50" mx="28" my="35">
     <deckA id0="66" id1="98" id2="0" id3="0" id4="0" />
     <deckV id0="82" id1="83" id2="97" id3="100" id4="43" />
-    <rule name="Roulette" />
-    <rule name="Roulette" />
+    <rule id="1" />
+    <rule id="1" />
     <reward id="82" />
     <reward id="83" />
     <reward id="115" />
     <reward id="108" />
   </npc>
-  <npc id="51" name="Momodi" location="Ul'dah - Steps of Nald (12, 10)">
+  <npc id="51" mx="12" my="10">
     <deckA id0="28" id1="30" id2="14" id3="0" id4="0" />
     <deckV id0="36" id1="29" id2="13" id3="10" id4="8" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="28" />
   </npc>
-  <npc id="52" name="Mordyn" location="Limsa Lominsa Upper Decks (11, 8)">
+  <npc id="52" mx="11" my="8">
     <deckA id0="149" id1="145" id2="0" id3="0" id4="0" />
     <deckV id0="29" id1="65" id2="54" id3="126" id4="7" />
-    <rule name="Swap" />
-    <rule name="Same" />
+    <rule id="13" />
+    <rule id="7" />
     <reward id="65" />
     <reward id="145" />
     <reward id="126" />
   </npc>
-  <npc id="53" name="Mother Miounne" location="New Gridania (12, 14)">
+  <npc id="53" mx="12" my="14">
     <deckA id0="30" id1="29" id2="15" id3="0" id4="0" />
     <deckV id0="35" id1="28" id2="11" id3="12" id4="5" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="30" />
     <reward id="12" />
   </npc>
-  <npc id="54" name="Munglig" location="The Azim Steppe (12, 34)">
+  <npc id="54" mx="12" my="34">
     <deckA id0="53" id1="58" id2="196" id3="0" id4="0" />
     <deckV id0="42" id1="89" id2="93" id3="0" id4="0" />
-    <rule name="Same" />
-    <rule name="Chaos" />
+    <rule id="7" />
+    <rule id="12" />
     <reward id="196" />
     <reward id="188" />
   </npc>
-  <npc id="55" name="Nell Half-full" location="The Battlehall (3, 4)">
+  <npc id="55" mx="3" my="4">
     <deckA id0="54" id1="164" id2="110" id3="0" id4="0" />
     <deckV id0="50" id1="145" id2="103" id3="29" id4="0" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="164" />
   </npc>
-  <npc id="56" name="Nigen" location="The Azim Steppe (32, 12)">
+  <npc id="56" mx="32" my="12">
     <deckA id0="56" id1="98" id2="194" id3="0" id4="0" />
     <deckV id0="125" id1="161" id2="45" id3="0" id4="0" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="194" />
     <reward id="188" />
   </npc>
-  <npc id="57" name="Noes" location="Old Gridania (11, 6)">
+  <npc id="57" mx="11" my="6">
     <deckA id0="52" id1="42" id2="0" id3="0" id4="0" />
     <deckV id0="81" id1="36" id2="43" id3="30" id4="35" />
-    <rule name="Descension" />
-    <rule name="Plus" />
+    <rule id="10" />
+    <rule id="8" />
     <reward id="81" />
     <reward id="131" />
   </npc>
-  <npc id="58" name="O'kalkaya" location="Limsa Lominsa Upper Decks (12, 14)">
+  <npc id="58" mx="12" my="14">
     <deckA id0="149" id1="144" id2="0" id3="0" id4="0" />
     <deckV id0="29" id1="65" id2="54" id3="49" id4="12" />
-    <rule name="Roulette" />
-    <rule name="Plus" />
+    <rule id="1" />
+    <rule id="8" />
     <reward id="65" />
     <reward id="144" />
     <reward id="149" />
   </npc>
-  <npc id="59" name="Ogodei" location="The Azim Steppe (22, 21)">
+  <npc id="59" mx="22" my="21">
     <deckA id0="57" id1="179" id2="195" id3="0" id4="0" />
     <deckV id0="117" id1="110" id2="147" id3="0" id4="0" />
-    <rule name="Fallen Ace" />
-    <rule name="Plus" />
+    <rule id="6" />
+    <rule id="8" />
     <reward id="195" />
     <reward id="188" />
   </npc>
-  <npc id="60" name="Ourdilic" location="Coerthas Central Highlands (6, 23)">
+  <npc id="60" mx="6" my="23">
     <deckA id0="55" id1="51" id2="50" id3="0" id4="0" />
     <deckV id0="44" id1="38" id2="26" id3="33" id4="0" />
-    <rule name="Order" />
+    <rule id="11" />
     <reward id="38" />
     <reward id="26" />
     <reward id="11" />
   </npc>
-  <npc id="61" name="Piralnaut" location="East Shroud (17, 27)">
+  <npc id="61" mx="17" my="27">
     <deckA id0="56" id1="24" id2="35" id3="0" id4="0" />
     <deckV id0="44" id1="30" id2="10" id3="18" id4="14" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="35" />
     <reward id="24" />
   </npc>
-  <npc id="62" name="Prideful Stag" location="The Battlehall (4, 3)">
+  <npc id="62" mx="4" my="3">
     <deckA id0="45" id1="158" id2="26" id3="0" id4="0" />
     <deckV id0="28" id1="82" id2="8" id3="13" id4="0" />
-    <rule name="Plus" />
+    <rule id="8" />
     <reward id="158" />
   </npc>
-  <npc id="63" name="R'ashaht Rhiki" location="Limsa Lominsa Upper Decks (13, 13)">
+  <npc id="63" mx="13" my="13">
     <deckA id0="65" id1="54" id2="41" id3="0" id4="0" />
     <deckV id0="58" id1="50" id2="49" id3="38" id4="0" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="65" />
     <reward id="54" />
     <reward id="49" />
   </npc>
-  <npc id="64" name="Redbill storeboy" location="Idyllshire (4, 5)">
+  <npc id="64" mx="4" my="5">
     <deckA id0="112" id1="152" id2="179" id3="0" id4="0" />
     <deckV id0="129" id1="115" id2="82" id3="103" id4="81" />
-    <rule name="Chaos" />
+    <rule id="12" />
     <reward id="112" />
     <reward id="152" />
     <reward id="179" />
     <reward id="129" />
   </npc>
-  <npc id="65" name="Roger" location="Central Thanalan (20, 21)">
+  <npc id="65" mx="20" my="21">
     <deckA id0="26" id1="9" id2="13" id3="0" id4="0" />
     <deckV id0="25" id1="15" id2="5" id3="6" id4="0" />
-    <rule name="All Open" />
+    <rule id="2" />
     <reward id="9" />
     <reward id="5" />
   </npc>
-  <npc id="66" name="Rowena" location="Mor Dhona (22, 5)">
+  <npc id="66" mx="22" my="5">
     <deckA id0="34" id1="61" id2="0" id3="0" id4="0" />
     <deckV id0="29" id1="60" id2="47" id3="39" id4="45" />
-    <rule name="Roulette" />
-    <rule name="Roulette" />
+    <rule id="1" />
+    <rule id="1" />
     <reward id="60" />
     <reward id="34" />
   </npc>
-  <npc id="67" name="Ruhtwyda of the Three Hearts" location="The Gold Saucer (4, 8)">
+  <npc id="67" mx="4" my="8">
     <deckA id0="59" id1="56" id2="47" id3="0" id4="0" />
     <deckV id0="57" id1="58" id2="43" id3="50" id4="45" />
-    <rule name="Ascension" />
-    <rule name="Sudden Death" />
+    <rule id="9" />
+    <rule id="4" />
     <reward id="45" />
     <reward id="50" />
   </npc>
-  <npc id="68" name="Seika" location="Idyllshire (7, 7)">
+  <npc id="68" mx="7" my="7">
     <deckA id0="107" id1="106" id2="0" id3="0" id4="0" />
     <deckV id0="117" id1="18" id2="15" id3="14" id4="17" />
-    <rule name="Reverse" />
-    <rule name="Chaos" />
+    <rule id="5" />
+    <rule id="12" />
     <reward id="106" />
     <reward id="107" />
     <reward id="117" />
   </npc>
-  <npc id="69" name="Sezul Totoloc" location="North Shroud (24, 23)">
+  <npc id="69" mx="24" my="23">
     <deckA id0="58" id1="51" id2="33" id3="0" id4="0" />
     <deckV id0="45" id1="38" id2="47" id3="0" id4="0" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="58" />
     <reward id="38" />
     <reward id="33" />
     <reward id="162" />
   </npc>
-  <npc id="70" name="Swift" location="Ul'dah - Steps of Nald (8, 9)">
+  <npc id="70" mx="8" my="9">
     <deckA id0="67" id1="28" id2="22" id3="0" id4="0" />
     <deckV id0="59" id1="46" id2="40" id3="33" id4="19" />
-    <rule name="Chaos" />
+    <rule id="12" />
     <reward id="67" />
     <reward id="59" />
     <reward id="40" />
     <reward id="113" />
   </npc>
-  <npc id="71" name="Tapklix" location="The Dravanian Hinterlands (22, 19)">
+  <npc id="71" mx="22" my="19">
     <deckA id0="136" id1="117" id2="0" id3="0" id4="0" />
     <deckV id0="107" id1="106" id2="49" id3="59" id4="0" />
-    <rule name="Swap" />
-    <rule name="Same" />
+    <rule id="13" />
+    <rule id="7" />
     <reward id="136" />
     <reward id="117" />
     <reward id="163" />
   </npc>
-  <npc id="72" name="Trachtoum" location="Lower La Noscea (36, 16)">
+  <npc id="72" mx="36" my="16">
     <deckA id0="41" id1="34" id2="2" id3="0" id4="0" />
     <deckV id0="49" id1="26" id2="22" id3="20" id4="0" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="41" />
     <reward id="20" />
   </npc>
-  <npc id="73" name="Triple Triad master" location="The Gold Saucer (4, 7)">
+  <npc id="73" mx="4" my="7">
     <deckA id0="13" id1="7" id2="2" id3="5" id4="4" />
     <deckV id0="0" id1="0" id2="0" id3="0" id4="0" />
-    <rule name="All Open" />
+    <rule id="2" />
     <reward id="4" />
   </npc>
-  <npc id="74" name="Tsuzura" location="The Ruby Sea (29, 16)">
+  <npc id="74" mx="29" my="16">
     <deckA id0="89" id1="184" id2="38" id3="0" id4="0" />
     <deckV id0="54" id1="21" id2="18" id3="155" id4="0" />
-    <rule name="Chaos" />
-    <rule name="Roulette" />
+    <rule id="12" />
+    <rule id="1" />
     <reward id="184" />
   </npc>
-  <npc id="75" name="Umber Torrent" location="The Lochs (16, 25)">
+  <npc id="75" mx="16" my="25">
     <deckA id0="217" id1="96" id2="137" id3="0" id4="0" />
     <deckV id0="109" id1="162" id2="174" id3="0" id4="0" />
-    <rule name="Same" />
-    <rule name="Plus" />
+    <rule id="7" />
+    <rule id="8" />
     <reward id="217" />
     <reward id="189" />
   </npc>
-  <npc id="76" name="Ushiogi" location="The Ruby Sea (22, 8)">
+  <npc id="76" mx="22" my="8">
     <deckA id0="221" id1="222" id2="225" id3="0" id4="0" />
     <deckV id0="212" id1="184" id2="214" id3="193" id4="0" />
-    <rule name="Swap" />
-    <rule name="Order" />
+    <rule id="13" />
+    <rule id="11" />
     <reward id="225" />
     <reward id="222" />
     <reward id="221" />
   </npc>
-  <npc id="77" name="Vath deftarm" location="The Dravanian Forelands (24, 19)">
+  <npc id="77" mx="24" my="19">
     <deckA id0="97" id1="83" id2="0" id3="0" id4="0" />
     <deckV id0="109" id1="105" id2="90" id3="59" id4="88" />
-    <rule name="Roulette" />
+    <rule id="1" />
     <reward id="97" />
     <reward id="85" />
     <reward id="109" />
   </npc>
-  <npc id="78" name="voracious Vath" location="The Dravanian Forelands (24, 20)">
+  <npc id="78" mx="24" my="20">
     <deckA id0="105" id1="97" id2="0" id3="0" id4="0" />
     <deckV id0="90" id1="88" id2="59" id3="55" id4="109" />
-    <rule name="Ascension" />
-    <rule name="Swap" />
+    <rule id="9" />
+    <rule id="13" />
     <reward id="105" />
     <reward id="109" />
   </npc>
-  <npc id="79" name="Vorsaile Heuloix" location="New Gridania (10, 11)">
+  <npc id="79" mx="10" my="11">
     <deckA id0="66" id1="56" id2="53" id3="0" id4="0" />
     <deckV id0="63" id1="58" id2="48" id3="43" id4="0" />
-    <rule name="Ascension" />
+    <rule id="9" />
     <reward id="66" />
     <reward id="53" />
     <reward id="48" />
     <reward id="43" />
   </npc>
-  <npc id="80" name="Wawalago" location="Limsa Lominsa Lower Decks (8, 15)">
+  <npc id="80" mx="8" my="15">
     <deckA id0="63" id1="49" id2="0" id3="0" id4="0" />
     <deckV id0="89" id1="48" id2="42" id3="73" id4="28" />
-    <rule name="Swap" />
-    <rule name="Chaos" />
+    <rule id="13" />
+    <rule id="12" />
     <reward id="89" />
   </npc>
-  <npc id="81" name="Wymond" location="Ul'dah - Steps of Nald (10, 9)">
+  <npc id="81" mx="10" my="9">
     <deckA id0="22" id1="28" id2="13" id3="0" id4="0" />
     <deckV id0="26" id1="4" id2="7" id3="8" id4="0" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="8" />
     <reward id="141" />
   </npc>
-  <npc id="82" name="Wyra “Greenhands” Lyehga" location="The Battlehall (3, 3)">
+  <npc id="82" mx="3" my="3">
     <deckA id0="35" id1="11" id2="154" id3="0" id4="0" />
     <deckV id0="30" id1="5" id2="9" id3="13" id4="0" />
-    <rule name="All Open" />
-    <rule name="Same" />
+    <rule id="2" />
+    <rule id="7" />
     <reward id="154" />
   </npc>
-  <npc id="83" name="Yayake" location="Ul'dah - Steps of Nald (7, 12)">
+  <npc id="83" mx="7" my="12">
     <deckA id0="61" id1="55" id2="0" id3="0" id4="0" />
     <deckV id0="96" id1="22" id2="40" id3="46" id4="81" />
-    <rule name="Chaos" />
-    <rule name="Roulette" />
+    <rule id="12" />
+    <rule id="1" />
     <reward id="96" />
     <reward id="127" />
   </npc>
-  <npc id="84" name="Yellow Moon" location="Ul'dah - Steps of Thal (14, 13)">
+  <npc id="84" mx="14" my="13">
     <deckA id0="64" id1="81" id2="0" id3="0" id4="0" />
     <deckV id0="84" id1="34" id2="32" id3="77" id4="55" />
-    <rule name="Ascension" />
-    <rule name="Swap" />
+    <rule id="9" />
+    <rule id="13" />
     <reward id="84" />
   </npc>
-  <npc id="85" name="Yusui" location="The Ruby Sea (32, 37)">
+  <npc id="85" mx="32" my="37">
     <deckA id0="214" id1="193" id2="108" id3="0" id4="0" />
     <deckV id0="37" id1="32" id2="122" id3="0" id4="0" />
-    <rule name="Plus" />
+    <rule id="8" />
     <reward id="214" />
   </npc>
-  <npc id="86" name="Glynard" location="The Crystarium (11, 15)">
+  <npc id="86" mx="11" my="15">
     <deckA id0="253" id1="25" id2="170" id3="0" id4="0" />
     <deckV id0="8" id1="265" id2="155" id3="1" id4="0" />
-    <rule name="Three Open" />
+    <rule id="3" />
     <reward id="253" />
   </npc>
-  <npc id="87" name="Gyuf Uin" location="Il Mheg (16, 31)">
+  <npc id="87" mx="16" my="31">
     <deckA id0="257" id1="111" id2="261" id3="103" id4="0" />
     <deckV id0="155" id1="7" id2="253" id3="0" id4="0" />
-    <rule name="Three Open" />
-    <rule name="Swap" />
+    <rule id="3" />
+    <rule id="13" />
     <reward id="257" />
   </npc>
-  <npc id="88" name="Hargra" location="The Rak'tika Greatwood (19, 26)">
+  <npc id="88" mx="19" my="26">
     <deckA id0="258" id1="268" id2="0" id3="0" id4="0" />
     <deckV id0="10" id1="262" id2="170" id3="105" id4="38" />
-    <rule name="Same" />
-    <rule name="Roulette" />
+    <rule id="7" />
+    <rule id="1" />
     <reward id="268" />
     <reward id="258" />
   </npc>
-  <npc id="89" name="Drery" location="Amh Araeng (12, 17)">
+  <npc id="89" mx="12" my="17">
     <deckA id0="254" id1="256" id2="189" id3="0" id4="0" />
     <deckV id0="7" id1="38" id2="8" id3="170" id4="0" />
-    <rule name="Plus" />
-    <rule name="Same" />
+    <rule id="8" />
+    <rule id="7" />
     <reward id="256" />
     <reward id="254" />
   </npc>
-  <npc id="90" name="Ibenart" location="Kholusia (19, 17)">
+  <npc id="90" mx="19" my="17">
     <deckA id0="255" id1="264" id2="38" id3="0" id4="0" />
     <deckV id0="12" id1="7" id2="256" id3="21" id4="0" />
-    <rule name="Three Open" />
-    <rule name="Fallen Ace" />
+    <rule id="3" />
+    <rule id="6" />
     <reward id="255" />
   </npc>
-  <npc id="91" name="Lamlyn" location="Lakeland (36, 20)">
+  <npc id="91" mx="36" my="20">
     <deckA id0="265" id1="0" id2="0" id3="0" id4="0" />
     <deckV id0="38" id1="260" id2="170" id3="110" id4="25" />
-    <rule name="Chaos" />
+    <rule id="12" />
     <reward id="265" />
   </npc>
-  <npc id="92" name="Saushs Koal" location="The Tempest (32, 17)">
+  <npc id="92" mx="32" my="17">
     <deckA id0="259" id1="253" id2="254" id3="0" id4="0" />
     <deckV id0="255" id1="265" id2="8" id3="155" id4="258" />
-    <rule name="All Open" />
+    <rule id="2" />
     <reward id="259" />
   </npc>
-  <npc id="93" name="Grewenn" location="Eulmore (13, 10)">
+  <npc id="93" mx="13" my="10">
     <deckA id0="266" id1="270" id2="0" id3="0" id4="0" />
     <deckV id0="260" id1="262" id2="263" id3="38" id4="267" />
-    <rule name="Plus" />
-    <rule name="Swap" />
+    <rule id="8" />
+    <rule id="13" />
     <reward id="270" />
     <reward id="266" />
   </npc>
-  <npc id="94" name="Eo Sigun" location="Il Mheg (22, 4)">
+  <npc id="94" mx="22" my="4">
     <deckA id0="274" id1="276" id2="0" id3="0" id4="0" />
     <deckV id0="257" id1="111" id2="261" id3="103" id4="38" />
-    <rule name="Plus" />
+    <rule id="8" />
     <reward id="276" />
     <reward id="274" />
   </npc>
-  <npc id="95" name="Redard" location="The Rak'tika Greatwood (20, 27)">
+  <npc id="95" mx="20" my="27">
     <deckA id0="284" id1="287" id2="275" id3="0" id4="0" />
     <deckV id0="109" id1="262" id2="86" id3="0" id4="0" />
-    <rule name="Same" />
-    <rule name="Reverse" />
+    <rule id="7" />
+    <rule id="5" />
     <reward id="287" />
     <reward id="284" />
   </npc>
-  <npc id="96" name="Hanagasa" location="Kugane (10, 12)">
+  <npc id="96" mx="10" my="12">
     <deckA id0="209" id1="208" id2="20" id3="226" id4="0" />
     <deckV id0="250" id1="229" id2="58" id3="0" id4="0" />
-    <rule name="Plus" />
-    <rule name="Descension" />
+    <rule id="8" />
+    <rule id="10" />
     <reward id="250" />
     <reward id="229" />
     <reward id="209" />
     <reward id="208" />
   </npc>
-  <npc id="97" name="Cobleva" location="Lakeland (14, 8)">
+  <npc id="97" mx="14" my="8">
     <deckA id0="296" id1="294" id2="264" id3="0" id4="0" />
     <deckV id0="278" id1="253" id2="260" id3="265" id4="285" />
-    <rule name="Plus" />
-    <rule name="Reverse" />
+    <rule id="8" />
+    <rule id="5" />
     <reward id="296" />
     <reward id="294" />
   </npc>
-  <npc id="98" name="furtive former imperial" location="Terncliff (5, 6)">
+  <npc id="98" mx="5" my="6">
     <deckA id0="302" id1="244" id2="180" id3="175" id4="0" />
     <deckV id0="291" id1="176" id2="238" id3="192" id4="51" />
-    <rule name="Swap" />
-    <rule name="Fallen Ace" />
+    <rule id="13" />
+    <rule id="6" />
     <reward id="302" />
   </npc>
-  <npc id="99" name="Arsieu" location="Gangos (6, 7)">
+  <npc id="99" mx="6" my="7">
     <deckA id0="298" id1="299" id2="208" id3="180" id4="0" />
     <deckV id0="250" id1="229" id2="209" id3="0" id4="0" />
-    <rule name="Plus" />
-    <rule name="Ascension" />
+    <rule id="8" />
+    <rule id="9" />
     <reward id="298" />
     <reward id="299" />
   </npc>
-  <npc id="100" name="Lewto-Sue" location="Amh Araeng (27, 16)">
+  <npc id="100" mx="27" my="16">
     <deckA id0="313" id1="314" id2="263" id3="288" id4="0" />
     <deckV id0="301" id1="270" id2="254" id3="256" id4="0" />
-    <rule name="Plus" />
-    <rule name="Fallen Ace" />
+    <rule id="8" />
+    <rule id="6" />
     <reward id="313" />
     <reward id="314" />
   </npc>
-  <npc id="101" name="Droyn" location="Ul'dah - Steps of Thal (12, 13)">
+  <npc id="101" mx="12" my="13">
     <deckA id0="309" id1="310" id2="136" id3="39" id4="0" />
     <deckV id0="305" id1="9" id2="22" id3="25" id4="0" />
-    <rule name="Same" />
-    <rule name="Descension" />
+    <rule id="7" />
+    <rule id="10" />
     <reward id="309" />
     <reward id="310" />
   </npc>
-  <npc id="102" name="Sladkey" location="Gangos (6, 7)">
+  <npc id="102" mx="6" my="7">
     <deckA id0="321" id1="325" id2="208" id3="322" id4="0" />
     <deckV id0="250" id1="229" id2="209" id3="299" id4="0" />
-    <rule name="Same" />
-    <rule name="Swap" />
+    <rule id="7" />
+    <rule id="13" />
     <reward id="321" />
     <reward id="322" />
   </npc>

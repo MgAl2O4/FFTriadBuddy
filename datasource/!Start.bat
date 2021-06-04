@@ -1,4 +1,5 @@
 @echo off
+setlocal
 
 if not exist SaintCoinach goto MISSING_SAINT
 if not exist SetUserVars.bat goto MISSING_PATH
@@ -9,7 +10,9 @@ echo Game path: %GamePath%
 echo.
 echo Export data using commands:
 echo   ui 82500 82999
-echo   exd
+echo   allexd TripleTriad TripleTriadCard TripleTriadCardType TripleTriadCardResident
+echo   allexd TripleTriadRule TripleTriadResident TripleTriadCompetition TripleTriadTournament
+echo   allexd ENpcResident ENpcBase Item Level Map PlaceName
 echo   exit
 echo.
 
@@ -32,6 +35,23 @@ del ..\assets\icons\*.png
 xcopy export\ui\icon\082000\*.png ..\assets\icons\ /s > nul
 
 rmdir SaintCoinach\%DataPath% /s /q > nul
+
+:GIT_MIRRORS
+SET /P CANDOWNLOAD=Do you want to download from github mirrors (curl required) (Y/[N])? 
+IF /I "%CANDOWNLOAD%" NEQ "Y" GOTO EXPORTED
+
+rem raw blobs with URL like:
+rem https://raw.githubusercontent.com/thewakingsands/ffxiv-datamining-cn/master/ENpcResident.csv
+call :CURL_WORKER cn thewakingsands/ffxiv-datamining-cn master
+call :CURL_WORKER ko Ra-Workspace/ffxiv-datamining-ko master/csv
+goto EXPORTED
+
+:CURL_WORKER
+echo Downloading from: %2...
+for %%F in (ENpcResident Item PlaceName TripleTriadCard TripleTriadCardType TripleTriadRule TripleTriadCompetition) do ( 
+	curl https://raw.githubusercontent.com/%2/%3/%%F.csv --output export\exd-all\%%F.%1.csv --silent
+)
+exit /b
 
 :EXPORTED
 echo Done! 

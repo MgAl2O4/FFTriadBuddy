@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 
 namespace FFTriadBuddy
 {
@@ -21,6 +20,7 @@ namespace FFTriadBuddy
         public bool isDirty;
         public string DBPath;
         public string cloudToken;
+        public string forcedLanguage;
 
         private static PlayerSettingsDB instance = new PlayerSettingsDB();
 
@@ -42,6 +42,7 @@ namespace FFTriadBuddy
             useXInput = true;
             isDirty = false;
             cloudToken = null;
+            forcedLanguage = null;
         }
 
         public static PlayerSettingsDB Get()
@@ -83,91 +84,6 @@ namespace FFTriadBuddy
             return bResult;
         }
 
-        public bool LoadFromXmlStream(Stream stream)
-        {
-            TriadCardDB cardDB = TriadCardDB.Get();
-            TriadNpcDB npcDB = TriadNpcDB.Get();
-
-            try
-            {
-                XmlDocument xdoc = new XmlDocument();
-                xdoc.Load(stream);
-
-                foreach (XmlNode testNode in xdoc.DocumentElement.ChildNodes)
-                {
-                    try
-                    {
-                        XmlElement testElem = (XmlElement)testNode;
-                        if (testElem != null && testElem.Name == "ui")
-                        {
-                            int autoScanNum = int.Parse(testElem.GetAttribute("autoScan"));
-                            useAutoScan = (autoScanNum == 1);
-                        }
-                        else if (testElem != null && testElem.Name == "cloud")
-                        {
-                            int useNum = int.Parse(testElem.GetAttribute("use"));
-                            useCloudStorage = (useNum == 1);
-                            cloudToken = testElem.HasAttribute("token") ? testElem.GetAttribute("token") : null;
-                        }
-                        else if (testElem != null && testElem.Name == "card")
-                        {
-                            int cardId = int.Parse(testElem.GetAttribute("id"));
-                            ownedCards.Add(cardDB.cards[cardId]);
-                        }
-                        else if (testElem != null && testElem.Name == "npc")
-                        {
-                            int npcId = int.Parse(testElem.GetAttribute("id"));
-                            completedNpcs.Add(npcDB.npcs[npcId]);
-                        }
-                        else if (testElem != null && testElem.Name == "deck")
-                        {
-                            int npcId = int.Parse(testElem.GetAttribute("id"));
-                            TriadNpc npc = TriadNpcDB.Get().npcs[npcId];
-                            if (npc != null)
-                            {
-                                TriadDeck deckCards = new TriadDeck();
-                                foreach (XmlAttribute attr in testElem.Attributes)
-                                {
-                                    if (attr.Name.StartsWith("card"))
-                                    {
-                                        string cardNumStr = attr.Name.Substring(4);
-                                        int cardNum = int.Parse(cardNumStr);
-                                        while (deckCards.knownCards.Count < (cardNum + 1))
-                                        {
-                                            deckCards.knownCards.Add(null);
-                                        }
-
-                                        int cardId = int.Parse(attr.Value);
-                                        deckCards.knownCards[cardNum] = TriadCardDB.Get().cards[cardId];
-                                    }
-                                }
-
-                                lastDeck.Add(npc, deckCards);
-                            }
-                        }
-                        else
-                        {
-                            ImageHashData customHash = ImageHashDB.Get().LoadHashEntry(testElem);
-                            if (customHash != null)
-                            {
-                                customHashes.Add(customHash);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLine("Loading failed! Exception:" + ex);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine("Loading failed! Exception:" + ex);
-            }
-
-            return ownedCards.Count > 0;
-        }
-
         public bool LoadFromJson(string jsonStr)
         {
             TriadCardDB cardDB = TriadCardDB.Get();
@@ -185,6 +101,7 @@ namespace FFTriadBuddy
                     useAutoScan = (JsonParser.BoolValue)uiOb["autoScan", JsonParser.BoolValue.Empty];
                     useFullScreenCapture = (JsonParser.BoolValue)uiOb["forceFSC", JsonParser.BoolValue.Empty];
                     useXInput = (JsonParser.BoolValue)uiOb["xInput", BoolTrue];
+                    forcedLanguage = (JsonParser.StringValue)uiOb["lang", null];
                 }
 
                 JsonParser.ObjectValue cloudOb = (JsonParser.ObjectValue)jsonOb["cloud", null];
@@ -343,6 +260,7 @@ namespace FFTriadBuddy
                     jsonWriter.WriteBool(useAutoScan, "autoScan");
                     jsonWriter.WriteBool(useFullScreenCapture, "forceFSC");
                     jsonWriter.WriteBool(useXInput, "xInput");
+                    jsonWriter.WriteString(forcedLanguage, "lang");
 
                     jsonWriter.WriteObjectEnd();
                 }

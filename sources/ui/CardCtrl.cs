@@ -78,7 +78,7 @@ namespace FFTriadBuddy
             this.cardData = cardData;
             if (cardData != null)
             {
-                toolTip1.SetToolTip(this, cardData.card.ToShortString());
+                toolTip1.SetToolTip(this, cardData.card.ToShortLocalizedString());
             }
             else
             {

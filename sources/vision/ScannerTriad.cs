@@ -1199,13 +1199,13 @@ namespace FFTriadBuddy
                 {
                     if (foundCard.SameNumberId < 0)
                     {
-                        descFoundCards = foundCard.Name;
+                        descFoundCards = foundCard.Name.GetCodeName();
                     }
                     else
                     {
                         foreach (TriadCard card in TriadCardDB.Get().sameNumberMap[foundCard.SameNumberId])
                         {
-                            descFoundCards += card.Name + ", ";
+                            descFoundCards += card.Name.GetCodeName() + ", ";
                         }
 
                         descFoundCards = descFoundCards.Remove(descFoundCards.Length - 2, 2) + " (needs hash check)";
@@ -1460,7 +1460,7 @@ namespace FFTriadBuddy
 
                     if (readRuleIdx < cachedGameState.mods.Count)
                     {
-                        string readRuleName = cachedGameState.mods[readRuleIdx].GetName();
+                        string readRuleName = cachedGameState.mods[readRuleIdx].GetCodeName();
                         hasMatchingRule = readRuleName == configData.rules[ruleIdx];
                     }
 
@@ -1471,7 +1471,7 @@ namespace FFTriadBuddy
                             mapValidationRules = new Dictionary<string, TriadGameModifier>();
                             foreach (TriadGameModifier mod in ImageHashDB.Get().modObjects)
                             {
-                                mapValidationRules.Add(mod.GetName(), mod);
+                                mapValidationRules.Add(mod.GetCodeName(), mod);
                             }
                         }
 

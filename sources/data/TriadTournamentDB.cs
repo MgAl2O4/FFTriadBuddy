@@ -1,26 +1,26 @@
 using MgAl2O4.Utils;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Reflection;
 using System.Xml;
 
 namespace FFTriadBuddy
 {
     public class TriadTournament
     {
-        public readonly string Name;
+        public readonly LocString Name;
         public readonly List<TriadGameModifier> Rules;
+        public readonly int Id;
 
-        public TriadTournament(string name, List<TriadGameModifier> rules)
+        public TriadTournament(int id, List<TriadGameModifier> rules)
         {
-            Name = name;
+            Id = id;
+            Name = LocalizationDB.Get().FindOrAddLocString(ELocStringType.TournamentName, id);
             Rules = rules;
         }
 
         public override string ToString()
         {
-            return Name;
+            return Name.GetCodeName();
         }
     }
 
@@ -43,17 +43,6 @@ namespace FFTriadBuddy
 
         public bool Load()
         {
-            List<TriadTournament> loadedTypes = new List<TriadTournament>();
-
-            List<TriadGameModifier> modObjects = new List<TriadGameModifier>();
-            foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
-            {
-                if (type.IsSubclassOf(typeof(TriadGameModifier)))
-                {
-                    modObjects.Add((TriadGameModifier)Activator.CreateInstance(type));
-                }
-            }
-
             try
             {
                 XmlDocument xdoc = new XmlDocument();
@@ -74,16 +63,18 @@ namespace FFTriadBuddy
                                 {
                                     if (testElem.Name == "rule")
                                     {
-                                        rules.Add(ParseRule(testElem.GetAttribute("name"), modObjects));
+                                        int ruleId = int.Parse(testElem.GetAttribute("id"));
+                                        rules.Add(TriadGameModifierDB.Get().mods[ruleId]);
                                     }
                                 }
                             }
 
-                            TriadTournament newTournament = new TriadTournament(
-                                WebUtility.HtmlDecode(ttElem.GetAttribute("name")),
-                                rules);
-
-                            loadedTypes.Add(newTournament);
+                            TriadTournament newTournament = new TriadTournament(int.Parse(ttElem.GetAttribute("id")), rules);
+                            while (tournaments.Count <= newTournament.Id)
+                            {
+                                tournaments.Add(null);
+                            }
+                            tournaments[newTournament.Id] = newTournament;
                         }
                         catch (Exception ex)
                         {
@@ -97,34 +88,45 @@ namespace FFTriadBuddy
                 Logger.WriteLine("Loading failed! Exception:" + ex);
             }
 
-            if (loadedTypes.Count > 0)
-            {
-                tournaments.Clear();
-                tournaments.AddRange(loadedTypes);
-            }
-
             Logger.WriteLine("Loaded tournaments: " + tournaments.Count);
             return tournaments.Count > 0;
         }
 
-        private TriadGameModifier ParseRule(string ruleName, List<TriadGameModifier> ruleTypes)
+        public void Save()
         {
-            TriadGameModifier result = null;
-            foreach (TriadGameModifier mod in ruleTypes)
+            string RawFilePath = AssetManager.Get().CreateFilePath("assets/" + DBPath);
+            try
             {
-                if (ruleName.Equals(mod.GetName(), StringComparison.InvariantCultureIgnoreCase))
+                XmlWriterSettings writerSettings = new XmlWriterSettings();
+                writerSettings.Indent = true;
+
+                XmlWriter xmlWriter = XmlWriter.Create(RawFilePath, writerSettings);
+                xmlWriter.WriteStartDocument();
+                xmlWriter.WriteStartElement("root");
+
+                foreach (TriadTournament tournament in tournaments)
                 {
-                    result = (TriadGameModifier)Activator.CreateInstance(mod.GetType());
-                    break;
+                    xmlWriter.WriteStartElement("tournament");
+                    xmlWriter.WriteAttributeString("id", tournament.Id.ToString());
+
+                    for (int Idx = 0; Idx < tournament.Rules.Count; Idx++)
+                    {
+                        xmlWriter.WriteStartElement("rule");
+                        xmlWriter.WriteAttributeString("id", tournament.Rules[Idx].GetLocalizationId().ToString());
+                        xmlWriter.WriteEndElement();
+                    }
+
+                    xmlWriter.WriteEndElement();
                 }
-            }
 
-            if (result == null)
+                xmlWriter.WriteEndDocument();
+                xmlWriter.Close();
+            }
+            catch (Exception ex)
             {
-                Logger.WriteLine("Loading failed! Can't parse rule: " + ruleName);
+                Logger.WriteLine("Saving failed! Exception:" + ex);
             }
-
-            return result;
         }
+
     }
 }

@@ -329,7 +329,7 @@ namespace FFTriadBuddy
             TriadGameModifier result = null;
             foreach (TriadGameModifier mod in modObjects)
             {
-                if (ruleName.Equals(mod.GetName(), StringComparison.InvariantCultureIgnoreCase))
+                if (ruleName.Equals(mod.GetCodeName(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = (TriadGameModifier)Activator.CreateInstance(mod.GetType());
                     break;

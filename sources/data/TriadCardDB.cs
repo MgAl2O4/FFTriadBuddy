@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Xml;
 
 namespace FFTriadBuddy
@@ -19,7 +18,9 @@ namespace FFTriadBuddy
         {
             DBPath = "data/cards.xml";
             cards = new List<TriadCard>();
-            hiddenCard = new TriadCard(0, "(hidden)", null, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0, 0);
+            hiddenCard = new TriadCard(0, null, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0, 0);
+            hiddenCard.Name.Text[LocalizationDB.CodeLanguageIdx] = "(hidden)";
+
             sameNumberMap = new Dictionary<int, List<TriadCard>>();
         }
 
@@ -30,9 +31,6 @@ namespace FFTriadBuddy
 
         public bool Load()
         {
-            List<TriadCard> loadedCards = new List<TriadCard>();
-            int maxLoadedId = 0;
-
             try
             {
                 XmlDocument xdoc = new XmlDocument();
@@ -46,45 +44,29 @@ namespace FFTriadBuddy
                     {
                         try
                         {
-                            ETriadCardRarity cardRarity = ETriadCardRarity.Common;
-                            ETriadCardType cardType = ETriadCardType.None;
-                            bool bHasRarity = TryParseCardRarity(cardElem.GetAttribute("rarity"), out cardRarity);
-                            bool bHasType = TryParseCardType(cardElem.GetAttribute("type"), out cardType);
+                            ETriadCardRarity cardRarity = (ETriadCardRarity)int.Parse(cardElem.GetAttribute("rarity"));
+                            ETriadCardType cardType = (ETriadCardType)int.Parse(cardElem.GetAttribute("type"));
+                            int sortOrder = int.Parse(cardElem.GetAttribute("sort"));
+                            int cardGroup = int.Parse(cardElem.GetAttribute("group"));
 
-                            if (bHasType && bHasRarity)
+                            TriadCard newCard = new TriadCard(
+                                int.Parse(cardElem.GetAttribute("id")),
+                                cardElem.GetAttribute("icon"),
+                                cardRarity,
+                                cardType,
+                                ParseCardSideNum(cardElem.GetAttribute("up")),
+                                ParseCardSideNum(cardElem.GetAttribute("dn")),
+                                ParseCardSideNum(cardElem.GetAttribute("lt")),
+                                ParseCardSideNum(cardElem.GetAttribute("rt")),
+                                sortOrder,
+                                cardGroup);
+
+                            while (cards.Count <= newCard.Id)
                             {
-                                int sortOrder = 0;
-                                int cardGroup = 0;
-                                int.TryParse(cardElem.GetAttribute("sort"), out sortOrder);
-                                int.TryParse(cardElem.GetAttribute("group"), out cardGroup);
-
-                                TriadCard newCard = new TriadCard(
-                                    int.Parse(cardElem.GetAttribute("id")),
-                                    WebUtility.HtmlDecode(cardElem.GetAttribute("name")),
-                                    cardElem.GetAttribute("icon"),
-                                    cardRarity,
-                                    cardType,
-                                    ParseCardSideNum(cardElem.GetAttribute("up")),
-                                    ParseCardSideNum(cardElem.GetAttribute("dn")),
-                                    ParseCardSideNum(cardElem.GetAttribute("lt")),
-                                    ParseCardSideNum(cardElem.GetAttribute("rt")),
-                                    sortOrder,
-                                    cardGroup);
-
-                                if (newCard.IsValid())
-                                {
-                                    loadedCards.Add(newCard);
-                                    maxLoadedId = Math.Max(maxLoadedId, newCard.Id);
-                                }
-                                else
-                                {
-                                    Logger.WriteLine("Loading failed! ob[" + newCard + "], xml:" + cardElem.OuterXml);
-                                }
+                                cards.Add(null);
                             }
-                            else
-                            {
-                                Logger.WriteLine("Loading failed! xml:" + cardElem.OuterXml);
-                            }
+
+                            cards[newCard.Id] = newCard;
                         }
                         catch (Exception ex)
                         {
@@ -96,19 +78,6 @@ namespace FFTriadBuddy
             catch (Exception ex)
             {
                 Logger.WriteLine("Loading failed! Exception:" + ex);
-            }
-
-            if (loadedCards.Count > 0)
-            {
-                while (cards.Count < (maxLoadedId + 1))
-                {
-                    cards.Add(null);
-                }
-
-                foreach (TriadCard card in loadedCards)
-                {
-                    cards[card.Id] = card;
-                }
             }
 
             sameNumberMap.Clear();
@@ -153,13 +122,13 @@ namespace FFTriadBuddy
                 }
             }
 
-            Logger.WriteLine("Loaded cards: " + loadedCards.Count + ", same sides: " + sameNumberMap.Count);
-            return loadedCards.Count > 0;
+            Logger.WriteLine("Loaded cards: " + cards.Count + ", same sides: " + sameNumberMap.Count);
+            return cards.Count > 0;
         }
 
         public void Save()
         {
-            string RawFilePath = AssetManager.Get().CreateFilePath("assets/" + DBPath) + ".new";
+            string RawFilePath = AssetManager.Get().CreateFilePath("assets/" + DBPath);
             try
             {
                 XmlWriterSettings writerSettings = new XmlWriterSettings();
@@ -175,10 +144,9 @@ namespace FFTriadBuddy
                     {
                         xmlWriter.WriteStartElement("card");
                         xmlWriter.WriteAttributeString("id", card.Id.ToString());
-                        xmlWriter.WriteAttributeString("name", card.Name);
                         xmlWriter.WriteAttributeString("icon", card.IconPath);
-                        xmlWriter.WriteAttributeString("rarity", card.Rarity.ToString());
-                        xmlWriter.WriteAttributeString("type", card.Type.ToString());
+                        xmlWriter.WriteAttributeString("rarity", ((int)card.Rarity).ToString());
+                        xmlWriter.WriteAttributeString("type", ((int)card.Type).ToString());
                         xmlWriter.WriteAttributeString("up", card.Sides[(int)ETriadGameSide.Up].ToString());
                         xmlWriter.WriteAttributeString("lt", card.Sides[(int)ETriadGameSide.Left].ToString());
                         xmlWriter.WriteAttributeString("dn", card.Sides[(int)ETriadGameSide.Down].ToString());
@@ -203,7 +171,7 @@ namespace FFTriadBuddy
             foreach (TriadCard testCard in cards)
             {
                 if (testCard != null &&
-                    testCard.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
+                    testCard.Name.GetCodeName().Equals(Name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return testCard;
                 }
@@ -227,42 +195,6 @@ namespace FFTriadBuddy
             }
 
             return null;
-        }
-
-        private bool TryParseCardRarity(string desc, out ETriadCardRarity foundRarity)
-        {
-            if (!string.IsNullOrEmpty(desc))
-            {
-                foreach (ETriadCardRarity testRarity in Enum.GetValues(typeof(ETriadCardRarity)))
-                {
-                    if (testRarity.ToString().Equals(desc, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        foundRarity = testRarity;
-                        return true;
-                    }
-                }
-            }
-
-            foundRarity = ETriadCardRarity.Common;
-            return false;
-        }
-
-        private bool TryParseCardType(string desc, out ETriadCardType foundType)
-        {
-            if (!string.IsNullOrEmpty(desc))
-            {
-                foreach (ETriadCardType testType in Enum.GetValues(typeof(ETriadCardType)))
-                {
-                    if (testType.ToString().Equals(desc, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        foundType = testType;
-                        return true;
-                    }
-                }
-            }
-
-            foundType = ETriadCardType.None;
-            return false;
         }
 
         private int ParseCardSideNum(string desc)

@@ -340,7 +340,7 @@ namespace FFTriadBuddy
 
                             if (gameData.bDebugRules)
                             {
-                                Logger.WriteLine(">> " + (comboCounter > 0 ? "combo!" : "") + " [" + neiPos + "] " + neiCard.card.Name + " => " + neiCard.owner);
+                                Logger.WriteLine(">> " + (comboCounter > 0 ? "combo!" : "") + " [" + neiPos + "] " + neiCard.card.Name.GetCodeName() + " => " + neiCard.owner);
                             }
                         }
                     }
@@ -367,7 +367,7 @@ namespace FFTriadBuddy
             if (gameData.bDebugRules)
             {
                 TriadCard availBlueCard = gameData.deckBlue.GetFirstAvailableCard();
-                Logger.WriteLine(">> blue:" + numBlue + " (in deck:" + ((availBlueCard != null) ? availBlueCard.Name : "none") + "), required:" + numBlueToWin + " => " + gameData.state);
+                Logger.WriteLine(">> blue:" + numBlue + " (in deck:" + ((availBlueCard != null) ? availBlueCard.Name.GetCodeName() : "none") + "), required:" + numBlueToWin + " => " + gameData.state);
             }
 
             if ((modFeatures & TriadGameModifier.EFeature.AllPlaced) != 0)

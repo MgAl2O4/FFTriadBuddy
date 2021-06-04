@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="data\ImageHashDB.cs" />
+    <Compile Include="data\LocalizationDB.cs" />
     <Compile Include="data\PlayerSettingsDB.cs" />
     <Compile Include="data\TriadCardDB.cs" />
     <Compile Include="data\TriadNpcDB.cs" />
@@ -104,6 +105,8 @@
     </Compile>
     <Compile Include="vision\MLClassifierTriadDigit.cs" />
     <Compile Include="vision\MLClassifierCactpot.cs" />
+    <Compile Include="utils\datamine\CsvData.cs" />
+    <Compile Include="utils\datamine\GameData.cs" />
     <Compile Include="utils\tlsh\BucketSize.cs" />
     <Compile Include="utils\tlsh\ChecksumSize.cs" />
     <Compile Include="utils\tlsh\TlshBuilder.cs" />

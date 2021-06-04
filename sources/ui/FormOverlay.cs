@@ -208,7 +208,7 @@ namespace FFTriadBuddy
                     ETriadGameState expectedResult = bestChance.expectedResult;
 
                     TriadCard suggestedCard = screenMemory.deckBlue.GetCard(markerDeckPos);
-                    Logger.WriteLine("  suggested move: [" + markerBoardPos + "] " + ETriadCardOwner.Blue + " " + (suggestedCard != null ? suggestedCard.Name : "??") + " (expected: " + expectedResult + ")");
+                    Logger.WriteLine("  suggested move: [" + markerBoardPos + "] " + ETriadCardOwner.Blue + " " + (suggestedCard != null ? suggestedCard.Name.GetCodeName() : "??") + " (expected: " + expectedResult + ")");
 
                     bHasValidMarkerDeck = false;
                     bHasValidMarkerBoard = false;
@@ -297,7 +297,7 @@ namespace FFTriadBuddy
                 string desc = "";
                 foreach (TriadGameModifier mod in screenMemory.gameSession.modifiers)
                 {
-                    desc += mod.ToString() + ", ";
+                    desc += mod.GetLocalizedName() + ", ";
                 }
 
                 labelRules.Text = string.Format(loc.strings.OverlayForm_Details_Rules,
@@ -437,7 +437,7 @@ namespace FFTriadBuddy
 
             UpdateStatusDescription();
 
-            labelNpc.Text = string.Format(loc.strings.OverlayForm_Details_Npc, (npc != null) ? npc.ToString() : loc.strings.OverlayForm_Dynamic_NpcUnknown);
+            labelNpc.Text = string.Format(loc.strings.OverlayForm_Details_Npc, (npc != null) ? npc.Name.GetLocalized() : loc.strings.OverlayForm_Dynamic_NpcUnknown);
             labelRules.Text = string.Format(loc.strings.OverlayForm_Details_Rules, loc.strings.OverlayForm_Dynamic_RulesWaiting);
         }
 

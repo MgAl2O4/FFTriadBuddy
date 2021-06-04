@@ -37,7 +37,7 @@ namespace FFTriadBuddy
         private void FormAdjustCard_Load(object sender, EventArgs e)
         {
             labelCurrentCard.Text = string.Format("{0} [{1}-{2}-{3}-{4}]",
-                (cardState.card != null) ? cardState.card.Name : loc.strings.AdjustForm_Dynamic_UnknownOwner,
+                (cardState.card != null) ? cardState.card.Name.GetLocalized() : loc.strings.AdjustForm_Dynamic_UnknownOwner,
                 cardState.sideNumber[0], cardState.sideNumber[1], cardState.sideNumber[2], cardState.sideNumber[3]);
 
             skipNumUpdate = true;

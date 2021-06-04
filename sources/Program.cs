@@ -24,24 +24,27 @@ namespace FFTriadBuddy
             bool bInit = Form1.InitializeGameAssets();
             if (bInit)
             {
+                bool showForm = true;
+#if DEBUG
                 if (Args.Contains("-dataConvert"))
                 {
                     DataConverter converter = new DataConverter();
                     converter.Run();
+                    showForm = false;
                 }
                 else if (Args.Contains("-solverStress"))
                 {
                     TriadGameSession.RunSolverStressTest();
+                    showForm = false;
                 }
-                else
+                else if (Args.Contains("-runTests"))
                 {
-#if DEBUG
-                    if (Args.Contains("-runTests"))
-                    {
-                        TestManager.RunTests();
-                    }
+                    TestManager.RunTests();
+                }
 #endif // DEBUG
 
+                if (showForm)
+                {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());

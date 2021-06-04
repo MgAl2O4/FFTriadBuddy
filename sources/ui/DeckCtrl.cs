@@ -36,7 +36,7 @@ namespace FFTriadBuddy
                     rarityStr += " *";
                 }
 
-                return Card.Name + " (" + rarityStr + ")";
+                return Card.Name.GetLocalized() + " (" + rarityStr + ")";
             }
         }
 

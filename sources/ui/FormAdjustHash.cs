@@ -14,13 +14,13 @@ namespace FFTriadBuddy
             public HashOwnerItem(TriadGameModifier mod)
             {
                 SourceObject = mod;
-                Description = mod.ToString();
+                Description = mod.GetLocalizedName();
             }
 
             public HashOwnerItem(TriadCard card)
             {
                 SourceObject = card;
-                Description = card.Name;
+                Description = card.Name.GetLocalized();
             }
 
             public HashOwnerItem(int number)

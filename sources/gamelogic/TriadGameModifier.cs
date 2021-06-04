@@ -1,6 +1,7 @@
 ﻿using MgAl2O4.Utils;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace FFTriadBuddy
 {
@@ -30,19 +31,22 @@ namespace FFTriadBuddy
         }
 
         protected string RuleName;
+        protected LocString LocRuleName;
         protected bool bAllowCombo = false;
         protected bool bIsDeckOrderImportant = false;
         protected bool bHasLastRedReminder = false;
         protected ETriadGameSpecialMod SpecialMod = ETriadGameSpecialMod.None;
         protected EFeature Features = EFeature.None;
 
-        public virtual string GetName() { return RuleName; }
+        public virtual string GetCodeName() { return RuleName; }
+        public virtual string GetLocalizedName() { return LocRuleName.GetLocalized(); }
+        public int GetLocalizationId() { return LocRuleName.Id; }
         public virtual bool AllowsCombo() { return bAllowCombo; }
         public virtual bool IsDeckOrderImportant() { return bIsDeckOrderImportant; }
         public virtual ETriadGameSpecialMod GetSpecialRules() { return SpecialMod; }
         public virtual EFeature GetFeatures() { return Features; }
         public virtual bool HasLastRedReminder() { return bHasLastRedReminder; }
-        public override string ToString() { return GetName(); }
+        public override string ToString() { return GetCodeName(); }
 
         public virtual void OnCardPlaced(TriadGameData gameData, int boardPos) { }
         public virtual void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList) { }
@@ -57,22 +61,49 @@ namespace FFTriadBuddy
 
         public int CompareTo(TriadGameModifier otherMod)
         {
-            return (otherMod != null) ? RuleName.CompareTo(otherMod.RuleName) : 0;
+            if (otherMod != null)
+            {
+                string locStrA = GetLocalizedName();
+                string locStrB = otherMod.GetLocalizedName();
+                return locStrA.CompareTo(locStrB);
+            }
+            return 0;
         }
 
         public int CompareTo(object obj)
         {
             return CompareTo((TriadGameModifier)obj);
         }
+
+        public virtual TriadGameModifier Clone()
+        {
+            return (TriadGameModifier)this.MemberwiseClone();
+        }
+    }
+
+    public class TriadGameModifierNone : TriadGameModifier
+    {
+        public TriadGameModifierNone()
+        {
+            RuleName = "None";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 0);
+        }
+        // no special logic
     }
 
     public class TriadGameModifierRoulette : TriadGameModifier
     {
         protected TriadGameModifier RuleInst;
 
-        public TriadGameModifierRoulette() { RuleName = "Roulette"; SpecialMod = ETriadGameSpecialMod.RandomizeRule; }
+        public TriadGameModifierRoulette()
+        {
+            RuleName = "Roulette";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 1);
+            SpecialMod = ETriadGameSpecialMod.RandomizeRule;
+        }
 
-        public override string GetName() { return RuleName + (RuleInst != null ? " (" + RuleInst.GetName() + ")" : ""); }
+        public override string GetCodeName() { return base.GetCodeName() + (RuleInst != null ? (" (" + RuleInst.GetCodeName() + ")") : ""); }
+        public override string GetLocalizedName() { return base.GetLocalizedName() + (RuleInst != null ? (" (" + RuleInst.GetLocalizedName() + ")") : ""); }
         public override bool AllowsCombo() { return (RuleInst != null) ? RuleInst.AllowsCombo() : base.AllowsCombo(); }
         public override bool IsDeckOrderImportant() { return (RuleInst != null) ? RuleInst.IsDeckOrderImportant() : base.IsDeckOrderImportant(); }
         public override ETriadGameSpecialMod GetSpecialRules() { return base.GetSpecialRules() | ((RuleInst != null) ? RuleInst.GetSpecialRules() : ETriadGameSpecialMod.None); }
@@ -125,27 +156,35 @@ namespace FFTriadBuddy
         }
     }
 
-    public class TriadGameModifierNone : TriadGameModifier
-    {
-        public TriadGameModifierNone() { RuleName = "None"; }
-        // no special logic
-    }
-
     public class TriadGameModifierAllOpen : TriadGameModifier
     {
-        public TriadGameModifierAllOpen() { RuleName = "All Open"; }
+        public TriadGameModifierAllOpen()
+        {
+            RuleName = "All Open";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 2);
+        }
         // no special logic
     }
 
     public class TriadGameModifierThreeOpen : TriadGameModifier
     {
-        public TriadGameModifierThreeOpen() { RuleName = "Three Open"; }
+        public TriadGameModifierThreeOpen()
+        {
+            RuleName = "Three Open";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 3);
+        }
         // no special logic
     }
 
     public class TriadGameModifierSuddenDeath : TriadGameModifier
     {
-        public TriadGameModifierSuddenDeath() { RuleName = "Sudden Death"; bHasLastRedReminder = true; Features = EFeature.AllPlaced; }
+        public TriadGameModifierSuddenDeath()
+        {
+            RuleName = "Sudden Death";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 4);
+            bHasLastRedReminder = true;
+            Features = EFeature.AllPlaced;
+        }
 
         public override void OnAllCardsPlaced(TriadGameData gameData)
         {
@@ -199,7 +238,7 @@ namespace FFTriadBuddy
                             if (bIsAvailable)
                             {
                                 redCards.Add(deckRedEx.deck.knownCards[Idx]);
-                                redCardsDebug += deckRedEx.deck.knownCards[Idx].Name + ":K, ";
+                                redCardsDebug += deckRedEx.deck.knownCards[Idx].Name.GetCodeName() + ":K, ";
                                 break;
                             }
                         }
@@ -213,7 +252,7 @@ namespace FFTriadBuddy
                                 if (bIsAvailable)
                                 {
                                     redUnknownCards.Add(deckRedEx.deck.unknownCardPool[Idx]);
-                                    redCardsDebug += deckRedEx.deck.unknownCardPool[Idx].Name + ":U, ";
+                                    redCardsDebug += deckRedEx.deck.unknownCardPool[Idx].Name.GetCodeName() + ":U, ";
                                 }
                             }
                         }
@@ -244,7 +283,12 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierReverse : TriadGameModifier
     {
-        public TriadGameModifierReverse() { RuleName = "Reverse"; Features = EFeature.CaptureMath; }
+        public TriadGameModifierReverse()
+        {
+            RuleName = "Reverse";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 5);
+            Features = EFeature.CaptureMath;
+        }
 
         public override void OnCheckCaptureCardMath(TriadGameData gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured)
         {
@@ -260,7 +304,12 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierFallenAce : TriadGameModifier
     {
-        public TriadGameModifierFallenAce() { RuleName = "Fallen Ace"; Features = EFeature.CaptureWeights; }
+        public TriadGameModifierFallenAce()
+        {
+            RuleName = "Fallen Ace";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 6);
+            Features = EFeature.CaptureWeights;
+        }
 
         public override void OnCheckCaptureCardWeights(TriadGameData gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
         {
@@ -277,7 +326,13 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierSame : TriadGameModifier
     {
-        public TriadGameModifierSame() { RuleName = "Same"; bAllowCombo = true; Features = EFeature.CaptureNei | EFeature.CardPlaced; }
+        public TriadGameModifierSame()
+        {
+            RuleName = "Same";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 7);
+            bAllowCombo = true;
+            Features = EFeature.CaptureNei | EFeature.CardPlaced;
+        }
 
         public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
@@ -314,7 +369,7 @@ namespace FFTriadBuddy
 
                             if (gameData.bDebugRules)
                             {
-                                Logger.WriteLine(">> " + RuleName + "! [" + testNeiPos + "] " + neiCard.card.Name + " => " + neiCard.owner);
+                                Logger.WriteLine(">> " + RuleName + "! [" + testNeiPos + "] " + neiCard.card.Name.GetCodeName() + " => " + neiCard.owner);
                             }
                         }
                     }
@@ -325,7 +380,13 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierPlus : TriadGameModifier
     {
-        public TriadGameModifierPlus() { RuleName = "Plus"; bAllowCombo = true; Features = EFeature.CaptureNei | EFeature.CardPlaced; }
+        public TriadGameModifierPlus()
+        {
+            RuleName = "Plus";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 8);
+            bAllowCombo = true;
+            Features = EFeature.CaptureNei | EFeature.CardPlaced;
+        }
 
         public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
@@ -365,7 +426,7 @@ namespace FFTriadBuddy
 
                                         if (gameData.bDebugRules)
                                         {
-                                            Logger.WriteLine(">> " + RuleName + "! [" + vsNeiPos + "] " + vsCard.card.Name + " => " + vsCard.owner);
+                                            Logger.WriteLine(">> " + RuleName + "! [" + vsNeiPos + "] " + vsCard.card.Name.GetCodeName() + " => " + vsCard.owner);
                                         }
                                     }
                                 }
@@ -379,7 +440,7 @@ namespace FFTriadBuddy
 
                             if (gameData.bDebugRules)
                             {
-                                Logger.WriteLine(">> " + RuleName + "! [" + testNeiPos + "] " + neiCard.card.Name + " => " + neiCard.owner);
+                                Logger.WriteLine(">> " + RuleName + "! [" + testNeiPos + "] " + neiCard.card.Name.GetCodeName() + " => " + neiCard.owner);
                             }
                         }
                     }
@@ -390,7 +451,12 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierAscention : TriadGameModifier
     {
-        public TriadGameModifierAscention() { RuleName = "Ascension"; Features = EFeature.CardPlaced | EFeature.PostCapture; }
+        public TriadGameModifierAscention()
+        {
+            RuleName = "Ascension";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 9);
+            Features = EFeature.CardPlaced | EFeature.PostCapture;
+        }
 
         public override void OnCardPlaced(TriadGameData gameData, int boardPos)
         {
@@ -404,7 +470,7 @@ namespace FFTriadBuddy
 
                     if (gameData.bDebugRules)
                     {
-                        Logger.WriteLine(">> " + RuleName + "! [" + boardPos + "] " + checkCard.card.Name + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
+                        Logger.WriteLine(">> " + RuleName + "! [" + boardPos + "] " + checkCard.card.Name.GetCodeName() + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
                     }
                 }
             }
@@ -426,7 +492,7 @@ namespace FFTriadBuddy
                         otherCard.scoreModifier = scoreMod;
                         if (gameData.bDebugRules)
                         {
-                            Logger.WriteLine(">> " + RuleName + "! [" + Idx + "] " + otherCard.card.Name + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
+                            Logger.WriteLine(">> " + RuleName + "! [" + Idx + "] " + otherCard.card.Name.GetCodeName() + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
                         }
                     }
                 }
@@ -471,7 +537,12 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierDescention : TriadGameModifier
     {
-        public TriadGameModifierDescention() { RuleName = "Descension"; Features = EFeature.CardPlaced | EFeature.PostCapture; }
+        public TriadGameModifierDescention()
+        {
+            RuleName = "Descension";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 10);
+            Features = EFeature.CardPlaced | EFeature.PostCapture;
+        }
 
         public override void OnCardPlaced(TriadGameData gameData, int boardPos)
         {
@@ -485,7 +556,7 @@ namespace FFTriadBuddy
 
                     if (gameData.bDebugRules)
                     {
-                        Logger.WriteLine(">> " + RuleName + "! [" + boardPos + "] " + checkCard.card.Name + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
+                        Logger.WriteLine(">> " + RuleName + "! [" + boardPos + "] " + checkCard.card.Name.GetCodeName() + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
                     }
                 }
             }
@@ -507,7 +578,7 @@ namespace FFTriadBuddy
                         otherCard.scoreModifier = scoreMod;
                         if (gameData.bDebugRules)
                         {
-                            Logger.WriteLine(">> " + RuleName + "! [" + Idx + "] " + otherCard.card.Name + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
+                            Logger.WriteLine(">> " + RuleName + "! [" + Idx + "] " + otherCard.card.Name.GetCodeName() + " is: " + ((scoreMod > 0) ? "+" : "") + scoreMod);
                         }
                     }
                 }
@@ -552,7 +623,12 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierOrder : TriadGameModifier
     {
-        public TriadGameModifierOrder() { RuleName = "Order"; bIsDeckOrderImportant = true; Features = EFeature.FilterNext; }
+        public TriadGameModifierOrder()
+        {
+            RuleName = "Order";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 11);
+            bIsDeckOrderImportant = true; Features = EFeature.FilterNext;
+        }
 
         public override void OnFilterNextCards(TriadGameData gameData, ref int allowedCardsMask)
         {
@@ -564,7 +640,7 @@ namespace FFTriadBuddy
                 if (gameData.bDebugRules)
                 {
                     TriadCard firstBlueCard = gameData.deckBlue.GetCard(firstBlueIdx);
-                    Logger.WriteLine(">> " + RuleName + "! next card: " + (firstBlueCard != null ? firstBlueCard.Name : "none"));
+                    Logger.WriteLine(">> " + RuleName + "! next card: " + (firstBlueCard != null ? firstBlueCard.Name.GetCodeName() : "none"));
                 }
             }
         }
@@ -572,14 +648,24 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierChaos : TriadGameModifier
     {
-        public TriadGameModifierChaos() { RuleName = "Chaos"; SpecialMod = ETriadGameSpecialMod.BlueCardSelection; }
+        public TriadGameModifierChaos()
+        {
+            RuleName = "Chaos";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 12);
+            SpecialMod = ETriadGameSpecialMod.BlueCardSelection;
+        }
 
         // special logic, covered by GUI
     }
 
     public class TriadGameModifierSwap : TriadGameModifier
     {
-        public TriadGameModifierSwap() { RuleName = "Swap"; SpecialMod = ETriadGameSpecialMod.SwapCards; }
+        public TriadGameModifierSwap()
+        {
+            RuleName = "Swap";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 13);
+            SpecialMod = ETriadGameSpecialMod.SwapCards;
+        }
 
         // special logic, covered by GUI
         public static void StaticSwapCards(TriadGameData gameData, TriadCard swapFromBlue, int blueSlotIdx, TriadCard swapFromRed, int redSlotIdx)
@@ -593,8 +679,8 @@ namespace FFTriadBuddy
                 if (gameData.bDebugRules)
                 {
                     TriadGameModifierSwap DummyOb = new TriadGameModifierSwap();
-                    Logger.WriteLine(">> " + DummyOb.RuleName + "! blue[" + blueSlotIdx + "]:" + swapFromBlue.Name +
-                        " <-> red[" + redSlotIdx + (bIsRedFromKnown ? "" : ":Opt") + "]:" + swapFromRed.Name);
+                    Logger.WriteLine(">> " + DummyOb.RuleName + "! blue[" + blueSlotIdx + "]:" + swapFromBlue.Name.GetCodeName() +
+                        " <-> red[" + redSlotIdx + (bIsRedFromKnown ? "" : ":Opt") + "]:" + swapFromRed.Name.GetCodeName());
                 }
 
                 TriadDeck blueDeckSwapped = new TriadDeck(deckBlueEx.deck.knownCards, deckBlueEx.deck.unknownCardPool);
@@ -616,7 +702,12 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierRandom : TriadGameModifier
     {
-        public TriadGameModifierRandom() { RuleName = "Random"; SpecialMod = ETriadGameSpecialMod.RandomizeBlueDeck; }
+        public TriadGameModifierRandom()
+        {
+            RuleName = "Random";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 14);
+            SpecialMod = ETriadGameSpecialMod.RandomizeBlueDeck;
+        }
 
         // special logic, covered by GUI
         public static void StaticRandomized(TriadGameData gameData)
@@ -631,8 +722,43 @@ namespace FFTriadBuddy
 
     public class TriadGameModifierDraft : TriadGameModifier
     {
-        public TriadGameModifierDraft() { RuleName = "Draft"; }
+        public TriadGameModifierDraft()
+        {
+            RuleName = "Draft";
+            LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 15);
+        }
+        // no special logic
+    }
 
-        // no special logic ...yet
+    public class TriadGameModifierDB
+    {
+        public List<TriadGameModifier> mods;
+
+        private static TriadGameModifierDB instance = new TriadGameModifierDB();
+        public static TriadGameModifierDB Get() { return instance; }
+
+        public TriadGameModifierDB()
+        {
+            mods = new List<TriadGameModifier>();
+            foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
+            {
+                if (type.IsSubclassOf(typeof(TriadGameModifier)))
+                {
+                    TriadGameModifier modOb = (TriadGameModifier)Activator.CreateInstance(type);
+                    mods.Add(modOb);
+                }
+            }
+
+            mods.Sort((a, b) => (a.GetLocalizationId().CompareTo(b.GetLocalizationId())));
+
+            for (int idx = 0; idx < mods.Count; idx++)
+            {
+                if (mods[idx].GetLocalizationId() != idx)
+                {
+                    Logger.WriteLine("FAILED to initialize modifiers!");
+                    break;
+                }
+            }
+        }
     }
 }

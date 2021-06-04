@@ -156,7 +156,7 @@ namespace FFTriadBuddy
                 {
                     bBoardChanged = true;
                     gameState.board[Idx] = new TriadCardInstance(screenGame.board[Idx], screenGame.boardOwner[Idx]);
-                    if (logScan) { Logger.WriteLine("  board update: [" + Idx + "] " + gameState.board[Idx].owner + ": " + gameState.board[Idx].card.Name); }
+                    if (logScan) { Logger.WriteLine("  board update: [" + Idx + "] " + gameState.board[Idx].owner + ": " + gameState.board[Idx].card.Name.GetCodeName()); }
                 }
                 else if (!bWasNull && bIsNull)
                 {
@@ -307,7 +307,7 @@ namespace FFTriadBuddy
                         TriadCard prevCard = deckRed.cards[Idx];
                         if ((prevCard != null) && (prevCard.Id != hiddenCardId))
                         {
-                            if (bDebugMode) { Logger.WriteLine("  card[" + Idx + "]:" + prevCard.Name + " => mark as used, disappeared from prev state"); }
+                            if (bDebugMode) { Logger.WriteLine("  card[" + Idx + "]:" + prevCard.Name.GetCodeName() + " => mark as used, disappeared from prev state"); }
                             usedCardsIndices.Add(Idx);
                         }
 
@@ -338,7 +338,7 @@ namespace FFTriadBuddy
                             if (bDebugMode)
                             {
                                 TriadCard cardOb = screenCardsRed[Idx];
-                                Logger.WriteLine(" card[" + Idx + "]:" + (cardOb != null ? cardOb.Name : "??") +
+                                Logger.WriteLine(" card[" + Idx + "]:" + (cardOb != null ? cardOb.Name.GetCodeName() : "??") +
                                     " => numUnknown:" + numUnknownOnHand + ", numKnown:" + numKnownOnHand + ", numHidden:" + numHidden);
                             }
                         }
@@ -354,7 +354,7 @@ namespace FFTriadBuddy
                     if ((prevCardsBlue[Idx] != null) && (screenCardsBlue[Idx] == null))
                     {
                         usedCardsOther.Add(prevCardsBlue[Idx]);
-                        if (bDebugMode) { Logger.WriteLine("  blue[" + Idx + "]:" + prevCardsBlue[Idx].Name + " => mark as used"); }
+                        if (bDebugMode) { Logger.WriteLine("  blue[" + Idx + "]:" + prevCardsBlue[Idx].Name.GetCodeName() + " => mark as used"); }
                     }
                 }
 
@@ -367,7 +367,7 @@ namespace FFTriadBuddy
                         if (!usedCardsOther.Contains(testCard) && (testCardIdx >= 0))
                         {
                             usedCardsIndices.Add(testCardIdx);
-                            if (bDebugMode) { Logger.WriteLine("  card[" + testCardIdx + "]:" + testCard.Name + " => mark as used, appeared on board[" + Idx + "], not used by blue"); }
+                            if (bDebugMode) { Logger.WriteLine("  card[" + testCardIdx + "]:" + testCard.Name.GetCodeName() + " => mark as used, appeared on board[" + Idx + "], not used by blue"); }
                         }
                     }
                 }
@@ -388,7 +388,7 @@ namespace FFTriadBuddy
                     if (bDebugMode)
                     {
                         TriadCard cardOb = deckRed.GetCard(usedCardsIndices[Idx]);
-                        Logger.WriteLine(" card[" + usedCardsIndices[Idx] + "]:" + (cardOb != null ? cardOb.Name : "??") + " => used");
+                        Logger.WriteLine(" card[" + usedCardsIndices[Idx] + "]:" + (cardOb != null ? cardOb.Name.GetCodeName() : "??") + " => used");
                     }
                 }
 
@@ -450,7 +450,7 @@ namespace FFTriadBuddy
                     swappedOtherIdx = otherDeck.GetCardIndex(screenCards[Idx]);
                     swappedBlueCard = screenCards[Idx];
                     swappedCard = expectedCards[Idx];
-                    Logger.WriteLine("FindSwappedCard[" + Idx + "]: screen:" + screenCards[Idx].Name + ", expected:" + expectedCards[Idx].Name + ", redIdxScreen:" + swappedOtherIdx);
+                    Logger.WriteLine("FindSwappedCard[" + Idx + "]: screen:" + screenCards[Idx].Name.GetCodeName() + ", expected:" + expectedCards[Idx].Name.GetCodeName() + ", redIdxScreen:" + swappedOtherIdx);
 
                     if (swappedOtherIdx >= 0)
                     {
@@ -460,8 +460,8 @@ namespace FFTriadBuddy
             }
 
             bool bHasSwapped = (numDiffs == 1) && (numPotentialSwaps == 1);
-            Logger.WriteLine("FindSwappedCard: blue[" + swappedCardIdx + "]:" + (swappedBlueCard != null ? swappedBlueCard.Name : "??") +
-                " <=> red[" + swappedOtherIdx + "]:" + (swappedCard != null ? swappedCard.Name : "??") +
+            Logger.WriteLine("FindSwappedCard: blue[" + swappedCardIdx + "]:" + (swappedBlueCard != null ? swappedBlueCard.Name.GetCodeName() : "??") +
+                " <=> red[" + swappedOtherIdx + "]:" + (swappedCard != null ? swappedCard.Name.GetCodeName() : "??") +
                 ", diffs:" + numDiffs + ", potentialSwaps:" + numPotentialSwaps +
                 " => " + (bHasSwapped ? "SWAP" : "ignore"));
 
@@ -533,8 +533,8 @@ namespace FFTriadBuddy
             }
 
             bool bHasSwapped = (numDiffs == 1);
-            Logger.WriteLine("FindSwappedCardVisible: blue[" + swappedCardIdx + "]:" + (swappedCardIdx >= 0 ? screenCards[swappedCardIdx].Name : "??") +
-                " <=> red[" + swappedOtherIdx + "]:" + (swappedCard != null ? swappedCard.Name : "??") +
+            Logger.WriteLine("FindSwappedCardVisible: blue[" + swappedCardIdx + "]:" + (swappedCardIdx >= 0 ? screenCards[swappedCardIdx].Name.GetCodeName() : "??") +
+                " <=> red[" + swappedOtherIdx + "]:" + (swappedCard != null ? swappedCard.Name.GetCodeName() : "??") +
                 ", boardMode:" + bBoardMode + ", diffs:" + numDiffs + " => " + (bHasSwapped ? "SWAP" : "ignore"));
 
             return bHasSwapped;
@@ -571,7 +571,7 @@ namespace FFTriadBuddy
                         }
                     }
 
-                    Logger.WriteLine("FindCommonCards[" + SlotIdx + "]: " + bestSlotCard.Name + " x" + bestSlotCount + (bestSlotCount < 2 ? " => not enough to decide!" : ""));
+                    Logger.WriteLine("FindCommonCards[" + SlotIdx + "]: " + bestSlotCard.Name.GetCodeName() + " x" + bestSlotCount + (bestSlotCount < 2 ? " => not enough to decide!" : ""));
                     if (bestSlotCount >= 2)
                     {
                         result[SlotIdx] = bestSlotCard;
@@ -712,7 +712,7 @@ namespace FFTriadBuddy
                 mapValidationRules = new Dictionary<string, TriadGameModifier>();
                 foreach (TriadGameModifier mod in ImageHashDB.Get().modObjects)
                 {
-                    mapValidationRules.Add(mod.GetName(), mod);
+                    mapValidationRules.Add(mod.GetCodeName(), mod);
                 }
             }
 

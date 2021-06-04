@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <tournament name="Spinner's Pull">
-    <rule name="Three Open" />
-    <rule name="Swap" />
+  <tournament id="0">
+    <rule id="2" />
+    <rule id="8" />
   </tournament>
-  <tournament name="Rowena's Cup Classic">
-    <rule name="Roulette" />
-    <rule name="Roulette" />
+  <tournament id="1">
+    <rule id="3" />
+    <rule id="13" />
   </tournament>
-  <tournament name="Orran Durai Memorial">
-    <rule name="Order" />
-    <rule name="Same" />
+  <tournament id="2">
+    <rule id="11" />
+    <rule id="7" />
   </tournament>
-  <tournament name="Manderville Tournament of Champions">
-    <rule name="All Open" />
-    <rule name="Plus" />
+  <tournament id="3">
+    <rule id="1" />
+    <rule id="1" />
   </tournament>
 </root>

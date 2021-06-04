@@ -231,7 +231,7 @@ namespace FFTriadBuddy
 
             public override string ToString()
             {
-                return card.ToShortString() + ", score: " + score;
+                return card.ToShortCodeString() + ", score: " + score;
             }
         }
 

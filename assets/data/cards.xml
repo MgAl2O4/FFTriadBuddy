@@ -1,329 +1,329 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <card id="1" name="Dodo" icon="082501.png" rarity="Common" type="None" up="4" lt="2" dn="3" rt="4" sort="1" group="0" />
-  <card id="2" name="Tonberry" icon="082502.png" rarity="Common" type="None" up="2" lt="2" dn="7" rt="2" sort="2" group="0" />
-  <card id="3" name="Sabotender" icon="082503.png" rarity="Common" type="None" up="4" lt="3" dn="3" rt="3" sort="3" group="0" />
-  <card id="4" name="Spriggan" icon="082504.png" rarity="Common" type="None" up="2" lt="3" dn="4" rt="4" sort="4" group="0" />
-  <card id="5" name="Pudding" icon="082505.png" rarity="Common" type="None" up="2" lt="4" dn="3" rt="5" sort="5" group="0" />
-  <card id="6" name="Bomb" icon="082506.png" rarity="Common" type="None" up="3" lt="4" dn="3" rt="3" sort="6" group="0" />
-  <card id="7" name="Mandragora" icon="082507.png" rarity="Common" type="None" up="4" lt="2" dn="5" rt="3" sort="7" group="0" />
-  <card id="8" name="Coblyn" icon="082508.png" rarity="Common" type="None" up="3" lt="3" dn="3" rt="4" sort="8" group="0" />
-  <card id="9" name="Morbol" icon="082509.png" rarity="Common" type="None" up="5" lt="2" dn="5" rt="2" sort="9" group="0" />
-  <card id="10" name="Coeurl" icon="082510.png" rarity="Common" type="None" up="2" lt="5" dn="2" rt="5" sort="10" group="0" />
-  <card id="11" name="Ahriman" icon="082511.png" rarity="Common" type="None" up="5" lt="5" dn="2" rt="2" sort="11" group="0" />
-  <card id="12" name="Goobbue" icon="082512.png" rarity="Common" type="None" up="2" lt="5" dn="5" rt="2" sort="12" group="0" />
-  <card id="13" name="Chocobo" icon="082513.png" rarity="Common" type="None" up="3" lt="7" dn="2" rt="1" sort="13" group="0" />
-  <card id="14" name="Amalj'aa" icon="082514.png" rarity="Common" type="Beastman" up="1" lt="4" dn="7" rt="1" sort="14" group="0" />
-  <card id="15" name="Ixal" icon="082515.png" rarity="Common" type="Beastman" up="6" lt="1" dn="3" rt="4" sort="15" group="0" />
-  <card id="16" name="Sylph" icon="082516.png" rarity="Common" type="Beastman" up="2" lt="4" dn="5" rt="4" sort="16" group="0" />
-  <card id="17" name="Kobold" icon="082517.png" rarity="Common" type="Beastman" up="2" lt="2" dn="4" rt="6" sort="17" group="0" />
-  <card id="18" name="Sahagin" icon="082518.png" rarity="Common" type="Beastman" up="4" lt="5" dn="3" rt="3" sort="18" group="0" />
-  <card id="19" name="Tataru Taru" icon="082519.png" rarity="Common" type="Scion" up="7" lt="2" dn="3" rt="2" sort="19" group="0" />
-  <card id="20" name="Moogle" icon="082520.png" rarity="Common" type="Beastman" up="2" lt="1" dn="3" rt="7" sort="20" group="0" />
-  <card id="21" name="Siren" icon="082521.png" rarity="Uncommon" type="None" up="3" lt="6" dn="7" rt="2" sort="21" group="0" />
-  <card id="22" name="Ultros &amp; Typhon" icon="082522.png" rarity="Uncommon" type="None" up="2" lt="3" dn="6" rt="7" sort="22" group="0" />
-  <card id="23" name="Demon Wall" icon="082523.png" rarity="Uncommon" type="None" up="6" lt="7" dn="2" rt="3" sort="23" group="0" />
-  <card id="24" name="Succubus" icon="082524.png" rarity="Uncommon" type="None" up="7" lt="3" dn="2" rt="6" sort="24" group="0" />
-  <card id="25" name="Chimera" icon="082525.png" rarity="Uncommon" type="None" up="7" lt="7" dn="2" rt="2" sort="25" group="0" />
-  <card id="26" name="Blue Dragon" icon="082526.png" rarity="Uncommon" type="None" up="2" lt="2" dn="7" rt="7" sort="26" group="0" />
-  <card id="27" name="Scarface Bugaal Ja" icon="082527.png" rarity="Uncommon" type="Beastman" up="6" lt="6" dn="2" rt="6" sort="27" group="0" />
-  <card id="28" name="Momodi Modi" icon="082528.png" rarity="Uncommon" type="None" up="7" lt="5" dn="5" rt="3" sort="28" group="0" />
-  <card id="29" name="Baderon Tenfingers" icon="082529.png" rarity="Uncommon" type="None" up="3" lt="7" dn="5" rt="5" sort="29" group="0" />
-  <card id="30" name="Mother Miounne" icon="082530.png" rarity="Uncommon" type="None" up="5" lt="5" dn="3" rt="7" sort="30" group="0" />
-  <card id="31" name="Livia sas Junius" icon="082531.png" rarity="Uncommon" type="Garlean" up="3" lt="7" dn="7" rt="1" sort="31" group="0" />
-  <card id="32" name="Rhitahtyn sas Arvina" icon="082532.png" rarity="Uncommon" type="Garlean" up="7" lt="1" dn="3" rt="7" sort="32" group="0" />
-  <card id="33" name="Biggs &amp; Wedge" icon="082533.png" rarity="Uncommon" type="None" up="5" lt="3" dn="7" rt="5" sort="33" group="0" />
-  <card id="34" name="Gerolt" icon="082534.png" rarity="Uncommon" type="None" up="1" lt="7" dn="3" rt="7" sort="34" group="0" />
-  <card id="35" name="Frixio" icon="082535.png" rarity="Uncommon" type="Beastman" up="6" lt="2" dn="6" rt="6" sort="35" group="0" />
-  <card id="36" name="Mutamix Bubblypots" icon="082536.png" rarity="Uncommon" type="Beastman" up="2" lt="6" dn="6" rt="6" sort="36" group="0" />
-  <card id="37" name="Memeroon" icon="082537.png" rarity="Uncommon" type="Beastman" up="6" lt="6" dn="6" rt="2" sort="37" group="0" />
-  <card id="38" name="Behemoth" icon="082538.png" rarity="Rare" type="None" up="7" lt="8" dn="4" rt="2" sort="38" group="0" />
-  <card id="39" name="Gilgamesh &amp; Enkidu" icon="082539.png" rarity="Rare" type="None" up="8" lt="3" dn="7" rt="3" sort="39" group="0" />
-  <card id="40" name="Ifrit" icon="082540.png" rarity="Rare" type="Primal" up="7" lt="1" dn="6" rt="7" sort="40" group="0" />
-  <card id="41" name="Titan" icon="082541.png" rarity="Rare" type="Primal" up="1" lt="7" dn="7" rt="6" sort="41" group="0" />
-  <card id="42" name="Garuda" icon="082542.png" rarity="Rare" type="Primal" up="7" lt="6" dn="1" rt="7" sort="42" group="0" />
-  <card id="43" name="Good King Moggle Mog XII" icon="082543.png" rarity="Rare" type="Primal" up="7" lt="6" dn="7" rt="1" sort="43" group="0" />
-  <card id="44" name="Raya-O-Senna &amp; A-Ruhn-Senna" icon="082544.png" rarity="Rare" type="None" up="5" lt="6" dn="6" rt="6" sort="44" group="0" />
-  <card id="45" name="Godbert Manderville" icon="082545.png" rarity="Rare" type="None" up="6" lt="6" dn="5" rt="6" sort="45" group="0" />
-  <card id="46" name="Thancred" icon="082546.png" rarity="Rare" type="Scion" up="2" lt="3" dn="8" rt="7" sort="46" group="0" />
-  <card id="47" name="Nero tol Scaeva" icon="082547.png" rarity="Rare" type="Garlean" up="4" lt="1" dn="8" rt="7" sort="47" group="0" />
-  <card id="48" name="Papalymo &amp; Yda" icon="082548.png" rarity="Rare" type="Scion" up="3" lt="7" dn="8" rt="2" sort="48" group="0" />
-  <card id="49" name="Y'shtola" icon="082549.png" rarity="Rare" type="Scion" up="7" lt="8" dn="1" rt="4" sort="49" group="0" />
-  <card id="50" name="Urianger" icon="082550.png" rarity="Rare" type="Scion" up="8" lt="1" dn="4" rt="7" sort="50" group="0" />
-  <card id="51" name="The Ultima Weapon" icon="082551.png" rarity="Epic" type="Garlean" up="7" lt="8" dn="9" rt="1" sort="51" group="0" />
-  <card id="52" name="Odin" icon="082552.png" rarity="Epic" type="Primal" up="8" lt="8" dn="1" rt="8" sort="52" group="0" />
-  <card id="53" name="Ramuh" icon="082553.png" rarity="Epic" type="Primal" up="8" lt="1" dn="8" rt="8" sort="53" group="0" />
-  <card id="54" name="Leviathan" icon="082554.png" rarity="Epic" type="Primal" up="8" lt="8" dn="8" rt="1" sort="54" group="0" />
-  <card id="55" name="Shiva" icon="082555.png" rarity="Epic" type="Primal" up="1" lt="8" dn="8" rt="8" sort="55" group="0" />
-  <card id="56" name="Minfilia" icon="082556.png" rarity="Epic" type="Scion" up="9" lt="8" dn="3" rt="5" sort="56" group="0" />
-  <card id="57" name="Lahabrea" icon="082557.png" rarity="Epic" type="None" up="4" lt="9" dn="4" rt="8" sort="57" group="0" />
-  <card id="58" name="Cid Garlond" icon="082558.png" rarity="Epic" type="None" up="5" lt="9" dn="9" rt="2" sort="58" group="0" />
-  <card id="59" name="Alphinaud &amp; Alisaie" icon="082559.png" rarity="Epic" type="Scion" up="9" lt="3" dn="3" rt="9" sort="59" group="0" />
-  <card id="60" name="Louisoix Leveilleur" icon="082560.png" rarity="Epic" type="Scion" up="9" lt="4" dn="9" rt="3" sort="60" group="0" />
-  <card id="61" name="Bahamut" icon="082561.png" rarity="Legendary" type="Primal" up="9" lt="5" dn="9" rt="6" sort="61" group="0" />
-  <card id="62" name="Hildibrand &amp; Nashu Mhakaracca" icon="082562.png" rarity="Legendary" type="None" up="1" lt="8" dn="10" rt="8" sort="62" group="0" />
-  <card id="63" name="Nanamo Ul Namo" icon="082563.png" rarity="Legendary" type="None" up="10" lt="6" dn="4" rt="8" sort="63" group="0" />
-  <card id="64" name="Gaius van Baelsar" icon="082564.png" rarity="Legendary" type="Garlean" up="4" lt="10" dn="5" rt="9" sort="64" group="0" />
-  <card id="65" name="Merlwyb Bloefhiswyn" icon="082565.png" rarity="Legendary" type="None" up="5" lt="9" dn="10" rt="3" sort="65" group="0" />
-  <card id="66" name="Kan-E-Senna" icon="082566.png" rarity="Legendary" type="None" up="9" lt="10" dn="1" rt="7" sort="66" group="0" />
-  <card id="67" name="Raubahn Aldynn" icon="082567.png" rarity="Legendary" type="None" up="6" lt="2" dn="9" rt="10" sort="67" group="0" />
-  <card id="68" name="Warrior of Light" icon="082568.png" rarity="Legendary" type="None" up="10" lt="2" dn="5" rt="10" sort="1001" group="5" />
-  <card id="69" name="Firion" icon="082569.png" rarity="Legendary" type="None" up="10" lt="5" dn="10" rt="1" sort="1002" group="5" />
-  <card id="70" name="Onion Knight" icon="082570.png" rarity="Legendary" type="None" up="8" lt="2" dn="8" rt="10" sort="1003" group="5" />
-  <card id="71" name="Cecil Harvey" icon="082571.png" rarity="Legendary" type="None" up="4" lt="10" dn="4" rt="10" sort="1004" group="5" />
-  <card id="72" name="Bartz Klauser" icon="082572.png" rarity="Legendary" type="None" up="4" lt="4" dn="10" rt="10" sort="1005" group="5" />
-  <card id="73" name="Terra Branford" icon="082573.png" rarity="Legendary" type="None" up="10" lt="10" dn="2" rt="5" sort="1006" group="5" />
-  <card id="74" name="Cloud Strife" icon="082574.png" rarity="Legendary" type="None" up="9" lt="3" dn="9" rt="8" sort="1007" group="5" />
-  <card id="75" name="Squall Leonhart" icon="082575.png" rarity="Legendary" type="None" up="6" lt="10" dn="10" rt="1" sort="1008" group="5" />
-  <card id="76" name="Zidane Tribal" icon="082576.png" rarity="Legendary" type="None" up="5" lt="10" dn="6" rt="8" sort="1009" group="5" />
-  <card id="77" name="Tidus" icon="082577.png" rarity="Legendary" type="None" up="10" lt="7" dn="1" rt="9" sort="1010" group="5" />
-  <card id="78" name="Shantotto" icon="082578.png" rarity="Legendary" type="None" up="4" lt="9" dn="7" rt="9" sort="1011" group="5" />
-  <card id="79" name="Vaan" icon="082579.png" rarity="Legendary" type="None" up="1" lt="7" dn="10" rt="9" sort="1012" group="5" />
-  <card id="80" name="Lightning" icon="082580.png" rarity="Legendary" type="None" up="9" lt="1" dn="7" rt="10" sort="1013" group="5" />
-  <card id="81" name="Gaelicat" icon="082581.png" rarity="Common" type="None" up="4" lt="1" dn="1" rt="7" sort="68" group="0" />
-  <card id="82" name="Vanu Vanu" icon="082582.png" rarity="Uncommon" type="Beastman" up="2" lt="6" dn="4" rt="7" sort="69" group="0" />
-  <card id="83" name="Gnath" icon="082583.png" rarity="Uncommon" type="Beastman" up="6" lt="3" dn="7" rt="3" sort="70" group="0" />
-  <card id="84" name="Yugiri Mistwalker" icon="082584.png" rarity="Uncommon" type="None" up="7" lt="7" dn="1" rt="3" sort="71" group="0" />
-  <card id="85" name="Fat Chocobo" icon="082585.png" rarity="Uncommon" type="None" up="5" lt="5" dn="5" rt="5" sort="72" group="0" />
-  <card id="86" name="Griffin" icon="082586.png" rarity="Rare" type="None" up="5" lt="1" dn="7" rt="8" sort="73" group="0" />
-  <card id="87" name="Tioman" icon="082587.png" rarity="Rare" type="None" up="1" lt="5" dn="8" rt="7" sort="74" group="0" />
-  <card id="88" name="Estinien" icon="082588.png" rarity="Rare" type="None" up="8" lt="8" dn="2" rt="3" sort="75" group="0" />
-  <card id="89" name="Lucia goe Junius" icon="082589.png" rarity="Rare" type="None" up="8" lt="2" dn="3" rt="8" sort="76" group="0" />
-  <card id="90" name="Ysayle" icon="082590.png" rarity="Rare" type="None" up="4" lt="8" dn="8" rt="1" sort="77" group="0" />
-  <card id="91" name="Hilda" icon="082591.png" rarity="Rare" type="None" up="1" lt="4" dn="8" rt="8" sort="78" group="0" />
-  <card id="92" name="Matoya" icon="082592.png" rarity="Rare" type="None" up="8" lt="3" dn="8" rt="1" sort="79" group="0" />
-  <card id="93" name="Count Edmont de Fortemps" icon="082593.png" rarity="Rare" type="None" up="1" lt="8" dn="3" rt="8" sort="80" group="0" />
-  <card id="94" name="Byblos" icon="082594.png" rarity="Rare" type="None" up="8" lt="4" dn="1" rt="7" sort="81" group="0" />
-  <card id="95" name="Haurchefant" icon="082595.png" rarity="Rare" type="None" up="7" lt="1" dn="5" rt="8" sort="82" group="0" />
-  <card id="96" name="Aymeric" icon="082596.png" rarity="Epic" type="None" up="1" lt="5" dn="9" rt="9" sort="83" group="0" />
-  <card id="97" name="Ravana" icon="082597.png" rarity="Epic" type="Primal" up="9" lt="7" dn="8" rt="1" sort="84" group="0" />
-  <card id="98" name="Bismarck" icon="082598.png" rarity="Epic" type="Primal" up="1" lt="9" dn="7" rt="8" sort="85" group="0" />
-  <card id="99" name="Nidhogg" icon="082599.png" rarity="Legendary" type="None" up="10" lt="7" dn="3" rt="8" sort="86" group="0" />
-  <card id="100" name="Midgardsormr" icon="082600.png" rarity="Legendary" type="None" up="3" lt="8" dn="10" rt="7" sort="87" group="0" />
-  <card id="101" name="Deepeye" icon="082601.png" rarity="Common" type="None" up="1" lt="3" dn="7" rt="2" sort="88" group="0" />
-  <card id="102" name="Archaeornis" icon="082602.png" rarity="Uncommon" type="None" up="5" lt="4" dn="6" rt="5" sort="89" group="0" />
-  <card id="103" name="Paissa" icon="082603.png" rarity="Uncommon" type="None" up="4" lt="6" dn="3" rt="6" sort="90" group="0" />
-  <card id="104" name="Dhalmel" icon="082604.png" rarity="Uncommon" type="None" up="6" lt="5" dn="3" rt="5" sort="91" group="0" />
-  <card id="105" name="Bandersnatch" icon="082605.png" rarity="Uncommon" type="None" up="6" lt="6" dn="3" rt="4" sort="92" group="0" />
-  <card id="106" name="Crawler" icon="082606.png" rarity="Uncommon" type="None" up="7" lt="7" dn="3" rt="2" sort="93" group="0" />
-  <card id="107" name="Poroggo" icon="082607.png" rarity="Uncommon" type="None" up="6" lt="3" dn="7" rt="3" sort="94" group="0" />
-  <card id="108" name="Vedrfolnir" icon="082608.png" rarity="Rare" type="None" up="8" lt="2" dn="7" rt="4" sort="95" group="0" />
-  <card id="109" name="Coeurlregina" icon="082609.png" rarity="Rare" type="None" up="5" lt="5" dn="5" rt="8" sort="96" group="0" />
-  <card id="110" name="Progenitrix" icon="082610.png" rarity="Rare" type="None" up="6" lt="6" dn="3" rt="6" sort="97" group="0" />
-  <card id="111" name="Belladonna" icon="082611.png" rarity="Rare" type="None" up="3" lt="7" dn="3" rt="7" sort="98" group="0" />
-  <card id="112" name="Echidna" icon="082612.png" rarity="Rare" type="None" up="6" lt="4" dn="7" rt="4" sort="99" group="0" />
-  <card id="113" name="Pipin Tarupin" icon="082613.png" rarity="Rare" type="None" up="6" lt="5" dn="6" rt="6" sort="100" group="0" />
-  <card id="114" name="Julyan Manderville" icon="082614.png" rarity="Rare" type="None" up="6" lt="6" dn="5" rt="7" sort="101" group="0" />
-  <card id="115" name="Moglin" icon="082615.png" rarity="Rare" type="Beastman" up="8" lt="5" dn="4" rt="5" sort="102" group="0" />
-  <card id="116" name="Charibert" icon="082616.png" rarity="Rare" type="None" up="7" lt="8" dn="4" rt="3" sort="103" group="0" />
-  <card id="117" name="Roundrox" icon="082617.png" rarity="Rare" type="Beastman" up="2" lt="2" dn="8" rt="8" sort="104" group="0" />
-  <card id="118" name="Senor Sabotender" icon="082618.png" rarity="Epic" type="None" up="9" lt="5" dn="7" rt="6" sort="105" group="0" />
-  <card id="119" name="Regula van Hydrus" icon="082619.png" rarity="Legendary" type="Garlean" up="8" lt="8" dn="6" rt="8" sort="106" group="0" />
-  <card id="120" name="Archbishop Thordan VII" icon="082620.png" rarity="Legendary" type="None" up="7" lt="1" dn="10" rt="9" sort="107" group="0" />
-  <card id="121" name="Honoroit" icon="082621.png" rarity="Uncommon" type="None" up="7" lt="2" dn="7" rt="2" sort="108" group="0" />
-  <card id="122" name="Hoary Boulder &amp; Coultenet" icon="082622.png" rarity="Uncommon" type="Scion" up="2" lt="7" dn="2" rt="7" sort="109" group="0" />
-  <card id="123" name="Brachiosaur" icon="082623.png" rarity="Rare" type="None" up="8" lt="4" dn="5" rt="4" sort="110" group="0" />
-  <card id="124" name="Darkscale" icon="082624.png" rarity="Rare" type="None" up="2" lt="8" dn="4" rt="7" sort="111" group="0" />
-  <card id="125" name="Fenrir" icon="082625.png" rarity="Rare" type="None" up="7" lt="3" dn="6" rt="4" sort="112" group="0" />
-  <card id="126" name="Kraken" icon="082626.png" rarity="Rare" type="None" up="3" lt="6" dn="6" rt="6" sort="113" group="0" />
-  <card id="127" name="Vicegerent to the Warden" icon="082627.png" rarity="Rare" type="None" up="7" lt="1" dn="7" rt="5" sort="114" group="0" />
-  <card id="128" name="Manxome Molaa Ja Ja" icon="082628.png" rarity="Rare" type="Beastman" up="3" lt="7" dn="2" rt="8" sort="115" group="0" />
-  <card id="129" name="Ferdiad" icon="082629.png" rarity="Rare" type="None" up="4" lt="6" dn="8" rt="4" sort="116" group="0" />
-  <card id="130" name="Calcabrina" icon="082630.png" rarity="Rare" type="None" up="6" lt="6" dn="6" rt="3" sort="117" group="0" />
-  <card id="131" name="Kuribu" icon="082631.png" rarity="Rare" type="None" up="8" lt="3" dn="2" rt="7" sort="118" group="0" />
-  <card id="132" name="Phlegethon" icon="082632.png" rarity="Rare" type="None" up="1" lt="7" dn="6" rt="7" sort="119" group="0" />
-  <card id="133" name="Artoirel de Fortemps" icon="082633.png" rarity="Rare" type="None" up="4" lt="7" dn="3" rt="7" sort="120" group="0" />
-  <card id="134" name="Emmanellain de Fortemps" icon="082634.png" rarity="Rare" type="None" up="7" lt="4" dn="7" rt="3" sort="121" group="0" />
-  <card id="135" name="Xande" icon="082635.png" rarity="Epic" type="None" up="9" lt="4" dn="6" rt="7" sort="122" group="0" />
-  <card id="136" name="Brute Justice" icon="082636.png" rarity="Epic" type="None" up="7" lt="7" dn="7" rt="7" sort="123" group="0" />
-  <card id="137" name="Sephirot" icon="082637.png" rarity="Epic" type="Primal" up="6" lt="8" dn="8" rt="6" sort="124" group="0" />
-  <card id="138" name="F'lhaminn" icon="082638.png" rarity="Epic" type="Scion" up="9" lt="7" dn="3" rt="7" sort="125" group="0" />
-  <card id="139" name="Vidofnir" icon="082639.png" rarity="Epic" type="None" up="8" lt="6" dn="8" rt="6" sort="126" group="0" />
-  <card id="140" name="Cloud of Darkness" icon="082640.png" rarity="Legendary" type="None" up="7" lt="10" dn="7" rt="6" sort="127" group="0" />
-  <card id="141" name="Lolorito Nanarito" icon="082641.png" rarity="Uncommon" type="None" up="4" lt="3" dn="7" rt="3" sort="128" group="0" />
-  <card id="142" name="Gibrillont" icon="082642.png" rarity="Uncommon" type="None" up="2" lt="6" dn="3" rt="6" sort="129" group="0" />
-  <card id="143" name="Laniaitte de Haillenarte" icon="082643.png" rarity="Uncommon" type="None" up="7" lt="6" dn="3" rt="3" sort="130" group="0" />
-  <card id="144" name="Rhoswen" icon="082644.png" rarity="Uncommon" type="None" up="5" lt="6" dn="4" rt="6" sort="131" group="0" />
-  <card id="145" name="Carvallain de Gorgagne" icon="082645.png" rarity="Uncommon" type="None" up="2" lt="7" dn="7" rt="2" sort="132" group="0" />
-  <card id="146" name="Kal Myhk" icon="082646.png" rarity="Rare" type="None" up="1" lt="8" dn="4" rt="8" sort="133" group="0" />
-  <card id="147" name="Waukkeon" icon="082647.png" rarity="Rare" type="None" up="1" lt="6" dn="7" rt="7" sort="134" group="0" />
-  <card id="148" name="Curator" icon="082648.png" rarity="Rare" type="None" up="4" lt="6" dn="4" rt="7" sort="135" group="0" />
-  <card id="149" name="Mistbeard" icon="082649.png" rarity="Rare" type="None" up="5" lt="6" dn="7" rt="6" sort="136" group="0" />
-  <card id="150" name="Unei &amp; Doga" icon="082650.png" rarity="Epic" type="None" up="6" lt="8" dn="6" rt="8" sort="137" group="0" />
-  <card id="151" name="Tiamat" icon="082651.png" rarity="Epic" type="None" up="9" lt="6" dn="5" rt="6" sort="138" group="0" />
-  <card id="152" name="Calofisteri" icon="082652.png" rarity="Epic" type="None" up="5" lt="8" dn="7" rt="8" sort="139" group="0" />
-  <card id="153" name="Hraesvelgr" icon="082653.png" rarity="Legendary" type="None" up="7" lt="7" dn="10" rt="6" sort="140" group="0" />
-  <card id="154" name="Apkallu" icon="082654.png" rarity="Common" type="None" up="3" lt="4" dn="4" rt="1" sort="141" group="0" />
-  <card id="155" name="Colibri" icon="082655.png" rarity="Common" type="None" up="6" lt="1" dn="4" rt="1" sort="142" group="0" />
-  <card id="156" name="Magitek Death Claw" icon="082656.png" rarity="Common" type="Garlean" up="4" lt="3" dn="2" rt="3" sort="143" group="0" />
-  <card id="157" name="Liquid Flame" icon="082657.png" rarity="Uncommon" type="None" up="4" lt="3" dn="6" rt="6" sort="144" group="0" />
-  <card id="158" name="Lost Lamb" icon="082658.png" rarity="Uncommon" type="None" up="7" lt="3" dn="4" rt="5" sort="145" group="0" />
-  <card id="159" name="Delivery Moogle" icon="082659.png" rarity="Uncommon" type="Beastman" up="5" lt="5" dn="6" rt="3" sort="146" group="0" />
-  <card id="160" name="Magitek Colossus" icon="082660.png" rarity="Uncommon" type="Garlean" up="6" lt="3" dn="6" rt="3" sort="147" group="0" />
-  <card id="161" name="Strix" icon="082661.png" rarity="Rare" type="None" up="5" lt="7" dn="1" rt="7" sort="148" group="0" />
-  <card id="162" name="Tozol Huatotl" icon="082662.png" rarity="Rare" type="Beastman" up="7" lt="6" dn="6" rt="2" sort="149" group="0" />
-  <card id="163" name="Alexander Prime" icon="082663.png" rarity="Rare" type="Primal" up="7" lt="3" dn="2" rt="8" sort="150" group="0" />
-  <card id="164" name="Brendt, Brennan, &amp; Bremondt" icon="082664.png" rarity="Rare" type="None" up="4" lt="7" dn="6" rt="5" sort="151" group="0" />
-  <card id="165" name="Heavensward Thancred" icon="082665.png" rarity="Epic" type="Scion" up="8" lt="1" dn="7" rt="9" sort="152" group="0" />
-  <card id="166" name="Heavensward Y'shtola" icon="082666.png" rarity="Epic" type="Scion" up="9" lt="9" dn="2" rt="5" sort="153" group="0" />
-  <card id="167" name="Nael van Darnus" icon="082667.png" rarity="Epic" type="Garlean" up="3" lt="9" dn="3" rt="9" sort="154" group="0" />
-  <card id="168" name="Sophia" icon="082668.png" rarity="Legendary" type="Primal" up="10" lt="8" dn="5" rt="6" sort="155" group="0" />
-  <card id="169" name="Opo-opo" icon="082669.png" rarity="Common" type="None" up="1" lt="4" dn="2" rt="6" sort="156" group="0" />
-  <card id="170" name="Adamantoise" icon="082670.png" rarity="Uncommon" type="None" up="5" lt="7" dn="4" rt="4" sort="157" group="0" />
-  <card id="171" name="Magitek Vanguard" icon="082671.png" rarity="Uncommon" type="Garlean" up="3" lt="5" dn="4" rt="7" sort="158" group="0" />
-  <card id="172" name="Magitek Gunship" icon="082672.png" rarity="Uncommon" type="Garlean" up="3" lt="5" dn="5" rt="5" sort="159" group="0" />
-  <card id="173" name="Gold Saucer Attendant" icon="082673.png" rarity="Uncommon" type="None" up="4" lt="7" dn="1" rt="6" sort="167" group="0" />
-  <card id="174" name="Lava Scorpion" icon="082674.png" rarity="Rare" type="None" up="3" lt="8" dn="5" rt="5" sort="160" group="0" />
-  <card id="175" name="Magitek Predator" icon="082675.png" rarity="Rare" type="Garlean" up="5" lt="7" dn="4" rt="5" sort="161" group="0" />
-  <card id="176" name="Magitek Sky Armor" icon="082676.png" rarity="Rare" type="Garlean" up="6" lt="2" dn="6" rt="7" sort="162" group="0" />
-  <card id="177" name="The Griffin" icon="082677.png" rarity="Rare" type="None" up="8" lt="8" dn="4" rt="1" sort="163" group="0" />
-  <card id="178" name="Roland" icon="082678.png" rarity="Rare" type="None" up="2" lt="7" dn="8" rt="3" sort="168" group="0" />
-  <card id="179" name="Diabolos Hollow" icon="082679.png" rarity="Epic" type="None" up="4" lt="4" dn="8" rt="9" sort="164" group="0" />
-  <card id="180" name="Armored Weapon" icon="082680.png" rarity="Epic" type="Garlean" up="3" lt="5" dn="9" rt="7" sort="165" group="0" />
-  <card id="181" name="Gigi" icon="082681.png" rarity="Epic" type="None" up="6" lt="8" dn="4" rt="7" sort="169" group="0" />
-  <card id="182" name="Zurvan" icon="082682.png" rarity="Legendary" type="Primal" up="3" lt="7" dn="8" rt="10" sort="166" group="0" />
-  <card id="183" name="Namazu" icon="082683.png" rarity="Common" type="Beastman" up="1" lt="6" dn="1" rt="5" sort="170" group="0" />
-  <card id="184" name="Kojin" icon="082684.png" rarity="Uncommon" type="Beastman" up="4" lt="5" dn="5" rt="4" sort="171" group="0" />
-  <card id="185" name="Ananta" icon="082685.png" rarity="Uncommon" type="Beastman" up="3" lt="7" dn="5" rt="2" sort="172" group="0" />
-  <card id="186" name="M'naago" icon="082686.png" rarity="Uncommon" type="None" up="4" lt="1" dn="4" rt="7" sort="173" group="0" />
-  <card id="187" name="Kotokaze" icon="082687.png" rarity="Uncommon" type="None" up="5" lt="6" dn="2" rt="6" sort="174" group="0" />
-  <card id="188" name="Mammoth" icon="082688.png" rarity="Rare" type="None" up="6" lt="3" dn="8" rt="3" sort="175" group="0" />
-  <card id="189" name="Phoebad" icon="082689.png" rarity="Rare" type="None" up="8" lt="8" dn="3" rt="1" sort="176" group="0" />
-  <card id="190" name="Susano" icon="082690.png" rarity="Rare" type="Primal" up="2" lt="8" dn="3" rt="8" sort="177" group="0" />
-  <card id="191" name="Lakshmi" icon="082691.png" rarity="Rare" type="Primal" up="3" lt="7" dn="7" rt="5" sort="178" group="0" />
-  <card id="192" name="Grynewaht" icon="082692.png" rarity="Rare" type="Garlean" up="7" lt="4" dn="7" rt="4" sort="179" group="0" />
-  <card id="193" name="Rasho" icon="082693.png" rarity="Rare" type="None" up="4" lt="7" dn="8" rt="2" sort="180" group="0" />
-  <card id="194" name="Cirina" icon="082694.png" rarity="Rare" type="None" up="3" lt="5" dn="6" rt="8" sort="181" group="0" />
-  <card id="195" name="Magnai" icon="082695.png" rarity="Rare" type="None" up="6" lt="7" dn="4" rt="4" sort="182" group="0" />
-  <card id="196" name="Sadu" icon="082696.png" rarity="Rare" type="None" up="6" lt="6" dn="7" rt="4" sort="183" group="0" />
-  <card id="197" name="Shinryu" icon="082697.png" rarity="Epic" type="Primal" up="7" lt="8" dn="8" rt="2" sort="184" group="0" />
-  <card id="198" name="Yotsuyu" icon="082698.png" rarity="Epic" type="Garlean" up="9" lt="2" dn="8" rt="6" sort="185" group="0" />
-  <card id="199" name="Krile" icon="082699.png" rarity="Epic" type="Scion" up="2" lt="8" dn="8" rt="7" sort="186" group="0" />
-  <card id="200" name="Lyse" icon="082700.png" rarity="Epic" type="Scion" up="6" lt="9" dn="1" rt="8" sort="187" group="0" />
-  <card id="201" name="Zenos yae Galvus" icon="082701.png" rarity="Legendary" type="Garlean" up="6" lt="6" dn="7" rt="10" sort="188" group="0" />
-  <card id="202" name="Hien" icon="082702.png" rarity="Legendary" type="None" up="2" lt="10" dn="5" rt="10" sort="189" group="0" />
-  <card id="203" name="mossling" icon="082703.png" rarity="Common" type="None" up="5" lt="2" dn="5" rt="1" sort="190" group="0" />
-  <card id="204" name="chapuli" icon="082704.png" rarity="Uncommon" type="None" up="7" lt="2" dn="2" rt="6" sort="191" group="0" />
-  <card id="205" name="Qiqirn Meateater" icon="082705.png" rarity="Uncommon" type="Beastman" up="1" lt="5" dn="7" rt="5" sort="192" group="0" />
-  <card id="206" name="Hrodric Poisontongue" icon="082706.png" rarity="Rare" type="None" up="2" lt="7" dn="6" rt="7" sort="193" group="0" />
-  <card id="207" name="Fordola rem Lupis" icon="082707.png" rarity="Rare" type="None" up="5" lt="8" dn="6" rt="3" sort="194" group="0" />
-  <card id="208" name="Rofocale" icon="082708.png" rarity="Rare" type="None" up="4" lt="7" dn="1" rt="8" sort="195" group="0" />
-  <card id="209" name="Argath Thadalfus" icon="082709.png" rarity="Epic" type="None" up="9" lt="2" dn="5" rt="8" sort="196" group="0" />
-  <card id="210" name="Raubahn &amp; Pipin" icon="082710.png" rarity="Legendary" type="None" up="1" lt="10" dn="10" rt="6" sort="197" group="0" />
-  <card id="211" name="Koja" icon="082711.png" rarity="Common" type="None" up="3" lt="2" dn="1" rt="6" sort="198" group="0" />
-  <card id="212" name="Ango" icon="082712.png" rarity="Uncommon" type="None" up="4" lt="2" dn="7" rt="4" sort="199" group="0" />
-  <card id="213" name="Guidance Node" icon="082713.png" rarity="Uncommon" type="None" up="6" lt="4" dn="4" rt="4" sort="200" group="0" />
-  <card id="214" name="Tansui" icon="082714.png" rarity="Uncommon" type="None" up="6" lt="2" dn="3" rt="7" sort="201" group="0" />
-  <card id="215" name="Genbu" icon="082715.png" rarity="Rare" type="None" up="7" lt="7" dn="1" rt="7" sort="202" group="0" />
-  <card id="216" name="Byakko" icon="082716.png" rarity="Rare" type="None" up="7" lt="1" dn="7" rt="7" sort="203" group="0" />
-  <card id="217" name="Arenvald Lentinus" icon="082717.png" rarity="Rare" type="Scion" up="8" lt="4" dn="8" rt="2" sort="204" group="0" />
-  <card id="218" name="Lupin" icon="082718.png" rarity="Rare" type="Beastman" up="3" lt="3" dn="8" rt="7" sort="205" group="0" />
-  <card id="219" name="Hancock" icon="082719.png" rarity="Epic" type="None" up="8" lt="9" dn="1" rt="7" sort="206" group="0" />
-  <card id="220" name="Hisui &amp; Kurenai" icon="082720.png" rarity="Legendary" type="None" up="10" lt="2" dn="7" rt="9" sort="207" group="0" />
-  <card id="221" name="Wanyudo &amp; Katasharin" icon="082721.png" rarity="Common" type="None" up="6" lt="1" dn="1" rt="5" sort="212" group="0" />
-  <card id="222" name="Hatamoto" icon="082722.png" rarity="Uncommon" type="None" up="2" lt="7" dn="5" rt="6" sort="213" group="0" />
-  <card id="223" name="Yukinko" icon="082723.png" rarity="Uncommon" type="None" up="3" lt="7" dn="3" rt="5" sort="215" group="0" />
-  <card id="224" name="Qitian Dasheng" icon="082724.png" rarity="Rare" type="None" up="3" lt="8" dn="4" rt="8" sort="208" group="0" />
-  <card id="225" name="Hiruko" icon="082725.png" rarity="Rare" type="None" up="4" lt="7" dn="5" rt="7" sort="214" group="0" />
-  <card id="226" name="Happy Bunny" icon="082726.png" rarity="Rare" type="None" up="3" lt="8" dn="7" rt="3" sort="216" group="0" />
-  <card id="227" name="Louhi" icon="082727.png" rarity="Rare" type="None" up="5" lt="8" dn="2" rt="7" sort="217" group="0" />
-  <card id="228" name="Tsukuyomi" icon="082728.png" rarity="Epic" type="Primal" up="2" lt="7" dn="7" rt="8" sort="209" group="0" />
-  <card id="229" name="Yiazmat" icon="082729.png" rarity="Legendary" type="None" up="7" lt="6" dn="10" rt="7" sort="210" group="0" />
-  <card id="230" name="Gosetsu" icon="082730.png" rarity="Legendary" type="None" up="10" lt="5" dn="10" rt="2" sort="211" group="0" />
-  <card id="231" name="Karakuri Hanya" icon="082731.png" rarity="Common" type="None" up="7" lt="1" dn="1" rt="4" sort="224" group="0" />
-  <card id="232" name="Muud Suud" icon="082732.png" rarity="Uncommon" type="None" up="3" lt="7" dn="1" rt="7" sort="218" group="0" />
-  <card id="233" name="Tokkapchi" icon="082733.png" rarity="Rare" type="None" up="2" lt="6" dn="6" rt="7" sort="219" group="0" />
-  <card id="234" name="Mist Dragon" icon="082734.png" rarity="Rare" type="None" up="5" lt="8" dn="5" rt="5" sort="220" group="0" />
-  <card id="235" name="Suzaku" icon="082735.png" rarity="Rare" type="None" up="1" lt="7" dn="7" rt="7" sort="221" group="0" />
-  <card id="236" name="Pazuzu" icon="082736.png" rarity="Rare" type="None" up="4" lt="8" dn="4" rt="7" sort="225" group="0" />
-  <card id="237" name="Penthesilea" icon="082737.png" rarity="Rare" type="None" up="7" lt="2" dn="8" rt="5" sort="226" group="0" />
-  <card id="238" name="Asahi sas Brutus" icon="082738.png" rarity="Rare" type="Garlean" up="8" lt="4" dn="1" rt="8" sort="222" group="0" />
-  <card id="239" name="Yojimbo &amp; Daigoro" icon="082739.png" rarity="Legendary" type="None" up="10" lt="8" dn="1" rt="8" sort="227" group="0" />
-  <card id="240" name="Omega" icon="082740.png" rarity="Legendary" type="None" up="6" lt="9" dn="3" rt="10" sort="223" group="0" />
-  <card id="241" name="Stormblood Tataru Taru" icon="082741.png" rarity="Common" type="Scion" up="1" lt="4" dn="1" rt="7" sort="228" group="0" />
-  <card id="242" name="Dvergr" icon="082742.png" rarity="Uncommon" type="None" up="4" lt="5" dn="3" rt="7" sort="235" group="0" />
-  <card id="243" name="Ejika Tsunjika" icon="082743.png" rarity="Uncommon" type="None" up="7" lt="1" dn="1" rt="7" sort="236" group="0" />
-  <card id="244" name="Prometheus" icon="082744.png" rarity="Rare" type="Garlean" up="6" lt="5" dn="8" rt="3" sort="229" group="0" />
-  <card id="245" name="Provenance Watcher" icon="082745.png" rarity="Rare" type="None" up="7" lt="4" dn="4" rt="8" sort="237" group="0" />
-  <card id="246" name="Seiryu" icon="082746.png" rarity="Rare" type="None" up="7" lt="7" dn="7" rt="1" sort="230" group="0" />
-  <card id="247" name="Alpha" icon="082747.png" rarity="Rare" type="None" up="6" lt="6" dn="6" rt="6" sort="231" group="0" />
-  <card id="248" name="Great Gold Whisker" icon="082748.png" rarity="Epic" type="Beastman" up="6" lt="9" dn="6" rt="7" sort="232" group="0" />
-  <card id="249" name="Stormblood Gilgamesh" icon="082749.png" rarity="Epic" type="None" up="9" lt="4" dn="8" rt="4" sort="238" group="0" />
-  <card id="250" name="Ultima, the High Seraph" icon="082750.png" rarity="Legendary" type="None" up="6" lt="10" dn="7" rt="7" sort="233" group="0" />
-  <card id="251" name="Stormblood Alphinaud &amp; Alisaie" icon="082751.png" rarity="Legendary" type="Scion" up="6" lt="8" dn="8" rt="8" sort="234" group="0" />
-  <card id="252" name="Noctis Lucis Caelum" icon="082752.png" rarity="Legendary" type="None" up="7" lt="10" dn="9" rt="1" sort="1014" group="5" />
-  <card id="253" name="Amaro" icon="082753.png" rarity="Common" type="None" up="1" lt="7" dn="2" rt="3" sort="239" group="0" />
-  <card id="254" name="Evil Weapon" icon="082754.png" rarity="Common" type="None" up="7" lt="2" dn="2" rt="2" sort="240" group="0" />
-  <card id="255" name="Lord and Lady Chai" icon="082755.png" rarity="Common" type="None" up="5" lt="1" dn="6" rt="1" sort="241" group="0" />
-  <card id="256" name="Gigantender" icon="082756.png" rarity="Uncommon" type="None" up="7" lt="4" dn="4" rt="4" sort="242" group="0" />
-  <card id="257" name="Feo Ul" icon="082757.png" rarity="Uncommon" type="Beastman" up="7" lt="5" dn="5" rt="1" sort="243" group="0" />
-  <card id="258" name="Runar" icon="082758.png" rarity="Uncommon" type="None" up="6" lt="4" dn="7" rt="1" sort="244" group="0" />
-  <card id="259" name="Grenoldt" icon="082759.png" rarity="Uncommon" type="None" up="1" lt="3" dn="7" rt="7" sort="245" group="0" />
-  <card id="260" name="Philia" icon="082760.png" rarity="Rare" type="None" up="2" lt="6" dn="8" rt="6" sort="246" group="0" />
-  <card id="261" name="Titania" icon="082761.png" rarity="Rare" type="None" up="8" lt="6" dn="6" rt="2" sort="247" group="0" />
-  <card id="262" name="Eros" icon="082762.png" rarity="Rare" type="None" up="6" lt="2" dn="6" rt="8" sort="248" group="0" />
-  <card id="263" name="Storge" icon="082763.png" rarity="Rare" type="None" up="6" lt="8" dn="2" rt="6" sort="249" group="0" />
-  <card id="264" name="Formidable" icon="082764.png" rarity="Rare" type="None" up="8" lt="5" dn="5" rt="5" sort="250" group="0" />
-  <card id="265" name="Lyna" icon="082765.png" rarity="Rare" type="None" up="1" lt="8" dn="8" rt="3" sort="251" group="0" />
-  <card id="266" name="Jongleurs of Eulmore" icon="082766.png" rarity="Rare" type="None" up="4" lt="4" dn="7" rt="6" sort="252" group="0" />
-  <card id="267" name="Innocence" icon="082767.png" rarity="Epic" type="None" up="8" lt="3" dn="8" rt="8" sort="253" group="0" />
-  <card id="268" name="Shadowbringers Y'shtola" icon="082768.png" rarity="Epic" type="Scion" up="2" lt="9" dn="5" rt="9" sort="254" group="0" />
-  <card id="269" name="Shadowbringers Urianger" icon="082769.png" rarity="Epic" type="Scion" up="9" lt="2" dn="5" rt="9" sort="255" group="0" />
-  <card id="270" name="Ran'jit" icon="082770.png" rarity="Epic" type="None" up="1" lt="9" dn="9" rt="5" sort="256" group="0" />
-  <card id="271" name="Hades" icon="082771.png" rarity="Legendary" type="None" up="8" lt="6" dn="6" rt="10" sort="257" group="0" />
-  <card id="272" name="Ardbert" icon="082772.png" rarity="Legendary" type="None" up="1" lt="9" dn="9" rt="9" sort="258" group="0" />
-  <card id="273" name="Hobgoblin" icon="082773.png" rarity="Common" type="None" up="2" lt="7" dn="2" rt="2" sort="259" group="0" />
-  <card id="274" name="Porxie" icon="082774.png" rarity="Common" type="None" up="1" lt="2" dn="6" rt="4" sort="260" group="0" />
-  <card id="275" name="Iguana" icon="082775.png" rarity="Uncommon" type="None" up="3" lt="5" dn="6" rt="5" sort="261" group="0" />
-  <card id="276" name="Nu Mou" icon="082776.png" rarity="Uncommon" type="Beastman" up="7" lt="6" dn="2" rt="4" sort="262" group="0" />
-  <card id="277" name="Fuath" icon="082777.png" rarity="Uncommon" type="Beastman" up="7" lt="4" dn="6" rt="2" sort="263" group="0" />
-  <card id="278" name="Leannan Sith" icon="082778.png" rarity="Rare" type="None" up="8" lt="7" dn="2" rt="4" sort="264" group="0" />
-  <card id="279" name="Seeker of Solitude" icon="082779.png" rarity="Rare" type="None" up="4" lt="6" dn="6" rt="8" sort="265" group="0" />
-  <card id="280" name="Oracle of Light" icon="082780.png" rarity="Epic" type="None" up="7" lt="7" dn="9" rt="4" sort="266" group="0" />
-  <card id="281" name="Archaeotania" icon="082781.png" rarity="Legendary" type="None" up="10" lt="9" dn="7" rt="1" sort="267" group="0" />
-  <card id="282" name="9S" icon="082782.png" rarity="Legendary" type="None" up="4" lt="8" dn="6" rt="10" sort="268" group="0" />
-  <card id="283" name="Flower Basket" icon="082783.png" rarity="Common" type="None" up="2" lt="2" dn="2" rt="7" sort="269" group="0" />
-  <card id="284" name="Qitari" icon="082784.png" rarity="Common" type="Beastman" up="4" lt="6" dn="2" rt="2" sort="270" group="0" />
-  <card id="285" name="Gnoll" icon="082785.png" rarity="Uncommon" type="None" up="2" lt="4" dn="7" rt="6" sort="271" group="0" />
-  <card id="286" name="Lizbeth" icon="082786.png" rarity="Uncommon" type="None" up="5" lt="5" dn="6" rt="4" sort="278" group="0" />
-  <card id="287" name="Batsquatch" icon="082787.png" rarity="Rare" type="None" up="6" lt="2" dn="8" rt="6" sort="272" group="0" />
-  <card id="288" name="Forgiven Obscenity" icon="082788.png" rarity="Rare" type="None" up="8" lt="7" dn="1" rt="6" sort="273" group="0" />
-  <card id="289" name="Huaca" icon="082789.png" rarity="Rare" type="None" up="7" lt="5" dn="8" rt="2" sort="274" group="0" />
-  <card id="290" name="Unknown" icon="082790.png" rarity="Rare" type="None" up="5" lt="6" dn="3" rt="8" sort="275" group="0" />
-  <card id="291" name="The Ruby Weapon" icon="082791.png" rarity="Epic" type="Garlean" up="8" lt="7" dn="1" rt="9" sort="276" group="0" />
-  <card id="292" name="Therion" icon="082792.png" rarity="Legendary" type="None" up="9" lt="9" dn="2" rt="9" sort="277" group="0" />
-  <card id="293" name="Varis yae Galvus" icon="082793.png" rarity="Legendary" type="Garlean" up="10" lt="10" dn="4" rt="1" sort="279" group="0" />
-  <card id="294" name="Dwarf" icon="082794.png" rarity="Common" type="Beastman" up="2" lt="4" dn="6" rt="2" sort="280" group="0" />
-  <card id="295" name="Ehll Tou" icon="082795.png" rarity="Uncommon" type="None" up="1" lt="7" dn="1" rt="7" sort="288" group="0" />
-  <card id="296" name="Rolling Tankard" icon="082796.png" rarity="Uncommon" type="None" up="6" lt="4" dn="2" rt="6" sort="281" group="0" />
-  <card id="297" name="Lugus" icon="082797.png" rarity="Rare" type="None" up="5" lt="4" dn="7" rt="7" sort="282" group="0" />
-  <card id="298" name="Dawon" icon="082798.png" rarity="Rare" type="Garlean" up="8" lt="4" dn="6" rt="6" sort="289" group="0" />
-  <card id="299" name="Adrammelech" icon="082799.png" rarity="Rare" type="None" up="6" lt="1" dn="7" rt="8" sort="290" group="0" />
-  <card id="300" name="Elidibus" icon="082800.png" rarity="Epic" type="None" up="8" lt="4" dn="9" rt="4" sort="283" group="0" />
-  <card id="301" name="Shadowbringers Thancred" icon="082801.png" rarity="Epic" type="Scion" up="7" lt="9" dn="8" rt="1" sort="284" group="0" />
-  <card id="302" name="The Sapphire Weapon" icon="082802.png" rarity="Epic" type="Garlean" up="1" lt="9" dn="8" rt="7" sort="285" group="0" />
-  <card id="303" name="2P" icon="082803.png" rarity="Legendary" type="None" up="4" lt="8" dn="10" rt="6" sort="286" group="0" />
-  <card id="304" name="Shadowbringers Warrior of Light" icon="082804.png" rarity="Legendary" type="Primal" up="2" lt="10" dn="10" rt="5" sort="287" group="0" />
-  <card id="305" name="The Great Azuro" icon="082805.png" rarity="Common" type="None" up="4" lt="7" dn="1" rt="1" sort="297" group="0" />
-  <card id="306" name="Mother Porxie" icon="082806.png" rarity="Uncommon" type="None" up="3" lt="3" dn="7" rt="6" sort="291" group="0" />
-  <card id="307" name="Trinity Seeker" icon="082807.png" rarity="Rare" type="None" up="6" lt="1" dn="8" rt="7" sort="298" group="0" />
-  <card id="308" name="Trinity Avowed" icon="082808.png" rarity="Rare" type="None" up="8" lt="7" dn="6" rt="1" sort="299" group="0" />
-  <card id="309" name="Azulmagia" icon="082809.png" rarity="Rare" type="None" up="4" lt="8" dn="6" rt="6" sort="300" group="0" />
-  <card id="310" name="Siegfried" icon="082810.png" rarity="Rare" type="None" up="6" lt="6" dn="4" rt="8" sort="301" group="0" />
-  <card id="311" name="Gogo, Master of Mimicry" icon="082811.png" rarity="Rare" type="None" up="8" lt="6" dn="4" rt="6" sort="302" group="0" />
-  <card id="312" name="The Emerald Weapon" icon="082812.png" rarity="Epic" type="Garlean" up="7" lt="1" dn="9" rt="8" sort="292" group="0" />
-  <card id="313" name="Ryne" icon="082813.png" rarity="Epic" type="None" up="7" lt="9" dn="7" rt="1" sort="293" group="0" />
-  <card id="314" name="Gaia" icon="082814.png" rarity="Epic" type="None" up="5" lt="9" dn="1" rt="9" sort="294" group="0" />
-  <card id="315" name="Eden's Promise" icon="082815.png" rarity="Legendary" type="None" up="10" lt="5" dn="8" rt="6" sort="295" group="0" />
-  <card id="316" name="Phoenix" icon="082816.png" rarity="Legendary" type="Primal" up="5" lt="9" dn="6" rt="9" sort="296" group="0" />
-  <card id="317" name="Keeper of the Keys" icon="082817.png" rarity="Uncommon" type="None" up="5" lt="4" dn="4" rt="7" sort="303" group="0" />
-  <card id="318" name="Lunar Bahamut" icon="082818.png" rarity="Rare" type="Primal" up="8" lt="2" dn="8" rt="4" sort="304" group="0" />
-  <card id="319" name="Valens van Varro" icon="082819.png" rarity="Rare" type="Garlean" up="7" lt="5" dn="8" rt="3" sort="305" group="0" />
-  <card id="320" name="Lunar Ifrit" icon="082820.png" rarity="Rare" type="Primal" up="8" lt="3" dn="4" rt="7" sort="309" group="0" />
-  <card id="321" name="4th-make Shemhazai" icon="082821.png" rarity="Rare" type="None" up="1" lt="6" dn="7" rt="8" sort="310" group="0" />
-  <card id="322" name="4th-make Cuchulainn" icon="082822.png" rarity="Rare" type="None" up="8" lt="1" dn="7" rt="6" sort="311" group="0" />
-  <card id="323" name="G-Warrior" icon="082823.png" rarity="Epic" type="None" up="9" lt="1" dn="7" rt="8" sort="306" group="0" />
-  <card id="324" name="The Diamond Weapon" icon="082824.png" rarity="Epic" type="Garlean" up="9" lt="8" dn="7" rt="1" sort="307" group="0" />
-  <card id="325" name="The Diablo Armament" icon="082825.png" rarity="Epic" type="None" up="4" lt="4" dn="9" rt="9" sort="312" group="0" />
-  <card id="326" name="2B" icon="082826.png" rarity="Legendary" type="None" up="6" lt="10" dn="4" rt="8" sort="308" group="0" />
+  <card id="1" icon="082501.png" rarity="0" type="0" up="4" lt="2" dn="3" rt="4" sort="1" group="0" />
+  <card id="2" icon="082502.png" rarity="0" type="0" up="2" lt="2" dn="7" rt="2" sort="2" group="0" />
+  <card id="3" icon="082503.png" rarity="0" type="0" up="4" lt="3" dn="3" rt="3" sort="3" group="0" />
+  <card id="4" icon="082504.png" rarity="0" type="0" up="2" lt="3" dn="4" rt="4" sort="4" group="0" />
+  <card id="5" icon="082505.png" rarity="0" type="0" up="2" lt="4" dn="3" rt="5" sort="5" group="0" />
+  <card id="6" icon="082506.png" rarity="0" type="0" up="3" lt="4" dn="3" rt="3" sort="6" group="0" />
+  <card id="7" icon="082507.png" rarity="0" type="0" up="4" lt="2" dn="5" rt="3" sort="7" group="0" />
+  <card id="8" icon="082508.png" rarity="0" type="0" up="3" lt="3" dn="3" rt="4" sort="8" group="0" />
+  <card id="9" icon="082509.png" rarity="0" type="0" up="5" lt="2" dn="5" rt="2" sort="9" group="0" />
+  <card id="10" icon="082510.png" rarity="0" type="0" up="2" lt="5" dn="2" rt="5" sort="10" group="0" />
+  <card id="11" icon="082511.png" rarity="0" type="0" up="5" lt="5" dn="2" rt="2" sort="11" group="0" />
+  <card id="12" icon="082512.png" rarity="0" type="0" up="2" lt="5" dn="5" rt="2" sort="12" group="0" />
+  <card id="13" icon="082513.png" rarity="0" type="0" up="3" lt="7" dn="2" rt="1" sort="13" group="0" />
+  <card id="14" icon="082514.png" rarity="0" type="1" up="1" lt="4" dn="7" rt="1" sort="14" group="0" />
+  <card id="15" icon="082515.png" rarity="0" type="1" up="6" lt="1" dn="3" rt="4" sort="15" group="0" />
+  <card id="16" icon="082516.png" rarity="0" type="1" up="2" lt="4" dn="5" rt="4" sort="16" group="0" />
+  <card id="17" icon="082517.png" rarity="0" type="1" up="2" lt="2" dn="4" rt="6" sort="17" group="0" />
+  <card id="18" icon="082518.png" rarity="0" type="1" up="4" lt="5" dn="3" rt="3" sort="18" group="0" />
+  <card id="19" icon="082519.png" rarity="0" type="3" up="7" lt="2" dn="3" rt="2" sort="19" group="0" />
+  <card id="20" icon="082520.png" rarity="0" type="1" up="2" lt="1" dn="3" rt="7" sort="20" group="0" />
+  <card id="21" icon="082521.png" rarity="1" type="0" up="3" lt="6" dn="7" rt="2" sort="21" group="0" />
+  <card id="22" icon="082522.png" rarity="1" type="0" up="2" lt="3" dn="6" rt="7" sort="22" group="0" />
+  <card id="23" icon="082523.png" rarity="1" type="0" up="6" lt="7" dn="2" rt="3" sort="23" group="0" />
+  <card id="24" icon="082524.png" rarity="1" type="0" up="7" lt="3" dn="2" rt="6" sort="24" group="0" />
+  <card id="25" icon="082525.png" rarity="1" type="0" up="7" lt="7" dn="2" rt="2" sort="25" group="0" />
+  <card id="26" icon="082526.png" rarity="1" type="0" up="2" lt="2" dn="7" rt="7" sort="26" group="0" />
+  <card id="27" icon="082527.png" rarity="1" type="1" up="6" lt="6" dn="2" rt="6" sort="27" group="0" />
+  <card id="28" icon="082528.png" rarity="1" type="0" up="7" lt="5" dn="5" rt="3" sort="28" group="0" />
+  <card id="29" icon="082529.png" rarity="1" type="0" up="3" lt="7" dn="5" rt="5" sort="29" group="0" />
+  <card id="30" icon="082530.png" rarity="1" type="0" up="5" lt="5" dn="3" rt="7" sort="30" group="0" />
+  <card id="31" icon="082531.png" rarity="1" type="4" up="3" lt="7" dn="7" rt="1" sort="31" group="0" />
+  <card id="32" icon="082532.png" rarity="1" type="4" up="7" lt="1" dn="3" rt="7" sort="32" group="0" />
+  <card id="33" icon="082533.png" rarity="1" type="0" up="5" lt="3" dn="7" rt="5" sort="33" group="0" />
+  <card id="34" icon="082534.png" rarity="1" type="0" up="1" lt="7" dn="3" rt="7" sort="34" group="0" />
+  <card id="35" icon="082535.png" rarity="1" type="1" up="6" lt="2" dn="6" rt="6" sort="35" group="0" />
+  <card id="36" icon="082536.png" rarity="1" type="1" up="2" lt="6" dn="6" rt="6" sort="36" group="0" />
+  <card id="37" icon="082537.png" rarity="1" type="1" up="6" lt="6" dn="6" rt="2" sort="37" group="0" />
+  <card id="38" icon="082538.png" rarity="2" type="0" up="7" lt="8" dn="4" rt="2" sort="38" group="0" />
+  <card id="39" icon="082539.png" rarity="2" type="0" up="8" lt="3" dn="7" rt="3" sort="39" group="0" />
+  <card id="40" icon="082540.png" rarity="2" type="2" up="7" lt="1" dn="6" rt="7" sort="40" group="0" />
+  <card id="41" icon="082541.png" rarity="2" type="2" up="1" lt="7" dn="7" rt="6" sort="41" group="0" />
+  <card id="42" icon="082542.png" rarity="2" type="2" up="7" lt="6" dn="1" rt="7" sort="42" group="0" />
+  <card id="43" icon="082543.png" rarity="2" type="2" up="7" lt="6" dn="7" rt="1" sort="43" group="0" />
+  <card id="44" icon="082544.png" rarity="2" type="0" up="5" lt="6" dn="6" rt="6" sort="44" group="0" />
+  <card id="45" icon="082545.png" rarity="2" type="0" up="6" lt="6" dn="5" rt="6" sort="45" group="0" />
+  <card id="46" icon="082546.png" rarity="2" type="3" up="2" lt="3" dn="8" rt="7" sort="46" group="0" />
+  <card id="47" icon="082547.png" rarity="2" type="4" up="4" lt="1" dn="8" rt="7" sort="47" group="0" />
+  <card id="48" icon="082548.png" rarity="2" type="3" up="3" lt="7" dn="8" rt="2" sort="48" group="0" />
+  <card id="49" icon="082549.png" rarity="2" type="3" up="7" lt="8" dn="1" rt="4" sort="49" group="0" />
+  <card id="50" icon="082550.png" rarity="2" type="3" up="8" lt="1" dn="4" rt="7" sort="50" group="0" />
+  <card id="51" icon="082551.png" rarity="3" type="4" up="7" lt="8" dn="9" rt="1" sort="51" group="0" />
+  <card id="52" icon="082552.png" rarity="3" type="2" up="8" lt="8" dn="1" rt="8" sort="52" group="0" />
+  <card id="53" icon="082553.png" rarity="3" type="2" up="8" lt="1" dn="8" rt="8" sort="53" group="0" />
+  <card id="54" icon="082554.png" rarity="3" type="2" up="8" lt="8" dn="8" rt="1" sort="54" group="0" />
+  <card id="55" icon="082555.png" rarity="3" type="2" up="1" lt="8" dn="8" rt="8" sort="55" group="0" />
+  <card id="56" icon="082556.png" rarity="3" type="3" up="9" lt="8" dn="3" rt="5" sort="56" group="0" />
+  <card id="57" icon="082557.png" rarity="3" type="0" up="4" lt="9" dn="4" rt="8" sort="57" group="0" />
+  <card id="58" icon="082558.png" rarity="3" type="0" up="5" lt="9" dn="9" rt="2" sort="58" group="0" />
+  <card id="59" icon="082559.png" rarity="3" type="3" up="9" lt="3" dn="3" rt="9" sort="59" group="0" />
+  <card id="60" icon="082560.png" rarity="3" type="3" up="9" lt="4" dn="9" rt="3" sort="60" group="0" />
+  <card id="61" icon="082561.png" rarity="4" type="2" up="9" lt="5" dn="9" rt="6" sort="61" group="0" />
+  <card id="62" icon="082562.png" rarity="4" type="0" up="1" lt="8" dn="10" rt="8" sort="62" group="0" />
+  <card id="63" icon="082563.png" rarity="4" type="0" up="10" lt="6" dn="4" rt="8" sort="63" group="0" />
+  <card id="64" icon="082564.png" rarity="4" type="4" up="4" lt="10" dn="5" rt="9" sort="64" group="0" />
+  <card id="65" icon="082565.png" rarity="4" type="0" up="5" lt="9" dn="10" rt="3" sort="65" group="0" />
+  <card id="66" icon="082566.png" rarity="4" type="0" up="9" lt="10" dn="1" rt="7" sort="66" group="0" />
+  <card id="67" icon="082567.png" rarity="4" type="0" up="6" lt="2" dn="9" rt="10" sort="67" group="0" />
+  <card id="68" icon="082568.png" rarity="4" type="0" up="10" lt="2" dn="5" rt="10" sort="1001" group="5" />
+  <card id="69" icon="082569.png" rarity="4" type="0" up="10" lt="5" dn="10" rt="1" sort="1002" group="5" />
+  <card id="70" icon="082570.png" rarity="4" type="0" up="8" lt="2" dn="8" rt="10" sort="1003" group="5" />
+  <card id="71" icon="082571.png" rarity="4" type="0" up="4" lt="10" dn="4" rt="10" sort="1004" group="5" />
+  <card id="72" icon="082572.png" rarity="4" type="0" up="4" lt="4" dn="10" rt="10" sort="1005" group="5" />
+  <card id="73" icon="082573.png" rarity="4" type="0" up="10" lt="10" dn="2" rt="5" sort="1006" group="5" />
+  <card id="74" icon="082574.png" rarity="4" type="0" up="9" lt="3" dn="9" rt="8" sort="1007" group="5" />
+  <card id="75" icon="082575.png" rarity="4" type="0" up="6" lt="10" dn="10" rt="1" sort="1008" group="5" />
+  <card id="76" icon="082576.png" rarity="4" type="0" up="5" lt="10" dn="6" rt="8" sort="1009" group="5" />
+  <card id="77" icon="082577.png" rarity="4" type="0" up="10" lt="7" dn="1" rt="9" sort="1010" group="5" />
+  <card id="78" icon="082578.png" rarity="4" type="0" up="4" lt="9" dn="7" rt="9" sort="1011" group="5" />
+  <card id="79" icon="082579.png" rarity="4" type="0" up="1" lt="7" dn="10" rt="9" sort="1012" group="5" />
+  <card id="80" icon="082580.png" rarity="4" type="0" up="9" lt="1" dn="7" rt="10" sort="1013" group="5" />
+  <card id="81" icon="082581.png" rarity="0" type="0" up="4" lt="1" dn="1" rt="7" sort="68" group="0" />
+  <card id="82" icon="082582.png" rarity="1" type="1" up="2" lt="6" dn="4" rt="7" sort="69" group="0" />
+  <card id="83" icon="082583.png" rarity="1" type="1" up="6" lt="3" dn="7" rt="3" sort="70" group="0" />
+  <card id="84" icon="082584.png" rarity="1" type="0" up="7" lt="7" dn="1" rt="3" sort="71" group="0" />
+  <card id="85" icon="082585.png" rarity="1" type="0" up="5" lt="5" dn="5" rt="5" sort="72" group="0" />
+  <card id="86" icon="082586.png" rarity="2" type="0" up="5" lt="1" dn="7" rt="8" sort="73" group="0" />
+  <card id="87" icon="082587.png" rarity="2" type="0" up="1" lt="5" dn="8" rt="7" sort="74" group="0" />
+  <card id="88" icon="082588.png" rarity="2" type="0" up="8" lt="8" dn="2" rt="3" sort="75" group="0" />
+  <card id="89" icon="082589.png" rarity="2" type="0" up="8" lt="2" dn="3" rt="8" sort="76" group="0" />
+  <card id="90" icon="082590.png" rarity="2" type="0" up="4" lt="8" dn="8" rt="1" sort="77" group="0" />
+  <card id="91" icon="082591.png" rarity="2" type="0" up="1" lt="4" dn="8" rt="8" sort="78" group="0" />
+  <card id="92" icon="082592.png" rarity="2" type="0" up="8" lt="3" dn="8" rt="1" sort="79" group="0" />
+  <card id="93" icon="082593.png" rarity="2" type="0" up="1" lt="8" dn="3" rt="8" sort="80" group="0" />
+  <card id="94" icon="082594.png" rarity="2" type="0" up="8" lt="4" dn="1" rt="7" sort="81" group="0" />
+  <card id="95" icon="082595.png" rarity="2" type="0" up="7" lt="1" dn="5" rt="8" sort="82" group="0" />
+  <card id="96" icon="082596.png" rarity="3" type="0" up="1" lt="5" dn="9" rt="9" sort="83" group="0" />
+  <card id="97" icon="082597.png" rarity="3" type="2" up="9" lt="7" dn="8" rt="1" sort="84" group="0" />
+  <card id="98" icon="082598.png" rarity="3" type="2" up="1" lt="9" dn="7" rt="8" sort="85" group="0" />
+  <card id="99" icon="082599.png" rarity="4" type="0" up="10" lt="7" dn="3" rt="8" sort="86" group="0" />
+  <card id="100" icon="082600.png" rarity="4" type="0" up="3" lt="8" dn="10" rt="7" sort="87" group="0" />
+  <card id="101" icon="082601.png" rarity="0" type="0" up="1" lt="3" dn="7" rt="2" sort="88" group="0" />
+  <card id="102" icon="082602.png" rarity="1" type="0" up="5" lt="4" dn="6" rt="5" sort="89" group="0" />
+  <card id="103" icon="082603.png" rarity="1" type="0" up="4" lt="6" dn="3" rt="6" sort="90" group="0" />
+  <card id="104" icon="082604.png" rarity="1" type="0" up="6" lt="5" dn="3" rt="5" sort="91" group="0" />
+  <card id="105" icon="082605.png" rarity="1" type="0" up="6" lt="6" dn="3" rt="4" sort="92" group="0" />
+  <card id="106" icon="082606.png" rarity="1" type="0" up="7" lt="7" dn="3" rt="2" sort="93" group="0" />
+  <card id="107" icon="082607.png" rarity="1" type="0" up="6" lt="3" dn="7" rt="3" sort="94" group="0" />
+  <card id="108" icon="082608.png" rarity="2" type="0" up="8" lt="2" dn="7" rt="4" sort="95" group="0" />
+  <card id="109" icon="082609.png" rarity="2" type="0" up="5" lt="5" dn="5" rt="8" sort="96" group="0" />
+  <card id="110" icon="082610.png" rarity="2" type="0" up="6" lt="6" dn="3" rt="6" sort="97" group="0" />
+  <card id="111" icon="082611.png" rarity="2" type="0" up="3" lt="7" dn="3" rt="7" sort="98" group="0" />
+  <card id="112" icon="082612.png" rarity="2" type="0" up="6" lt="4" dn="7" rt="4" sort="99" group="0" />
+  <card id="113" icon="082613.png" rarity="2" type="0" up="6" lt="5" dn="6" rt="6" sort="100" group="0" />
+  <card id="114" icon="082614.png" rarity="2" type="0" up="6" lt="6" dn="5" rt="7" sort="101" group="0" />
+  <card id="115" icon="082615.png" rarity="2" type="1" up="8" lt="5" dn="4" rt="5" sort="102" group="0" />
+  <card id="116" icon="082616.png" rarity="2" type="0" up="7" lt="8" dn="4" rt="3" sort="103" group="0" />
+  <card id="117" icon="082617.png" rarity="2" type="1" up="2" lt="2" dn="8" rt="8" sort="104" group="0" />
+  <card id="118" icon="082618.png" rarity="3" type="0" up="9" lt="5" dn="7" rt="6" sort="105" group="0" />
+  <card id="119" icon="082619.png" rarity="4" type="4" up="8" lt="8" dn="6" rt="8" sort="106" group="0" />
+  <card id="120" icon="082620.png" rarity="4" type="0" up="7" lt="1" dn="10" rt="9" sort="107" group="0" />
+  <card id="121" icon="082621.png" rarity="1" type="0" up="7" lt="2" dn="7" rt="2" sort="108" group="0" />
+  <card id="122" icon="082622.png" rarity="1" type="3" up="2" lt="7" dn="2" rt="7" sort="109" group="0" />
+  <card id="123" icon="082623.png" rarity="2" type="0" up="8" lt="4" dn="5" rt="4" sort="110" group="0" />
+  <card id="124" icon="082624.png" rarity="2" type="0" up="2" lt="8" dn="4" rt="7" sort="111" group="0" />
+  <card id="125" icon="082625.png" rarity="2" type="0" up="7" lt="3" dn="6" rt="4" sort="112" group="0" />
+  <card id="126" icon="082626.png" rarity="2" type="0" up="3" lt="6" dn="6" rt="6" sort="113" group="0" />
+  <card id="127" icon="082627.png" rarity="2" type="0" up="7" lt="1" dn="7" rt="5" sort="114" group="0" />
+  <card id="128" icon="082628.png" rarity="2" type="1" up="3" lt="7" dn="2" rt="8" sort="115" group="0" />
+  <card id="129" icon="082629.png" rarity="2" type="0" up="4" lt="6" dn="8" rt="4" sort="116" group="0" />
+  <card id="130" icon="082630.png" rarity="2" type="0" up="6" lt="6" dn="6" rt="3" sort="117" group="0" />
+  <card id="131" icon="082631.png" rarity="2" type="0" up="8" lt="3" dn="2" rt="7" sort="118" group="0" />
+  <card id="132" icon="082632.png" rarity="2" type="0" up="1" lt="7" dn="6" rt="7" sort="119" group="0" />
+  <card id="133" icon="082633.png" rarity="2" type="0" up="4" lt="7" dn="3" rt="7" sort="120" group="0" />
+  <card id="134" icon="082634.png" rarity="2" type="0" up="7" lt="4" dn="7" rt="3" sort="121" group="0" />
+  <card id="135" icon="082635.png" rarity="3" type="0" up="9" lt="4" dn="6" rt="7" sort="122" group="0" />
+  <card id="136" icon="082636.png" rarity="3" type="0" up="7" lt="7" dn="7" rt="7" sort="123" group="0" />
+  <card id="137" icon="082637.png" rarity="3" type="2" up="6" lt="8" dn="8" rt="6" sort="124" group="0" />
+  <card id="138" icon="082638.png" rarity="3" type="3" up="9" lt="7" dn="3" rt="7" sort="125" group="0" />
+  <card id="139" icon="082639.png" rarity="3" type="0" up="8" lt="6" dn="8" rt="6" sort="126" group="0" />
+  <card id="140" icon="082640.png" rarity="4" type="0" up="7" lt="10" dn="7" rt="6" sort="127" group="0" />
+  <card id="141" icon="082641.png" rarity="1" type="0" up="4" lt="3" dn="7" rt="3" sort="128" group="0" />
+  <card id="142" icon="082642.png" rarity="1" type="0" up="2" lt="6" dn="3" rt="6" sort="129" group="0" />
+  <card id="143" icon="082643.png" rarity="1" type="0" up="7" lt="6" dn="3" rt="3" sort="130" group="0" />
+  <card id="144" icon="082644.png" rarity="1" type="0" up="5" lt="6" dn="4" rt="6" sort="131" group="0" />
+  <card id="145" icon="082645.png" rarity="1" type="0" up="2" lt="7" dn="7" rt="2" sort="132" group="0" />
+  <card id="146" icon="082646.png" rarity="2" type="0" up="1" lt="8" dn="4" rt="8" sort="133" group="0" />
+  <card id="147" icon="082647.png" rarity="2" type="0" up="1" lt="6" dn="7" rt="7" sort="134" group="0" />
+  <card id="148" icon="082648.png" rarity="2" type="0" up="4" lt="6" dn="4" rt="7" sort="135" group="0" />
+  <card id="149" icon="082649.png" rarity="2" type="0" up="5" lt="6" dn="7" rt="6" sort="136" group="0" />
+  <card id="150" icon="082650.png" rarity="3" type="0" up="6" lt="8" dn="6" rt="8" sort="137" group="0" />
+  <card id="151" icon="082651.png" rarity="3" type="0" up="9" lt="6" dn="5" rt="6" sort="138" group="0" />
+  <card id="152" icon="082652.png" rarity="3" type="0" up="5" lt="8" dn="7" rt="8" sort="139" group="0" />
+  <card id="153" icon="082653.png" rarity="4" type="0" up="7" lt="7" dn="10" rt="6" sort="140" group="0" />
+  <card id="154" icon="082654.png" rarity="0" type="0" up="3" lt="4" dn="4" rt="1" sort="141" group="0" />
+  <card id="155" icon="082655.png" rarity="0" type="0" up="6" lt="1" dn="4" rt="1" sort="142" group="0" />
+  <card id="156" icon="082656.png" rarity="0" type="4" up="4" lt="3" dn="2" rt="3" sort="143" group="0" />
+  <card id="157" icon="082657.png" rarity="1" type="0" up="4" lt="3" dn="6" rt="6" sort="144" group="0" />
+  <card id="158" icon="082658.png" rarity="1" type="0" up="7" lt="3" dn="4" rt="5" sort="145" group="0" />
+  <card id="159" icon="082659.png" rarity="1" type="1" up="5" lt="5" dn="6" rt="3" sort="146" group="0" />
+  <card id="160" icon="082660.png" rarity="1" type="4" up="6" lt="3" dn="6" rt="3" sort="147" group="0" />
+  <card id="161" icon="082661.png" rarity="2" type="0" up="5" lt="7" dn="1" rt="7" sort="148" group="0" />
+  <card id="162" icon="082662.png" rarity="2" type="1" up="7" lt="6" dn="6" rt="2" sort="149" group="0" />
+  <card id="163" icon="082663.png" rarity="2" type="2" up="7" lt="3" dn="2" rt="8" sort="150" group="0" />
+  <card id="164" icon="082664.png" rarity="2" type="0" up="4" lt="7" dn="6" rt="5" sort="151" group="0" />
+  <card id="165" icon="082665.png" rarity="3" type="3" up="8" lt="1" dn="7" rt="9" sort="152" group="0" />
+  <card id="166" icon="082666.png" rarity="3" type="3" up="9" lt="9" dn="2" rt="5" sort="153" group="0" />
+  <card id="167" icon="082667.png" rarity="3" type="4" up="3" lt="9" dn="3" rt="9" sort="154" group="0" />
+  <card id="168" icon="082668.png" rarity="4" type="2" up="10" lt="8" dn="5" rt="6" sort="155" group="0" />
+  <card id="169" icon="082669.png" rarity="0" type="0" up="1" lt="4" dn="2" rt="6" sort="156" group="0" />
+  <card id="170" icon="082670.png" rarity="1" type="0" up="5" lt="7" dn="4" rt="4" sort="157" group="0" />
+  <card id="171" icon="082671.png" rarity="1" type="4" up="3" lt="5" dn="4" rt="7" sort="158" group="0" />
+  <card id="172" icon="082672.png" rarity="1" type="4" up="3" lt="5" dn="5" rt="5" sort="159" group="0" />
+  <card id="173" icon="082673.png" rarity="1" type="0" up="4" lt="7" dn="1" rt="6" sort="167" group="0" />
+  <card id="174" icon="082674.png" rarity="2" type="0" up="3" lt="8" dn="5" rt="5" sort="160" group="0" />
+  <card id="175" icon="082675.png" rarity="2" type="4" up="5" lt="7" dn="4" rt="5" sort="161" group="0" />
+  <card id="176" icon="082676.png" rarity="2" type="4" up="6" lt="2" dn="6" rt="7" sort="162" group="0" />
+  <card id="177" icon="082677.png" rarity="2" type="0" up="8" lt="8" dn="4" rt="1" sort="163" group="0" />
+  <card id="178" icon="082678.png" rarity="2" type="0" up="2" lt="7" dn="8" rt="3" sort="168" group="0" />
+  <card id="179" icon="082679.png" rarity="3" type="0" up="4" lt="4" dn="8" rt="9" sort="164" group="0" />
+  <card id="180" icon="082680.png" rarity="3" type="4" up="3" lt="5" dn="9" rt="7" sort="165" group="0" />
+  <card id="181" icon="082681.png" rarity="3" type="0" up="6" lt="8" dn="4" rt="7" sort="169" group="0" />
+  <card id="182" icon="082682.png" rarity="4" type="2" up="3" lt="7" dn="8" rt="10" sort="166" group="0" />
+  <card id="183" icon="082683.png" rarity="0" type="1" up="1" lt="6" dn="1" rt="5" sort="170" group="0" />
+  <card id="184" icon="082684.png" rarity="1" type="1" up="4" lt="5" dn="5" rt="4" sort="171" group="0" />
+  <card id="185" icon="082685.png" rarity="1" type="1" up="3" lt="7" dn="5" rt="2" sort="172" group="0" />
+  <card id="186" icon="082686.png" rarity="1" type="0" up="4" lt="1" dn="4" rt="7" sort="173" group="0" />
+  <card id="187" icon="082687.png" rarity="1" type="0" up="5" lt="6" dn="2" rt="6" sort="174" group="0" />
+  <card id="188" icon="082688.png" rarity="2" type="0" up="6" lt="3" dn="8" rt="3" sort="175" group="0" />
+  <card id="189" icon="082689.png" rarity="2" type="0" up="8" lt="8" dn="3" rt="1" sort="176" group="0" />
+  <card id="190" icon="082690.png" rarity="2" type="2" up="2" lt="8" dn="3" rt="8" sort="177" group="0" />
+  <card id="191" icon="082691.png" rarity="2" type="2" up="3" lt="7" dn="7" rt="5" sort="178" group="0" />
+  <card id="192" icon="082692.png" rarity="2" type="4" up="7" lt="4" dn="7" rt="4" sort="179" group="0" />
+  <card id="193" icon="082693.png" rarity="2" type="0" up="4" lt="7" dn="8" rt="2" sort="180" group="0" />
+  <card id="194" icon="082694.png" rarity="2" type="0" up="3" lt="5" dn="6" rt="8" sort="181" group="0" />
+  <card id="195" icon="082695.png" rarity="2" type="0" up="6" lt="7" dn="4" rt="4" sort="182" group="0" />
+  <card id="196" icon="082696.png" rarity="2" type="0" up="6" lt="6" dn="7" rt="4" sort="183" group="0" />
+  <card id="197" icon="082697.png" rarity="3" type="2" up="7" lt="8" dn="8" rt="2" sort="184" group="0" />
+  <card id="198" icon="082698.png" rarity="3" type="4" up="9" lt="2" dn="8" rt="6" sort="185" group="0" />
+  <card id="199" icon="082699.png" rarity="3" type="3" up="2" lt="8" dn="8" rt="7" sort="186" group="0" />
+  <card id="200" icon="082700.png" rarity="3" type="3" up="6" lt="9" dn="1" rt="8" sort="187" group="0" />
+  <card id="201" icon="082701.png" rarity="4" type="4" up="6" lt="6" dn="7" rt="10" sort="188" group="0" />
+  <card id="202" icon="082702.png" rarity="4" type="0" up="2" lt="10" dn="5" rt="10" sort="189" group="0" />
+  <card id="203" icon="082703.png" rarity="0" type="0" up="5" lt="2" dn="5" rt="1" sort="190" group="0" />
+  <card id="204" icon="082704.png" rarity="1" type="0" up="7" lt="2" dn="2" rt="6" sort="191" group="0" />
+  <card id="205" icon="082705.png" rarity="1" type="1" up="1" lt="5" dn="7" rt="5" sort="192" group="0" />
+  <card id="206" icon="082706.png" rarity="2" type="0" up="2" lt="7" dn="6" rt="7" sort="193" group="0" />
+  <card id="207" icon="082707.png" rarity="2" type="0" up="5" lt="8" dn="6" rt="3" sort="194" group="0" />
+  <card id="208" icon="082708.png" rarity="2" type="0" up="4" lt="7" dn="1" rt="8" sort="195" group="0" />
+  <card id="209" icon="082709.png" rarity="3" type="0" up="9" lt="2" dn="5" rt="8" sort="196" group="0" />
+  <card id="210" icon="082710.png" rarity="4" type="0" up="1" lt="10" dn="10" rt="6" sort="197" group="0" />
+  <card id="211" icon="082711.png" rarity="0" type="0" up="3" lt="2" dn="1" rt="6" sort="198" group="0" />
+  <card id="212" icon="082712.png" rarity="1" type="0" up="4" lt="2" dn="7" rt="4" sort="199" group="0" />
+  <card id="213" icon="082713.png" rarity="1" type="0" up="6" lt="4" dn="4" rt="4" sort="200" group="0" />
+  <card id="214" icon="082714.png" rarity="1" type="0" up="6" lt="2" dn="3" rt="7" sort="201" group="0" />
+  <card id="215" icon="082715.png" rarity="2" type="0" up="7" lt="7" dn="1" rt="7" sort="202" group="0" />
+  <card id="216" icon="082716.png" rarity="2" type="0" up="7" lt="1" dn="7" rt="7" sort="203" group="0" />
+  <card id="217" icon="082717.png" rarity="2" type="3" up="8" lt="4" dn="8" rt="2" sort="204" group="0" />
+  <card id="218" icon="082718.png" rarity="2" type="1" up="3" lt="3" dn="8" rt="7" sort="205" group="0" />
+  <card id="219" icon="082719.png" rarity="3" type="0" up="8" lt="9" dn="1" rt="7" sort="206" group="0" />
+  <card id="220" icon="082720.png" rarity="4" type="0" up="10" lt="2" dn="7" rt="9" sort="207" group="0" />
+  <card id="221" icon="082721.png" rarity="0" type="0" up="6" lt="1" dn="1" rt="5" sort="212" group="0" />
+  <card id="222" icon="082722.png" rarity="1" type="0" up="2" lt="7" dn="5" rt="6" sort="213" group="0" />
+  <card id="223" icon="082723.png" rarity="1" type="0" up="3" lt="7" dn="3" rt="5" sort="215" group="0" />
+  <card id="224" icon="082724.png" rarity="2" type="0" up="3" lt="8" dn="4" rt="8" sort="208" group="0" />
+  <card id="225" icon="082725.png" rarity="2" type="0" up="4" lt="7" dn="5" rt="7" sort="214" group="0" />
+  <card id="226" icon="082726.png" rarity="2" type="0" up="3" lt="8" dn="7" rt="3" sort="216" group="0" />
+  <card id="227" icon="082727.png" rarity="2" type="0" up="5" lt="8" dn="2" rt="7" sort="217" group="0" />
+  <card id="228" icon="082728.png" rarity="3" type="2" up="2" lt="7" dn="7" rt="8" sort="209" group="0" />
+  <card id="229" icon="082729.png" rarity="4" type="0" up="7" lt="6" dn="10" rt="7" sort="210" group="0" />
+  <card id="230" icon="082730.png" rarity="4" type="0" up="10" lt="5" dn="10" rt="2" sort="211" group="0" />
+  <card id="231" icon="082731.png" rarity="0" type="0" up="7" lt="1" dn="1" rt="4" sort="224" group="0" />
+  <card id="232" icon="082732.png" rarity="1" type="0" up="3" lt="7" dn="1" rt="7" sort="218" group="0" />
+  <card id="233" icon="082733.png" rarity="2" type="0" up="2" lt="6" dn="6" rt="7" sort="219" group="0" />
+  <card id="234" icon="082734.png" rarity="2" type="0" up="5" lt="8" dn="5" rt="5" sort="220" group="0" />
+  <card id="235" icon="082735.png" rarity="2" type="0" up="1" lt="7" dn="7" rt="7" sort="221" group="0" />
+  <card id="236" icon="082736.png" rarity="2" type="0" up="4" lt="8" dn="4" rt="7" sort="225" group="0" />
+  <card id="237" icon="082737.png" rarity="2" type="0" up="7" lt="2" dn="8" rt="5" sort="226" group="0" />
+  <card id="238" icon="082738.png" rarity="2" type="4" up="8" lt="4" dn="1" rt="8" sort="222" group="0" />
+  <card id="239" icon="082739.png" rarity="4" type="0" up="10" lt="8" dn="1" rt="8" sort="227" group="0" />
+  <card id="240" icon="082740.png" rarity="4" type="0" up="6" lt="9" dn="3" rt="10" sort="223" group="0" />
+  <card id="241" icon="082741.png" rarity="0" type="3" up="1" lt="4" dn="1" rt="7" sort="228" group="0" />
+  <card id="242" icon="082742.png" rarity="1" type="0" up="4" lt="5" dn="3" rt="7" sort="235" group="0" />
+  <card id="243" icon="082743.png" rarity="1" type="0" up="7" lt="1" dn="1" rt="7" sort="236" group="0" />
+  <card id="244" icon="082744.png" rarity="2" type="4" up="6" lt="5" dn="8" rt="3" sort="229" group="0" />
+  <card id="245" icon="082745.png" rarity="2" type="0" up="7" lt="4" dn="4" rt="8" sort="237" group="0" />
+  <card id="246" icon="082746.png" rarity="2" type="0" up="7" lt="7" dn="7" rt="1" sort="230" group="0" />
+  <card id="247" icon="082747.png" rarity="2" type="0" up="6" lt="6" dn="6" rt="6" sort="231" group="0" />
+  <card id="248" icon="082748.png" rarity="3" type="1" up="6" lt="9" dn="6" rt="7" sort="232" group="0" />
+  <card id="249" icon="082749.png" rarity="3" type="0" up="9" lt="4" dn="8" rt="4" sort="238" group="0" />
+  <card id="250" icon="082750.png" rarity="4" type="0" up="6" lt="10" dn="7" rt="7" sort="233" group="0" />
+  <card id="251" icon="082751.png" rarity="4" type="3" up="6" lt="8" dn="8" rt="8" sort="234" group="0" />
+  <card id="252" icon="082752.png" rarity="4" type="0" up="7" lt="10" dn="9" rt="1" sort="1014" group="5" />
+  <card id="253" icon="082753.png" rarity="0" type="0" up="1" lt="7" dn="2" rt="3" sort="239" group="0" />
+  <card id="254" icon="082754.png" rarity="0" type="0" up="7" lt="2" dn="2" rt="2" sort="240" group="0" />
+  <card id="255" icon="082755.png" rarity="0" type="0" up="5" lt="1" dn="6" rt="1" sort="241" group="0" />
+  <card id="256" icon="082756.png" rarity="1" type="0" up="7" lt="4" dn="4" rt="4" sort="242" group="0" />
+  <card id="257" icon="082757.png" rarity="1" type="1" up="7" lt="5" dn="5" rt="1" sort="243" group="0" />
+  <card id="258" icon="082758.png" rarity="1" type="0" up="6" lt="4" dn="7" rt="1" sort="244" group="0" />
+  <card id="259" icon="082759.png" rarity="1" type="0" up="1" lt="3" dn="7" rt="7" sort="245" group="0" />
+  <card id="260" icon="082760.png" rarity="2" type="0" up="2" lt="6" dn="8" rt="6" sort="246" group="0" />
+  <card id="261" icon="082761.png" rarity="2" type="0" up="8" lt="6" dn="6" rt="2" sort="247" group="0" />
+  <card id="262" icon="082762.png" rarity="2" type="0" up="6" lt="2" dn="6" rt="8" sort="248" group="0" />
+  <card id="263" icon="082763.png" rarity="2" type="0" up="6" lt="8" dn="2" rt="6" sort="249" group="0" />
+  <card id="264" icon="082764.png" rarity="2" type="0" up="8" lt="5" dn="5" rt="5" sort="250" group="0" />
+  <card id="265" icon="082765.png" rarity="2" type="0" up="1" lt="8" dn="8" rt="3" sort="251" group="0" />
+  <card id="266" icon="082766.png" rarity="2" type="0" up="4" lt="4" dn="7" rt="6" sort="252" group="0" />
+  <card id="267" icon="082767.png" rarity="3" type="0" up="8" lt="3" dn="8" rt="8" sort="253" group="0" />
+  <card id="268" icon="082768.png" rarity="3" type="3" up="2" lt="9" dn="5" rt="9" sort="254" group="0" />
+  <card id="269" icon="082769.png" rarity="3" type="3" up="9" lt="2" dn="5" rt="9" sort="255" group="0" />
+  <card id="270" icon="082770.png" rarity="3" type="0" up="1" lt="9" dn="9" rt="5" sort="256" group="0" />
+  <card id="271" icon="082771.png" rarity="4" type="0" up="8" lt="6" dn="6" rt="10" sort="257" group="0" />
+  <card id="272" icon="082772.png" rarity="4" type="0" up="1" lt="9" dn="9" rt="9" sort="258" group="0" />
+  <card id="273" icon="082773.png" rarity="0" type="0" up="2" lt="7" dn="2" rt="2" sort="259" group="0" />
+  <card id="274" icon="082774.png" rarity="0" type="0" up="1" lt="2" dn="6" rt="4" sort="260" group="0" />
+  <card id="275" icon="082775.png" rarity="1" type="0" up="3" lt="5" dn="6" rt="5" sort="261" group="0" />
+  <card id="276" icon="082776.png" rarity="1" type="1" up="7" lt="6" dn="2" rt="4" sort="262" group="0" />
+  <card id="277" icon="082777.png" rarity="1" type="1" up="7" lt="4" dn="6" rt="2" sort="263" group="0" />
+  <card id="278" icon="082778.png" rarity="2" type="0" up="8" lt="7" dn="2" rt="4" sort="264" group="0" />
+  <card id="279" icon="082779.png" rarity="2" type="0" up="4" lt="6" dn="6" rt="8" sort="265" group="0" />
+  <card id="280" icon="082780.png" rarity="3" type="0" up="7" lt="7" dn="9" rt="4" sort="266" group="0" />
+  <card id="281" icon="082781.png" rarity="4" type="0" up="10" lt="9" dn="7" rt="1" sort="267" group="0" />
+  <card id="282" icon="082782.png" rarity="4" type="0" up="4" lt="8" dn="6" rt="10" sort="268" group="0" />
+  <card id="283" icon="082783.png" rarity="0" type="0" up="2" lt="2" dn="2" rt="7" sort="269" group="0" />
+  <card id="284" icon="082784.png" rarity="0" type="1" up="4" lt="6" dn="2" rt="2" sort="270" group="0" />
+  <card id="285" icon="082785.png" rarity="1" type="0" up="2" lt="4" dn="7" rt="6" sort="271" group="0" />
+  <card id="286" icon="082786.png" rarity="1" type="0" up="5" lt="5" dn="6" rt="4" sort="278" group="0" />
+  <card id="287" icon="082787.png" rarity="2" type="0" up="6" lt="2" dn="8" rt="6" sort="272" group="0" />
+  <card id="288" icon="082788.png" rarity="2" type="0" up="8" lt="7" dn="1" rt="6" sort="273" group="0" />
+  <card id="289" icon="082789.png" rarity="2" type="0" up="7" lt="5" dn="8" rt="2" sort="274" group="0" />
+  <card id="290" icon="082790.png" rarity="2" type="0" up="5" lt="6" dn="3" rt="8" sort="275" group="0" />
+  <card id="291" icon="082791.png" rarity="3" type="4" up="8" lt="7" dn="1" rt="9" sort="276" group="0" />
+  <card id="292" icon="082792.png" rarity="4" type="0" up="9" lt="9" dn="2" rt="9" sort="277" group="0" />
+  <card id="293" icon="082793.png" rarity="4" type="4" up="10" lt="10" dn="4" rt="1" sort="279" group="0" />
+  <card id="294" icon="082794.png" rarity="0" type="1" up="2" lt="4" dn="6" rt="2" sort="280" group="0" />
+  <card id="295" icon="082795.png" rarity="1" type="0" up="1" lt="7" dn="1" rt="7" sort="288" group="0" />
+  <card id="296" icon="082796.png" rarity="1" type="0" up="6" lt="4" dn="2" rt="6" sort="281" group="0" />
+  <card id="297" icon="082797.png" rarity="2" type="0" up="5" lt="4" dn="7" rt="7" sort="282" group="0" />
+  <card id="298" icon="082798.png" rarity="2" type="4" up="8" lt="4" dn="6" rt="6" sort="289" group="0" />
+  <card id="299" icon="082799.png" rarity="2" type="0" up="6" lt="1" dn="7" rt="8" sort="290" group="0" />
+  <card id="300" icon="082800.png" rarity="3" type="0" up="8" lt="4" dn="9" rt="4" sort="283" group="0" />
+  <card id="301" icon="082801.png" rarity="3" type="3" up="7" lt="9" dn="8" rt="1" sort="284" group="0" />
+  <card id="302" icon="082802.png" rarity="3" type="4" up="1" lt="9" dn="8" rt="7" sort="285" group="0" />
+  <card id="303" icon="082803.png" rarity="4" type="0" up="4" lt="8" dn="10" rt="6" sort="286" group="0" />
+  <card id="304" icon="082804.png" rarity="4" type="2" up="2" lt="10" dn="10" rt="5" sort="287" group="0" />
+  <card id="305" icon="082805.png" rarity="0" type="0" up="4" lt="7" dn="1" rt="1" sort="297" group="0" />
+  <card id="306" icon="082806.png" rarity="1" type="0" up="3" lt="3" dn="7" rt="6" sort="291" group="0" />
+  <card id="307" icon="082807.png" rarity="2" type="0" up="6" lt="1" dn="8" rt="7" sort="298" group="0" />
+  <card id="308" icon="082808.png" rarity="2" type="0" up="8" lt="7" dn="6" rt="1" sort="299" group="0" />
+  <card id="309" icon="082809.png" rarity="2" type="0" up="4" lt="8" dn="6" rt="6" sort="300" group="0" />
+  <card id="310" icon="082810.png" rarity="2" type="0" up="6" lt="6" dn="4" rt="8" sort="301" group="0" />
+  <card id="311" icon="082811.png" rarity="2" type="0" up="8" lt="6" dn="4" rt="6" sort="302" group="0" />
+  <card id="312" icon="082812.png" rarity="3" type="4" up="7" lt="1" dn="9" rt="8" sort="292" group="0" />
+  <card id="313" icon="082813.png" rarity="3" type="0" up="7" lt="9" dn="7" rt="1" sort="293" group="0" />
+  <card id="314" icon="082814.png" rarity="3" type="0" up="5" lt="9" dn="1" rt="9" sort="294" group="0" />
+  <card id="315" icon="082815.png" rarity="4" type="0" up="10" lt="5" dn="8" rt="6" sort="295" group="0" />
+  <card id="316" icon="082816.png" rarity="4" type="2" up="5" lt="9" dn="6" rt="9" sort="296" group="0" />
+  <card id="317" icon="082817.png" rarity="1" type="0" up="5" lt="4" dn="4" rt="7" sort="303" group="0" />
+  <card id="318" icon="082818.png" rarity="2" type="2" up="8" lt="2" dn="8" rt="4" sort="304" group="0" />
+  <card id="319" icon="082819.png" rarity="2" type="4" up="7" lt="5" dn="8" rt="3" sort="305" group="0" />
+  <card id="320" icon="082820.png" rarity="2" type="2" up="8" lt="3" dn="4" rt="7" sort="309" group="0" />
+  <card id="321" icon="082821.png" rarity="2" type="0" up="1" lt="6" dn="7" rt="8" sort="310" group="0" />
+  <card id="322" icon="082822.png" rarity="2" type="0" up="8" lt="1" dn="7" rt="6" sort="311" group="0" />
+  <card id="323" icon="082823.png" rarity="3" type="0" up="9" lt="1" dn="7" rt="8" sort="306" group="0" />
+  <card id="324" icon="082824.png" rarity="3" type="4" up="9" lt="8" dn="7" rt="1" sort="307" group="0" />
+  <card id="325" icon="082825.png" rarity="3" type="0" up="4" lt="4" dn="9" rt="9" sort="312" group="0" />
+  <card id="326" icon="082826.png" rarity="4" type="0" up="6" lt="10" dn="4" rt="8" sort="308" group="0" />
 </root>

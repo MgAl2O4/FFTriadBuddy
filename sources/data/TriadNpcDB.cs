@@ -1,8 +1,6 @@
 ﻿using MgAl2O4.Utils;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Reflection;
 using System.Xml;
 
 namespace FFTriadBuddy
@@ -10,26 +8,42 @@ namespace FFTriadBuddy
     public class TriadNpc
     {
         public int Id;
-        public string Name;
-        public string Location;
+        public LocString Name;
+        public LocString LocationMap;
+        public int LocationX;
+        public int LocationY;
         public List<TriadGameModifier> Rules;
         public List<TriadCard> Rewards;
         public TriadDeck Deck;
 
-        public TriadNpc(int id, string name, string location,
-            List<TriadGameModifier> rules, List<TriadCard> rewards, int[] cardsAlways, int[] cardsPool)
+        public TriadNpc(int id, List<TriadGameModifier> rules, List<TriadCard> rewards, int[] cardsAlways, int[] cardsPool)
         {
             Id = id;
-            Name = name;
-            Location = location;
+            Name = LocalizationDB.Get().FindOrAddLocString(ELocStringType.NpcName, id);
+            LocationMap = LocalizationDB.Get().FindOrAddLocString(ELocStringType.NpcLocation, id);
             Rules = rules;
             Rewards = rewards;
             Deck = new TriadDeck(cardsAlways, cardsPool);
         }
 
+        public TriadNpc(int id, List<TriadGameModifier> rules, List<TriadCard> rewards, TriadDeck deck)
+        {
+            Id = id;
+            Name = LocalizationDB.Get().FindOrAddLocString(ELocStringType.NpcName, id);
+            LocationMap = LocalizationDB.Get().FindOrAddLocString(ELocStringType.NpcLocation, id);
+            Rules = rules;
+            Rewards = rewards;
+            Deck = deck;
+        }
+
         public override string ToString()
         {
-            return Name;
+            return Name.GetCodeName();
+        }
+
+        public string GetLocationDesc()
+        {
+            return string.Format("{0} ({1}, {2})", LocationMap.GetLocalized(), LocationX, LocationY);
         }
     }
 
@@ -52,18 +66,6 @@ namespace FFTriadBuddy
 
         public bool Load()
         {
-            List<TriadNpc> loadedNpcs = new List<TriadNpc>();
-            int maxLoadedId = 0;
-
-            List<TriadGameModifier> modObjects = new List<TriadGameModifier>();
-            foreach (Type type in Assembly.GetAssembly(typeof(TriadGameModifier)).GetTypes())
-            {
-                if (type.IsSubclassOf(typeof(TriadGameModifier)))
-                {
-                    modObjects.Add((TriadGameModifier)Activator.CreateInstance(type));
-                }
-            }
-
             try
             {
                 XmlDocument xdoc = new XmlDocument();
@@ -88,7 +90,8 @@ namespace FFTriadBuddy
                                 {
                                     if (testElem.Name == "rule")
                                     {
-                                        rules.Add(ParseRule(testElem.GetAttribute("name"), modObjects));
+                                        int ruleId = int.Parse(testElem.GetAttribute("id"));
+                                        rules.Add(TriadGameModifierDB.Get().mods[ruleId]);
                                     }
                                     else if (testElem.Name == "reward")
                                     {
@@ -116,15 +119,19 @@ namespace FFTriadBuddy
 
                             TriadNpc newNpc = new TriadNpc(
                                 int.Parse(npcElem.GetAttribute("id")),
-                                WebUtility.HtmlDecode(npcElem.GetAttribute("name")),
-                                WebUtility.HtmlDecode(npcElem.GetAttribute("location")),
                                 rules,
                                 rewards,
                                 deckA,
                                 deckV);
+                            newNpc.LocationX = int.Parse(npcElem.GetAttribute("mx"));
+                            newNpc.LocationY = int.Parse(npcElem.GetAttribute("my"));
 
-                            loadedNpcs.Add(newNpc);
-                            maxLoadedId = Math.Max(maxLoadedId, newNpc.Id);
+                            while (npcs.Count <= newNpc.Id)
+                            {
+                                npcs.Add(null);
+                            }
+
+                            npcs[newNpc.Id] = newNpc;
                         }
                         catch (Exception ex)
                         {
@@ -138,26 +145,13 @@ namespace FFTriadBuddy
                 Logger.WriteLine("Loading failed! Exception:" + ex);
             }
 
-            if (loadedNpcs.Count > 0)
-            {
-                while (npcs.Count < (maxLoadedId + 1))
-                {
-                    npcs.Add(null);
-                }
-
-                foreach (TriadNpc npc in loadedNpcs)
-                {
-                    npcs[npc.Id] = npc;
-                }
-            }
-
             Logger.WriteLine("Loaded npcs: " + npcs.Count);
-            return loadedNpcs.Count > 0;
+            return npcs.Count > 0;
         }
 
         public void Save()
         {
-            string RawFilePath = AssetManager.Get().CreateFilePath("assets/" + DBPath) + ".new";
+            string RawFilePath = AssetManager.Get().CreateFilePath("assets/" + DBPath);
             try
             {
                 XmlWriterSettings writerSettings = new XmlWriterSettings();
@@ -173,8 +167,8 @@ namespace FFTriadBuddy
                     {
                         xmlWriter.WriteStartElement("npc");
                         xmlWriter.WriteAttributeString("id", npc.Id.ToString());
-                        xmlWriter.WriteAttributeString("name", npc.Name);
-                        xmlWriter.WriteAttributeString("location", npc.Location);
+                        xmlWriter.WriteAttributeString("mx", npc.LocationX.ToString());
+                        xmlWriter.WriteAttributeString("my", npc.LocationY.ToString());
 
                         xmlWriter.WriteStartElement("deckA");
                         for (int Idx = 0; Idx < 5; Idx++)
@@ -193,7 +187,7 @@ namespace FFTriadBuddy
                         for (int Idx = 0; Idx < npc.Rules.Count; Idx++)
                         {
                             xmlWriter.WriteStartElement("rule");
-                            xmlWriter.WriteAttributeString("name", npc.Rules[Idx].GetName());
+                            xmlWriter.WriteAttributeString("id", npc.Rules[Idx].GetLocalizationId().ToString());
                             xmlWriter.WriteEndElement();
                         }
 
@@ -217,32 +211,11 @@ namespace FFTriadBuddy
             }
         }
 
-        private TriadGameModifier ParseRule(string ruleName, List<TriadGameModifier> ruleTypes)
-        {
-            TriadGameModifier result = null;
-            foreach (TriadGameModifier mod in ruleTypes)
-            {
-                if (ruleName.Equals(mod.GetName(), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    result = (TriadGameModifier)Activator.CreateInstance(mod.GetType());
-                    break;
-                }
-            }
-
-            if (result == null)
-            {
-                Logger.WriteLine("Loading failed! Can't parse rule: " + ruleName);
-            }
-
-            return result;
-        }
-
         public TriadNpc Find(string Name)
         {
             foreach (TriadNpc testNpc in npcs)
             {
-                if (testNpc != null &&
-                    testNpc.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
+                if (testNpc != null && testNpc.Name.GetCodeName().Equals(Name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return testNpc;
                 }
@@ -263,6 +236,19 @@ namespace FFTriadBuddy
             }
 
             return result;
+        }
+
+        public TriadNpc FindByDeckId(string deckId)
+        {
+            foreach (TriadNpc testNpc in npcs)
+            {
+                if (testNpc != null && testNpc.Deck != null && testNpc.Deck.deckId == deckId)
+                {
+                    return testNpc;
+                }
+            }
+
+            return null;
         }
     }
 }

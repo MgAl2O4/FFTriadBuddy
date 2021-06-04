@@ -38,7 +38,7 @@ namespace FFTriadBuddy
     public class TriadCard : IEquatable<TriadCard>
     {
         public int Id;
-        public string Name;
+        public LocString Name;
         public string IconPath;
         public ETriadCardRarity Rarity;
         public ETriadCardType Type;
@@ -56,10 +56,10 @@ namespace FFTriadBuddy
             Group = 0;
         }
 
-        public TriadCard(int id, string name, string iconPath, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortOrder, int group)
+        public TriadCard(int id, string iconPath, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortOrder, int group)
         {
             Id = id;
-            Name = name;
+            Name = LocalizationDB.Get().FindOrAddLocString(ELocStringType.CardName, id);
             IconPath = iconPath;
             Rarity = rarity;
             Type = type;
@@ -98,14 +98,19 @@ namespace FFTriadBuddy
                 (Sides[3] >= 1) && (Sides[3] <= 10);
         }
 
-        public string ToShortString()
+        public string ToShortCodeString()
         {
-            return "[" + Id + ":" + Name + "]";
+            return "[" + Id + ":" + Name.GetCodeName() + "]";
+        }
+
+        public string ToShortLocalizedString()
+        {
+            return "[" + Id + ":" + Name.GetLocalized() + "]";
         }
 
         public override string ToString()
         {
-            string desc = "[" + Id + "] " + Name + " ";
+            string desc = "[" + Id + "] " + Name.GetCodeName() + " ";
             for (int Idx = 0; Idx <= (int)Rarity; Idx++)
             {
                 desc += "*";
