@@ -29,7 +29,7 @@ Bug happens. Whenever it's related to Play: Screenshot mode not recognizing imag
 You can now help with translating tool's UI to your own language. Game assets (card names, etc) are limited to game client languages.
 * copy sources\loc\strings.resx
 * add culture code to file name (ISO 639-1 from https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-* translate content of <value> tags
+* translate content of value tags
 * send file via pull request or email
 
 Contact: MgAl2O4@protonmail.com
