@@ -30,12 +30,105 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.contextMenuStripCardInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuFindCardOnline = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripSelectNpc = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.selectNpcToPlayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.npcReward1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.npcReward2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.npcReward3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.npcReward4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageListRarity = new System.Windows.Forms.ImageList(this.components);
+            this.imageListType = new System.Windows.Forms.ImageList(this.components);
+            this.contextMenuStripFindCard = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripFindCardText = new System.Windows.Forms.ToolStripTextBox();
+            this.timerOptimizeDeck = new System.Windows.Forms.Timer(this.components);
+            this.timerSelectNpc = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBoxSetupRules = new System.Windows.Forms.CheckBox();
+            this.timerGameStateHint = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStripFindNpc = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripFindNpcText = new System.Windows.Forms.ToolStripTextBox();
+            this.timerOptimizationDeckUpdate = new System.Windows.Forms.Timer(this.components);
+            this.labelUpdateNotify = new System.Windows.Forms.Label();
+            this.timerSetupDetails = new System.Windows.Forms.Timer(this.components);
+            this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStripLearnHash = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteAndRelearnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adjustToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripLearnCard = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabPageNpcs = new System.Windows.Forms.TabPage();
+            this.labelNumPendingNpc = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.listViewNpcs = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPageCards = new System.Windows.Forms.TabPage();
+            this.labelNumOwned = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tabControlCardsView = new System.Windows.Forms.TabControl();
+            this.tabPageCardsList = new System.Windows.Forms.TabPage();
+            this.listViewCards = new System.Windows.Forms.ListView();
+            this.columnHeaderN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderR = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderSO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPageCardsIcons = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanelCardGrids = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPagePlay = new System.Windows.Forms.TabPage();
+            this.panelBlueDeck = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.labelRules = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonUndoRed = new System.Windows.Forms.Button();
+            this.buttonReset = new System.Windows.Forms.Button();
+            this.panelBoard = new System.Windows.Forms.Panel();
+            this.labelSpecialRules = new System.Windows.Forms.Label();
+            this.labelChance = new System.Windows.Forms.Label();
+            this.tabPageScreenshot = new System.Windows.Forms.TabPage();
+            this.labelDeleteLastHint = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.buttonLocalHashRemove = new System.Windows.Forms.Button();
+            this.panelScreenshotState = new System.Windows.Forms.Panel();
+            this.labelScreenshotState = new System.Windows.Forms.Label();
+            this.checkBoxUseScreenshots = new System.Windows.Forms.CheckBox();
             this.tabPageSetup = new System.Windows.Forms.TabPage();
             this.panelCloud = new System.Windows.Forms.Panel();
             this.labelCloudState = new System.Windows.Forms.Label();
             this.checkBoxUseCloudSaves = new System.Windows.Forms.CheckBox();
             this.buttonCloudAuth = new System.Windows.Forms.Button();
+            this.buttonOptimizeAbort = new System.Windows.Forms.Button();
+            this.progressBarDeck = new System.Windows.Forms.ProgressBar();
+            this.labelDeckState = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.labelDescChance = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.labelDescRules = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.labelLevel = new System.Windows.Forms.Label();
+            this.labelLevelPre = new System.Windows.Forms.Label();
+            this.labelLocation = new System.Windows.Forms.Label();
+            this.labelLocationPre = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBoxNpc = new System.Windows.Forms.ComboBox();
+            this.progressBarNpc = new System.Windows.Forms.ProgressBar();
+            this.buttonOptimize = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.pictureBoxFlag = new System.Windows.Forms.PictureBox();
+            this.imageListFlags = new System.Windows.Forms.ImageList(this.components);
             this.tabControlSetupDetails = new FFTriadBuddy.TabControlNoTabs();
             this.tabPageFavDecks = new System.Windows.Forms.TabPage();
             this.buttonAddFav = new System.Windows.Forms.Button();
@@ -65,31 +158,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.comboBoxTournamentType = new System.Windows.Forms.ComboBox();
-            this.checkBoxSetupRules = new System.Windows.Forms.CheckBox();
-            this.buttonOptimizeAbort = new System.Windows.Forms.Button();
             this.deckCtrlSetup = new FFTriadBuddy.DeckCtrl();
-            this.progressBarDeck = new System.Windows.Forms.ProgressBar();
-            this.labelDeckState = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.labelDescChance = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.labelDescRules = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.labelLevel = new System.Windows.Forms.Label();
-            this.labelLevelPre = new System.Windows.Forms.Label();
-            this.labelLocation = new System.Windows.Forms.Label();
-            this.labelLocationPre = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBoxNpc = new System.Windows.Forms.ComboBox();
-            this.progressBarNpc = new System.Windows.Forms.ProgressBar();
-            this.buttonOptimize = new System.Windows.Forms.Button();
-            this.tabPageScreenshot = new System.Windows.Forms.TabPage();
-            this.labelDeleteLastHint = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.buttonLocalHashRemove = new System.Windows.Forms.Button();
-            this.panelScreenshotState = new System.Windows.Forms.Panel();
-            this.labelScreenshotState = new System.Windows.Forms.Label();
-            this.checkBoxUseScreenshots = new System.Windows.Forms.CheckBox();
             this.tabControlScreenDetection = new FFTriadBuddy.TabControlNoTabs();
             this.tabPageDetectionLearn = new System.Windows.Forms.TabPage();
             this.label24 = new System.Windows.Forms.Label();
@@ -112,7 +181,6 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageDetectionInfo = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tabPagePlay = new System.Windows.Forms.TabPage();
             this.tabControlGameRules = new FFTriadBuddy.TabControlNoTabs();
             this.tabPageSubGame = new System.Windows.Forms.TabPage();
             this.labelGameStateHint = new System.Windows.Forms.Label();
@@ -139,18 +207,11 @@
             this.checkBoxDebugScreenshotForceCached = new System.Windows.Forms.CheckBox();
             this.buttonConfirmRuleScreenshot = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
-            this.panelBlueDeck = new System.Windows.Forms.Panel();
             this.cardCtrlBlue4 = new FFTriadBuddy.CardCtrl();
             this.cardCtrlBlue5 = new FFTriadBuddy.CardCtrl();
             this.cardCtrlBlue3 = new FFTriadBuddy.CardCtrl();
             this.cardCtrlBlue2 = new FFTriadBuddy.CardCtrl();
             this.cardCtrlBlue1 = new FFTriadBuddy.CardCtrl();
-            this.label2 = new System.Windows.Forms.Label();
-            this.labelRules = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.buttonUndoRed = new System.Windows.Forms.Button();
-            this.buttonReset = new System.Windows.Forms.Button();
-            this.panelBoard = new System.Windows.Forms.Panel();
             this.cardCtrl9 = new FFTriadBuddy.CardCtrl();
             this.cardCtrl8 = new FFTriadBuddy.CardCtrl();
             this.cardCtrl7 = new FFTriadBuddy.CardCtrl();
@@ -160,68 +221,26 @@
             this.cardCtrl3 = new FFTriadBuddy.CardCtrl();
             this.cardCtrl2 = new FFTriadBuddy.CardCtrl();
             this.cardCtrl1 = new FFTriadBuddy.CardCtrl();
-            this.labelSpecialRules = new System.Windows.Forms.Label();
-            this.labelChance = new System.Windows.Forms.Label();
-            this.tabPageCards = new System.Windows.Forms.TabPage();
-            this.labelNumOwned = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tabControlCardsView = new System.Windows.Forms.TabControl();
-            this.tabPageCardsList = new System.Windows.Forms.TabPage();
-            this.listViewCards = new System.Windows.Forms.ListView();
-            this.columnHeaderN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderR = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderSO = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStripCardInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuFindCardOnline = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabPageCardsIcons = new System.Windows.Forms.TabPage();
-            this.flowLayoutPanelCardGrids = new System.Windows.Forms.FlowLayoutPanel();
-            this.tabPageNpcs = new System.Windows.Forms.TabPage();
-            this.labelNumPendingNpc = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.listViewNpcs = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStripSelectNpc = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.selectNpcToPlayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.npcReward1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.npcReward2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.npcReward3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.npcReward4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.imageListRarity = new System.Windows.Forms.ImageList(this.components);
-            this.imageListType = new System.Windows.Forms.ImageList(this.components);
-            this.contextMenuStripFindCard = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripFindCardText = new System.Windows.Forms.ToolStripTextBox();
-            this.timerOptimizeDeck = new System.Windows.Forms.Timer(this.components);
-            this.timerSelectNpc = new System.Windows.Forms.Timer(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.timerGameStateHint = new System.Windows.Forms.Timer(this.components);
-            this.contextMenuStripFindNpc = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripFindNpcText = new System.Windows.Forms.ToolStripTextBox();
-            this.timerOptimizationDeckUpdate = new System.Windows.Forms.Timer(this.components);
-            this.labelUpdateNotify = new System.Windows.Forms.Label();
-            this.timerSetupDetails = new System.Windows.Forms.Timer(this.components);
-            this.timerCloudSave = new System.Windows.Forms.Timer(this.components);
-            this.contextMenuStripLearnHash = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteAndRelearnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.adjustToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStripLearnCard = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1.SuspendLayout();
+            this.contextMenuStripCardInfo.SuspendLayout();
+            this.contextMenuStripSelectNpc.SuspendLayout();
+            this.contextMenuStripFindCard.SuspendLayout();
+            this.contextMenuStripFindNpc.SuspendLayout();
+            this.contextMenuStripLearnHash.SuspendLayout();
+            this.contextMenuStripLearnCard.SuspendLayout();
+            this.tabPageNpcs.SuspendLayout();
+            this.tabPageCards.SuspendLayout();
+            this.tabControlCardsView.SuspendLayout();
+            this.tabPageCardsList.SuspendLayout();
+            this.tabPageCardsIcons.SuspendLayout();
+            this.tabPagePlay.SuspendLayout();
+            this.panelBlueDeck.SuspendLayout();
+            this.panelBoard.SuspendLayout();
+            this.tabPageScreenshot.SuspendLayout();
+            this.panelScreenshotState.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.panelCloud.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).BeginInit();
             this.tabControlSetupDetails.SuspendLayout();
             this.tabPageFavDecks.SuspendLayout();
             this.tabPageSetupOptimizerStats.SuspendLayout();
@@ -229,49 +248,692 @@
             this.tabControlSetupRules.SuspendLayout();
             this.tabPageSetupRegion.SuspendLayout();
             this.tabPageSetupTournament.SuspendLayout();
-            this.tabPageScreenshot.SuspendLayout();
-            this.panelScreenshotState.SuspendLayout();
             this.tabControlScreenDetection.SuspendLayout();
             this.tabPageDetectionLearn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLocalHash)).BeginInit();
             this.tabPageDetectionHistory.SuspendLayout();
             this.tabPageDetectionInfo.SuspendLayout();
-            this.tabPagePlay.SuspendLayout();
             this.tabControlGameRules.SuspendLayout();
             this.tabPageSubGame.SuspendLayout();
             this.tabPageSubRoulette.SuspendLayout();
             this.tabPageSubRandom.SuspendLayout();
             this.tabPageSubSwap.SuspendLayout();
             this.tabPageSubScreenshot.SuspendLayout();
-            this.panelBlueDeck.SuspendLayout();
-            this.panelBoard.SuspendLayout();
-            this.tabPageCards.SuspendLayout();
-            this.tabControlCardsView.SuspendLayout();
-            this.tabPageCardsList.SuspendLayout();
-            this.contextMenuStripCardInfo.SuspendLayout();
-            this.tabPageCardsIcons.SuspendLayout();
-            this.tabPageNpcs.SuspendLayout();
-            this.contextMenuStripSelectNpc.SuspendLayout();
-            this.contextMenuStripFindCard.SuspendLayout();
-            this.contextMenuStripFindNpc.SuspendLayout();
-            this.contextMenuStripLearnHash.SuspendLayout();
-            this.contextMenuStripLearnCard.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // contextMenuStripCardInfo
             // 
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControl1.Controls.Add(this.tabPageSetup);
-            this.tabControl1.Controls.Add(this.tabPageScreenshot);
-            this.tabControl1.Controls.Add(this.tabPagePlay);
-            this.tabControl1.Controls.Add(this.tabPageCards);
-            this.tabControl1.Controls.Add(this.tabPageNpcs);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(685, 266);
-            this.tabControl1.TabIndex = 0;
+            this.contextMenuStripCardInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem4,
+            this.toolStripSeparator4,
+            this.toolStripMenuFindCardOnline});
+            this.contextMenuStripCardInfo.Name = "contextMenuStripCardInfo";
+            this.contextMenuStripCardInfo.Size = new System.Drawing.Size(139, 54);
+            this.contextMenuStripCardInfo.Opened += new System.EventHandler(this.contextMenuStripCardInfo_Opened);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Enabled = false;
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(138, 22);
+            this.toolStripMenuItem4.Text = "Npc reward:";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(135, 6);
+            // 
+            // toolStripMenuFindCardOnline
+            // 
+            this.toolStripMenuFindCardOnline.Name = "toolStripMenuFindCardOnline";
+            this.toolStripMenuFindCardOnline.Size = new System.Drawing.Size(138, 22);
+            this.toolStripMenuFindCardOnline.Text = "Find online";
+            this.toolStripMenuFindCardOnline.Click += new System.EventHandler(this.toolStripMenuFindCardOnline_Click);
+            // 
+            // contextMenuStripSelectNpc
+            // 
+            this.contextMenuStripSelectNpc.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectNpcToPlayToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.toolStripMenuItem3,
+            this.npcReward1ToolStripMenuItem,
+            this.npcReward2ToolStripMenuItem,
+            this.npcReward3ToolStripMenuItem,
+            this.npcReward4ToolStripMenuItem});
+            this.contextMenuStripSelectNpc.Name = "contextMenuStripSelectNpc";
+            this.contextMenuStripSelectNpc.Size = new System.Drawing.Size(236, 142);
+            this.contextMenuStripSelectNpc.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.contextMenuStripSelectNpc_Closing);
+            this.contextMenuStripSelectNpc.Opened += new System.EventHandler(this.contextMenuStripSelectNpc_Opened);
+            // 
+            // selectNpcToPlayToolStripMenuItem
+            // 
+            this.selectNpcToPlayToolStripMenuItem.Name = "selectNpcToPlayToolStripMenuItem";
+            this.selectNpcToPlayToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.selectNpcToPlayToolStripMenuItem.Text = "Select npc to play";
+            this.selectNpcToPlayToolStripMenuItem.Click += new System.EventHandler(this.selectNpcToPlayToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(232, 6);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Enabled = false;
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(235, 22);
+            this.toolStripMenuItem3.Text = "Rewards (click to add/remove)";
+            // 
+            // npcReward1ToolStripMenuItem
+            // 
+            this.npcReward1ToolStripMenuItem.CheckOnClick = true;
+            this.npcReward1ToolStripMenuItem.Name = "npcReward1ToolStripMenuItem";
+            this.npcReward1ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.npcReward1ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
+            // 
+            // npcReward2ToolStripMenuItem
+            // 
+            this.npcReward2ToolStripMenuItem.CheckOnClick = true;
+            this.npcReward2ToolStripMenuItem.Name = "npcReward2ToolStripMenuItem";
+            this.npcReward2ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.npcReward2ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
+            // 
+            // npcReward3ToolStripMenuItem
+            // 
+            this.npcReward3ToolStripMenuItem.CheckOnClick = true;
+            this.npcReward3ToolStripMenuItem.Name = "npcReward3ToolStripMenuItem";
+            this.npcReward3ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.npcReward3ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
+            // 
+            // npcReward4ToolStripMenuItem
+            // 
+            this.npcReward4ToolStripMenuItem.CheckOnClick = true;
+            this.npcReward4ToolStripMenuItem.Name = "npcReward4ToolStripMenuItem";
+            this.npcReward4ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.npcReward4ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
+            // 
+            // imageListRarity
+            // 
+            this.imageListRarity.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListRarity.ImageStream")));
+            this.imageListRarity.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListRarity.Images.SetKeyName(0, "rarityCommon.png");
+            this.imageListRarity.Images.SetKeyName(1, "rarityUncommon.png");
+            this.imageListRarity.Images.SetKeyName(2, "rarityRare.png");
+            this.imageListRarity.Images.SetKeyName(3, "rarityEpic.png");
+            this.imageListRarity.Images.SetKeyName(4, "rarityLegendary.png");
+            // 
+            // imageListType
+            // 
+            this.imageListType.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListType.ImageStream")));
+            this.imageListType.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListType.Images.SetKeyName(0, "typeBeastman.png");
+            this.imageListType.Images.SetKeyName(1, "typePrimal.png");
+            this.imageListType.Images.SetKeyName(2, "typeScions.png");
+            this.imageListType.Images.SetKeyName(3, "typeGarland.png");
+            // 
+            // contextMenuStripFindCard
+            // 
+            this.contextMenuStripFindCard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripFindCardText});
+            this.contextMenuStripFindCard.Name = "contextMenuStripFindCard";
+            this.contextMenuStripFindCard.Size = new System.Drawing.Size(161, 51);
+            this.contextMenuStripFindCard.Text = "Find";
+            this.contextMenuStripFindCard.Opened += new System.EventHandler(this.contextMenuStripFindCard_Opened);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Enabled = false;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(160, 22);
+            this.toolStripMenuItem1.Text = "Find card:";
+            // 
+            // toolStripFindCardText
+            // 
+            this.toolStripFindCardText.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripFindCardText.Name = "toolStripFindCardText";
+            this.toolStripFindCardText.Size = new System.Drawing.Size(100, 23);
+            this.toolStripFindCardText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindCardText_KeyDown);
+            // 
+            // timerOptimizeDeck
+            // 
+            this.timerOptimizeDeck.Tick += new System.EventHandler(this.timerOptimizeDeck_Tick);
+            // 
+            // timerSelectNpc
+            // 
+            this.timerSelectNpc.Interval = 50;
+            this.timerSelectNpc.Tick += new System.EventHandler(this.timerSelectNpc_Tick);
+            // 
+            // checkBoxSetupRules
+            // 
+            this.checkBoxSetupRules.AutoSize = true;
+            this.checkBoxSetupRules.Checked = true;
+            this.checkBoxSetupRules.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSetupRules.Location = new System.Drawing.Point(25, 65);
+            this.checkBoxSetupRules.Name = "checkBoxSetupRules";
+            this.checkBoxSetupRules.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxSetupRules.TabIndex = 25;
+            this.toolTip1.SetToolTip(this.checkBoxSetupRules, "Toggle npc rules, disable for tournament");
+            this.checkBoxSetupRules.UseVisualStyleBackColor = true;
+            this.checkBoxSetupRules.CheckedChanged += new System.EventHandler(this.checkBoxSetupRules_CheckedChanged);
+            // 
+            // timerGameStateHint
+            // 
+            this.timerGameStateHint.Interval = 500;
+            this.timerGameStateHint.Tick += new System.EventHandler(this.timerGameStateHint_Tick);
+            // 
+            // contextMenuStripFindNpc
+            // 
+            this.contextMenuStripFindNpc.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripFindNpcText});
+            this.contextMenuStripFindNpc.Name = "contextMenuStripFindCard";
+            this.contextMenuStripFindNpc.Size = new System.Drawing.Size(161, 51);
+            this.contextMenuStripFindNpc.Text = "Find";
+            this.contextMenuStripFindNpc.Opened += new System.EventHandler(this.contextMenuStripFindNpc_Opened);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Enabled = false;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(160, 22);
+            this.toolStripMenuItem2.Text = "Find npc:";
+            // 
+            // toolStripFindNpcText
+            // 
+            this.toolStripFindNpcText.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripFindNpcText.Name = "toolStripFindNpcText";
+            this.toolStripFindNpcText.Size = new System.Drawing.Size(100, 23);
+            this.toolStripFindNpcText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindNpcText_KeyDown);
+            // 
+            // timerOptimizationDeckUpdate
+            // 
+            this.timerOptimizationDeckUpdate.Interval = 500;
+            this.timerOptimizationDeckUpdate.Tick += new System.EventHandler(this.timerOptimizationDeckUpdate_Tick);
+            // 
+            // labelUpdateNotify
+            // 
+            this.labelUpdateNotify.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelUpdateNotify.BackColor = System.Drawing.Color.Lime;
+            this.labelUpdateNotify.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelUpdateNotify.Location = new System.Drawing.Point(4, 211);
+            this.labelUpdateNotify.Name = "labelUpdateNotify";
+            this.labelUpdateNotify.Size = new System.Drawing.Size(681, 55);
+            this.labelUpdateNotify.TabIndex = 24;
+            this.labelUpdateNotify.Text = "New version downloaded, please restart program to finish update. Click here to hi" +
+    "de.";
+            this.labelUpdateNotify.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelUpdateNotify.Visible = false;
+            this.labelUpdateNotify.Click += new System.EventHandler(this.labelUpdateNotify_Click);
+            // 
+            // timerSetupDetails
+            // 
+            this.timerSetupDetails.Interval = 5000;
+            this.timerSetupDetails.Tick += new System.EventHandler(this.timerSetupDetails_Tick);
+            // 
+            // timerCloudSave
+            // 
+            this.timerCloudSave.Interval = 10000;
+            this.timerCloudSave.Tick += new System.EventHandler(this.timerCloudSave_Tick);
+            // 
+            // contextMenuStripLearnHash
+            // 
+            this.contextMenuStripLearnHash.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteAndRelearnToolStripMenuItem,
+            this.adjustToolStripMenuItem});
+            this.contextMenuStripLearnHash.Name = "contextMenuStripLearnHash";
+            this.contextMenuStripLearnHash.Size = new System.Drawing.Size(118, 48);
+            // 
+            // deleteAndRelearnToolStripMenuItem
+            // 
+            this.deleteAndRelearnToolStripMenuItem.Name = "deleteAndRelearnToolStripMenuItem";
+            this.deleteAndRelearnToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.deleteAndRelearnToolStripMenuItem.Text = "Delete";
+            this.deleteAndRelearnToolStripMenuItem.Click += new System.EventHandler(this.deleteAndRelearnToolStripMenuItem_Click);
+            // 
+            // adjustToolStripMenuItem
+            // 
+            this.adjustToolStripMenuItem.Name = "adjustToolStripMenuItem";
+            this.adjustToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.adjustToolStripMenuItem.Text = "Adjust...";
+            this.adjustToolStripMenuItem.Click += new System.EventHandler(this.adjustToolStripMenuItem_Click);
+            // 
+            // contextMenuStripLearnCard
+            // 
+            this.contextMenuStripLearnCard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem6});
+            this.contextMenuStripLearnCard.Name = "contextMenuStripLearnHash";
+            this.contextMenuStripLearnCard.Size = new System.Drawing.Size(118, 26);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(117, 22);
+            this.toolStripMenuItem6.Text = "Adjust...";
+            this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
+            // 
+            // tabPageNpcs
+            // 
+            this.tabPageNpcs.Controls.Add(this.labelNumPendingNpc);
+            this.tabPageNpcs.Controls.Add(this.label14);
+            this.tabPageNpcs.Controls.Add(this.listViewNpcs);
+            this.tabPageNpcs.Location = new System.Drawing.Point(4, 25);
+            this.tabPageNpcs.Name = "tabPageNpcs";
+            this.tabPageNpcs.Size = new System.Drawing.Size(677, 237);
+            this.tabPageNpcs.TabIndex = 3;
+            this.tabPageNpcs.Text = "Npcs";
+            this.tabPageNpcs.UseVisualStyleBackColor = true;
+            // 
+            // labelNumPendingNpc
+            // 
+            this.labelNumPendingNpc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelNumPendingNpc.AutoSize = true;
+            this.labelNumPendingNpc.Location = new System.Drawing.Point(145, 220);
+            this.labelNumPendingNpc.Name = "labelNumPendingNpc";
+            this.labelNumPendingNpc.Size = new System.Drawing.Size(0, 13);
+            this.labelNumPendingNpc.TabIndex = 3;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 220);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(136, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Number of npcs with cards:";
+            // 
+            // listViewNpcs
+            // 
+            this.listViewNpcs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewNpcs.CheckBoxes = true;
+            this.listViewNpcs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader11});
+            this.listViewNpcs.ContextMenuStrip = this.contextMenuStripSelectNpc;
+            this.listViewNpcs.FullRowSelect = true;
+            this.listViewNpcs.HideSelection = false;
+            this.listViewNpcs.Location = new System.Drawing.Point(0, 0);
+            this.listViewNpcs.Name = "listViewNpcs";
+            this.listViewNpcs.Size = new System.Drawing.Size(677, 217);
+            this.listViewNpcs.TabIndex = 1;
+            this.listViewNpcs.UseCompatibleStateImageBehavior = false;
+            this.listViewNpcs.View = System.Windows.Forms.View.Details;
+            this.listViewNpcs.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewNpcs_ColumnClick);
+            this.listViewNpcs.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewNpcs_ItemChecked);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 206;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Power";
+            this.columnHeader2.Width = 42;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Location";
+            this.columnHeader3.Width = 138;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Rules";
+            this.columnHeader4.Width = 129;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Completed";
+            this.columnHeader5.Width = 64;
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "Reward";
+            this.columnHeader11.Width = 74;
+            // 
+            // tabPageCards
+            // 
+            this.tabPageCards.Controls.Add(this.labelNumOwned);
+            this.tabPageCards.Controls.Add(this.label9);
+            this.tabPageCards.Controls.Add(this.tabControlCardsView);
+            this.tabPageCards.Location = new System.Drawing.Point(4, 25);
+            this.tabPageCards.Name = "tabPageCards";
+            this.tabPageCards.Size = new System.Drawing.Size(677, 237);
+            this.tabPageCards.TabIndex = 2;
+            this.tabPageCards.Text = "Cards";
+            this.tabPageCards.UseVisualStyleBackColor = true;
+            // 
+            // labelNumOwned
+            // 
+            this.labelNumOwned.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelNumOwned.AutoSize = true;
+            this.labelNumOwned.Location = new System.Drawing.Point(132, 220);
+            this.labelNumOwned.Name = "labelNumOwned";
+            this.labelNumOwned.Size = new System.Drawing.Size(0, 13);
+            this.labelNumOwned.TabIndex = 2;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 220);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(123, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Number of owned cards:";
+            // 
+            // tabControlCardsView
+            // 
+            this.tabControlCardsView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControlCardsView.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControlCardsView.Controls.Add(this.tabPageCardsList);
+            this.tabControlCardsView.Controls.Add(this.tabPageCardsIcons);
+            this.tabControlCardsView.Location = new System.Drawing.Point(0, 0);
+            this.tabControlCardsView.Name = "tabControlCardsView";
+            this.tabControlCardsView.SelectedIndex = 0;
+            this.tabControlCardsView.Size = new System.Drawing.Size(677, 217);
+            this.tabControlCardsView.TabIndex = 3;
+            // 
+            // tabPageCardsList
+            // 
+            this.tabPageCardsList.Controls.Add(this.listViewCards);
+            this.tabPageCardsList.Location = new System.Drawing.Point(4, 25);
+            this.tabPageCardsList.Name = "tabPageCardsList";
+            this.tabPageCardsList.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCardsList.Size = new System.Drawing.Size(669, 188);
+            this.tabPageCardsList.TabIndex = 0;
+            this.tabPageCardsList.Text = "List";
+            this.tabPageCardsList.UseVisualStyleBackColor = true;
+            // 
+            // listViewCards
+            // 
+            this.listViewCards.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewCards.CheckBoxes = true;
+            this.listViewCards.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderN,
+            this.columnHeaderR,
+            this.columnHeaderP,
+            this.columnHeaderT,
+            this.columnHeaderO,
+            this.columnHeaderSO});
+            this.listViewCards.ContextMenuStrip = this.contextMenuStripCardInfo;
+            this.listViewCards.FullRowSelect = true;
+            this.listViewCards.HideSelection = false;
+            this.listViewCards.Location = new System.Drawing.Point(0, 0);
+            this.listViewCards.Name = "listViewCards";
+            this.listViewCards.Size = new System.Drawing.Size(669, 188);
+            this.listViewCards.TabIndex = 0;
+            this.listViewCards.UseCompatibleStateImageBehavior = false;
+            this.listViewCards.View = System.Windows.Forms.View.Details;
+            this.listViewCards.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewCards_ColumnClick);
+            this.listViewCards.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewCards_ItemChecked);
+            // 
+            // columnHeaderN
+            // 
+            this.columnHeaderN.Text = "Name";
+            this.columnHeaderN.Width = 287;
+            // 
+            // columnHeaderR
+            // 
+            this.columnHeaderR.DisplayIndex = 2;
+            this.columnHeaderR.Text = "Rarity";
+            this.columnHeaderR.Width = 80;
+            // 
+            // columnHeaderP
+            // 
+            this.columnHeaderP.DisplayIndex = 1;
+            this.columnHeaderP.Text = "Power";
+            this.columnHeaderP.Width = 65;
+            // 
+            // columnHeaderT
+            // 
+            this.columnHeaderT.Text = "Type";
+            this.columnHeaderT.Width = 94;
+            // 
+            // columnHeaderO
+            // 
+            this.columnHeaderO.Text = "Owned";
+            this.columnHeaderO.Width = 52;
+            // 
+            // columnHeaderSO
+            // 
+            this.columnHeaderSO.Text = "#";
+            this.columnHeaderSO.Width = 55;
+            // 
+            // tabPageCardsIcons
+            // 
+            this.tabPageCardsIcons.Controls.Add(this.flowLayoutPanelCardGrids);
+            this.tabPageCardsIcons.Location = new System.Drawing.Point(4, 25);
+            this.tabPageCardsIcons.Name = "tabPageCardsIcons";
+            this.tabPageCardsIcons.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCardsIcons.Size = new System.Drawing.Size(669, 188);
+            this.tabPageCardsIcons.TabIndex = 1;
+            this.tabPageCardsIcons.Text = "Icons";
+            this.tabPageCardsIcons.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanelCardGrids
+            // 
+            this.flowLayoutPanelCardGrids.AutoScroll = true;
+            this.flowLayoutPanelCardGrids.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelCardGrids.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanelCardGrids.Name = "flowLayoutPanelCardGrids";
+            this.flowLayoutPanelCardGrids.Size = new System.Drawing.Size(663, 182);
+            this.flowLayoutPanelCardGrids.TabIndex = 0;
+            // 
+            // tabPagePlay
+            // 
+            this.tabPagePlay.Controls.Add(this.tabControlGameRules);
+            this.tabPagePlay.Controls.Add(this.panelBlueDeck);
+            this.tabPagePlay.Controls.Add(this.label2);
+            this.tabPagePlay.Controls.Add(this.labelRules);
+            this.tabPagePlay.Controls.Add(this.label1);
+            this.tabPagePlay.Controls.Add(this.buttonUndoRed);
+            this.tabPagePlay.Controls.Add(this.buttonReset);
+            this.tabPagePlay.Controls.Add(this.panelBoard);
+            this.tabPagePlay.Controls.Add(this.labelChance);
+            this.tabPagePlay.Location = new System.Drawing.Point(4, 25);
+            this.tabPagePlay.Name = "tabPagePlay";
+            this.tabPagePlay.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePlay.Size = new System.Drawing.Size(677, 237);
+            this.tabPagePlay.TabIndex = 0;
+            this.tabPagePlay.Text = "Play: Simulate";
+            this.tabPagePlay.UseVisualStyleBackColor = true;
+            // 
+            // panelBlueDeck
+            // 
+            this.panelBlueDeck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(166)))));
+            this.panelBlueDeck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue4);
+            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue5);
+            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue3);
+            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue2);
+            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue1);
+            this.panelBlueDeck.Location = new System.Drawing.Point(6, 6);
+            this.panelBlueDeck.Name = "panelBlueDeck";
+            this.panelBlueDeck.Size = new System.Drawing.Size(37, 170);
+            this.panelBlueDeck.TabIndex = 9;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 187);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Win chance:";
+            // 
+            // labelRules
+            // 
+            this.labelRules.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelRules.AutoSize = true;
+            this.labelRules.Location = new System.Drawing.Point(297, 187);
+            this.labelRules.Name = "labelRules";
+            this.labelRules.Size = new System.Drawing.Size(37, 13);
+            this.labelRules.TabIndex = 7;
+            this.labelRules.Text = "(none)";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(222, 187);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Current rules:";
+            // 
+            // buttonUndoRed
+            // 
+            this.buttonUndoRed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonUndoRed.Location = new System.Drawing.Point(225, 211);
+            this.buttonUndoRed.Name = "buttonUndoRed";
+            this.buttonUndoRed.Size = new System.Drawing.Size(448, 23);
+            this.buttonUndoRed.TabIndex = 3;
+            this.buttonUndoRed.Text = "Undo last Red move";
+            this.buttonUndoRed.UseVisualStyleBackColor = true;
+            this.buttonUndoRed.Click += new System.EventHandler(this.buttonUndoRed_Click);
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonReset.Location = new System.Drawing.Point(6, 211);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(213, 23);
+            this.buttonReset.TabIndex = 2;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            // 
+            // panelBoard
+            // 
+            this.panelBoard.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.panelBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelBoard.Controls.Add(this.cardCtrl9);
+            this.panelBoard.Controls.Add(this.cardCtrl8);
+            this.panelBoard.Controls.Add(this.cardCtrl7);
+            this.panelBoard.Controls.Add(this.cardCtrl6);
+            this.panelBoard.Controls.Add(this.cardCtrl5);
+            this.panelBoard.Controls.Add(this.cardCtrl4);
+            this.panelBoard.Controls.Add(this.cardCtrl3);
+            this.panelBoard.Controls.Add(this.cardCtrl2);
+            this.panelBoard.Controls.Add(this.cardCtrl1);
+            this.panelBoard.Controls.Add(this.labelSpecialRules);
+            this.panelBoard.Location = new System.Drawing.Point(49, 6);
+            this.panelBoard.Name = "panelBoard";
+            this.panelBoard.Size = new System.Drawing.Size(170, 170);
+            this.panelBoard.TabIndex = 0;
+            // 
+            // labelSpecialRules
+            // 
+            this.labelSpecialRules.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelSpecialRules.Location = new System.Drawing.Point(3, 56);
+            this.labelSpecialRules.Name = "labelSpecialRules";
+            this.labelSpecialRules.Size = new System.Drawing.Size(162, 56);
+            this.labelSpecialRules.TabIndex = 9;
+            this.labelSpecialRules.Text = "Special Rule >>";
+            this.labelSpecialRules.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelSpecialRules.Visible = false;
+            // 
+            // labelChance
+            // 
+            this.labelChance.AutoSize = true;
+            this.labelChance.Location = new System.Drawing.Point(82, 187);
+            this.labelChance.Name = "labelChance";
+            this.labelChance.Size = new System.Drawing.Size(0, 13);
+            this.labelChance.TabIndex = 4;
+            // 
+            // tabPageScreenshot
+            // 
+            this.tabPageScreenshot.Controls.Add(this.labelDeleteLastHint);
+            this.tabPageScreenshot.Controls.Add(this.label21);
+            this.tabPageScreenshot.Controls.Add(this.buttonLocalHashRemove);
+            this.tabPageScreenshot.Controls.Add(this.panelScreenshotState);
+            this.tabPageScreenshot.Controls.Add(this.tabControlScreenDetection);
+            this.tabPageScreenshot.Location = new System.Drawing.Point(4, 25);
+            this.tabPageScreenshot.Name = "tabPageScreenshot";
+            this.tabPageScreenshot.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageScreenshot.Size = new System.Drawing.Size(677, 237);
+            this.tabPageScreenshot.TabIndex = 4;
+            this.tabPageScreenshot.Text = "Play: Screenshot";
+            this.tabPageScreenshot.UseVisualStyleBackColor = true;
+            // 
+            // labelDeleteLastHint
+            // 
+            this.labelDeleteLastHint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelDeleteLastHint.AutoSize = true;
+            this.labelDeleteLastHint.Location = new System.Drawing.Point(8, 219);
+            this.labelDeleteLastHint.Name = "labelDeleteLastHint";
+            this.labelDeleteLastHint.Size = new System.Drawing.Size(153, 13);
+            this.labelDeleteLastHint.TabIndex = 10;
+            this.labelDeleteLastHint.Text = "^ Right click on lists for options";
+            // 
+            // label21
+            // 
+            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(266, 219);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(263, 13);
+            this.label21.TabIndex = 8;
+            this.label21.Text = "Use to clear all custom patterns and start from scratch:";
+            // 
+            // buttonLocalHashRemove
+            // 
+            this.buttonLocalHashRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonLocalHashRemove.Location = new System.Drawing.Point(535, 214);
+            this.buttonLocalHashRemove.Name = "buttonLocalHashRemove";
+            this.buttonLocalHashRemove.Size = new System.Drawing.Size(139, 23);
+            this.buttonLocalHashRemove.TabIndex = 6;
+            this.buttonLocalHashRemove.Text = "Remove local patterns";
+            this.buttonLocalHashRemove.UseVisualStyleBackColor = true;
+            this.buttonLocalHashRemove.Click += new System.EventHandler(this.buttonRemoveLocalHashes_Click);
+            // 
+            // panelScreenshotState
+            // 
+            this.panelScreenshotState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelScreenshotState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelScreenshotState.Controls.Add(this.labelScreenshotState);
+            this.panelScreenshotState.Controls.Add(this.checkBoxUseScreenshots);
+            this.panelScreenshotState.Location = new System.Drawing.Point(0, 6);
+            this.panelScreenshotState.Name = "panelScreenshotState";
+            this.panelScreenshotState.Size = new System.Drawing.Size(677, 25);
+            this.panelScreenshotState.TabIndex = 5;
+            this.panelScreenshotState.Click += new System.EventHandler(this.panelScreenshotState_Click);
+            // 
+            // labelScreenshotState
+            // 
+            this.labelScreenshotState.AutoSize = true;
+            this.labelScreenshotState.Location = new System.Drawing.Point(99, 5);
+            this.labelScreenshotState.Name = "labelScreenshotState";
+            this.labelScreenshotState.Size = new System.Drawing.Size(342, 13);
+            this.labelScreenshotState.TabIndex = 4;
+            this.labelScreenshotState.Text = "Can\'t find blue deck! Try resetting UI position, turning off reshade, etc...";
+            this.labelScreenshotState.Click += new System.EventHandler(this.panelScreenshotState_Click);
+            // 
+            // checkBoxUseScreenshots
+            // 
+            this.checkBoxUseScreenshots.AutoSize = true;
+            this.checkBoxUseScreenshots.Location = new System.Drawing.Point(4, 4);
+            this.checkBoxUseScreenshots.Name = "checkBoxUseScreenshots";
+            this.checkBoxUseScreenshots.Size = new System.Drawing.Size(89, 17);
+            this.checkBoxUseScreenshots.TabIndex = 0;
+            this.checkBoxUseScreenshots.Text = "Current state:";
+            this.checkBoxUseScreenshots.UseVisualStyleBackColor = true;
+            this.checkBoxUseScreenshots.CheckedChanged += new System.EventHandler(this.checkBoxUseScreenshots_CheckedChanged);
             // 
             // tabPageSetup
             // 
@@ -348,6 +1010,195 @@
             this.buttonCloudAuth.UseVisualStyleBackColor = true;
             this.buttonCloudAuth.Click += new System.EventHandler(this.buttonCloudAuth_Click);
             // 
+            // buttonOptimizeAbort
+            // 
+            this.buttonOptimizeAbort.Location = new System.Drawing.Point(259, 197);
+            this.buttonOptimizeAbort.Name = "buttonOptimizeAbort";
+            this.buttonOptimizeAbort.Size = new System.Drawing.Size(61, 23);
+            this.buttonOptimizeAbort.TabIndex = 23;
+            this.buttonOptimizeAbort.Text = "Abort";
+            this.buttonOptimizeAbort.UseVisualStyleBackColor = true;
+            this.buttonOptimizeAbort.Visible = false;
+            this.buttonOptimizeAbort.Click += new System.EventHandler(this.buttonOptimizeAbort_Click);
+            // 
+            // progressBarDeck
+            // 
+            this.progressBarDeck.Location = new System.Drawing.Point(46, 197);
+            this.progressBarDeck.Name = "progressBarDeck";
+            this.progressBarDeck.Size = new System.Drawing.Size(207, 23);
+            this.progressBarDeck.TabIndex = 13;
+            this.progressBarDeck.Visible = false;
+            // 
+            // labelDeckState
+            // 
+            this.labelDeckState.AutoSize = true;
+            this.labelDeckState.Location = new System.Drawing.Point(185, 124);
+            this.labelDeckState.Name = "labelDeckState";
+            this.labelDeckState.Size = new System.Drawing.Size(0, 13);
+            this.labelDeckState.TabIndex = 12;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 124);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(171, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Active deck, click card for options:";
+            // 
+            // labelDescChance
+            // 
+            this.labelDescChance.AutoSize = true;
+            this.labelDescChance.Location = new System.Drawing.Point(120, 82);
+            this.labelDescChance.Name = "labelDescChance";
+            this.labelDescChance.Size = new System.Drawing.Size(25, 13);
+            this.labelDescChance.TabIndex = 9;
+            this.labelDescChance.Text = "123";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(43, 82);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 13);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Win chance:";
+            // 
+            // labelDescRules
+            // 
+            this.labelDescRules.AutoSize = true;
+            this.labelDescRules.Location = new System.Drawing.Point(120, 65);
+            this.labelDescRules.Name = "labelDescRules";
+            this.labelDescRules.Size = new System.Drawing.Size(25, 13);
+            this.labelDescRules.TabIndex = 7;
+            this.labelDescRules.Text = "123";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(43, 65);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(37, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Rules:";
+            // 
+            // labelLevel
+            // 
+            this.labelLevel.AutoSize = true;
+            this.labelLevel.Location = new System.Drawing.Point(120, 48);
+            this.labelLevel.Name = "labelLevel";
+            this.labelLevel.Size = new System.Drawing.Size(25, 13);
+            this.labelLevel.TabIndex = 5;
+            this.labelLevel.Text = "123";
+            // 
+            // labelLevelPre
+            // 
+            this.labelLevelPre.AutoSize = true;
+            this.labelLevelPre.Location = new System.Drawing.Point(43, 48);
+            this.labelLevelPre.Name = "labelLevelPre";
+            this.labelLevelPre.Size = new System.Drawing.Size(68, 13);
+            this.labelLevelPre.TabIndex = 4;
+            this.labelLevelPre.Text = "Deck power:";
+            // 
+            // labelLocation
+            // 
+            this.labelLocation.AutoSize = true;
+            this.labelLocation.Location = new System.Drawing.Point(120, 31);
+            this.labelLocation.Name = "labelLocation";
+            this.labelLocation.Size = new System.Drawing.Size(25, 13);
+            this.labelLocation.TabIndex = 3;
+            this.labelLocation.Text = "abc";
+            // 
+            // labelLocationPre
+            // 
+            this.labelLocationPre.AutoSize = true;
+            this.labelLocationPre.Location = new System.Drawing.Point(43, 31);
+            this.labelLocationPre.Name = "labelLocationPre";
+            this.labelLocationPre.Size = new System.Drawing.Size(51, 13);
+            this.labelLocationPre.TabIndex = 2;
+            this.labelLocationPre.Text = "Location:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(32, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "NPC:";
+            // 
+            // comboBoxNpc
+            // 
+            this.comboBoxNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxNpc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxNpc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxNpc.FormattingEnabled = true;
+            this.comboBoxNpc.Location = new System.Drawing.Point(46, 7);
+            this.comboBoxNpc.Name = "comboBoxNpc";
+            this.comboBoxNpc.Size = new System.Drawing.Size(623, 21);
+            this.comboBoxNpc.Sorted = true;
+            this.comboBoxNpc.TabIndex = 0;
+            this.comboBoxNpc.SelectedIndexChanged += new System.EventHandler(this.comboBoxNpc_SelectedIndexChanged);
+            // 
+            // progressBarNpc
+            // 
+            this.progressBarNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarNpc.Location = new System.Drawing.Point(46, 7);
+            this.progressBarNpc.Name = "progressBarNpc";
+            this.progressBarNpc.Size = new System.Drawing.Size(623, 23);
+            this.progressBarNpc.TabIndex = 16;
+            this.progressBarNpc.Visible = false;
+            // 
+            // buttonOptimize
+            // 
+            this.buttonOptimize.Location = new System.Drawing.Point(46, 197);
+            this.buttonOptimize.Name = "buttonOptimize";
+            this.buttonOptimize.Size = new System.Drawing.Size(274, 23);
+            this.buttonOptimize.TabIndex = 14;
+            this.buttonOptimize.Text = "Optimize deck for NPC";
+            this.buttonOptimize.UseVisualStyleBackColor = true;
+            this.buttonOptimize.Click += new System.EventHandler(this.buttonOptimize_Click);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControl1.Controls.Add(this.tabPageSetup);
+            this.tabControl1.Controls.Add(this.tabPageScreenshot);
+            this.tabControl1.Controls.Add(this.tabPagePlay);
+            this.tabControl1.Controls.Add(this.tabPageCards);
+            this.tabControl1.Controls.Add(this.tabPageNpcs);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(685, 266);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // pictureBoxFlag
+            // 
+            this.pictureBoxFlag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxFlag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxFlag.Location = new System.Drawing.Point(641, 2);
+            this.pictureBoxFlag.Name = "pictureBoxFlag";
+            this.pictureBoxFlag.Size = new System.Drawing.Size(40, 20);
+            this.pictureBoxFlag.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxFlag.TabIndex = 0;
+            this.pictureBoxFlag.TabStop = false;
+            this.pictureBoxFlag.Click += new System.EventHandler(this.pictureBoxFlag_Click);
+            // 
+            // imageListFlags
+            // 
+            this.imageListFlags.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListFlags.ImageStream")));
+            this.imageListFlags.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListFlags.Images.SetKeyName(0, "flag-germany.png");
+            this.imageListFlags.Images.SetKeyName(1, "flag-usa.png");
+            this.imageListFlags.Images.SetKeyName(2, "flag-france.png");
+            this.imageListFlags.Images.SetKeyName(3, "flag-japan.png");
+            this.imageListFlags.Images.SetKeyName(4, "flag-china.png");
+            this.imageListFlags.Images.SetKeyName(5, "flag-ko.png");
+            // 
             // tabControlSetupDetails
             // 
             this.tabControlSetupDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -423,7 +1274,7 @@
             this.tabPageSetupOptimizerStats.Location = new System.Drawing.Point(0, 0);
             this.tabPageSetupOptimizerStats.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageSetupOptimizerStats.Name = "tabPageSetupOptimizerStats";
-            this.tabPageSetupOptimizerStats.Size = new System.Drawing.Size(306, 112);
+            this.tabPageSetupOptimizerStats.Size = new System.Drawing.Size(323, 112);
             this.tabPageSetupOptimizerStats.TabIndex = 0;
             this.tabPageSetupOptimizerStats.Text = "Stats";
             this.tabPageSetupOptimizerStats.UseVisualStyleBackColor = true;
@@ -443,7 +1294,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(306, 112);
+            this.groupBox1.Size = new System.Drawing.Size(323, 112);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Optimization stats:";
@@ -617,7 +1468,7 @@
             this.tabPageSetupTournament.Location = new System.Drawing.Point(0, 0);
             this.tabPageSetupTournament.Name = "tabPageSetupTournament";
             this.tabPageSetupTournament.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSetupTournament.Size = new System.Drawing.Size(306, 55);
+            this.tabPageSetupTournament.Size = new System.Drawing.Size(323, 55);
             this.tabPageSetupTournament.TabIndex = 1;
             this.tabPageSetupTournament.Text = "Tournament";
             this.tabPageSetupTournament.UseVisualStyleBackColor = true;
@@ -655,34 +1506,10 @@
             this.comboBoxTournamentType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTournamentType.Location = new System.Drawing.Point(85, 6);
             this.comboBoxTournamentType.Name = "comboBoxTournamentType";
-            this.comboBoxTournamentType.Size = new System.Drawing.Size(215, 21);
+            this.comboBoxTournamentType.Size = new System.Drawing.Size(232, 21);
             this.comboBoxTournamentType.Sorted = true;
             this.comboBoxTournamentType.TabIndex = 19;
             this.comboBoxTournamentType.SelectedIndexChanged += new System.EventHandler(this.comboBoxTournamentType_SelectedIndexChanged);
-            // 
-            // checkBoxSetupRules
-            // 
-            this.checkBoxSetupRules.AutoSize = true;
-            this.checkBoxSetupRules.Checked = true;
-            this.checkBoxSetupRules.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSetupRules.Location = new System.Drawing.Point(25, 65);
-            this.checkBoxSetupRules.Name = "checkBoxSetupRules";
-            this.checkBoxSetupRules.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxSetupRules.TabIndex = 25;
-            this.toolTip1.SetToolTip(this.checkBoxSetupRules, "Toggle npc rules, disable for tournament");
-            this.checkBoxSetupRules.UseVisualStyleBackColor = true;
-            this.checkBoxSetupRules.CheckedChanged += new System.EventHandler(this.checkBoxSetupRules_CheckedChanged);
-            // 
-            // buttonOptimizeAbort
-            // 
-            this.buttonOptimizeAbort.Location = new System.Drawing.Point(259, 197);
-            this.buttonOptimizeAbort.Name = "buttonOptimizeAbort";
-            this.buttonOptimizeAbort.Size = new System.Drawing.Size(61, 23);
-            this.buttonOptimizeAbort.TabIndex = 23;
-            this.buttonOptimizeAbort.Text = "Abort";
-            this.buttonOptimizeAbort.UseVisualStyleBackColor = true;
-            this.buttonOptimizeAbort.Visible = false;
-            this.buttonOptimizeAbort.Click += new System.EventHandler(this.buttonOptimizeAbort_Click);
             // 
             // deckCtrlSetup
             // 
@@ -692,226 +1519,6 @@
             this.deckCtrlSetup.TabIndex = 22;
             this.deckCtrlSetup.OnCardChanged += new FFTriadBuddy.DeckCtrl.DeckChangedDelegate(this.deckCtrlSetup_OnCardChanged);
             this.deckCtrlSetup.OnDeckRearranged += new FFTriadBuddy.DeckCtrl.DeckRearranged(this.deckCtrlSetup_OnDeckRearranged);
-            // 
-            // progressBarDeck
-            // 
-            this.progressBarDeck.Location = new System.Drawing.Point(46, 197);
-            this.progressBarDeck.Name = "progressBarDeck";
-            this.progressBarDeck.Size = new System.Drawing.Size(207, 23);
-            this.progressBarDeck.TabIndex = 13;
-            this.progressBarDeck.Visible = false;
-            // 
-            // labelDeckState
-            // 
-            this.labelDeckState.AutoSize = true;
-            this.labelDeckState.Location = new System.Drawing.Point(185, 124);
-            this.labelDeckState.Name = "labelDeckState";
-            this.labelDeckState.Size = new System.Drawing.Size(0, 13);
-            this.labelDeckState.TabIndex = 12;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 124);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(171, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "Active deck, click card for options:";
-            // 
-            // labelDescChance
-            // 
-            this.labelDescChance.AutoSize = true;
-            this.labelDescChance.Location = new System.Drawing.Point(120, 82);
-            this.labelDescChance.Name = "labelDescChance";
-            this.labelDescChance.Size = new System.Drawing.Size(25, 13);
-            this.labelDescChance.TabIndex = 9;
-            this.labelDescChance.Text = "123";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(43, 82);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 13);
-            this.label7.TabIndex = 8;
-            this.label7.Text = "Win chance:";
-            // 
-            // labelDescRules
-            // 
-            this.labelDescRules.AutoSize = true;
-            this.labelDescRules.Location = new System.Drawing.Point(120, 65);
-            this.labelDescRules.Name = "labelDescRules";
-            this.labelDescRules.Size = new System.Drawing.Size(25, 13);
-            this.labelDescRules.TabIndex = 7;
-            this.labelDescRules.Text = "123";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(43, 65);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(37, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "Rules:";
-            // 
-            // labelLevel
-            // 
-            this.labelLevel.AutoSize = true;
-            this.labelLevel.Location = new System.Drawing.Point(120, 48);
-            this.labelLevel.Name = "labelLevel";
-            this.labelLevel.Size = new System.Drawing.Size(25, 13);
-            this.labelLevel.TabIndex = 5;
-            this.labelLevel.Text = "123";
-            // 
-            // labelLevelPre
-            // 
-            this.labelLevelPre.AutoSize = true;
-            this.labelLevelPre.Location = new System.Drawing.Point(43, 48);
-            this.labelLevelPre.Name = "labelLevelPre";
-            this.labelLevelPre.Size = new System.Drawing.Size(68, 13);
-            this.labelLevelPre.TabIndex = 4;
-            this.labelLevelPre.Text = "Deck power:";
-            // 
-            // labelLocation
-            // 
-            this.labelLocation.AutoSize = true;
-            this.labelLocation.Location = new System.Drawing.Point(120, 31);
-            this.labelLocation.Name = "labelLocation";
-            this.labelLocation.Size = new System.Drawing.Size(25, 13);
-            this.labelLocation.TabIndex = 3;
-            this.labelLocation.Text = "abc";
-            // 
-            // labelLocationPre
-            // 
-            this.labelLocationPre.AutoSize = true;
-            this.labelLocationPre.Location = new System.Drawing.Point(43, 31);
-            this.labelLocationPre.Name = "labelLocationPre";
-            this.labelLocationPre.Size = new System.Drawing.Size(51, 13);
-            this.labelLocationPre.TabIndex = 2;
-            this.labelLocationPre.Text = "Location:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 10);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(32, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "NPC:";
-            // 
-            // comboBoxNpc
-            // 
-            this.comboBoxNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxNpc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBoxNpc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxNpc.FormattingEnabled = true;
-            this.comboBoxNpc.Location = new System.Drawing.Point(46, 7);
-            this.comboBoxNpc.Name = "comboBoxNpc";
-            this.comboBoxNpc.Size = new System.Drawing.Size(623, 21);
-            this.comboBoxNpc.Sorted = true;
-            this.comboBoxNpc.TabIndex = 0;
-            this.comboBoxNpc.SelectedIndexChanged += new System.EventHandler(this.comboBoxNpc_SelectedIndexChanged);
-            // 
-            // progressBarNpc
-            // 
-            this.progressBarNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBarNpc.Location = new System.Drawing.Point(46, 7);
-            this.progressBarNpc.Name = "progressBarNpc";
-            this.progressBarNpc.Size = new System.Drawing.Size(623, 23);
-            this.progressBarNpc.TabIndex = 16;
-            this.progressBarNpc.Visible = false;
-            // 
-            // buttonOptimize
-            // 
-            this.buttonOptimize.Location = new System.Drawing.Point(46, 197);
-            this.buttonOptimize.Name = "buttonOptimize";
-            this.buttonOptimize.Size = new System.Drawing.Size(274, 23);
-            this.buttonOptimize.TabIndex = 14;
-            this.buttonOptimize.Text = "Optimize deck for NPC";
-            this.buttonOptimize.UseVisualStyleBackColor = true;
-            this.buttonOptimize.Click += new System.EventHandler(this.buttonOptimize_Click);
-            // 
-            // tabPageScreenshot
-            // 
-            this.tabPageScreenshot.Controls.Add(this.labelDeleteLastHint);
-            this.tabPageScreenshot.Controls.Add(this.label21);
-            this.tabPageScreenshot.Controls.Add(this.buttonLocalHashRemove);
-            this.tabPageScreenshot.Controls.Add(this.panelScreenshotState);
-            this.tabPageScreenshot.Controls.Add(this.tabControlScreenDetection);
-            this.tabPageScreenshot.Location = new System.Drawing.Point(4, 25);
-            this.tabPageScreenshot.Name = "tabPageScreenshot";
-            this.tabPageScreenshot.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageScreenshot.Size = new System.Drawing.Size(677, 237);
-            this.tabPageScreenshot.TabIndex = 4;
-            this.tabPageScreenshot.Text = "Play: Screenshot";
-            this.tabPageScreenshot.UseVisualStyleBackColor = true;
-            // 
-            // labelDeleteLastHint
-            // 
-            this.labelDeleteLastHint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelDeleteLastHint.AutoSize = true;
-            this.labelDeleteLastHint.Location = new System.Drawing.Point(8, 219);
-            this.labelDeleteLastHint.Name = "labelDeleteLastHint";
-            this.labelDeleteLastHint.Size = new System.Drawing.Size(153, 13);
-            this.labelDeleteLastHint.TabIndex = 10;
-            this.labelDeleteLastHint.Text = "^ Right click on lists for options";
-            // 
-            // label21
-            // 
-            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(266, 219);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(263, 13);
-            this.label21.TabIndex = 8;
-            this.label21.Text = "Use to clear all custom patterns and start from scratch:";
-            // 
-            // buttonLocalHashRemove
-            // 
-            this.buttonLocalHashRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonLocalHashRemove.Location = new System.Drawing.Point(535, 214);
-            this.buttonLocalHashRemove.Name = "buttonLocalHashRemove";
-            this.buttonLocalHashRemove.Size = new System.Drawing.Size(139, 23);
-            this.buttonLocalHashRemove.TabIndex = 6;
-            this.buttonLocalHashRemove.Text = "Remove local patterns";
-            this.buttonLocalHashRemove.UseVisualStyleBackColor = true;
-            this.buttonLocalHashRemove.Click += new System.EventHandler(this.buttonRemoveLocalHashes_Click);
-            // 
-            // panelScreenshotState
-            // 
-            this.panelScreenshotState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelScreenshotState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelScreenshotState.Controls.Add(this.labelScreenshotState);
-            this.panelScreenshotState.Controls.Add(this.checkBoxUseScreenshots);
-            this.panelScreenshotState.Location = new System.Drawing.Point(0, 6);
-            this.panelScreenshotState.Name = "panelScreenshotState";
-            this.panelScreenshotState.Size = new System.Drawing.Size(677, 25);
-            this.panelScreenshotState.TabIndex = 5;
-            this.panelScreenshotState.Click += new System.EventHandler(this.panelScreenshotState_Click);
-            // 
-            // labelScreenshotState
-            // 
-            this.labelScreenshotState.AutoSize = true;
-            this.labelScreenshotState.Location = new System.Drawing.Point(99, 5);
-            this.labelScreenshotState.Name = "labelScreenshotState";
-            this.labelScreenshotState.Size = new System.Drawing.Size(342, 13);
-            this.labelScreenshotState.TabIndex = 4;
-            this.labelScreenshotState.Text = "Can\'t find blue deck! Try resetting UI position, turning off reshade, etc...";
-            this.labelScreenshotState.Click += new System.EventHandler(this.panelScreenshotState_Click);
-            // 
-            // checkBoxUseScreenshots
-            // 
-            this.checkBoxUseScreenshots.AutoSize = true;
-            this.checkBoxUseScreenshots.Location = new System.Drawing.Point(4, 4);
-            this.checkBoxUseScreenshots.Name = "checkBoxUseScreenshots";
-            this.checkBoxUseScreenshots.Size = new System.Drawing.Size(89, 17);
-            this.checkBoxUseScreenshots.TabIndex = 0;
-            this.checkBoxUseScreenshots.Text = "Current state:";
-            this.checkBoxUseScreenshots.UseVisualStyleBackColor = true;
-            this.checkBoxUseScreenshots.CheckedChanged += new System.EventHandler(this.checkBoxUseScreenshots_CheckedChanged);
             // 
             // tabControlScreenDetection
             // 
@@ -1053,7 +1660,7 @@
             this.tabPageDetectionHistory.Location = new System.Drawing.Point(0, 0);
             this.tabPageDetectionHistory.Name = "tabPageDetectionHistory";
             this.tabPageDetectionHistory.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDetectionHistory.Size = new System.Drawing.Size(660, 174);
+            this.tabPageDetectionHistory.Size = new System.Drawing.Size(677, 174);
             this.tabPageDetectionHistory.TabIndex = 1;
             this.tabPageDetectionHistory.Text = "History";
             this.tabPageDetectionHistory.UseVisualStyleBackColor = true;
@@ -1073,7 +1680,7 @@
             this.listViewDetectionCards.Location = new System.Drawing.Point(248, 0);
             this.listViewDetectionCards.MultiSelect = false;
             this.listViewDetectionCards.Name = "listViewDetectionCards";
-            this.listViewDetectionCards.Size = new System.Drawing.Size(412, 174);
+            this.listViewDetectionCards.Size = new System.Drawing.Size(429, 174);
             this.listViewDetectionCards.TabIndex = 1;
             this.listViewDetectionCards.UseCompatibleStateImageBehavior = false;
             this.listViewDetectionCards.View = System.Windows.Forms.View.Details;
@@ -1129,7 +1736,7 @@
             this.tabPageDetectionInfo.Location = new System.Drawing.Point(0, 0);
             this.tabPageDetectionInfo.Name = "tabPageDetectionInfo";
             this.tabPageDetectionInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDetectionInfo.Size = new System.Drawing.Size(660, 174);
+            this.tabPageDetectionInfo.Size = new System.Drawing.Size(677, 174);
             this.tabPageDetectionInfo.TabIndex = 2;
             this.tabPageDetectionInfo.Text = "Info";
             this.tabPageDetectionInfo.UseVisualStyleBackColor = true;
@@ -1144,28 +1751,9 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(648, 168);
+            this.textBox1.Size = new System.Drawing.Size(665, 168);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = resources.GetString("textBox1.Text");
-            // 
-            // tabPagePlay
-            // 
-            this.tabPagePlay.Controls.Add(this.tabControlGameRules);
-            this.tabPagePlay.Controls.Add(this.panelBlueDeck);
-            this.tabPagePlay.Controls.Add(this.label2);
-            this.tabPagePlay.Controls.Add(this.labelRules);
-            this.tabPagePlay.Controls.Add(this.label1);
-            this.tabPagePlay.Controls.Add(this.buttonUndoRed);
-            this.tabPagePlay.Controls.Add(this.buttonReset);
-            this.tabPagePlay.Controls.Add(this.panelBoard);
-            this.tabPagePlay.Controls.Add(this.labelChance);
-            this.tabPagePlay.Location = new System.Drawing.Point(4, 25);
-            this.tabPagePlay.Name = "tabPagePlay";
-            this.tabPagePlay.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePlay.Size = new System.Drawing.Size(677, 237);
-            this.tabPagePlay.TabIndex = 0;
-            this.tabPagePlay.Text = "Play: Simulate";
-            this.tabPagePlay.UseVisualStyleBackColor = true;
             // 
             // tabControlGameRules
             // 
@@ -1239,7 +1827,7 @@
             this.tabPageSubRoulette.Location = new System.Drawing.Point(0, 0);
             this.tabPageSubRoulette.Name = "tabPageSubRoulette";
             this.tabPageSubRoulette.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSubRoulette.Size = new System.Drawing.Size(435, 170);
+            this.tabPageSubRoulette.Size = new System.Drawing.Size(452, 170);
             this.tabPageSubRoulette.TabIndex = 1;
             this.tabPageSubRoulette.Text = "Roulette";
             this.tabPageSubRoulette.UseVisualStyleBackColor = true;
@@ -1288,7 +1876,7 @@
             this.comboBoxRoulette4.FormattingEnabled = true;
             this.comboBoxRoulette4.Location = new System.Drawing.Point(131, 86);
             this.comboBoxRoulette4.Name = "comboBoxRoulette4";
-            this.comboBoxRoulette4.Size = new System.Drawing.Size(298, 21);
+            this.comboBoxRoulette4.Size = new System.Drawing.Size(315, 21);
             this.comboBoxRoulette4.TabIndex = 5;
             this.comboBoxRoulette4.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
             // 
@@ -1300,7 +1888,7 @@
             this.comboBoxRoulette3.FormattingEnabled = true;
             this.comboBoxRoulette3.Location = new System.Drawing.Point(131, 59);
             this.comboBoxRoulette3.Name = "comboBoxRoulette3";
-            this.comboBoxRoulette3.Size = new System.Drawing.Size(298, 21);
+            this.comboBoxRoulette3.Size = new System.Drawing.Size(315, 21);
             this.comboBoxRoulette3.TabIndex = 4;
             this.comboBoxRoulette3.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
             // 
@@ -1312,7 +1900,7 @@
             this.comboBoxRoulette2.FormattingEnabled = true;
             this.comboBoxRoulette2.Location = new System.Drawing.Point(131, 32);
             this.comboBoxRoulette2.Name = "comboBoxRoulette2";
-            this.comboBoxRoulette2.Size = new System.Drawing.Size(298, 21);
+            this.comboBoxRoulette2.Size = new System.Drawing.Size(315, 21);
             this.comboBoxRoulette2.TabIndex = 3;
             this.comboBoxRoulette2.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
             // 
@@ -1324,7 +1912,7 @@
             this.comboBoxRoulette1.FormattingEnabled = true;
             this.comboBoxRoulette1.Location = new System.Drawing.Point(131, 6);
             this.comboBoxRoulette1.Name = "comboBoxRoulette1";
-            this.comboBoxRoulette1.Size = new System.Drawing.Size(298, 21);
+            this.comboBoxRoulette1.Size = new System.Drawing.Size(315, 21);
             this.comboBoxRoulette1.TabIndex = 2;
             this.comboBoxRoulette1.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
             // 
@@ -1335,7 +1923,7 @@
             this.buttonConfirmRuleRoulette.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonConfirmRuleRoulette.Location = new System.Drawing.Point(3, 147);
             this.buttonConfirmRuleRoulette.Name = "buttonConfirmRuleRoulette";
-            this.buttonConfirmRuleRoulette.Size = new System.Drawing.Size(429, 23);
+            this.buttonConfirmRuleRoulette.Size = new System.Drawing.Size(446, 23);
             this.buttonConfirmRuleRoulette.TabIndex = 1;
             this.buttonConfirmRuleRoulette.Text = "Apply rule";
             this.buttonConfirmRuleRoulette.UseVisualStyleBackColor = false;
@@ -1348,7 +1936,7 @@
             this.tabPageSubRandom.Controls.Add(this.buttonConfirmRuleRandom);
             this.tabPageSubRandom.Location = new System.Drawing.Point(0, 0);
             this.tabPageSubRandom.Name = "tabPageSubRandom";
-            this.tabPageSubRandom.Size = new System.Drawing.Size(435, 170);
+            this.tabPageSubRandom.Size = new System.Drawing.Size(452, 170);
             this.tabPageSubRandom.TabIndex = 2;
             this.tabPageSubRandom.Text = "Random";
             this.tabPageSubRandom.UseVisualStyleBackColor = true;
@@ -1368,7 +1956,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deckCtrlRandom.Location = new System.Drawing.Point(3, 57);
             this.deckCtrlRandom.Name = "deckCtrlRandom";
-            this.deckCtrlRandom.Size = new System.Drawing.Size(429, 51);
+            this.deckCtrlRandom.Size = new System.Drawing.Size(446, 51);
             this.deckCtrlRandom.TabIndex = 4;
             // 
             // buttonConfirmRuleRandom
@@ -1378,7 +1966,7 @@
             this.buttonConfirmRuleRandom.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonConfirmRuleRandom.Location = new System.Drawing.Point(3, 147);
             this.buttonConfirmRuleRandom.Name = "buttonConfirmRuleRandom";
-            this.buttonConfirmRuleRandom.Size = new System.Drawing.Size(429, 23);
+            this.buttonConfirmRuleRandom.Size = new System.Drawing.Size(446, 23);
             this.buttonConfirmRuleRandom.TabIndex = 2;
             this.buttonConfirmRuleRandom.Text = "Apply rule";
             this.buttonConfirmRuleRandom.UseVisualStyleBackColor = false;
@@ -1391,7 +1979,7 @@
             this.tabPageSubSwap.Controls.Add(this.buttonConfirmRuleSwap);
             this.tabPageSubSwap.Location = new System.Drawing.Point(0, 0);
             this.tabPageSubSwap.Name = "tabPageSubSwap";
-            this.tabPageSubSwap.Size = new System.Drawing.Size(435, 170);
+            this.tabPageSubSwap.Size = new System.Drawing.Size(452, 170);
             this.tabPageSubSwap.TabIndex = 3;
             this.tabPageSubSwap.Text = "Swap";
             this.tabPageSubSwap.UseVisualStyleBackColor = true;
@@ -1402,7 +1990,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deckCtrlSwapRed.Location = new System.Drawing.Point(3, 60);
             this.deckCtrlSwapRed.Name = "deckCtrlSwapRed";
-            this.deckCtrlSwapRed.Size = new System.Drawing.Size(429, 51);
+            this.deckCtrlSwapRed.Size = new System.Drawing.Size(446, 51);
             this.deckCtrlSwapRed.TabIndex = 4;
             this.deckCtrlSwapRed.OnCardSelected += new FFTriadBuddy.DeckCtrl.DeckSelectDelegate(this.deckCtrlSwap_OnCardSelected);
             // 
@@ -1412,7 +2000,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deckCtrlSwapBlue.Location = new System.Drawing.Point(3, 3);
             this.deckCtrlSwapBlue.Name = "deckCtrlSwapBlue";
-            this.deckCtrlSwapBlue.Size = new System.Drawing.Size(429, 51);
+            this.deckCtrlSwapBlue.Size = new System.Drawing.Size(446, 51);
             this.deckCtrlSwapBlue.TabIndex = 3;
             this.deckCtrlSwapBlue.OnCardSelected += new FFTriadBuddy.DeckCtrl.DeckSelectDelegate(this.deckCtrlSwap_OnCardSelected);
             // 
@@ -1423,7 +2011,7 @@
             this.buttonConfirmRuleSwap.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonConfirmRuleSwap.Location = new System.Drawing.Point(3, 147);
             this.buttonConfirmRuleSwap.Name = "buttonConfirmRuleSwap";
-            this.buttonConfirmRuleSwap.Size = new System.Drawing.Size(429, 23);
+            this.buttonConfirmRuleSwap.Size = new System.Drawing.Size(446, 23);
             this.buttonConfirmRuleSwap.TabIndex = 2;
             this.buttonConfirmRuleSwap.Text = "Apply rule";
             this.buttonConfirmRuleSwap.UseVisualStyleBackColor = false;
@@ -1437,7 +2025,7 @@
             this.tabPageSubScreenshot.Location = new System.Drawing.Point(0, 0);
             this.tabPageSubScreenshot.Name = "tabPageSubScreenshot";
             this.tabPageSubScreenshot.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSubScreenshot.Size = new System.Drawing.Size(435, 170);
+            this.tabPageSubScreenshot.Size = new System.Drawing.Size(452, 170);
             this.tabPageSubScreenshot.TabIndex = 4;
             this.tabPageSubScreenshot.Text = "Screenshot";
             this.tabPageSubScreenshot.UseVisualStyleBackColor = true;
@@ -1460,7 +2048,7 @@
             this.buttonConfirmRuleScreenshot.BackColor = System.Drawing.Color.AntiqueWhite;
             this.buttonConfirmRuleScreenshot.Location = new System.Drawing.Point(3, 147);
             this.buttonConfirmRuleScreenshot.Name = "buttonConfirmRuleScreenshot";
-            this.buttonConfirmRuleScreenshot.Size = new System.Drawing.Size(429, 23);
+            this.buttonConfirmRuleScreenshot.Size = new System.Drawing.Size(446, 23);
             this.buttonConfirmRuleScreenshot.TabIndex = 2;
             this.buttonConfirmRuleScreenshot.Text = "Apply rule";
             this.buttonConfirmRuleScreenshot.UseVisualStyleBackColor = false;
@@ -1474,20 +2062,6 @@
             this.label17.Size = new System.Drawing.Size(189, 13);
             this.label17.TabIndex = 0;
             this.label17.Text = "Take game screenshot: DEBUG mode";
-            // 
-            // panelBlueDeck
-            // 
-            this.panelBlueDeck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(166)))));
-            this.panelBlueDeck.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue4);
-            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue5);
-            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue3);
-            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue2);
-            this.panelBlueDeck.Controls.Add(this.cardCtrlBlue1);
-            this.panelBlueDeck.Location = new System.Drawing.Point(6, 6);
-            this.panelBlueDeck.Name = "panelBlueDeck";
-            this.panelBlueDeck.Size = new System.Drawing.Size(37, 170);
-            this.panelBlueDeck.TabIndex = 9;
             // 
             // cardCtrlBlue4
             // 
@@ -1538,77 +2112,6 @@
             this.cardCtrlBlue1.Size = new System.Drawing.Size(28, 28);
             this.cardCtrlBlue1.TabIndex = 0;
             this.cardCtrlBlue1.Click += new System.EventHandler(this.cardCtrlBlue_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 187);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Win chance:";
-            // 
-            // labelRules
-            // 
-            this.labelRules.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelRules.AutoSize = true;
-            this.labelRules.Location = new System.Drawing.Point(297, 187);
-            this.labelRules.Name = "labelRules";
-            this.labelRules.Size = new System.Drawing.Size(37, 13);
-            this.labelRules.TabIndex = 7;
-            this.labelRules.Text = "(none)";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(222, 187);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Current rules:";
-            // 
-            // buttonUndoRed
-            // 
-            this.buttonUndoRed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonUndoRed.Location = new System.Drawing.Point(225, 211);
-            this.buttonUndoRed.Name = "buttonUndoRed";
-            this.buttonUndoRed.Size = new System.Drawing.Size(448, 23);
-            this.buttonUndoRed.TabIndex = 3;
-            this.buttonUndoRed.Text = "Undo last Red move";
-            this.buttonUndoRed.UseVisualStyleBackColor = true;
-            this.buttonUndoRed.Click += new System.EventHandler(this.buttonUndoRed_Click);
-            // 
-            // buttonReset
-            // 
-            this.buttonReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonReset.Location = new System.Drawing.Point(6, 211);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(213, 23);
-            this.buttonReset.TabIndex = 2;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
-            // 
-            // panelBoard
-            // 
-            this.panelBoard.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.panelBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelBoard.Controls.Add(this.cardCtrl9);
-            this.panelBoard.Controls.Add(this.cardCtrl8);
-            this.panelBoard.Controls.Add(this.cardCtrl7);
-            this.panelBoard.Controls.Add(this.cardCtrl6);
-            this.panelBoard.Controls.Add(this.cardCtrl5);
-            this.panelBoard.Controls.Add(this.cardCtrl4);
-            this.panelBoard.Controls.Add(this.cardCtrl3);
-            this.panelBoard.Controls.Add(this.cardCtrl2);
-            this.panelBoard.Controls.Add(this.cardCtrl1);
-            this.panelBoard.Controls.Add(this.labelSpecialRules);
-            this.panelBoard.Location = new System.Drawing.Point(49, 6);
-            this.panelBoard.Name = "panelBoard";
-            this.panelBoard.Size = new System.Drawing.Size(170, 170);
-            this.panelBoard.TabIndex = 0;
             // 
             // cardCtrl9
             // 
@@ -1727,488 +2230,12 @@
             this.cardCtrl1.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
             this.cardCtrl1.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
             // 
-            // labelSpecialRules
-            // 
-            this.labelSpecialRules.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelSpecialRules.Location = new System.Drawing.Point(3, 56);
-            this.labelSpecialRules.Name = "labelSpecialRules";
-            this.labelSpecialRules.Size = new System.Drawing.Size(162, 56);
-            this.labelSpecialRules.TabIndex = 9;
-            this.labelSpecialRules.Text = "Special Rule >>";
-            this.labelSpecialRules.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelSpecialRules.Visible = false;
-            // 
-            // labelChance
-            // 
-            this.labelChance.AutoSize = true;
-            this.labelChance.Location = new System.Drawing.Point(82, 187);
-            this.labelChance.Name = "labelChance";
-            this.labelChance.Size = new System.Drawing.Size(0, 13);
-            this.labelChance.TabIndex = 4;
-            // 
-            // tabPageCards
-            // 
-            this.tabPageCards.Controls.Add(this.labelNumOwned);
-            this.tabPageCards.Controls.Add(this.label9);
-            this.tabPageCards.Controls.Add(this.tabControlCardsView);
-            this.tabPageCards.Location = new System.Drawing.Point(4, 25);
-            this.tabPageCards.Name = "tabPageCards";
-            this.tabPageCards.Size = new System.Drawing.Size(677, 237);
-            this.tabPageCards.TabIndex = 2;
-            this.tabPageCards.Text = "Cards";
-            this.tabPageCards.UseVisualStyleBackColor = true;
-            // 
-            // labelNumOwned
-            // 
-            this.labelNumOwned.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelNumOwned.AutoSize = true;
-            this.labelNumOwned.Location = new System.Drawing.Point(132, 220);
-            this.labelNumOwned.Name = "labelNumOwned";
-            this.labelNumOwned.Size = new System.Drawing.Size(0, 13);
-            this.labelNumOwned.TabIndex = 2;
-            // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 220);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(123, 13);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Number of owned cards:";
-            // 
-            // tabControlCardsView
-            // 
-            this.tabControlCardsView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlCardsView.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControlCardsView.Controls.Add(this.tabPageCardsList);
-            this.tabControlCardsView.Controls.Add(this.tabPageCardsIcons);
-            this.tabControlCardsView.Location = new System.Drawing.Point(0, 0);
-            this.tabControlCardsView.Name = "tabControlCardsView";
-            this.tabControlCardsView.SelectedIndex = 0;
-            this.tabControlCardsView.Size = new System.Drawing.Size(677, 217);
-            this.tabControlCardsView.TabIndex = 3;
-            // 
-            // tabPageCardsList
-            // 
-            this.tabPageCardsList.Controls.Add(this.listViewCards);
-            this.tabPageCardsList.Location = new System.Drawing.Point(4, 25);
-            this.tabPageCardsList.Name = "tabPageCardsList";
-            this.tabPageCardsList.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCardsList.Size = new System.Drawing.Size(669, 188);
-            this.tabPageCardsList.TabIndex = 0;
-            this.tabPageCardsList.Text = "List";
-            this.tabPageCardsList.UseVisualStyleBackColor = true;
-            // 
-            // listViewCards
-            // 
-            this.listViewCards.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewCards.CheckBoxes = true;
-            this.listViewCards.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeaderN,
-            this.columnHeaderR,
-            this.columnHeaderP,
-            this.columnHeaderT,
-            this.columnHeaderO,
-            this.columnHeaderSO});
-            this.listViewCards.ContextMenuStrip = this.contextMenuStripCardInfo;
-            this.listViewCards.FullRowSelect = true;
-            this.listViewCards.HideSelection = false;
-            this.listViewCards.Location = new System.Drawing.Point(0, 0);
-            this.listViewCards.Name = "listViewCards";
-            this.listViewCards.Size = new System.Drawing.Size(669, 188);
-            this.listViewCards.TabIndex = 0;
-            this.listViewCards.UseCompatibleStateImageBehavior = false;
-            this.listViewCards.View = System.Windows.Forms.View.Details;
-            this.listViewCards.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewCards_ColumnClick);
-            this.listViewCards.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewCards_ItemChecked);
-            // 
-            // columnHeaderN
-            // 
-            this.columnHeaderN.Text = "Name";
-            this.columnHeaderN.Width = 287;
-            // 
-            // columnHeaderR
-            // 
-            this.columnHeaderR.DisplayIndex = 2;
-            this.columnHeaderR.Text = "Rarity";
-            this.columnHeaderR.Width = 80;
-            // 
-            // columnHeaderP
-            // 
-            this.columnHeaderP.DisplayIndex = 1;
-            this.columnHeaderP.Text = "Power";
-            this.columnHeaderP.Width = 65;
-            // 
-            // columnHeaderT
-            // 
-            this.columnHeaderT.Text = "Type";
-            this.columnHeaderT.Width = 94;
-            // 
-            // columnHeaderO
-            // 
-            this.columnHeaderO.Text = "Owned";
-            this.columnHeaderO.Width = 52;
-            // 
-            // columnHeaderSO
-            // 
-            this.columnHeaderSO.Text = "#";
-            this.columnHeaderSO.Width = 55;
-            // 
-            // contextMenuStripCardInfo
-            // 
-            this.contextMenuStripCardInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem4,
-            this.toolStripSeparator4,
-            this.toolStripMenuFindCardOnline});
-            this.contextMenuStripCardInfo.Name = "contextMenuStripCardInfo";
-            this.contextMenuStripCardInfo.Size = new System.Drawing.Size(139, 54);
-            this.contextMenuStripCardInfo.Opened += new System.EventHandler(this.contextMenuStripCardInfo_Opened);
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Enabled = false;
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(138, 22);
-            this.toolStripMenuItem4.Text = "Npc reward:";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(135, 6);
-            // 
-            // toolStripMenuFindCardOnline
-            // 
-            this.toolStripMenuFindCardOnline.Name = "toolStripMenuFindCardOnline";
-            this.toolStripMenuFindCardOnline.Size = new System.Drawing.Size(138, 22);
-            this.toolStripMenuFindCardOnline.Text = "Find online";
-            this.toolStripMenuFindCardOnline.Click += new System.EventHandler(this.toolStripMenuFindCardOnline_Click);
-            // 
-            // tabPageCardsIcons
-            // 
-            this.tabPageCardsIcons.Controls.Add(this.flowLayoutPanelCardGrids);
-            this.tabPageCardsIcons.Location = new System.Drawing.Point(4, 25);
-            this.tabPageCardsIcons.Name = "tabPageCardsIcons";
-            this.tabPageCardsIcons.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCardsIcons.Size = new System.Drawing.Size(652, 188);
-            this.tabPageCardsIcons.TabIndex = 1;
-            this.tabPageCardsIcons.Text = "Icons";
-            this.tabPageCardsIcons.UseVisualStyleBackColor = true;
-            // 
-            // flowLayoutPanelCardGrids
-            // 
-            this.flowLayoutPanelCardGrids.AutoScroll = true;
-            this.flowLayoutPanelCardGrids.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelCardGrids.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanelCardGrids.Name = "flowLayoutPanelCardGrids";
-            this.flowLayoutPanelCardGrids.Size = new System.Drawing.Size(646, 182);
-            this.flowLayoutPanelCardGrids.TabIndex = 0;
-            // 
-            // tabPageNpcs
-            // 
-            this.tabPageNpcs.Controls.Add(this.labelNumPendingNpc);
-            this.tabPageNpcs.Controls.Add(this.label14);
-            this.tabPageNpcs.Controls.Add(this.listViewNpcs);
-            this.tabPageNpcs.Location = new System.Drawing.Point(4, 25);
-            this.tabPageNpcs.Name = "tabPageNpcs";
-            this.tabPageNpcs.Size = new System.Drawing.Size(660, 237);
-            this.tabPageNpcs.TabIndex = 3;
-            this.tabPageNpcs.Text = "Npcs";
-            this.tabPageNpcs.UseVisualStyleBackColor = true;
-            // 
-            // labelNumPendingNpc
-            // 
-            this.labelNumPendingNpc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelNumPendingNpc.AutoSize = true;
-            this.labelNumPendingNpc.Location = new System.Drawing.Point(145, 220);
-            this.labelNumPendingNpc.Name = "labelNumPendingNpc";
-            this.labelNumPendingNpc.Size = new System.Drawing.Size(0, 13);
-            this.labelNumPendingNpc.TabIndex = 3;
-            // 
-            // label14
-            // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 220);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(136, 13);
-            this.label14.TabIndex = 2;
-            this.label14.Text = "Number of npcs with cards:";
-            // 
-            // listViewNpcs
-            // 
-            this.listViewNpcs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewNpcs.CheckBoxes = true;
-            this.listViewNpcs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader11});
-            this.listViewNpcs.ContextMenuStrip = this.contextMenuStripSelectNpc;
-            this.listViewNpcs.FullRowSelect = true;
-            this.listViewNpcs.HideSelection = false;
-            this.listViewNpcs.Location = new System.Drawing.Point(0, 0);
-            this.listViewNpcs.Name = "listViewNpcs";
-            this.listViewNpcs.Size = new System.Drawing.Size(660, 217);
-            this.listViewNpcs.TabIndex = 1;
-            this.listViewNpcs.UseCompatibleStateImageBehavior = false;
-            this.listViewNpcs.View = System.Windows.Forms.View.Details;
-            this.listViewNpcs.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewNpcs_ColumnClick);
-            this.listViewNpcs.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewNpcs_ItemChecked);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 206;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Power";
-            this.columnHeader2.Width = 42;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Location";
-            this.columnHeader3.Width = 138;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Rules";
-            this.columnHeader4.Width = 129;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Completed";
-            this.columnHeader5.Width = 64;
-            // 
-            // columnHeader11
-            // 
-            this.columnHeader11.Text = "Reward";
-            this.columnHeader11.Width = 74;
-            // 
-            // contextMenuStripSelectNpc
-            // 
-            this.contextMenuStripSelectNpc.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectNpcToPlayToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.toolStripMenuItem3,
-            this.npcReward1ToolStripMenuItem,
-            this.npcReward2ToolStripMenuItem,
-            this.npcReward3ToolStripMenuItem,
-            this.npcReward4ToolStripMenuItem});
-            this.contextMenuStripSelectNpc.Name = "contextMenuStripSelectNpc";
-            this.contextMenuStripSelectNpc.Size = new System.Drawing.Size(236, 142);
-            this.contextMenuStripSelectNpc.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.contextMenuStripSelectNpc_Closing);
-            this.contextMenuStripSelectNpc.Opened += new System.EventHandler(this.contextMenuStripSelectNpc_Opened);
-            // 
-            // selectNpcToPlayToolStripMenuItem
-            // 
-            this.selectNpcToPlayToolStripMenuItem.Name = "selectNpcToPlayToolStripMenuItem";
-            this.selectNpcToPlayToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.selectNpcToPlayToolStripMenuItem.Text = "Select npc to play";
-            this.selectNpcToPlayToolStripMenuItem.Click += new System.EventHandler(this.selectNpcToPlayToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(232, 6);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Enabled = false;
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(235, 22);
-            this.toolStripMenuItem3.Text = "Rewards (click to add/remove)";
-            // 
-            // npcReward1ToolStripMenuItem
-            // 
-            this.npcReward1ToolStripMenuItem.CheckOnClick = true;
-            this.npcReward1ToolStripMenuItem.Name = "npcReward1ToolStripMenuItem";
-            this.npcReward1ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.npcReward1ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
-            // 
-            // npcReward2ToolStripMenuItem
-            // 
-            this.npcReward2ToolStripMenuItem.CheckOnClick = true;
-            this.npcReward2ToolStripMenuItem.Name = "npcReward2ToolStripMenuItem";
-            this.npcReward2ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.npcReward2ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
-            // 
-            // npcReward3ToolStripMenuItem
-            // 
-            this.npcReward3ToolStripMenuItem.CheckOnClick = true;
-            this.npcReward3ToolStripMenuItem.Name = "npcReward3ToolStripMenuItem";
-            this.npcReward3ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.npcReward3ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
-            // 
-            // npcReward4ToolStripMenuItem
-            // 
-            this.npcReward4ToolStripMenuItem.CheckOnClick = true;
-            this.npcReward4ToolStripMenuItem.Name = "npcReward4ToolStripMenuItem";
-            this.npcReward4ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.npcReward4ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.npcRewardToolStripMenuItem_CheckedChanged);
-            // 
-            // imageListRarity
-            // 
-            this.imageListRarity.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListRarity.ImageStream")));
-            this.imageListRarity.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListRarity.Images.SetKeyName(0, "rarityCommon.png");
-            this.imageListRarity.Images.SetKeyName(1, "rarityUncommon.png");
-            this.imageListRarity.Images.SetKeyName(2, "rarityRare.png");
-            this.imageListRarity.Images.SetKeyName(3, "rarityEpic.png");
-            this.imageListRarity.Images.SetKeyName(4, "rarityLegendary.png");
-            // 
-            // imageListType
-            // 
-            this.imageListType.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListType.ImageStream")));
-            this.imageListType.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListType.Images.SetKeyName(0, "typeBeastman.png");
-            this.imageListType.Images.SetKeyName(1, "typePrimal.png");
-            this.imageListType.Images.SetKeyName(2, "typeScions.png");
-            this.imageListType.Images.SetKeyName(3, "typeGarland.png");
-            // 
-            // contextMenuStripFindCard
-            // 
-            this.contextMenuStripFindCard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripFindCardText});
-            this.contextMenuStripFindCard.Name = "contextMenuStripFindCard";
-            this.contextMenuStripFindCard.Size = new System.Drawing.Size(161, 51);
-            this.contextMenuStripFindCard.Text = "Find";
-            this.contextMenuStripFindCard.Opened += new System.EventHandler(this.contextMenuStripFindCard_Opened);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Enabled = false;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(160, 22);
-            this.toolStripMenuItem1.Text = "Find card:";
-            // 
-            // toolStripFindCardText
-            // 
-            this.toolStripFindCardText.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.toolStripFindCardText.Name = "toolStripFindCardText";
-            this.toolStripFindCardText.Size = new System.Drawing.Size(100, 23);
-            this.toolStripFindCardText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindCardText_KeyDown);
-            // 
-            // timerOptimizeDeck
-            // 
-            this.timerOptimizeDeck.Tick += new System.EventHandler(this.timerOptimizeDeck_Tick);
-            // 
-            // timerSelectNpc
-            // 
-            this.timerSelectNpc.Interval = 50;
-            this.timerSelectNpc.Tick += new System.EventHandler(this.timerSelectNpc_Tick);
-            // 
-            // timerGameStateHint
-            // 
-            this.timerGameStateHint.Interval = 500;
-            this.timerGameStateHint.Tick += new System.EventHandler(this.timerGameStateHint_Tick);
-            // 
-            // contextMenuStripFindNpc
-            // 
-            this.contextMenuStripFindNpc.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripFindNpcText});
-            this.contextMenuStripFindNpc.Name = "contextMenuStripFindCard";
-            this.contextMenuStripFindNpc.Size = new System.Drawing.Size(161, 51);
-            this.contextMenuStripFindNpc.Text = "Find";
-            this.contextMenuStripFindNpc.Opened += new System.EventHandler(this.contextMenuStripFindNpc_Opened);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Enabled = false;
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(160, 22);
-            this.toolStripMenuItem2.Text = "Find npc:";
-            // 
-            // toolStripFindNpcText
-            // 
-            this.toolStripFindNpcText.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.toolStripFindNpcText.Name = "toolStripFindNpcText";
-            this.toolStripFindNpcText.Size = new System.Drawing.Size(100, 23);
-            this.toolStripFindNpcText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripFindNpcText_KeyDown);
-            // 
-            // timerOptimizationDeckUpdate
-            // 
-            this.timerOptimizationDeckUpdate.Interval = 500;
-            this.timerOptimizationDeckUpdate.Tick += new System.EventHandler(this.timerOptimizationDeckUpdate_Tick);
-            // 
-            // labelUpdateNotify
-            // 
-            this.labelUpdateNotify.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelUpdateNotify.BackColor = System.Drawing.Color.Lime;
-            this.labelUpdateNotify.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelUpdateNotify.Location = new System.Drawing.Point(4, 211);
-            this.labelUpdateNotify.Name = "labelUpdateNotify";
-            this.labelUpdateNotify.Size = new System.Drawing.Size(681, 55);
-            this.labelUpdateNotify.TabIndex = 24;
-            this.labelUpdateNotify.Text = "New version downloaded, please restart program to finish update. Click here to hi" +
-    "de.";
-            this.labelUpdateNotify.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelUpdateNotify.Visible = false;
-            this.labelUpdateNotify.Click += new System.EventHandler(this.labelUpdateNotify_Click);
-            // 
-            // timerSetupDetails
-            // 
-            this.timerSetupDetails.Interval = 5000;
-            this.timerSetupDetails.Tick += new System.EventHandler(this.timerSetupDetails_Tick);
-            // 
-            // timerCloudSave
-            // 
-            this.timerCloudSave.Interval = 10000;
-            this.timerCloudSave.Tick += new System.EventHandler(this.timerCloudSave_Tick);
-            // 
-            // contextMenuStripLearnHash
-            // 
-            this.contextMenuStripLearnHash.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteAndRelearnToolStripMenuItem,
-            this.adjustToolStripMenuItem});
-            this.contextMenuStripLearnHash.Name = "contextMenuStripLearnHash";
-            this.contextMenuStripLearnHash.Size = new System.Drawing.Size(118, 48);
-            // 
-            // deleteAndRelearnToolStripMenuItem
-            // 
-            this.deleteAndRelearnToolStripMenuItem.Name = "deleteAndRelearnToolStripMenuItem";
-            this.deleteAndRelearnToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.deleteAndRelearnToolStripMenuItem.Text = "Delete";
-            this.deleteAndRelearnToolStripMenuItem.Click += new System.EventHandler(this.deleteAndRelearnToolStripMenuItem_Click);
-            // 
-            // adjustToolStripMenuItem
-            // 
-            this.adjustToolStripMenuItem.Name = "adjustToolStripMenuItem";
-            this.adjustToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.adjustToolStripMenuItem.Text = "Adjust...";
-            this.adjustToolStripMenuItem.Click += new System.EventHandler(this.adjustToolStripMenuItem_Click);
-            // 
-            // contextMenuStripLearnCard
-            // 
-            this.contextMenuStripLearnCard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem6});
-            this.contextMenuStripLearnCard.Name = "contextMenuStripLearnHash";
-            this.contextMenuStripLearnCard.Size = new System.Drawing.Size(118, 26);
-            // 
-            // toolStripMenuItem6
-            // 
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(117, 22);
-            this.toolStripMenuItem6.Text = "Adjust...";
-            this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 266);
+            this.Controls.Add(this.pictureBoxFlag);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.labelUpdateNotify);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -2221,11 +2248,35 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.tabControl1.ResumeLayout(false);
+            this.contextMenuStripCardInfo.ResumeLayout(false);
+            this.contextMenuStripSelectNpc.ResumeLayout(false);
+            this.contextMenuStripFindCard.ResumeLayout(false);
+            this.contextMenuStripFindCard.PerformLayout();
+            this.contextMenuStripFindNpc.ResumeLayout(false);
+            this.contextMenuStripFindNpc.PerformLayout();
+            this.contextMenuStripLearnHash.ResumeLayout(false);
+            this.contextMenuStripLearnCard.ResumeLayout(false);
+            this.tabPageNpcs.ResumeLayout(false);
+            this.tabPageNpcs.PerformLayout();
+            this.tabPageCards.ResumeLayout(false);
+            this.tabPageCards.PerformLayout();
+            this.tabControlCardsView.ResumeLayout(false);
+            this.tabPageCardsList.ResumeLayout(false);
+            this.tabPageCardsIcons.ResumeLayout(false);
+            this.tabPagePlay.ResumeLayout(false);
+            this.tabPagePlay.PerformLayout();
+            this.panelBlueDeck.ResumeLayout(false);
+            this.panelBoard.ResumeLayout(false);
+            this.tabPageScreenshot.ResumeLayout(false);
+            this.tabPageScreenshot.PerformLayout();
+            this.panelScreenshotState.ResumeLayout(false);
+            this.panelScreenshotState.PerformLayout();
             this.tabPageSetup.ResumeLayout(false);
             this.tabPageSetup.PerformLayout();
             this.panelCloud.ResumeLayout(false);
             this.panelCloud.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).EndInit();
             this.tabControlSetupDetails.ResumeLayout(false);
             this.tabPageFavDecks.ResumeLayout(false);
             this.tabPageSetupOptimizerStats.ResumeLayout(false);
@@ -2236,10 +2287,6 @@
             this.tabPageSetupRegion.PerformLayout();
             this.tabPageSetupTournament.ResumeLayout(false);
             this.tabPageSetupTournament.PerformLayout();
-            this.tabPageScreenshot.ResumeLayout(false);
-            this.tabPageScreenshot.PerformLayout();
-            this.panelScreenshotState.ResumeLayout(false);
-            this.panelScreenshotState.PerformLayout();
             this.tabControlScreenDetection.ResumeLayout(false);
             this.tabPageDetectionLearn.ResumeLayout(false);
             this.tabPageDetectionLearn.PerformLayout();
@@ -2247,8 +2294,6 @@
             this.tabPageDetectionHistory.ResumeLayout(false);
             this.tabPageDetectionInfo.ResumeLayout(false);
             this.tabPageDetectionInfo.PerformLayout();
-            this.tabPagePlay.ResumeLayout(false);
-            this.tabPagePlay.PerformLayout();
             this.tabControlGameRules.ResumeLayout(false);
             this.tabPageSubGame.ResumeLayout(false);
             this.tabPageSubRoulette.ResumeLayout(false);
@@ -2258,33 +2303,106 @@
             this.tabPageSubSwap.ResumeLayout(false);
             this.tabPageSubScreenshot.ResumeLayout(false);
             this.tabPageSubScreenshot.PerformLayout();
-            this.panelBlueDeck.ResumeLayout(false);
-            this.panelBoard.ResumeLayout(false);
-            this.tabPageCards.ResumeLayout(false);
-            this.tabPageCards.PerformLayout();
-            this.tabControlCardsView.ResumeLayout(false);
-            this.tabPageCardsList.ResumeLayout(false);
-            this.contextMenuStripCardInfo.ResumeLayout(false);
-            this.tabPageCardsIcons.ResumeLayout(false);
-            this.tabPageNpcs.ResumeLayout(false);
-            this.tabPageNpcs.PerformLayout();
-            this.contextMenuStripSelectNpc.ResumeLayout(false);
-            this.contextMenuStripFindCard.ResumeLayout(false);
-            this.contextMenuStripFindCard.PerformLayout();
-            this.contextMenuStripFindNpc.ResumeLayout(false);
-            this.contextMenuStripFindNpc.PerformLayout();
-            this.contextMenuStripLearnHash.ResumeLayout(false);
-            this.contextMenuStripLearnCard.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPagePlay;
         private System.Windows.Forms.ImageList imageListRarity;
         private System.Windows.Forms.ImageList imageListType;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripFindCard;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripTextBox toolStripFindCardText;
+        private System.Windows.Forms.Timer timerOptimizeDeck;
+        private System.Windows.Forms.Timer timerSelectNpc;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Timer timerGameStateHint;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripFindNpc;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripTextBox toolStripFindNpcText;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripSelectNpc;
+        private System.Windows.Forms.ToolStripMenuItem selectNpcToPlayToolStripMenuItem;
+        private System.Windows.Forms.Timer timerOptimizationDeckUpdate;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem npcReward1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem npcReward2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem npcReward3ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem npcReward4ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.Label labelUpdateNotify;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripCardInfo;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuFindCardOnline;
+        private System.Windows.Forms.Timer timerSetupDetails;
+        private System.Windows.Forms.Timer timerCloudSave;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripLearnHash;
+        private System.Windows.Forms.ToolStripMenuItem deleteAndRelearnToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adjustToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripLearnCard;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.TabPage tabPageNpcs;
+        private System.Windows.Forms.Label labelNumPendingNpc;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ListView listViewNpcs;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.TabPage tabPageCards;
+        private System.Windows.Forms.Label labelNumOwned;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TabControl tabControlCardsView;
+        private System.Windows.Forms.TabPage tabPageCardsList;
+        private System.Windows.Forms.ListView listViewCards;
+        private System.Windows.Forms.ColumnHeader columnHeaderN;
+        private System.Windows.Forms.ColumnHeader columnHeaderR;
+        private System.Windows.Forms.ColumnHeader columnHeaderP;
+        private System.Windows.Forms.ColumnHeader columnHeaderT;
+        private System.Windows.Forms.ColumnHeader columnHeaderO;
+        private System.Windows.Forms.ColumnHeader columnHeaderSO;
+        private System.Windows.Forms.TabPage tabPageCardsIcons;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelCardGrids;
+        private System.Windows.Forms.TabPage tabPagePlay;
+        private TabControlNoTabs tabControlGameRules;
+        private System.Windows.Forms.TabPage tabPageSubGame;
+        private System.Windows.Forms.Label labelGameStateHint;
+        private System.Windows.Forms.ListView listViewRedDeck;
+        private System.Windows.Forms.TabPage tabPageSubRoulette;
+        private System.Windows.Forms.Label labelRouletteDesc4;
+        private System.Windows.Forms.Label labelRouletteDesc3;
+        private System.Windows.Forms.Label labelRouletteDesc2;
+        private System.Windows.Forms.Label labelRouletteDesc1;
+        private System.Windows.Forms.ComboBox comboBoxRoulette4;
+        private System.Windows.Forms.ComboBox comboBoxRoulette3;
+        private System.Windows.Forms.ComboBox comboBoxRoulette2;
+        private System.Windows.Forms.ComboBox comboBoxRoulette1;
+        private System.Windows.Forms.Button buttonConfirmRuleRoulette;
+        private System.Windows.Forms.TabPage tabPageSubRandom;
+        private System.Windows.Forms.Label label15;
+        private DeckCtrl deckCtrlRandom;
+        private System.Windows.Forms.Button buttonConfirmRuleRandom;
+        private System.Windows.Forms.TabPage tabPageSubSwap;
+        private DeckCtrl deckCtrlSwapRed;
+        private DeckCtrl deckCtrlSwapBlue;
+        private System.Windows.Forms.Button buttonConfirmRuleSwap;
+        private System.Windows.Forms.TabPage tabPageSubScreenshot;
+        private System.Windows.Forms.CheckBox checkBoxDebugScreenshotForceCached;
+        private System.Windows.Forms.Button buttonConfirmRuleScreenshot;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Panel panelBlueDeck;
+        private CardCtrl cardCtrlBlue4;
+        private CardCtrl cardCtrlBlue5;
+        private CardCtrl cardCtrlBlue3;
+        private CardCtrl cardCtrlBlue2;
+        private CardCtrl cardCtrlBlue1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelRules;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonUndoRed;
+        private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.Panel panelBoard;
         private CardCtrl cardCtrl9;
         private CardCtrl cardCtrl8;
@@ -2295,39 +2413,52 @@
         private CardCtrl cardCtrl3;
         private CardCtrl cardCtrl2;
         private CardCtrl cardCtrl1;
-        private System.Windows.Forms.Button buttonReset;
-        private System.Windows.Forms.ListView listViewRedDeck;
-        private System.Windows.Forms.Button buttonUndoRed;
+        private System.Windows.Forms.Label labelSpecialRules;
         private System.Windows.Forms.Label labelChance;
-        private System.Windows.Forms.Label labelRules;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabPage tabPageScreenshot;
+        private System.Windows.Forms.Label labelDeleteLastHint;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button buttonLocalHashRemove;
+        private System.Windows.Forms.Panel panelScreenshotState;
+        private System.Windows.Forms.Label labelScreenshotState;
+        private System.Windows.Forms.CheckBox checkBoxUseScreenshots;
+        private TabControlNoTabs tabControlScreenDetection;
+        private System.Windows.Forms.TabPage tabPageDetectionLearn;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button buttonDiscardHashes;
+        private System.Windows.Forms.PictureBox pictureBoxLocalHash;
+        private System.Windows.Forms.Label labelLocalHashPending;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.ComboBox comboBoxLocalHash;
+        private System.Windows.Forms.Button buttonLocalHashStore;
+        private System.Windows.Forms.Label labelLocalHashType;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TabPage tabPageDetectionHistory;
+        private System.Windows.Forms.ListView listViewDetectionCards;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ListView listViewDetectionHashes;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.TabPage tabPageDetectionInfo;
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TabPage tabPageSetup;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBoxNpc;
-        private System.Windows.Forms.Label labelDescRules;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label labelLocation;
-        private System.Windows.Forms.Label labelLocationPre;
-        private System.Windows.Forms.Label labelDescChance;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label labelDeckState;
-        private System.Windows.Forms.TabPage tabPageCards;
-        private System.Windows.Forms.ListView listViewCards;
-        private System.Windows.Forms.ColumnHeader columnHeaderN;
-        private System.Windows.Forms.ColumnHeader columnHeaderR;
-        private System.Windows.Forms.ColumnHeader columnHeaderP;
-        private System.Windows.Forms.ColumnHeader columnHeaderT;
-        private System.Windows.Forms.ColumnHeader columnHeaderO;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripFindCard;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripTextBox toolStripFindCardText;
-        private System.Windows.Forms.Label labelNumOwned;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button buttonOptimize;
-        private System.Windows.Forms.Timer timerOptimizeDeck;
+        private System.Windows.Forms.Panel panelCloud;
+        private System.Windows.Forms.Label labelCloudState;
+        private System.Windows.Forms.CheckBox checkBoxUseCloudSaves;
+        private System.Windows.Forms.Button buttonCloudAuth;
+        private TabControlNoTabs tabControlSetupDetails;
+        private System.Windows.Forms.TabPage tabPageFavDecks;
+        private System.Windows.Forms.Button buttonAddFav;
+        private FavDeckCtrl favDeckCtrl3;
+        private FavDeckCtrl favDeckCtrl2;
+        private FavDeckCtrl favDeckCtrl1;
+        private System.Windows.Forms.TabPage tabPageSetupOptimizerStats;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label labelOptTimeLeft;
+        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label labelOptProgress;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label labelOptNumTested;
@@ -2336,140 +2467,38 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label labelOptTimeLeft;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ProgressBar progressBarNpc;
-        private System.Windows.Forms.Timer timerSelectNpc;
-        private System.Windows.Forms.Panel panelBlueDeck;
-        private CardCtrl cardCtrlBlue4;
-        private CardCtrl cardCtrlBlue5;
-        private CardCtrl cardCtrlBlue3;
-        private CardCtrl cardCtrlBlue2;
-        private CardCtrl cardCtrlBlue1;
-        private System.Windows.Forms.Label labelGameStateHint;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private DeckCtrl deckCtrlSetup;
-        private System.Windows.Forms.TabPage tabPageSubGame;
-        private System.Windows.Forms.TabPage tabPageSubRoulette;
-        private System.Windows.Forms.Label labelSpecialRules;
-        private System.Windows.Forms.TabPage tabPageSubRandom;
-        private System.Windows.Forms.TabPage tabPageSubSwap;
-        private System.Windows.Forms.Button buttonConfirmRuleRoulette;
-        private System.Windows.Forms.Button buttonConfirmRuleRandom;
-        private System.Windows.Forms.Button buttonConfirmRuleSwap;
-        private DeckCtrl deckCtrlSwapRed;
-        private DeckCtrl deckCtrlSwapBlue;
-        private DeckCtrl deckCtrlRandom;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Timer timerGameStateHint;
-        private System.Windows.Forms.Label labelRouletteDesc4;
-        private System.Windows.Forms.Label labelRouletteDesc3;
-        private System.Windows.Forms.Label labelRouletteDesc2;
-        private System.Windows.Forms.Label labelRouletteDesc1;
-        private System.Windows.Forms.ComboBox comboBoxRoulette4;
-        private System.Windows.Forms.ComboBox comboBoxRoulette3;
-        private System.Windows.Forms.ComboBox comboBoxRoulette2;
-        private System.Windows.Forms.ComboBox comboBoxRoulette1;
-        private System.Windows.Forms.TabPage tabPageNpcs;
-        private System.Windows.Forms.Label labelNumPendingNpc;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ListView listViewNpcs;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private TabControlNoTabs tabControlGameRules;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripFindNpc;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripTextBox toolStripFindNpcText;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripSelectNpc;
-        private System.Windows.Forms.ToolStripMenuItem selectNpcToPlayToolStripMenuItem;
-        private System.Windows.Forms.TabPage tabPageSubScreenshot;
-        private System.Windows.Forms.Button buttonConfirmRuleScreenshot;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TabPage tabPageScreenshot;
-        private System.Windows.Forms.CheckBox checkBoxUseScreenshots;
-        private System.Windows.Forms.Label labelScreenshotState;
-        private System.Windows.Forms.Panel panelScreenshotState;
-        private System.Windows.Forms.Button buttonLocalHashRemove;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label labelLocalHashPending;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.ComboBox comboBoxLocalHash;
-        private System.Windows.Forms.Button buttonLocalHashStore;
-        private System.Windows.Forms.Label labelLocalHashType;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.PictureBox pictureBoxLocalHash;
-        private TabControlNoTabs tabControlScreenDetection;
-        private System.Windows.Forms.TabPage tabPageDetectionLearn;
-        private System.Windows.Forms.TabPage tabPageDetectionHistory;
-        private System.Windows.Forms.ListView listViewDetectionHashes;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.Label labelDeleteLastHint;
-        private System.Windows.Forms.ListView listViewDetectionCards;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.CheckBox checkBoxDebugScreenshotForceCached;
-        private System.Windows.Forms.Timer timerOptimizationDeckUpdate;
-        private System.Windows.Forms.Button buttonOptimizeAbort;
-        private System.Windows.Forms.ProgressBar progressBarDeck;
-        private System.Windows.Forms.TabPage tabPageDetectionInfo;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem npcReward1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem npcReward2ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem npcReward3ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem npcReward4ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.Label labelLevel;
-        private System.Windows.Forms.Label labelLevelPre;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Label labelUpdateNotify;
-        private System.Windows.Forms.TabControl tabControlCardsView;
-        private System.Windows.Forms.TabPage tabPageCardsList;
-        private System.Windows.Forms.TabPage tabPageCardsIcons;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelCardGrids;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripCardInfo;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuFindCardOnline;
-        private TabControlNoTabs tabControlSetupDetails;
-        private System.Windows.Forms.TabPage tabPageSetupOptimizerStats;
-        private System.Windows.Forms.TabPage tabPageFavDecks;
-        private System.Windows.Forms.Timer timerSetupDetails;
-        private System.Windows.Forms.Timer timerCloudSave;
-        private System.Windows.Forms.CheckBox checkBoxSetupRules;
         private TabControlNoTabs tabControlSetupRules;
         private System.Windows.Forms.TabPage tabPageSetupRegion;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBoxRegionRule2;
+        private System.Windows.Forms.ComboBox comboBoxRegionRule1;
         private System.Windows.Forms.TabPage tabPageSetupTournament;
         private System.Windows.Forms.Label labelTournamentRules;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ComboBox comboBoxTournamentType;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBoxRegionRule2;
-        private System.Windows.Forms.ComboBox comboBoxRegionRule1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox checkBoxUseCloudSaves;
-        private System.Windows.Forms.Button buttonCloudAuth;
-        private System.Windows.Forms.Panel panelCloud;
-        private System.Windows.Forms.Label labelCloudState;
-        private FavDeckCtrl favDeckCtrl1;
-        private FavDeckCtrl favDeckCtrl3;
-        private FavDeckCtrl favDeckCtrl2;
-        private System.Windows.Forms.Button buttonAddFav;
-        private System.Windows.Forms.ColumnHeader columnHeaderSO;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripLearnHash;
-        private System.Windows.Forms.ToolStripMenuItem deleteAndRelearnToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem adjustToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripLearnCard;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Button buttonDiscardHashes;
+        private System.Windows.Forms.CheckBox checkBoxSetupRules;
+        private System.Windows.Forms.Button buttonOptimizeAbort;
+        private DeckCtrl deckCtrlSetup;
+        private System.Windows.Forms.ProgressBar progressBarDeck;
+        private System.Windows.Forms.Label labelDeckState;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label labelDescChance;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label labelDescRules;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelLevel;
+        private System.Windows.Forms.Label labelLevelPre;
+        private System.Windows.Forms.Label labelLocation;
+        private System.Windows.Forms.Label labelLocationPre;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBoxNpc;
+        private System.Windows.Forms.ProgressBar progressBarNpc;
+        private System.Windows.Forms.Button buttonOptimize;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.PictureBox pictureBoxFlag;
+        private System.Windows.Forms.ImageList imageListFlags;
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using MgAl2O4.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Xml;
 
@@ -88,11 +89,15 @@ namespace FFTriadBuddy
     public class LocalizationDB
     {
         public readonly static string[] Languages = { "de", "en", "fr", "ja", "cn", "ko" };
+        public readonly static string[] CultureCodes = { "de", "en", "fr", "ja", "zh", "ko" };
         public readonly static string CodeLanguage = "en";
         public readonly static int CodeLanguageIdx = Array.IndexOf(Languages, CodeLanguage);
-        public static int UserLanguageIdx = CodeLanguageIdx;
+        public static int UserLanguageIdx = -1;
         public string DBPath;
         private static LocalizationDB instance = new LocalizationDB();
+
+        public delegate void LangChangedDelegate();
+        public static event LangChangedDelegate OnLanguageChanged;
 
         public List<LocString> LocUnknown;
         public List<LocString> LocRuleNames;
@@ -143,32 +148,38 @@ namespace FFTriadBuddy
 
         public static void SetCurrentUserLanguage(string cultureCode)
         {
+            int newLangIdx = CodeLanguageIdx;
             if (cultureCode == "de" || cultureCode.StartsWith("de-"))
             {
-                UserLanguageIdx = Array.IndexOf(Languages, "de");
+                newLangIdx = Array.IndexOf(Languages, "de");
             }
             else if (cultureCode == "fr" || cultureCode.StartsWith("fr-"))
             {
-                UserLanguageIdx = Array.IndexOf(Languages, "fr");
+                newLangIdx = Array.IndexOf(Languages, "fr");
             }
             else if (cultureCode == "ja" || cultureCode.StartsWith("ja-"))
             {
-                UserLanguageIdx = Array.IndexOf(Languages, "ja");
+                newLangIdx = Array.IndexOf(Languages, "ja");
             }
             else if (cultureCode == "ko" || cultureCode.StartsWith("ko-"))
             {
-                UserLanguageIdx = Array.IndexOf(Languages, "ko");
+                newLangIdx = Array.IndexOf(Languages, "ko");
             }
             else if (cultureCode == "zh" || cultureCode.StartsWith("zh-"))
             {
-                UserLanguageIdx = Array.IndexOf(Languages, "cn");
-            }
-            else
-            {
-                UserLanguageIdx = CodeLanguageIdx;
+                newLangIdx = Array.IndexOf(Languages, "cn");
             }
 
-            Logger.WriteLine("Init localization: culture:{0} -> gameData:{1}", cultureCode, Languages[UserLanguageIdx]);
+            if (newLangIdx != UserLanguageIdx)
+            {
+                UserLanguageIdx = newLangIdx;
+                Logger.WriteLine("Init localization: culture:{0} -> gameData:{1}", cultureCode, Languages[UserLanguageIdx]);
+
+                CultureInfo.CurrentUICulture = new CultureInfo(cultureCode);
+                LocResourceManager.SetCurrentUserLanguage(CultureInfo.CurrentUICulture, typeof(loc.strings));
+
+                OnLanguageChanged?.Invoke();
+            }
         }
 
         public LocString FindOrAddLocString(ELocStringType Type, int Id)

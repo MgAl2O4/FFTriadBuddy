@@ -104,13 +104,35 @@ namespace FFTriadBuddy
             HandleRef WindowHandle = new HandleRef();
             bool useVerboseLogs = Logger.IsSuperVerbose();
             string wndNamePrefix = loc.strings.Game_WindowNamePrefix;
+            string wndNamePrefixDefault = "FINAL FANTASY";
 
-            if (cachedProcess == null || !cachedProcess.MainWindowTitle.StartsWith(wndNamePrefix))
+            bool hasCached = false;
+            if (cachedProcess != null)
+            {
+                string cachedWndTitle = cachedProcess.MainWindowTitle;
+                hasCached = cachedWndTitle.StartsWith(wndNamePrefix) || cachedWndTitle.StartsWith(wndNamePrefixDefault);
+            }
+
+            if (!hasCached)
             {
                 Process[] processes = Process.GetProcessesByName(loc.strings.Game_ProcessName_DX11);
                 if (processes.Length == 0)
                 {
                     processes = Process.GetProcessesByName(loc.strings.Game_ProcessName_DX9);
+                    if (processes.Length == 0)
+                    {
+                        if (loc.strings.Game_ProcessName_DX11 != "ffxiv_dx11")
+                        {
+                            processes = Process.GetProcessesByName("ffxiv_dx11");
+                            if (processes.Length == 0)
+                            {
+                                if (loc.strings.Game_ProcessName_DX9 != "ffxiv")
+                                {
+                                    processes = Process.GetProcessesByName("ffxiv");
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if (useVerboseLogs) { Logger.WriteLine("FindGameWindow: process list to check: " + processes.Length); }
@@ -118,7 +140,8 @@ namespace FFTriadBuddy
                 cachedProcess = null;
                 foreach (Process p in processes)
                 {
-                    bool hasMatchingTitle = p.MainWindowTitle.StartsWith(wndNamePrefix);
+                    string procWndTitle = p.MainWindowTitle;
+                    bool hasMatchingTitle = procWndTitle.StartsWith(wndNamePrefix) || procWndTitle.StartsWith(wndNamePrefixDefault);
                     if (useVerboseLogs)
                     {
                         Logger.WriteLine(">> pid:{0}, name:{1}, window:'{2}', hwnd:0x{3:x} => {4}",

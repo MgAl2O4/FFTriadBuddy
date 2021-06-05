@@ -533,12 +533,12 @@ namespace FFTriadBuddy
                 default:
                     if (screenAnalyzer.activeScanner == null || screenAnalyzer.activeScanner.cachedGameStateBase == null)
                     {
-                        string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
+                        string npcDesc = (npc != null) ? (npc.Name.GetLocalized() + ": ") : "";
                         SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_Ready, SystemIcons.Information);
                     }
                     else if (screenAnalyzer.activeScanner is ScannerTriad)
                     {
-                        string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
+                        string npcDesc = (npc != null) ? (npc.Name.GetLocalized() + ": ") : "";
                         switch (screenAnalyzer.scannerTriad.cachedGameState.turnState)
                         {
                             case ScannerTriad.ETurnState.MissingTimer: SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_Ready, SystemIcons.Information); break;
@@ -561,7 +561,7 @@ namespace FFTriadBuddy
                     }
                     else
                     {
-                        string npcDesc = (npc != null) ? (npc.Name + ": ") : "";
+                        string npcDesc = (npc != null) ? (npc.Name.GetLocalized() + ": ") : "";
                         SetStatusText(npcDesc + loc.strings.OverlayForm_Dynamic_Status_Ready, SystemIcons.Information);
                     }
                     break;

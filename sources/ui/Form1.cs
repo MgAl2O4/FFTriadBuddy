@@ -123,6 +123,8 @@ namespace FFTriadBuddy
 
             bUseScreenReader = false;
             RunUpdateCheck();
+
+            LocalizationDB.OnLanguageChanged += LocalizationDB_OnLanguageChanged;
         }
 
         public class MessageFilter : IMessageFilter
@@ -163,6 +165,7 @@ namespace FFTriadBuddy
         private void ApplyLocalization()
         {
             Text = loc.strings.App_Title;
+            orgTitle = loc.strings.App_Title;
             labelUpdateNotify.Text = loc.strings.MainForm_UpdateNotify;
 
             // setup
@@ -261,6 +264,8 @@ namespace FFTriadBuddy
             toolStripMenuItem6.Text = loc.strings.MainForm_CtxMenu_Learn_Adjust;
             deleteAndRelearnToolStripMenuItem.Text = loc.strings.MainForm_CtxMenu_Learn_Delete;
             adjustToolStripMenuItem.Text = loc.strings.MainForm_CtxMenu_Learn_Adjust;
+
+            pictureBoxFlag.Image = imageListFlags.Images[LocalizationDB.UserLanguageIdx];
         }
 
         private void RunUpdateCheck()
@@ -282,6 +287,19 @@ namespace FFTriadBuddy
         private void OverlayForm_OnUpdateState()
         {
             ShowScreenshotState();
+        }
+
+        private void LocalizationDB_OnLanguageChanged()
+        {
+            ApplyLocalization();
+
+            InitializeSetupUI();
+            InitializeCardsUI();
+            InitializeNpcUI();
+            InitializeScreenshotUI();
+            InitializeCloudStorage();
+            UpdateFavDecks();
+            updateGameUIAfterDeckChange();
         }
 
         public static bool InitializeGameAssets()
@@ -312,11 +330,8 @@ namespace FFTriadBuddy
                         var forcedLang = PlayerSettingsDB.Get().forcedLanguage;
                         if (!string.IsNullOrEmpty(forcedLang))
                         {
-                            CultureInfo.CurrentUICulture = new CultureInfo(forcedLang);
                             LocalizationDB.SetCurrentUserLanguage(forcedLang);
                         }
-
-                        LocResourceManager.SetCurrentUserLanguage(CultureInfo.CurrentUICulture, typeof(loc.strings));
 
                         TriadCardDB cardDB = TriadCardDB.Get();
                         cardIconImages = new ImageList
@@ -1847,7 +1862,14 @@ namespace FFTriadBuddy
 
         private void ResetGame()
         {
-            Logger.WriteLine("Game reset. Npc:'" + currentNpc + "', rules:'" + labelRules.Text + "', blue:" + playerDeck);
+            string ruleDesc = "";
+            foreach (TriadGameModifier mod in gameSession.modifiers)
+            {
+                if (ruleDesc.Length > 0) { ruleDesc += ", "; }
+                ruleDesc += mod.GetCodeName();
+            }
+
+            Logger.WriteLine("Game reset. Npc:'" + currentNpc + "', rules:'" + ruleDesc + "', blue:" + playerDeck);
             foreach (TriadGameModifier mod in gameSession.modifiers)
             {
                 mod.OnMatchInit();
@@ -2389,6 +2411,7 @@ namespace FFTriadBuddy
         private void InitializeCloudStorage()
         {
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
+            playerDB.OnUpdated -= PlayerDB_OnUpdated;
             playerDB.OnUpdated += PlayerDB_OnUpdated;
 
             bLoadedCloudSave = false;
@@ -2583,5 +2606,13 @@ namespace FFTriadBuddy
 
         #endregion
 
+        private void pictureBoxFlag_Click(object sender, EventArgs e)
+        {
+            int newLang = (LocalizationDB.UserLanguageIdx + 1) % LocalizationDB.Languages.Length;
+            string newLangCode = LocalizationDB.CultureCodes[newLang];
+
+            LocalizationDB.SetCurrentUserLanguage(newLangCode);
+            PlayerSettingsDB.Get().forcedLanguage = newLangCode;
+        }
     }
 }
