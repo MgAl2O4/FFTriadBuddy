@@ -64,7 +64,7 @@ namespace FFTriadBuddy
                                     if (testElem.Name == "rule")
                                     {
                                         int ruleId = int.Parse(testElem.GetAttribute("id"));
-                                        rules.Add(TriadGameModifierDB.Get().mods[ruleId]);
+                                        rules.Add(TriadGameModifierDB.Get().mods[ruleId].Clone());
                                     }
                                 }
                             }

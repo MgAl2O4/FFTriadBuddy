@@ -539,44 +539,32 @@ namespace FFTriadBuddy
                 comboBoxTournamentType.SelectedIndex = 0;
             }
 
-            List<RulePickerOb> modObjects = new List<RulePickerOb>();
-            RulePickerOb modNone = null;
-            foreach (var mod in TriadGameModifierDB.Get().mods)
+            ComboBox[] ruleComboBoxes = { comboBoxRegionRule1, comboBoxRegionRule2, comboBoxRoulette1, comboBoxRoulette2, comboBoxRoulette3, comboBoxRoulette4 };
+            for (int idx = 0; idx < ruleComboBoxes.Length; idx++)
             {
-                var ruleOb = new RulePickerOb(mod.Clone());
-                modObjects.Add(ruleOb);
-
-                if (mod is TriadGameModifierNone)
+                List<RulePickerOb> modObjects = new List<RulePickerOb>();
+                RulePickerOb modNone = null;
+                foreach (var mod in TriadGameModifierDB.Get().mods)
                 {
-                    modNone = ruleOb;
+                    var ruleOb = new RulePickerOb(mod.Clone());
+                    modObjects.Add(ruleOb);
+
+                    if (mod is TriadGameModifierNone)
+                    {
+                        modNone = ruleOb;
+                    }
+                }
+                modObjects.Sort((a, b) => a.Rule.CompareTo(b.Rule));
+
+                var comboBox = ruleComboBoxes[idx];
+                comboBox.Items.Clear();
+                comboBox.Items.AddRange(modObjects.ToArray());
+
+                if (idx < 2)
+                {
+                    comboBox.SelectedItem = modNone;
                 }
             }
-            modObjects.Sort((a, b) => a.Rule.CompareTo(b.Rule));
-
-            comboBoxRoulette1.Items.Clear();
-            comboBoxRoulette2.Items.Clear();
-            comboBoxRoulette3.Items.Clear();
-            comboBoxRoulette4.Items.Clear();
-            comboBoxRoulette1.Items.AddRange(modObjects.ToArray());
-            comboBoxRoulette2.Items.AddRange(modObjects.ToArray());
-            comboBoxRoulette3.Items.AddRange(modObjects.ToArray());
-            comboBoxRoulette4.Items.AddRange(modObjects.ToArray());
-
-            // roulette: each region combo needs to use different instance, so they can be resolved separately
-            var modRoulette = new RulePickerOb(new TriadGameModifierRoulette());
-            modObjects.Add(modRoulette);
-            modObjects.Sort((a, b) => a.Rule.CompareTo(b.Rule));
-
-            comboBoxRegionRule1.Items.Clear();
-            comboBoxRegionRule2.Items.Clear();
-            comboBoxRegionRule1.Items.AddRange(modObjects.ToArray());
-
-            int roulettePos = modObjects.IndexOf(modRoulette);
-            modObjects[roulettePos] = new RulePickerOb(new TriadGameModifierRoulette());
-
-            comboBoxRegionRule2.Items.AddRange(modObjects.ToArray());
-            comboBoxRegionRule1.SelectedItem = modNone;
-            comboBoxRegionRule2.SelectedItem = modNone;
 
             // set npc - triggers game UI update & async evals
             bSuspendSetupUpdates = false;
@@ -2048,8 +2036,9 @@ namespace FFTriadBuddy
             {
                 var modWrapper = (RulePickerOb)senderCombo.Tag;
                 TriadGameModifierRoulette rouletteMod = (TriadGameModifierRoulette)modWrapper.Rule;
-                Type modifierType = senderCombo.SelectedItem.GetType();
-                TriadGameModifier modNew = (TriadGameModifier)Activator.CreateInstance(modifierType);
+
+                var selectedWrapper = (RulePickerOb)senderCombo.SelectedItem;
+                TriadGameModifier modNew = (TriadGameModifier)Activator.CreateInstance(selectedWrapper.Rule.GetType());
 
                 rouletteMod.SetRuleInstance(modNew);
             }
