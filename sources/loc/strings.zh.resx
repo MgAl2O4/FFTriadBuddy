@@ -121,28 +121,28 @@
     <value>取消</value>
   </data>
   <data name="AdjustForm_CardDown" xml:space="preserve">
-    <value>下：</value>
+    <value>下:</value>
   </data>
   <data name="AdjustForm_CardLeft" xml:space="preserve">
-    <value>左：</value>
+    <value>左:</value>
   </data>
   <data name="AdjustForm_CardList" xml:space="preserve">
-    <value>调整后：</value>
+    <value>调整后:</value>
   </data>
   <data name="AdjustForm_CardRight" xml:space="preserve">
-    <value>右：</value>
+    <value>右:</value>
   </data>
   <data name="AdjustForm_CardStatus" xml:space="preserve">
-    <value>状态：</value>
+    <value>状态:</value>
   </data>
   <data name="AdjustForm_CardUp" xml:space="preserve">
-    <value>上：</value>
+    <value>上:</value>
   </data>
   <data name="AdjustForm_Current" xml:space="preserve">
-    <value>当前：</value>
+    <value>当前:</value>
   </data>
   <data name="AdjustForm_Distance" xml:space="preserve">
-    <value>差距：</value>
+    <value>差距:</value>
   </data>
   <data name="AdjustForm_Dynamic_Digit_Default" xml:space="preserve">
     <value>自动</value>
@@ -166,7 +166,7 @@
     <value>未知</value>
   </data>
   <data name="AdjustForm_HashList" xml:space="preserve">
-    <value>检测：</value>
+    <value>检测:</value>
   </data>
   <data name="AdjustForm_SaveButton" xml:space="preserve">
     <value>保存</value>
@@ -181,7 +181,7 @@
     <value>优化卡组时锁定此幻卡</value>
   </data>
   <data name="DeckCtrl_CtxMenu_PickCard" xml:space="preserve">
-    <value>选择幻卡：</value>
+    <value>选择幻卡:</value>
   </data>
   <data name="DeckCtrl_CtxMenu_UseOnlyOwned" xml:space="preserve">
     <value>仅使用已拥有的幻卡</value>
@@ -202,10 +202,10 @@
     <value>更新</value>
   </data>
   <data name="FavDeckForm_Info" xml:space="preserve">
-    <value>卡组收藏，点击下方幻卡查看选项：</value>
+    <value>卡组收藏，点击下方幻卡查看选项:</value>
   </data>
   <data name="FavDeckForm_Name" xml:space="preserve">
-    <value>卡组名称：</value>
+    <value>卡组名称:</value>
   </data>
   <data name="FavDeckForm_RemoveButton" xml:space="preserve">
     <value>移除</value>
@@ -247,7 +247,7 @@
     <value>类型</value>
   </data>
   <data name="MainForm_Cards_NumOwned" xml:space="preserve">
-    <value>已拥有幻卡数：</value>
+    <value>已拥有幻卡数:</value>
   </data>
   <data name="MainForm_Cards_Title" xml:space="preserve">
     <value>幻卡</value>
@@ -256,13 +256,13 @@
     <value>在线检索</value>
   </data>
   <data name="MainForm_CtxMenu_CardInfo_NpcReward" xml:space="preserve">
-    <value>NPC奖励：</value>
+    <value>NPC奖励:</value>
   </data>
   <data name="MainForm_CtxMenu_FindCard" xml:space="preserve">
-    <value>查找幻卡：</value>
+    <value>查找幻卡:</value>
   </data>
   <data name="MainForm_CtxMenu_FindNpc" xml:space="preserve">
-    <value>查找NPC：</value>
+    <value>查找NPC:</value>
   </data>
   <data name="MainForm_CtxMenu_Learn_Adjust" xml:space="preserve">
     <value>调整...</value>
@@ -409,7 +409,7 @@
     <value>[放置最后一张红卡以触发规则]</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_RedStartButton" xml:space="preserve">
-    <value>红方先手：请将幻卡拖放到牌桌</value>
+    <value>红方先手:请将幻卡拖放到牌桌</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
     <value>从双方卡组中各选一张幻卡进行交换</value>
@@ -433,13 +433,13 @@
     <value>规则</value>
   </data>
   <data name="MainForm_Npcs_NumKnown" xml:space="preserve">
-    <value>未完全击破的NPC数：</value>
+    <value>未完全击破的NPC数:</value>
   </data>
   <data name="MainForm_Npcs_Title" xml:space="preserve">
     <value>NPC</value>
   </data>
   <data name="MainForm_Screenshot_CurrentState" xml:space="preserve">
-    <value>当前状态：</value>
+    <value>当前状态:</value>
   </data>
   <data name="MainForm_Screenshot_History_CardsColumnDetection" xml:space="preserve">
     <value>最后一次检测</value>
@@ -457,18 +457,18 @@
     <value>类型</value>
   </data>
   <data name="MainForm_Screenshot_InfoLines" xml:space="preserve">
-    <value>说明：
+    <value>说明:
 - 游戏必须处于普通窗口或窗口全屏模式
-- 界面： 将基本尺寸调整为100%, 使用深色主题
+- 界面: 将基本尺寸调整为100%, 使用深色主题
 - 必须选中NPC
 - 待所有幻卡动画结束后，在蓝方回合进行捕获（！！！）
 
-手柄：同时按下LT与RT按键进行捕获
+手柄:同时按下LT与RT按键进行捕获
 
 此模式也适用于仙人微彩 :D</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DetectList" xml:space="preserve">
-    <value>检测：</value>
+    <value>检测:</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DiscardAllButton" xml:space="preserve">
     <value>丢弃所有</value>
@@ -486,10 +486,10 @@
     <value>保存</value>
   </data>
   <data name="MainForm_Screenshot_Learn_SourceImage" xml:space="preserve">
-    <value>来源图像：</value>
+    <value>来源图像:</value>
   </data>
   <data name="MainForm_Screenshot_Learn_Type" xml:space="preserve">
-    <value>类型：</value>
+    <value>类型:</value>
   </data>
   <data name="MainForm_Screenshot_ListHint" xml:space="preserve">
     <value>^ 右键列表进行编辑</value>
@@ -498,16 +498,16 @@
     <value>移除本地图案</value>
   </data>
   <data name="MainForm_Screenshot_RemovePatternsTitle" xml:space="preserve">
-    <value>清除所有的自定义图案，并重新开始：</value>
+    <value>清除所有的自定义图案，并重新开始:</value>
   </data>
   <data name="MainForm_Screenshot_Title" xml:space="preserve">
-    <value>对局：捕获模式</value>
+    <value>对局:捕获模式</value>
   </data>
   <data name="MainForm_Setup_Cloud_AuthButton" xml:space="preserve">
-    <value>登录：</value>
+    <value>登录:</value>
   </data>
   <data name="MainForm_Setup_Cloud_Desc" xml:space="preserve">
-    <value>保存在谷歌网盘：</value>
+    <value>保存在谷歌网盘:</value>
   </data>
   <data name="MainForm_Setup_Deck_OptimizeAbortButton" xml:space="preserve">
     <value>中断</value>
@@ -522,52 +522,52 @@
     <value>添加收藏卡组</value>
   </data>
   <data name="MainForm_Setup_NPC" xml:space="preserve">
-    <value>NPC：</value>
+    <value>NPC:</value>
   </data>
   <data name="MainForm_Setup_NPC_DeckPower" xml:space="preserve">
-    <value>卡组强度：</value>
+    <value>卡组强度:</value>
   </data>
   <data name="MainForm_Setup_NPC_Location" xml:space="preserve">
-    <value>位置：</value>
+    <value>位置:</value>
   </data>
   <data name="MainForm_Setup_NPC_Rules" xml:space="preserve">
-    <value>规则：</value>
+    <value>规则:</value>
   </data>
   <data name="MainForm_Setup_NPC_WinChance" xml:space="preserve">
-    <value>获胜概率：</value>
+    <value>获胜概率:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumOwned" xml:space="preserve">
-    <value>已拥有幻卡数：</value>
+    <value>已拥有幻卡数:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumPossible" xml:space="preserve">
-    <value>卡组可能性：</value>
+    <value>卡组可能性:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumTested" xml:space="preserve">
-    <value>已测试卡组：</value>
+    <value>已测试卡组:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_Progress" xml:space="preserve">
-    <value>进度：</value>
+    <value>进度:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_TimeLeft" xml:space="preserve">
-    <value>剩余时间：</value>
+    <value>剩余时间:</value>
   </data>
   <data name="MainForm_Setup_OptimizeStats_Title" xml:space="preserve">
-    <value>优化详情：</value>
+    <value>优化详情:</value>
   </data>
   <data name="MainForm_Setup_RulesToggle" xml:space="preserve">
     <value>切换NPC规则，取消勾选为大赛专用</value>
   </data>
   <data name="MainForm_Setup_Rules_Region1" xml:space="preserve">
-    <value>流行规则1：</value>
+    <value>流行规则1:</value>
   </data>
   <data name="MainForm_Setup_Rules_Region2" xml:space="preserve">
-    <value>流行规则2：</value>
+    <value>流行规则2:</value>
   </data>
   <data name="MainForm_Setup_Rules_Tournament" xml:space="preserve">
-    <value>大赛：</value>
+    <value>大赛:</value>
   </data>
   <data name="MainForm_Setup_Rules_TournamentRules" xml:space="preserve">
-    <value>规则：</value>
+    <value>规则:</value>
   </data>
   <data name="MainForm_Setup_Title" xml:space="preserve">
     <value>配置</value>
@@ -576,7 +576,7 @@
     <value>强制使用缓存图像</value>
   </data>
   <data name="MainForm_Simulate_Debug_Info" xml:space="preserve">
-    <value>拍摄游戏截图：DEBUG模式</value>
+    <value>拍摄游戏截图:DEBUG模式</value>
   </data>
   <data name="MainForm_Simulate_Game_ApplyRuleButton" xml:space="preserve">
     <value>应用规则</value>
@@ -606,16 +606,16 @@
     <value>选择天选规则 #4</value>
   </data>
   <data name="MainForm_Simulate_RuleList" xml:space="preserve">
-    <value>当前规则：</value>
+    <value>当前规则:</value>
   </data>
   <data name="MainForm_Simulate_Title" xml:space="preserve">
-    <value>对局：模拟模式</value>
+    <value>对局:模拟模式</value>
   </data>
   <data name="MainForm_Simulate_UndoRedMoveButton" xml:space="preserve">
     <value>撤销红方上一步</value>
   </data>
   <data name="MainForm_Simulate_WinChance" xml:space="preserve">
-    <value>获胜概率：</value>
+    <value>获胜概率:</value>
   </data>
   <data name="MainForm_UpdateNotify" xml:space="preserve">
     <value>新版本已下载完成，请重新启动程序以完成更新。点击此处隐藏。</value>
@@ -642,22 +642,22 @@
     <value>NPC: {0}</value>
   </data>
   <data name="OverlayForm_Details_RedDeck" xml:space="preserve">
-    <value>红方卡组详情：</value>
+    <value>红方卡组详情:</value>
   </data>
   <data name="OverlayForm_Details_RedInfo" xml:space="preserve">
-    <value>&lt; 隐藏的红方幻卡，不包含下方可见的：</value>
+    <value>&lt; 隐藏的红方幻卡，不包含下方可见的:</value>
   </data>
   <data name="OverlayForm_Details_RedPlacedAll" xml:space="preserve">
-    <value>必带卡： {0}</value>
+    <value>必带卡: {0}</value>
   </data>
   <data name="OverlayForm_Details_RedPlacedVariable" xml:space="preserve">
-    <value>选带卡： {0}</value>
+    <value>选带卡: {0}</value>
   </data>
   <data name="OverlayForm_Details_Rules" xml:space="preserve">
-    <value>规则： {0}</value>
+    <value>规则: {0}</value>
   </data>
   <data name="OverlayForm_Details_ScanId" xml:space="preserve">
-    <value>扫描Id： {0}</value>
+    <value>扫描Id: {0}</value>
   </data>
   <data name="OverlayForm_Dynamic_NpcUnknown" xml:space="preserve">
     <value>未知</value>
@@ -672,10 +672,10 @@
     <value>将鼠标光标从扫描区移开！</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_CactpotReady" xml:space="preserve">
-    <value>仙人微彩：准备就绪</value>
+    <value>仙人微彩:准备就绪</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_FailedCardMatching" xml:space="preserve">
-    <value>未知幻卡！查看[对局：捕获模式]选项卡了解详情</value>
+    <value>未知幻卡！查看[对局:捕获模式]选项卡了解详情</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingCards" xml:space="preserve">
     <value>找不到蓝色卡组</value>
@@ -702,7 +702,7 @@
     <value>无法识别小游戏</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_UnknownHash" xml:space="preserve">
-    <value>未知图案！查看[对局：捕获模式]选项卡了解详情</value>
+    <value>未知图案！查看[对局:捕获模式]选项卡了解详情</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>等待蓝方回合</value>
