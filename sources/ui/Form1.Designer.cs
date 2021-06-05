@@ -92,6 +92,8 @@
             this.checkBoxUseScreenshots = new System.Windows.Forms.CheckBox();
             this.tabControlScreenDetection = new FFTriadBuddy.TabControlNoTabs();
             this.tabPageDetectionLearn = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.buttonDiscardHashes = new System.Windows.Forms.Button();
             this.pictureBoxLocalHash = new System.Windows.Forms.PictureBox();
             this.labelLocalHashPending = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -217,8 +219,6 @@
             this.adjustToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripLearnCard = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonDiscardHashes = new System.Windows.Forms.Button();
-            this.label24 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.panelCloud.SuspendLayout();
@@ -270,7 +270,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(668, 266);
+            this.tabControl1.Size = new System.Drawing.Size(685, 266);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageSetup
@@ -299,7 +299,7 @@
             this.tabPageSetup.Controls.Add(this.buttonOptimize);
             this.tabPageSetup.Location = new System.Drawing.Point(4, 25);
             this.tabPageSetup.Name = "tabPageSetup";
-            this.tabPageSetup.Size = new System.Drawing.Size(660, 237);
+            this.tabPageSetup.Size = new System.Drawing.Size(677, 237);
             this.tabPageSetup.TabIndex = 1;
             this.tabPageSetup.Text = "Setup";
             this.tabPageSetup.UseVisualStyleBackColor = true;
@@ -313,7 +313,7 @@
             this.panelCloud.Controls.Add(this.checkBoxUseCloudSaves);
             this.panelCloud.Location = new System.Drawing.Point(431, 89);
             this.panelCloud.Name = "panelCloud";
-            this.panelCloud.Size = new System.Drawing.Size(215, 23);
+            this.panelCloud.Size = new System.Drawing.Size(232, 23);
             this.panelCloud.TabIndex = 29;
             this.panelCloud.Click += new System.EventHandler(this.panelCloud_Click);
             this.panelCloud.Paint += new System.Windows.Forms.PaintEventHandler(this.panelCloud_Paint);
@@ -361,7 +361,7 @@
             this.tabControlSetupDetails.Name = "tabControlSetupDetails";
             this.tabControlSetupDetails.Padding = new System.Drawing.Point(0, 0);
             this.tabControlSetupDetails.SelectedIndex = 0;
-            this.tabControlSetupDetails.Size = new System.Drawing.Size(306, 112);
+            this.tabControlSetupDetails.Size = new System.Drawing.Size(323, 112);
             this.tabControlSetupDetails.TabIndex = 24;
             // 
             // tabPageFavDecks
@@ -373,7 +373,7 @@
             this.tabPageFavDecks.Location = new System.Drawing.Point(0, 0);
             this.tabPageFavDecks.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageFavDecks.Name = "tabPageFavDecks";
-            this.tabPageFavDecks.Size = new System.Drawing.Size(306, 112);
+            this.tabPageFavDecks.Size = new System.Drawing.Size(323, 112);
             this.tabPageFavDecks.TabIndex = 1;
             this.tabPageFavDecks.Text = "Decks";
             this.tabPageFavDecks.UseVisualStyleBackColor = true;
@@ -384,7 +384,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAddFav.Location = new System.Drawing.Point(85, 82);
             this.buttonAddFav.Name = "buttonAddFav";
-            this.buttonAddFav.Size = new System.Drawing.Size(215, 23);
+            this.buttonAddFav.Size = new System.Drawing.Size(232, 23);
             this.buttonAddFav.TabIndex = 3;
             this.buttonAddFav.Text = "Add favorite deck slot";
             this.buttonAddFav.UseVisualStyleBackColor = true;
@@ -396,7 +396,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.favDeckCtrl3.Location = new System.Drawing.Point(0, 75);
             this.favDeckCtrl3.Name = "favDeckCtrl3";
-            this.favDeckCtrl3.Size = new System.Drawing.Size(303, 34);
+            this.favDeckCtrl3.Size = new System.Drawing.Size(320, 34);
             this.favDeckCtrl3.TabIndex = 2;
             // 
             // favDeckCtrl2
@@ -405,7 +405,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.favDeckCtrl2.Location = new System.Drawing.Point(0, 42);
             this.favDeckCtrl2.Name = "favDeckCtrl2";
-            this.favDeckCtrl2.Size = new System.Drawing.Size(303, 34);
+            this.favDeckCtrl2.Size = new System.Drawing.Size(320, 34);
             this.favDeckCtrl2.TabIndex = 1;
             // 
             // favDeckCtrl1
@@ -414,7 +414,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.favDeckCtrl1.Location = new System.Drawing.Point(0, 9);
             this.favDeckCtrl1.Name = "favDeckCtrl1";
-            this.favDeckCtrl1.Size = new System.Drawing.Size(303, 34);
+            this.favDeckCtrl1.Size = new System.Drawing.Size(320, 34);
             this.favDeckCtrl1.TabIndex = 0;
             // 
             // tabPageSetupOptimizerStats
@@ -545,7 +545,7 @@
             this.tabControlSetupRules.Name = "tabControlSetupRules";
             this.tabControlSetupRules.Padding = new System.Drawing.Point(0, 0);
             this.tabControlSetupRules.SelectedIndex = 0;
-            this.tabControlSetupRules.Size = new System.Drawing.Size(306, 55);
+            this.tabControlSetupRules.Size = new System.Drawing.Size(323, 55);
             this.tabControlSetupRules.TabIndex = 26;
             // 
             // tabPageSetupRegion
@@ -557,7 +557,7 @@
             this.tabPageSetupRegion.Location = new System.Drawing.Point(0, 0);
             this.tabPageSetupRegion.Name = "tabPageSetupRegion";
             this.tabPageSetupRegion.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSetupRegion.Size = new System.Drawing.Size(306, 55);
+            this.tabPageSetupRegion.Size = new System.Drawing.Size(323, 55);
             this.tabPageSetupRegion.TabIndex = 0;
             this.tabPageSetupRegion.Text = "Region";
             this.tabPageSetupRegion.UseVisualStyleBackColor = true;
@@ -590,7 +590,7 @@
             this.comboBoxRegionRule2.FormattingEnabled = true;
             this.comboBoxRegionRule2.Location = new System.Drawing.Point(85, 31);
             this.comboBoxRegionRule2.Name = "comboBoxRegionRule2";
-            this.comboBoxRegionRule2.Size = new System.Drawing.Size(215, 21);
+            this.comboBoxRegionRule2.Size = new System.Drawing.Size(232, 21);
             this.comboBoxRegionRule2.TabIndex = 20;
             this.comboBoxRegionRule2.SelectedIndexChanged += new System.EventHandler(this.comboBoxRegionRule2_SelectedIndexChanged);
             // 
@@ -604,7 +604,7 @@
             this.comboBoxRegionRule1.FormattingEnabled = true;
             this.comboBoxRegionRule1.Location = new System.Drawing.Point(85, 6);
             this.comboBoxRegionRule1.Name = "comboBoxRegionRule1";
-            this.comboBoxRegionRule1.Size = new System.Drawing.Size(215, 21);
+            this.comboBoxRegionRule1.Size = new System.Drawing.Size(232, 21);
             this.comboBoxRegionRule1.TabIndex = 19;
             this.comboBoxRegionRule1.SelectedIndexChanged += new System.EventHandler(this.comboBoxRegionRule1_SelectedIndexChanged);
             // 
@@ -808,7 +808,7 @@
             this.comboBoxNpc.FormattingEnabled = true;
             this.comboBoxNpc.Location = new System.Drawing.Point(46, 7);
             this.comboBoxNpc.Name = "comboBoxNpc";
-            this.comboBoxNpc.Size = new System.Drawing.Size(606, 21);
+            this.comboBoxNpc.Size = new System.Drawing.Size(623, 21);
             this.comboBoxNpc.Sorted = true;
             this.comboBoxNpc.TabIndex = 0;
             this.comboBoxNpc.SelectedIndexChanged += new System.EventHandler(this.comboBoxNpc_SelectedIndexChanged);
@@ -819,7 +819,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBarNpc.Location = new System.Drawing.Point(46, 7);
             this.progressBarNpc.Name = "progressBarNpc";
-            this.progressBarNpc.Size = new System.Drawing.Size(606, 23);
+            this.progressBarNpc.Size = new System.Drawing.Size(623, 23);
             this.progressBarNpc.TabIndex = 16;
             this.progressBarNpc.Visible = false;
             // 
@@ -843,7 +843,7 @@
             this.tabPageScreenshot.Location = new System.Drawing.Point(4, 25);
             this.tabPageScreenshot.Name = "tabPageScreenshot";
             this.tabPageScreenshot.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageScreenshot.Size = new System.Drawing.Size(660, 237);
+            this.tabPageScreenshot.Size = new System.Drawing.Size(677, 237);
             this.tabPageScreenshot.TabIndex = 4;
             this.tabPageScreenshot.Text = "Play: Screenshot";
             this.tabPageScreenshot.UseVisualStyleBackColor = true;
@@ -862,7 +862,7 @@
             // 
             this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(249, 219);
+            this.label21.Location = new System.Drawing.Point(266, 219);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(263, 13);
             this.label21.TabIndex = 8;
@@ -871,7 +871,7 @@
             // buttonLocalHashRemove
             // 
             this.buttonLocalHashRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonLocalHashRemove.Location = new System.Drawing.Point(518, 214);
+            this.buttonLocalHashRemove.Location = new System.Drawing.Point(535, 214);
             this.buttonLocalHashRemove.Name = "buttonLocalHashRemove";
             this.buttonLocalHashRemove.Size = new System.Drawing.Size(139, 23);
             this.buttonLocalHashRemove.TabIndex = 6;
@@ -888,7 +888,7 @@
             this.panelScreenshotState.Controls.Add(this.checkBoxUseScreenshots);
             this.panelScreenshotState.Location = new System.Drawing.Point(0, 6);
             this.panelScreenshotState.Name = "panelScreenshotState";
-            this.panelScreenshotState.Size = new System.Drawing.Size(660, 25);
+            this.panelScreenshotState.Size = new System.Drawing.Size(677, 25);
             this.panelScreenshotState.TabIndex = 5;
             this.panelScreenshotState.Click += new System.EventHandler(this.panelScreenshotState_Click);
             // 
@@ -926,7 +926,7 @@
             this.tabControlScreenDetection.Multiline = true;
             this.tabControlScreenDetection.Name = "tabControlScreenDetection";
             this.tabControlScreenDetection.SelectedIndex = 0;
-            this.tabControlScreenDetection.Size = new System.Drawing.Size(660, 174);
+            this.tabControlScreenDetection.Size = new System.Drawing.Size(677, 174);
             this.tabControlScreenDetection.TabIndex = 9;
             // 
             // tabPageDetectionLearn
@@ -944,10 +944,29 @@
             this.tabPageDetectionLearn.Location = new System.Drawing.Point(0, 0);
             this.tabPageDetectionLearn.Name = "tabPageDetectionLearn";
             this.tabPageDetectionLearn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDetectionLearn.Size = new System.Drawing.Size(660, 174);
+            this.tabPageDetectionLearn.Size = new System.Drawing.Size(677, 174);
             this.tabPageDetectionLearn.TabIndex = 0;
             this.tabPageDetectionLearn.Text = "Learn";
             this.tabPageDetectionLearn.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(90, 122);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(122, 13);
+            this.label24.TabIndex = 9;
+            this.label24.Text = "<< Resets scanner state";
+            // 
+            // buttonDiscardHashes
+            // 
+            this.buttonDiscardHashes.Location = new System.Drawing.Point(9, 117);
+            this.buttonDiscardHashes.Name = "buttonDiscardHashes";
+            this.buttonDiscardHashes.Size = new System.Drawing.Size(75, 23);
+            this.buttonDiscardHashes.TabIndex = 8;
+            this.buttonDiscardHashes.Text = "Discard All";
+            this.buttonDiscardHashes.UseVisualStyleBackColor = true;
+            this.buttonDiscardHashes.Click += new System.EventHandler(this.buttonDiscardHashes_Click);
             // 
             // pictureBoxLocalHash
             // 
@@ -956,7 +975,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxLocalHash.Location = new System.Drawing.Point(238, 19);
             this.pictureBoxLocalHash.Name = "pictureBoxLocalHash";
-            this.pictureBoxLocalHash.Size = new System.Drawing.Size(417, 149);
+            this.pictureBoxLocalHash.Size = new System.Drawing.Size(434, 149);
             this.pictureBoxLocalHash.TabIndex = 7;
             this.pictureBoxLocalHash.TabStop = false;
             // 
@@ -1143,7 +1162,7 @@
             this.tabPagePlay.Location = new System.Drawing.Point(4, 25);
             this.tabPagePlay.Name = "tabPagePlay";
             this.tabPagePlay.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePlay.Size = new System.Drawing.Size(660, 237);
+            this.tabPagePlay.Size = new System.Drawing.Size(677, 237);
             this.tabPagePlay.TabIndex = 0;
             this.tabPagePlay.Text = "Play: Simulate";
             this.tabPagePlay.UseVisualStyleBackColor = true;
@@ -1163,7 +1182,7 @@
             this.tabControlGameRules.Margin = new System.Windows.Forms.Padding(0);
             this.tabControlGameRules.Name = "tabControlGameRules";
             this.tabControlGameRules.SelectedIndex = 0;
-            this.tabControlGameRules.Size = new System.Drawing.Size(435, 170);
+            this.tabControlGameRules.Size = new System.Drawing.Size(452, 170);
             this.tabControlGameRules.TabIndex = 11;
             // 
             // tabPageSubGame
@@ -1173,7 +1192,7 @@
             this.tabPageSubGame.Location = new System.Drawing.Point(0, 0);
             this.tabPageSubGame.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageSubGame.Name = "tabPageSubGame";
-            this.tabPageSubGame.Size = new System.Drawing.Size(435, 170);
+            this.tabPageSubGame.Size = new System.Drawing.Size(452, 170);
             this.tabPageSubGame.TabIndex = 0;
             this.tabPageSubGame.Text = "Game";
             this.tabPageSubGame.UseVisualStyleBackColor = true;
@@ -1185,7 +1204,7 @@
             this.labelGameStateHint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(186)))));
             this.labelGameStateHint.Location = new System.Drawing.Point(1, 150);
             this.labelGameStateHint.Name = "labelGameStateHint";
-            this.labelGameStateHint.Size = new System.Drawing.Size(433, 19);
+            this.labelGameStateHint.Size = new System.Drawing.Size(450, 19);
             this.labelGameStateHint.TabIndex = 10;
             this.labelGameStateHint.Text = "[Drag && drop cards on board]";
             this.labelGameStateHint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1198,7 +1217,7 @@
             this.listViewRedDeck.HideSelection = false;
             this.listViewRedDeck.Location = new System.Drawing.Point(0, 0);
             this.listViewRedDeck.Name = "listViewRedDeck";
-            this.listViewRedDeck.Size = new System.Drawing.Size(435, 170);
+            this.listViewRedDeck.Size = new System.Drawing.Size(452, 170);
             this.listViewRedDeck.TabIndex = 1;
             this.listViewRedDeck.TileSize = new System.Drawing.Size(50, 50);
             this.listViewRedDeck.UseCompatibleStateImageBehavior = false;
@@ -1555,7 +1574,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUndoRed.Location = new System.Drawing.Point(225, 211);
             this.buttonUndoRed.Name = "buttonUndoRed";
-            this.buttonUndoRed.Size = new System.Drawing.Size(431, 23);
+            this.buttonUndoRed.Size = new System.Drawing.Size(448, 23);
             this.buttonUndoRed.TabIndex = 3;
             this.buttonUndoRed.Text = "Undo last Red move";
             this.buttonUndoRed.UseVisualStyleBackColor = true;
@@ -1734,7 +1753,7 @@
             this.tabPageCards.Controls.Add(this.tabControlCardsView);
             this.tabPageCards.Location = new System.Drawing.Point(4, 25);
             this.tabPageCards.Name = "tabPageCards";
-            this.tabPageCards.Size = new System.Drawing.Size(660, 237);
+            this.tabPageCards.Size = new System.Drawing.Size(677, 237);
             this.tabPageCards.TabIndex = 2;
             this.tabPageCards.Text = "Cards";
             this.tabPageCards.UseVisualStyleBackColor = true;
@@ -1769,7 +1788,7 @@
             this.tabControlCardsView.Location = new System.Drawing.Point(0, 0);
             this.tabControlCardsView.Name = "tabControlCardsView";
             this.tabControlCardsView.SelectedIndex = 0;
-            this.tabControlCardsView.Size = new System.Drawing.Size(660, 217);
+            this.tabControlCardsView.Size = new System.Drawing.Size(677, 217);
             this.tabControlCardsView.TabIndex = 3;
             // 
             // tabPageCardsList
@@ -1778,7 +1797,7 @@
             this.tabPageCardsList.Location = new System.Drawing.Point(4, 25);
             this.tabPageCardsList.Name = "tabPageCardsList";
             this.tabPageCardsList.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCardsList.Size = new System.Drawing.Size(652, 188);
+            this.tabPageCardsList.Size = new System.Drawing.Size(669, 188);
             this.tabPageCardsList.TabIndex = 0;
             this.tabPageCardsList.Text = "List";
             this.tabPageCardsList.UseVisualStyleBackColor = true;
@@ -1801,7 +1820,7 @@
             this.listViewCards.HideSelection = false;
             this.listViewCards.Location = new System.Drawing.Point(0, 0);
             this.listViewCards.Name = "listViewCards";
-            this.listViewCards.Size = new System.Drawing.Size(652, 188);
+            this.listViewCards.Size = new System.Drawing.Size(669, 188);
             this.listViewCards.TabIndex = 0;
             this.listViewCards.UseCompatibleStateImageBehavior = false;
             this.listViewCards.View = System.Windows.Forms.View.Details;
@@ -2131,7 +2150,7 @@
             this.labelUpdateNotify.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.labelUpdateNotify.Location = new System.Drawing.Point(4, 211);
             this.labelUpdateNotify.Name = "labelUpdateNotify";
-            this.labelUpdateNotify.Size = new System.Drawing.Size(664, 55);
+            this.labelUpdateNotify.Size = new System.Drawing.Size(681, 55);
             this.labelUpdateNotify.TabIndex = 24;
             this.labelUpdateNotify.Text = "New version downloaded, please restart program to finish update. Click here to hi" +
     "de.";
@@ -2185,36 +2204,17 @@
             this.toolStripMenuItem6.Text = "Adjust...";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
-            // buttonDiscardHashes
-            // 
-            this.buttonDiscardHashes.Location = new System.Drawing.Point(9, 117);
-            this.buttonDiscardHashes.Name = "buttonDiscardHashes";
-            this.buttonDiscardHashes.Size = new System.Drawing.Size(75, 23);
-            this.buttonDiscardHashes.TabIndex = 8;
-            this.buttonDiscardHashes.Text = "Discard All";
-            this.buttonDiscardHashes.UseVisualStyleBackColor = true;
-            this.buttonDiscardHashes.Click += new System.EventHandler(this.buttonDiscardHashes_Click);
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(90, 122);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(122, 13);
-            this.label24.TabIndex = 9;
-            this.label24.Text = "<< Resets scanner state";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(668, 266);
+            this.ClientSize = new System.Drawing.Size(685, 266);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.labelUpdateNotify);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.MinimumSize = new System.Drawing.Size(684, 305);
+            this.MinimumSize = new System.Drawing.Size(701, 305);
             this.Name = "Form1";
             this.Text = "FF Triad Buddy";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

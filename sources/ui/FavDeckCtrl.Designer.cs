@@ -50,7 +50,7 @@
             this.buttonEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEdit.Location = new System.Drawing.Point(266, 3);
             this.buttonEdit.Name = "buttonEdit";
-            this.buttonEdit.Size = new System.Drawing.Size(34, 29);
+            this.buttonEdit.Size = new System.Drawing.Size(51, 29);
             this.buttonEdit.TabIndex = 10;
             this.buttonEdit.Text = "Edit";
             this.buttonEdit.UseVisualStyleBackColor = true;
@@ -92,7 +92,7 @@
             this.Controls.Add(this.deckCtrl);
             this.Controls.Add(this.labelTitle);
             this.Name = "FavDeckCtrl";
-            this.Size = new System.Drawing.Size(303, 34);
+            this.Size = new System.Drawing.Size(320, 34);
             this.ResumeLayout(false);
             this.PerformLayout();
 
