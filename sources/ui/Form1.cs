@@ -316,6 +316,8 @@ namespace FFTriadBuddy
                             LocalizationDB.SetCurrentUserLanguage(forcedLang);
                         }
 
+                        LocResourceManager.SetCurrentUserLanguage(CultureInfo.CurrentUICulture, typeof(loc.strings));
+
                         TriadCardDB cardDB = TriadCardDB.Get();
                         cardIconImages = new ImageList
                         {

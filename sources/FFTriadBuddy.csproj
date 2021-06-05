@@ -86,11 +86,7 @@
     <Compile Include="gamelogic\TriadGameScreenMemory.cs" />
     <Compile Include="googleapi\GoogleDriveService.cs" />
     <Compile Include="googleapi\GoogleOAuth2.cs" />
-    <Compile Include="loc\strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>strings.resx</DependentUpon>
-    </Compile>
+    <Compile Include="loc\strings.cs" />
     <Compile Include="ui\FormAdjustCard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +99,7 @@
     <Compile Include="ui\FormAdjustHash.Designer.cs">
       <DependentUpon>FormAdjustHash.cs</DependentUpon>
     </Compile>
+    <Compile Include="utils-shared\LocResourceManager.cs" />
     <Compile Include="vision\MLClassifierTriadDigit.cs" />
     <Compile Include="vision\MLClassifierCactpot.cs" />
     <Compile Include="utils\datamine\CsvData.cs" />
@@ -176,11 +173,8 @@
     <Compile Include="vision\ScannerCactpot.cs" />
     <Compile Include="vision\ScreenReader.cs" />
     <Compile Include="vision\ImageUtils.cs" />
-    <EmbeddedResource Include="loc\strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="loc\strings.zh.resx" />
+    <None Include="loc\strings.resx" />
+    <None Include="loc\strings.zh.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -256,8 +250,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
+    <CreateItem Include="$(ProjectDir)loc\strings*.resx">
+      <Output TaskParameter="Include" ItemName="LocFiles" />
+    </CreateItem>
     <Delete Files="$(ProjectDir)\assets.zip" />
+    <MakeDir Directories="$(SolutionDir)\assets\loc" />
+    <Copy SourceFiles="@(LocFiles)" DestinationFolder="$(SolutionDir)\assets\loc" />
     <ZipDir ZipFileName="$(ProjectDir)\assets.zip" DirectoryName="$(SolutionDir)\assets" />
+    <RemoveDir Directories="$(SolutionDir)\assets\loc" />
   </Target>
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">

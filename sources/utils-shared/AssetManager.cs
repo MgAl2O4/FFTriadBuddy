@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 
@@ -69,6 +70,17 @@ namespace MgAl2O4.Utils
             }
 
             return null;
+        }
+
+        public List<string> ListAssets()
+        {
+            List<string> assetPaths = new List<string>();
+            foreach (ZipArchiveEntry entry in assetArchive.Entries)
+            {
+                assetPaths.Add(entry.FullName);
+            }
+
+            return assetPaths;
         }
     }
 }
