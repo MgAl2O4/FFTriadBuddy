@@ -187,7 +187,7 @@
     <value>仅使用已拥有的幻卡</value>
   </data>
   <data name="FavDeckCtrl_Edit" xml:space="preserve">
-    <value>⚙️</value>
+    <value>编辑</value>
   </data>
   <data name="FavDeckForm_AddButton" xml:space="preserve">
     <value>添加</value>
