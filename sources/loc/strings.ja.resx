@@ -144,6 +144,24 @@
   <data name="AdjustForm_Distance" xml:space="preserve">
     <value>距離:</value>
   </data>
+  <data name="AdjustForm_Dynamic_CardState_Hidden" xml:space="preserve">
+    <value>隠し</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_Locked" xml:space="preserve">
+    <value>ロック中</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_None" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_PlacedBlue" xml:space="preserve">
+    <value>配置済み: 青</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_PlacedRed" xml:space="preserve">
+    <value>配置済み: 赤</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_Visible" xml:space="preserve">
+    <value>可視</value>
+  </data>
   <data name="AdjustForm_Dynamic_Digit_Default" xml:space="preserve">
     <value>自動</value>
   </data>
