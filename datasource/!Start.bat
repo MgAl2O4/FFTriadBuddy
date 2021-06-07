@@ -48,7 +48,7 @@ goto EXPORTED
 
 :CURL_WORKER
 echo Downloading from: %2...
-for %%F in (ENpcResident Item PlaceName TripleTriadCard TripleTriadCardType TripleTriadRule TripleTriadCompetition) do ( 
+for %%F in (ENpcResident Item PlaceName TripleTriadCard TripleTriadCardType TripleTriadRule TripleTriadCompetition TripleTriadCardResident TripleTriadResident) do ( 
 	curl https://raw.githubusercontent.com/%2/%3/%%F.csv --output export\exd-all\%%F.%1.csv --silent
 )
 exit /b

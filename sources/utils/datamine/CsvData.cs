@@ -17,14 +17,28 @@ namespace FFTriadBuddy.Datamine
         public int GetNumColumns() { return (data != null && data.rows.Count > 0 && data.rows[0] != null) ? data.rows[0].Length : 0; }
         public int GetNumLanguages() { return mapLanguages.Count; }
 
-        public LocString GetLocalizedText(int rowIdx, int columnIdx)
+        public LocString GetLocalizedText(int rowIdx, int columnIdx, int keyColumnIdx = 0)
         {
+            var keyStr = mapLanguages[DefaultLanguage].rows[rowIdx][keyColumnIdx];
+
             LocString textData = new LocString();
             foreach (var kvp in mapLanguages)
             {
-                // not all locs are build on the same client version, but Ids/rowIdx are in sync
+                // not all locs are build on the same client version, but Ids are in sync
                 int langIdx = Array.IndexOf(LocalizationDB.Languages, kvp.Key);
-                textData.Text[langIdx] = (rowIdx < kvp.Value.rows.Count) ? kvp.Value.rows[rowIdx][columnIdx] : null;
+                if (rowIdx < kvp.Value.rows.Count)
+                {
+                    int locRowIdx = rowIdx;
+
+                    // but are the rows in sync too?
+                    var locKeyStr = kvp.Value.rows[rowIdx][keyColumnIdx];
+                    if (keyStr != locKeyStr)
+                    {
+                        throw new Exception("Unable to match key in localization csv!");
+                    }
+
+                    textData.Text[langIdx] = kvp.Value.rows[locRowIdx][columnIdx].Trim();
+                }
             }
 
             return textData;
@@ -36,24 +50,21 @@ namespace FFTriadBuddy.Datamine
 
             if (File.Exists(path))
             {
-                resultOb.data = CsvData.LoadFrom(path, numRowsToSkip);
-                resultOb.mapLanguages[DefaultLanguage] = resultOb.data;
+                resultOb.mapLanguages[DefaultLanguage] = CsvData.LoadFrom(path, numRowsToSkip);
             }
-            else
-            {
-                foreach (string lang in LocalizationDB.Languages)
-                {
-                    string locPath = path.Replace(".csv", "." + lang + ".csv");
-                    if (File.Exists(locPath))
-                    {
-                        resultOb.mapLanguages.Add(lang, CsvData.LoadFrom(locPath, numRowsToSkip));
-                    }
-                }
 
-                if (resultOb.mapLanguages.ContainsKey(DefaultLanguage))
+            foreach (string lang in LocalizationDB.Languages)
+            {
+                string locPath = path.Replace(".csv", "." + lang + ".csv");
+                if (File.Exists(locPath))
                 {
-                    resultOb.data = resultOb.mapLanguages[DefaultLanguage];
+                    resultOb.mapLanguages.Add(lang, CsvData.LoadFrom(locPath, numRowsToSkip));
                 }
+            }
+
+            if (resultOb.mapLanguages.ContainsKey(DefaultLanguage))
+            {
+                resultOb.data = resultOb.mapLanguages[DefaultLanguage];
             }
 
             return resultOb;
@@ -80,6 +91,7 @@ namespace FFTriadBuddy.Datamine
                 {
                     string row = reader.ReadLine();
                     lineIdx++;
+
                     if (skipCounter > 0)
                     {
                         skipCounter--;
@@ -88,11 +100,21 @@ namespace FFTriadBuddy.Datamine
 
                     if (row.Length > 0)
                     {
+                        // simple multiline check - expect to see even number of " chars, concat next row if not
+                        int numStringSep = CountStringSep(row);
+                        while ((numStringSep % 2) != 0)
+                        {
+                            string nextRow = reader.ReadLine();
+                            lineIdx++;
+
+                            row += " " + nextRow;
+                            numStringSep = CountStringSep(row);
+                        }
+
                         string[] cols = SplitRow(row);
                         if (cols.Length != numCols)
                         {
-                            continue;
-                            //throw new Exception("Column count mismatch at '" + path + "' line:" + lineIdx);
+                            throw new Exception("Column count mismatch at '" + path + "' line:" + lineIdx);
                         }
 
                         resultOb.rows.Add(cols);
@@ -101,6 +123,20 @@ namespace FFTriadBuddy.Datamine
             }
 
             return resultOb;
+        }
+
+        private static int CountStringSep(string csvRow)
+        {
+            int total = 0;
+            for (int idx = 0; idx < csvRow.Length; idx++)
+            {
+                if (csvRow[idx] == '\"')
+                {
+                    total++;
+                }
+            }
+
+            return total;
         }
 
         private static string[] SplitRow(string csvRow)

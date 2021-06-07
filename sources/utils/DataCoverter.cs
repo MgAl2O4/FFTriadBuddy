@@ -15,7 +15,10 @@ namespace FFTriadBuddy
             GameDataLists gameDataLists = new GameDataLists();
             gameDataLists.Load(@"..\..\..\datasource\export\exd-all\");
 
-            bool result = gameDataLists.Link();
+            bool result = true;
+            result = result && ValidateCardIds(gameDataLists);
+            result = result && ValidateNpcIds(gameDataLists);
+            result = result && gameDataLists.Link();
             if (result)
             {
                 var mapRuleByCodeName = BuildRuleNameMap();
@@ -376,6 +379,54 @@ namespace FFTriadBuddy
                 for (int ruleIdx = 0; ruleIdx < 2; ruleIdx++)
                 {
                     tourOb.Rules.Add(mapRuleNames[hardcodedRules[ruleIdx + ruleStartIdx]]);
+                }
+            }
+
+            return true;
+        }
+
+        private bool ValidateCardIds(GameDataLists gameDataLists)
+        {
+            foreach (var cardData in gameDataLists.cards)
+            {
+                if (cardData.locSides.Count > 0)
+                {
+                    foreach (var kvp in cardData.locSides)
+                    {
+                        bool isMatch = cardData.HasMatchingLocSide(kvp.Value);
+                        if (!isMatch)
+                        {
+                            Logger.WriteLine("FAILED to validate card - Id:{0} [{1}, {2}, {3}, {4}] vs {5}:[{6}, {7}, {8}, {9}]",
+                                cardData.Id, cardData.sideTop, cardData.sideLeft, cardData.sideBottom, cardData.sideRight,
+                                kvp.Key, kvp.Value[0], kvp.Value[1], kvp.Value[2], kvp.Value[3]);
+
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool ValidateNpcIds(GameDataLists gameDataLists)
+        {
+            foreach (var npcData in gameDataLists.npcs)
+            {
+                if (npcData.locCards.Count > 0)
+                {
+                    foreach (var kvp in npcData.locCards)
+                    {
+                        bool isMatch = npcData.HasMatchingCards(kvp.Value);
+                        if (!isMatch)
+                        {
+                            Logger.WriteLine("FAILED to validate npc - Id:{0} [{1}] + [{2}] vs {3}:[{4}]",
+                                npcData.Id, string.Join(", ", npcData.CardsFixed), string.Join(", ", npcData.CardsVariable),
+                                kvp.Key, string.Join(", ", kvp.Value));
+
+                            return false;
+                        }
+                    }
                 }
             }
 

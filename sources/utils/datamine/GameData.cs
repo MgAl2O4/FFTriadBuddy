@@ -103,6 +103,8 @@ namespace FFTriadBuddy.Datamine
         public int sortOrder;
         public int uiGroup;
 
+        public Dictionary<string, int[]> locSides = new Dictionary<string, int[]>();
+
         public GameDataCardType LinkedType;
         public GameDataCardName LinkedName;
 
@@ -129,7 +131,35 @@ namespace FFTriadBuddy.Datamine
 
                 sortOrder = int.Parse(defRow[10]);
                 uiGroup = int.Parse(defRow[11]);
+
+                foreach (var kvp in rawData.mapLanguages)
+                {
+                    if (kvp.Key != CsvLocalizedData.DefaultLanguage)
+                    {
+                        string[] locRow = (rowIdx < kvp.Value.rows.Count) ? kvp.Value.rows[rowIdx] : null;
+                        if (locRow != null)
+                        {
+                            int[] sides = new int[] {
+                                int.Parse(locRow[2]), // top
+                                int.Parse(locRow[5]), // left
+                                int.Parse(locRow[3]), // bottom
+                                int.Parse(locRow[4])  // right
+                            };
+
+                            bool isValid = (sides[0] > 0) && (sides[1] > 0) && (sides[2] > 0) && (sides[3] > 0);
+                            if (isValid)
+                            {
+                                locSides.Add(kvp.Key, sides);
+                            }
+                        }
+                    }
+                }
             }
+        }
+
+        public bool HasMatchingLocSide(int[] sideNums)
+        {
+            return (sideNums[0] == sideTop) && (sideNums[1] == sideLeft) && (sideNums[2] == sideBottom) && (sideNums[3] == sideRight);
         }
 
         public override bool Link(GameDataLists lists)
@@ -295,6 +325,8 @@ namespace FFTriadBuddy.Datamine
         public List<string> Rules;
         public List<string> Rewards;
 
+        public Dictionary<string, string[]> locCards = new Dictionary<string, string[]>();
+
         public GameDataNpcTriadId LinkedNpcId;
         public List<GameDataCard> LinkedCardsFixed;
         public List<GameDataCard> LinkedCardsVariable;
@@ -347,7 +379,58 @@ namespace FFTriadBuddy.Datamine
                         Rewards.Add(defRow[idx]);
                     }
                 }
+
+                foreach (var kvp in rawData.mapLanguages)
+                {
+                    if (kvp.Key != CsvLocalizedData.DefaultLanguage)
+                    {
+                        string[] locRow = (rowIdx < kvp.Value.rows.Count) ? kvp.Value.rows[rowIdx] : null;
+                        if (locRow != null)
+                        {
+                            List<string> cardNames = new List<string>();
+                            for (int idx = 1; idx <= 10; idx++)
+                            {
+                                if (locRow[idx].Length > 0 && locRow[idx] != "0")
+                                {
+                                    cardNames.Add(locRow[idx]);
+                                }
+                            }
+
+                            if (cardNames.Count > 0)
+                            {
+                                locCards.Add(kvp.Key, cardNames.ToArray());
+                            }
+                        }
+                    }
+                }
             }
+        }
+
+        public bool HasMatchingCards(string[] cards)
+        {
+            if (CardsFixed.Count + CardsVariable.Count != cards.Length)
+            {
+                return false;
+            }
+
+            int testIdx = 0;
+            for (int srcIdx = 0; srcIdx < CardsFixed.Count; srcIdx++, testIdx++)
+            {
+                if (CardsFixed[srcIdx] != cards[testIdx])
+                {
+                    return false;
+                }
+            }
+
+            for (int srcIdx = 0; srcIdx < CardsVariable.Count; srcIdx++, testIdx++)
+            {
+                if (CardsVariable[srcIdx] != cards[testIdx])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public override bool Link(GameDataLists lists)
