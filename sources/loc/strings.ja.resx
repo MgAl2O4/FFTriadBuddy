@@ -1,0 +1,709 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdjustForm_CancelButton" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="AdjustForm_CardDown" xml:space="preserve">
+    <value>下:</value>
+  </data>
+  <data name="AdjustForm_CardLeft" xml:space="preserve">
+    <value>左:</value>
+  </data>
+  <data name="AdjustForm_CardList" xml:space="preserve">
+    <value>調整後:</value>
+  </data>
+  <data name="AdjustForm_CardRight" xml:space="preserve">
+    <value>右:</value>
+  </data>
+  <data name="AdjustForm_CardStatus" xml:space="preserve">
+    <value>ステータス:</value>
+  </data>
+  <data name="AdjustForm_CardUp" xml:space="preserve">
+    <value>上:</value>
+  </data>
+  <data name="AdjustForm_Current" xml:space="preserve">
+    <value>現在:</value>
+  </data>
+  <data name="AdjustForm_Distance" xml:space="preserve">
+    <value>距離:</value>
+  </data>
+  <data name="AdjustForm_Dynamic_Digit_Default" xml:space="preserve">
+    <value>自動</value>
+  </data>
+  <data name="AdjustForm_Dynamic_Digit_Override" xml:space="preserve">
+    <value>カスタム</value>
+  </data>
+  <data name="AdjustForm_Dynamic_Distance_Classifier" xml:space="preserve">
+    <value>&lt;= 分類器による</value>
+  </data>
+  <data name="AdjustForm_Dynamic_Distance_DefaultHint" xml:space="preserve">
+    <value>&lt;= 低い方が正確です</value>
+  </data>
+  <data name="AdjustForm_Dynamic_Distance_Exact" xml:space="preserve">
+    <value>&lt;= 完全一致</value>
+  </data>
+  <data name="AdjustForm_Dynamic_Distance_NotAvail" xml:space="preserve">
+    <value>該当なし</value>
+  </data>
+  <data name="AdjustForm_Dynamic_UnknownOwner" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  <data name="AdjustForm_HashList" xml:space="preserve">
+    <value>検出:</value>
+  </data>
+  <data name="AdjustForm_SaveButton" xml:space="preserve">
+    <value>保存する</value>
+  </data>
+  <data name="AdjustForm_Title" xml:space="preserve">
+    <value>検出の調整</value>
+  </data>
+  <data name="App_Title" xml:space="preserve">
+    <value>FF トリプルトライアド バディ</value>
+  </data>
+  <data name="DeckCtrl_CtxMenu_LockForOptimization" xml:space="preserve">
+    <value>デッキの最適化にカードをロックする</value>
+  </data>
+  <data name="DeckCtrl_CtxMenu_PickCard" xml:space="preserve">
+    <value>カードを選択:</value>
+  </data>
+  <data name="DeckCtrl_CtxMenu_UseOnlyOwned" xml:space="preserve">
+    <value>所有しているカードのみを使用（クリックで変更）</value>
+  </data>
+  <data name="FavDeckCtrl_Edit" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="FavDeckForm_AddButton" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="FavDeckForm_Dynamic_AutoName" xml:space="preserve">
+    <value>お気に入り #{0}</value>
+  </data>
+  <data name="FavDeckForm_Dynamic_RemoveMsg" xml:space="preserve">
+    <value>お気に入りのデッキは削除されます。続行しますか？</value>
+  </data>
+  <data name="FavDeckForm_Dynamic_UpdateButton" xml:space="preserve">
+    <value>変更</value>
+  </data>
+  <data name="FavDeckForm_Info" xml:space="preserve">
+    <value>お気に入りのデッキ。カードをクリックしてオプションが開けます:</value>
+  </data>
+  <data name="FavDeckForm_Name" xml:space="preserve">
+    <value>略名:</value>
+  </data>
+  <data name="FavDeckForm_RemoveButton" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="FavDeckForm_Title" xml:space="preserve">
+    <value>お気に入りのデッキを編集</value>
+  </data>
+  <data name="Game_ProcessName_DX11" xml:space="preserve">
+    <value>ffxiv_dx11</value>
+  </data>
+  <data name="Game_ProcessName_DX9" xml:space="preserve">
+    <value>ffxiv</value>
+  </data>
+  <data name="Game_WindowNamePrefix" xml:space="preserve">
+    <value>FINAL FANTASY</value>
+  </data>
+  <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
+    <value>アイコン</value>
+  </data>
+  <data name="MainForm_Cards_ListTitle" xml:space="preserve">
+    <value>一覧表示</value>
+  </data>
+  <data name="MainForm_Cards_List_ColumnId" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="MainForm_Cards_List_ColumnName" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="MainForm_Cards_List_ColumnOwned" xml:space="preserve">
+    <value>所有済み</value>
+  </data>
+  <data name="MainForm_Cards_List_ColumnPower" xml:space="preserve">
+    <value>数字</value>
+  </data>
+  <data name="MainForm_Cards_List_ColumnRarity" xml:space="preserve">
+    <value>レアリティ</value>
+  </data>
+  <data name="MainForm_Cards_List_ColumnType" xml:space="preserve">
+    <value>タイプ</value>
+  </data>
+  <data name="MainForm_Cards_NumOwned" xml:space="preserve">
+    <value>所有カードの枚数:</value>
+  </data>
+  <data name="MainForm_Cards_Title" xml:space="preserve">
+    <value>カード</value>
+  </data>
+  <data name="MainForm_CtxMenu_CardInfo_FindOnline" xml:space="preserve">
+    <value>オンラインで検索</value>
+  </data>
+  <data name="MainForm_CtxMenu_CardInfo_NpcReward" xml:space="preserve">
+    <value>NPC報酬:</value>
+  </data>
+  <data name="MainForm_CtxMenu_FindCard" xml:space="preserve">
+    <value>カードを検索:</value>
+  </data>
+  <data name="MainForm_CtxMenu_FindNpc" xml:space="preserve">
+    <value>NPCを検索:</value>
+  </data>
+  <data name="MainForm_CtxMenu_Learn_Adjust" xml:space="preserve">
+    <value>調整…</value>
+  </data>
+  <data name="MainForm_CtxMenu_Learn_Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="MainForm_CtxMenu_SelectNpc_Rewards" xml:space="preserve">
+    <value>報酬（クリックで追加/削除）</value>
+  </data>
+  <data name="MainForm_CtxMenu_SelectNpc_Select" xml:space="preserve">
+    <value>対戦NPCを選択</value>
+  </data>
+  <data name="MainForm_Dynamic_CardOwnedColumn" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="MainForm_Dynamic_DeckState_HasDuplicates" xml:space="preserve">
+    <value>重複したカードが見つかりました！</value>
+  </data>
+  <data name="MainForm_Dynamic_DeckState_MissingCards" xml:space="preserve">
+    <value>カードがありません！</value>
+  </data>
+  <data name="MainForm_Dynamic_DeckState_TooMany4Star" xml:space="preserve">
+    <value>★4以上のカードが最大2枚編成可能!</value>
+  </data>
+  <data name="MainForm_Dynamic_DeckState_TooMany5Star" xml:space="preserve">
+    <value>★5のカードが1枚のみ編成可能!</value>
+  </data>
+  <data name="MainForm_Dynamic_NpcCompletedColumn" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="MainForm_Dynamic_RuleListEmpty" xml:space="preserve">
+    <value>(なし)</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenhot_Status_NoErrors" xml:space="preserve">
+    <value>有効</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_BoardRow_Bottom" xml:space="preserve">
+    <value>下</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_BoardRow_Middle" xml:space="preserve">
+    <value>中</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_BoardRow_Top" xml:space="preserve">
+    <value>上</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_CardLocation_BlueDeck" xml:space="preserve">
+    <value>自分 {0}</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_CardLocation_Board" xml:space="preserve">
+    <value>ボード {0} {1}</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_CardLocation_RedDeck" xml:space="preserve">
+    <value>相手 {0}</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_CardNotDetected" xml:space="preserve">
+    <value>検出されませんでした!</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_HashType_Card" xml:space="preserve">
+    <value>カード</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_HashType_Number" xml:space="preserve">
+    <value>数字</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_HashType_Rule" xml:space="preserve">
+    <value>ルール</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_MatchType_Auto" xml:space="preserve">
+    <value>自動</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_MatchType_Exact" xml:space="preserve">
+    <value>完全一致</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_MatchType_Similar" xml:space="preserve">
+    <value>類似</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_SelectDetectionMatch" xml:space="preserve">
+    <value>(一致を選択)</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_Status_Disabled" xml:space="preserve">
+    <value>無効</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_Status_FailedCardMatching" xml:space="preserve">
+    <value>一部のカードを検出できませんでした！対戦状態は正しくない場合があります。</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_Status_MissingGridOrCards" xml:space="preserve">
+    <value>ボードを検出できません！UI位置のリセットや、Reshadeを無効にするなどを試してください...</value>
+  </data>
+  <data name="MainForm_Dynamic_Screenshot_Status_UnknownHash" xml:space="preserve">
+    <value>パターンを検出できません！詳細は以下を参照してください。</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudSave_Loaded" xml:space="preserve">
+    <value>クラウドデータが適用されました</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_ApiFailure" xml:space="preserve">
+    <value>API アクセスに失敗しました</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_AuthInProgress" xml:space="preserve">
+    <value>認証中...</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_Disabled" xml:space="preserve">
+    <value>無効、ローカルのみ</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_NoDatabase" xml:space="preserve">
+    <value>データベースにエラー</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_NoErrors" xml:space="preserve">
+    <value>有効</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_NotAuthorized" xml:space="preserve">
+    <value>認証が必要です</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_NotInitialized" xml:space="preserve">
+    <value>検出中…</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_Synced" xml:space="preserve">
+    <value>同期しました</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_CloudStatus_Uploaded" xml:space="preserve">
+    <value>保存済み</value>
+  </data>
+  <data name="MainForm_Dynamic_Setup_OptimizerProgressAborted" xml:space="preserve">
+    <value>{0:P0} で中止されました</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_BlueStartButton" xml:space="preserve">
+    <value>自分が先攻</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_ChanceIsDraw" xml:space="preserve">
+    <value>(引き分け)</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_ChangeBlueHint" xml:space="preserve">
+    <value>クリックしてカードを変更</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_EndGame_BlueDraw" xml:space="preserve">
+    <value>引き分け</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_EndGame_BlueLost" xml:space="preserve">
+    <value>敗北</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_EndGame_BlueWin" xml:space="preserve">
+    <value>やった！</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_LastCardHint" xml:space="preserve">
+    <value>[相手のカードを配置してルールを適用する]</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_RedStartButton" xml:space="preserve">
+    <value>相手先攻: カードをボードへドラッグ&amp;ドロップ</value>
+  </data>
+  <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
+    <value>各デッキからカードを1枚選択して交換する</value>
+  </data>
+  <data name="MainForm_Npcs_List_ColumnCompleted" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="MainForm_Npcs_List_ColumnLocation" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="MainForm_Npcs_List_ColumnName" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="MainForm_Npcs_List_ColumnPower" xml:space="preserve">
+    <value>数字</value>
+  </data>
+  <data name="MainForm_Npcs_List_ColumnReward" xml:space="preserve">
+    <value>報酬</value>
+  </data>
+  <data name="MainForm_Npcs_List_ColumnRules" xml:space="preserve">
+    <value>ルール</value>
+  </data>
+  <data name="MainForm_Npcs_NumKnown" xml:space="preserve">
+    <value>カードを獲得できるNPC数:</value>
+  </data>
+  <data name="MainForm_Npcs_Title" xml:space="preserve">
+    <value>NPC</value>
+  </data>
+  <data name="MainForm_Screenshot_CurrentState" xml:space="preserve">
+    <value>現在の状態:</value>
+  </data>
+  <data name="MainForm_Screenshot_History_CardsColumnDetection" xml:space="preserve">
+    <value>最新の検出</value>
+  </data>
+  <data name="MainForm_Screenshot_History_CardsColumnSides" xml:space="preserve">
+    <value>数字 [上-左-下-右]</value>
+  </data>
+  <data name="MainForm_Screenshot_History_CardsColumnType" xml:space="preserve">
+    <value>タイプ</value>
+  </data>
+  <data name="MainForm_Screenshot_History_HashColumnDetection" xml:space="preserve">
+    <value>最新の検出</value>
+  </data>
+  <data name="MainForm_Screenshot_History_HashColumnType" xml:space="preserve">
+    <value>タイプ</value>
+  </data>
+  <data name="MainForm_Screenshot_InfoLines" xml:space="preserve">
+    <value>手順:
+- ゲーム画面をウィンドウモードや仮想フルスクリーンモードへ切替
+- UIサイズを100%を設定、カラーテーマをダークにする。
+- カードのアニメーションが終わった後、自分の手番で画面をキャプチャ(!!!)
+
+コントローラーを使っている方: LT/RTを同時押し。
+
+ミニ・くじテンダーにも使える。</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_DetectList" xml:space="preserve">
+    <value>検出:</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_DiscardAllButton" xml:space="preserve">
+    <value>すべてを破棄する</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_DiscardAllInfo" xml:space="preserve">
+    <value>&lt;&lt; スキャナをリセット</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_PendingPlural" xml:space="preserve">
+    <value>({0} 件が保留中です)</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_PendingSingular" xml:space="preserve">
+    <value>(1 件が保留中です)</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_SaveButton" xml:space="preserve">
+    <value>保存する</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_SourceImage" xml:space="preserve">
+    <value>ソース画像:</value>
+  </data>
+  <data name="MainForm_Screenshot_Learn_Type" xml:space="preserve">
+    <value>タイプ:</value>
+  </data>
+  <data name="MainForm_Screenshot_ListHint" xml:space="preserve">
+    <value>右クリックで詳細オプションを開く</value>
+  </data>
+  <data name="MainForm_Screenshot_RemovePatternsButton" xml:space="preserve">
+    <value>保存したパターンを削除</value>
+  </data>
+  <data name="MainForm_Screenshot_RemovePatternsTitle" xml:space="preserve">
+    <value>カスタムパターンを削除して検出機能をリセット</value>
+  </data>
+  <data name="MainForm_Screenshot_Title" xml:space="preserve">
+    <value>対戦: 検出機能</value>
+  </data>
+  <data name="MainForm_Setup_Cloud_AuthButton" xml:space="preserve">
+    <value>ログイン:</value>
+  </data>
+  <data name="MainForm_Setup_Cloud_Desc" xml:space="preserve">
+    <value>Google Driveに保存</value>
+  </data>
+  <data name="MainForm_Setup_Deck_OptimizeAbortButton" xml:space="preserve">
+    <value>中止</value>
+  </data>
+  <data name="MainForm_Setup_Deck_OptimizeStartButton" xml:space="preserve">
+    <value>デッキをNPCによって最適化</value>
+  </data>
+  <data name="MainForm_Setup_Deck_Title" xml:space="preserve">
+    <value>現在のデッキ、カードをクリックしてオプションが開けます:</value>
+  </data>
+  <data name="MainForm_Setup_Fav_AddSlotButton" xml:space="preserve">
+    <value>デッキをお気に入りに追加</value>
+  </data>
+  <data name="MainForm_Setup_NPC" xml:space="preserve">
+    <value>NPC:</value>
+  </data>
+  <data name="MainForm_Setup_NPC_DeckPower" xml:space="preserve">
+    <value>デッキの数字:</value>
+  </data>
+  <data name="MainForm_Setup_NPC_Location" xml:space="preserve">
+    <value>位置:</value>
+  </data>
+  <data name="MainForm_Setup_NPC_Rules" xml:space="preserve">
+    <value>ルール:</value>
+  </data>
+  <data name="MainForm_Setup_NPC_WinChance" xml:space="preserve">
+    <value>勝率:</value>
+  </data>
+  <data name="MainForm_Setup_OptimizerStats_NumOwned" xml:space="preserve">
+    <value>所有カード数:</value>
+  </data>
+  <data name="MainForm_Setup_OptimizerStats_NumPossible" xml:space="preserve">
+    <value>可能なデッキ数:</value>
+  </data>
+  <data name="MainForm_Setup_OptimizerStats_NumTested" xml:space="preserve">
+    <value>テスト済みデッキ数:</value>
+  </data>
+  <data name="MainForm_Setup_OptimizerStats_Progress" xml:space="preserve">
+    <value>進捗状況：</value>
+  </data>
+  <data name="MainForm_Setup_OptimizerStats_TimeLeft" xml:space="preserve">
+    <value>残り時間:</value>
+  </data>
+  <data name="MainForm_Setup_OptimizeStats_Title" xml:space="preserve">
+    <value>最適化統計:</value>
+  </data>
+  <data name="MainForm_Setup_RulesToggle" xml:space="preserve">
+    <value>NPCルールを切り替え、トーナメントで無効にする</value>
+  </data>
+  <data name="MainForm_Setup_Rules_Region1" xml:space="preserve">
+    <value>流行ルール1:</value>
+  </data>
+  <data name="MainForm_Setup_Rules_Region2" xml:space="preserve">
+    <value>流行ルール2:</value>
+  </data>
+  <data name="MainForm_Setup_Rules_Tournament" xml:space="preserve">
+    <value>トーナメント:</value>
+  </data>
+  <data name="MainForm_Setup_Rules_TournamentRules" xml:space="preserve">
+    <value>ルール:</value>
+  </data>
+  <data name="MainForm_Setup_Title" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="MainForm_Simulate_Debug_ForceCached" xml:space="preserve">
+    <value>強制的にキャッシュされた画像を使用する</value>
+  </data>
+  <data name="MainForm_Simulate_Debug_Info" xml:space="preserve">
+    <value>スクリーンショットを撮る: デバッグ用</value>
+  </data>
+  <data name="MainForm_Simulate_Game_ApplyRuleButton" xml:space="preserve">
+    <value>ルールを適用</value>
+  </data>
+  <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
+    <value>[カードをボードへドラッグ&amp;ドロップ]</value>
+  </data>
+  <data name="MainForm_Simulate_Game_SpecialRule" xml:space="preserve">
+    <value>特殊ルール &gt;&gt;</value>
+  </data>
+  <data name="MainForm_Simulate_Random_Info" xml:space="preserve">
+    <value>ランダムなデッキを調整する :(</value>
+  </data>
+  <data name="MainForm_Simulate_ResetButton" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="MainForm_Simulate_Roulette_Rule1" xml:space="preserve">
+    <value>ルーレットルール#1を選択</value>
+  </data>
+  <data name="MainForm_Simulate_Roulette_Rule2" xml:space="preserve">
+    <value>ルーレットルール#2を選択</value>
+  </data>
+  <data name="MainForm_Simulate_Roulette_Rule3" xml:space="preserve">
+    <value>ルーレットルール#3を選択</value>
+  </data>
+  <data name="MainForm_Simulate_Roulette_Rule4" xml:space="preserve">
+    <value>ルーレットルール#4を選択</value>
+  </data>
+  <data name="MainForm_Simulate_RuleList" xml:space="preserve">
+    <value>現在のルール:</value>
+  </data>
+  <data name="MainForm_Simulate_Title" xml:space="preserve">
+    <value>対戦: シミュレーション</value>
+  </data>
+  <data name="MainForm_Simulate_UndoRedMoveButton" xml:space="preserve">
+    <value>最後の相手カード操作を元に戻す</value>
+  </data>
+  <data name="MainForm_Simulate_WinChance" xml:space="preserve">
+    <value>勝率:</value>
+  </data>
+  <data name="MainForm_UpdateNotify" xml:space="preserve">
+    <value>新しいバージョンがダウンロードされました。アップデートを完了するためにプログラムを再起動してください。非表示にするにはここをクリックしてください。</value>
+  </data>
+  <data name="OverlayForm_Capture_AutoScan" xml:space="preserve">
+    <value>自動スキャン</value>
+  </data>
+  <data name="OverlayForm_Capture_Button" xml:space="preserve">
+    <value>キャプチャ</value>
+  </data>
+  <data name="OverlayForm_Capture_Details" xml:space="preserve">
+    <value>詳細表示</value>
+  </data>
+  <data name="OverlayForm_Capture_Status" xml:space="preserve">
+    <value>ステータス</value>
+  </data>
+  <data name="OverlayForm_CardInfo_Swapped" xml:space="preserve">
+    <value>交換済み</value>
+  </data>
+  <data name="OverlayForm_DeckInfo_Mismatch" xml:space="preserve">
+    <value>自分のデッキはセットアップページと一致しません！ソルバーは正しいカードを検出するためにいくつかの対戦を観察する必要があります。</value>
+  </data>
+  <data name="OverlayForm_Details_Npc" xml:space="preserve">
+    <value>NPC: {0}</value>
+  </data>
+  <data name="OverlayForm_Details_RedDeck" xml:space="preserve">
+    <value>デッキ詳細を表示</value>
+  </data>
+  <data name="OverlayForm_Details_RedInfo" xml:space="preserve">
+    <value>&lt; 可能な相手のカードです。以下に表示されるカードは含みません：</value>
+  </data>
+  <data name="OverlayForm_Details_RedPlacedAll" xml:space="preserve">
+    <value>必ず持ち: {0}</value>
+  </data>
+  <data name="OverlayForm_Details_RedPlacedVariable" xml:space="preserve">
+    <value>持ち可能: {0}</value>
+  </data>
+  <data name="OverlayForm_Details_Rules" xml:space="preserve">
+    <value>ルール: {0}</value>
+  </data>
+  <data name="OverlayForm_Details_ScanId" xml:space="preserve">
+    <value>スキャンID: {0}</value>
+  </data>
+  <data name="OverlayForm_Dynamic_NpcUnknown" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  <data name="OverlayForm_Dynamic_RulesWaiting" xml:space="preserve">
+    <value>NPCが変更されたので、再スキャンを待ってください…</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_ActiveTurn" xml:space="preserve">
+    <value>準備完了 (俺のターン!)</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_AutoScanMouseOverBoard" xml:space="preserve">
+    <value>スキャンゾーンからカーソルを遠ざける！</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_CactpotReady" xml:space="preserve">
+    <value>ミニサボテン: 準備完了</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_FailedCardMatching" xml:space="preserve">
+    <value>不明なカードです！詳細は[対戦: スクリーンショット]で確認してください</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_MissingCards" xml:space="preserve">
+    <value>自分のデッキが見つかりません</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_MissingGameProcess" xml:space="preserve">
+    <value>ゲームが起動していません</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_MissingGameWindow" xml:space="preserve">
+    <value>ゲームウィンドウは見つかりません</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_MissingGrid" xml:space="preserve">
+    <value>ボードが見つかりません</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_NoInputImage" xml:space="preserve">
+    <value>画像を取得できません。</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_NoScannerMatch" xml:space="preserve">
+    <value>ミニゲームウィンドウが見つかりません</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_Ready" xml:space="preserve">
+    <value>準備完了</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_ScannerErrors" xml:space="preserve">
+    <value>ミニゲームウィンドウを検出できませんでした。</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_UnknownHash" xml:space="preserve">
+    <value>不明なパターンです！詳細は[対戦: スクリーンショット]で確認してください</value>
+  </data>
+  <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
+    <value>自分の手番を待っています</value>
+  </data>
+</root>
