@@ -45,7 +45,7 @@ namespace FFTriadBuddy
             numericUpDownL.Value = cardState.sideNumber[1];
             numericUpDownD.Value = cardState.sideNumber[2];
             numericUpDownR.Value = cardState.sideNumber[3];
-            labelStatus.Text = cardState.state.ToString();
+            labelStatus.Text = GetLocalizedCardState(cardState.state);
 
             PictureBox[] hashPreviewBox = new PictureBox[4] { pictureBoxU, pictureBoxL, pictureBoxD, pictureBoxR };
             Label[] sideInfoLabel = new Label[4] { labelDescU, labelDescL, labelDescD, labelDescR };
@@ -72,6 +72,39 @@ namespace FFTriadBuddy
             UpdateAdjustedCard();
         }
 
+        private string GetLocalizedCardState(ScannerTriad.ECardState value)
+        {
+            switch (value)
+            {
+                case ScannerTriad.ECardState.Hidden:
+                    return loc.strings.AdjustForm_Dynamic_CardState_Hidden;
+                case ScannerTriad.ECardState.Locked:
+                    return loc.strings.AdjustForm_Dynamic_CardState_Locked;
+                case ScannerTriad.ECardState.Visible:
+                    return loc.strings.AdjustForm_Dynamic_CardState_Visible;
+                case ScannerTriad.ECardState.PlacedRed:
+                    return loc.strings.AdjustForm_Dynamic_CardState_PlacedRed;
+                case ScannerTriad.ECardState.PlacedBlue:
+                    return loc.strings.AdjustForm_Dynamic_CardState_PlacedBlue;
+            }
+            return loc.strings.AdjustForm_Dynamic_CardState_None;
+        }
+
+        public class CardPickerOb
+        {
+            public TriadCard card;
+
+            public CardPickerOb(TriadCard card)
+            {
+                this.card = card;
+            }
+
+            public override string ToString()
+            {
+                return card.ToLocalizedString();
+            }
+        }
+
         private void UpdateAdjustedCard()
         {
             int sideU = (int)numericUpDownU.Value;
@@ -85,13 +118,13 @@ namespace FFTriadBuddy
             {
                 if (foundCard.SameNumberId < 0)
                 {
-                    comboBox1.Items.Add(foundCard);
+                    comboBox1.Items.Add(new CardPickerOb(foundCard));
                 }
                 else
                 {
                     foreach (TriadCard card in TriadCardDB.Get().sameNumberMap[foundCard.SameNumberId])
                     {
-                        comboBox1.Items.Add(card);
+                        comboBox1.Items.Add(new CardPickerOb(card));
                     }
                 }
 
@@ -106,7 +139,8 @@ namespace FFTriadBuddy
             DialogResult = DialogResult.Cancel;
             if (comboBox1.SelectedItem != null)
             {
-                TriadCard card = comboBox1.SelectedItem as TriadCard;
+                var cardWrapper = comboBox1.SelectedItem as CardPickerOb;
+                TriadCard card = (cardWrapper != null) ? cardWrapper.card : null;
 
                 // check modified numbers
                 for (int idx = 0; idx < 4; idx++)

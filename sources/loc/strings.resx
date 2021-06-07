@@ -144,6 +144,24 @@
   <data name="AdjustForm_Distance" xml:space="preserve">
     <value>Distance:</value>
   </data>
+  <data name="AdjustForm_Dynamic_CardState_Hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_Locked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_PlacedBlue" xml:space="preserve">
+    <value>Placed: Blue</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_PlacedRed" xml:space="preserve">
+    <value>Placed: Red</value>
+  </data>
+  <data name="AdjustForm_Dynamic_CardState_Visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
   <data name="AdjustForm_Dynamic_Digit_Default" xml:space="preserve">
     <value>auto</value>
   </data>

@@ -108,18 +108,22 @@ namespace FFTriadBuddy
             return "[" + Id + ":" + Name.GetLocalized() + "]";
         }
 
+        public string ToLocalizedString()
+        {
+            return string.Format("[{0}] {1} {2} [{3}, {4}, {5}, {6}]",
+                Id, Name.GetLocalized(),
+                new string('*', (int)Rarity + 1),
+                Sides[0], Sides[1], Sides[2], Sides[3],
+                (Type != ETriadCardType.None) ? " [" + LocalizationDB.Get().LocCardTypes[(int)Type] + "]" : "");
+        }
+
         public override string ToString()
         {
-            string desc = "[" + Id + "] " + Name.GetCodeName() + " ";
-            for (int Idx = 0; Idx <= (int)Rarity; Idx++)
-            {
-                desc += "*";
-            }
-
-            desc += " [" + Sides[0] + ", " + Sides[1] + ", " + Sides[2] + ", " + Sides[3] + "]";
-            desc += ((Type != ETriadCardType.None) ? " [" + Type + "]" : "");
-
-            return desc;
+            return string.Format("[{0}] {1} {2} [{3}, {4}, {5}, {6}]",
+                Id, Name.GetCodeName(),
+                new string('*', (int)Rarity + 1),
+                Sides[0], Sides[1], Sides[2], Sides[3],
+                (Type != ETriadCardType.None) ? " [" + Type + "]" : "");
         }
     }
 

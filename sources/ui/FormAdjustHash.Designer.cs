@@ -62,6 +62,8 @@ namespace FFTriadBuddy
             // 
             // comboBoxOwner
             // 
+            this.comboBoxOwner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxOwner.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxOwner.FormattingEnabled = true;
             this.comboBoxOwner.Location = new System.Drawing.Point(73, 38);
@@ -133,6 +135,8 @@ namespace FFTriadBuddy
             // 
             // labelDescDistance
             // 
+            this.labelDescDistance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDescDistance.Location = new System.Drawing.Point(100, 22);
             this.labelDescDistance.Name = "labelDescDistance";
             this.labelDescDistance.Size = new System.Drawing.Size(189, 13);

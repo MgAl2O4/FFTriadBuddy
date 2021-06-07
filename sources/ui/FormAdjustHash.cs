@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace FFTriadBuddy
@@ -38,6 +39,28 @@ namespace FFTriadBuddy
             {
                 return Description;
             }
+
+            public static HashOwnerItem CreateFrom(ImageHashData hashData)
+            {
+                switch (hashData.type)
+                {
+                    case EImageHashType.Rule:
+                        return new HashOwnerItem((TriadGameModifier)hashData.ownerOb);
+
+                    case EImageHashType.CardImage:
+                        return new HashOwnerItem((TriadCard)hashData.ownerOb);
+
+                    case EImageHashType.CardNumber:
+                        return new HashOwnerItem((int)hashData.ownerOb);
+
+                    case EImageHashType.Cactpot:
+                        return new HashOwnerItem((int)hashData.ownerOb);
+
+                    default: break;
+                }
+
+                return null;
+            }
         }
 
         public ImageHashData hashData;
@@ -57,6 +80,7 @@ namespace FFTriadBuddy
             buttonOk.Text = loc.strings.AdjustForm_SaveButton;
             buttonCancel.Text = loc.strings.AdjustForm_CancelButton;
         }
+
         static public List<object> GenerateHashOwnerOptions(ImageHashData hashData)
         {
             List<object> list = new List<object>();
@@ -104,8 +128,19 @@ namespace FFTriadBuddy
         private void FormAdjustHash_Load(object sender, EventArgs e)
         {
             hashData.UpdatePreviewImage();
+            var typedOwner = HashOwnerItem.CreateFrom(hashData);
 
-            labelHashOrg.Text = (hashData.ownerOb != null) ? hashData.ownerOb.ToString() : loc.strings.AdjustForm_Dynamic_UnknownOwner;
+            Size orgSizeImageBox = pictureBox1.Size;
+            Size orgSizeForm = Size;
+            Size newSizeImage = hashData.previewImage.Size;
+            if (newSizeImage.Width > orgSizeImageBox.Width || newSizeImage.Height > orgSizeImageBox.Height)
+            {
+                int SizeDX = Math.Max(0, newSizeImage.Width - orgSizeImageBox.Width);
+                int SizeDY = Math.Max(0, newSizeImage.Height - orgSizeImageBox.Height);
+                Size = new Size(orgSizeForm.Width + SizeDX, orgSizeForm.Height + SizeDY);
+            }
+
+            labelHashOrg.Text = (typedOwner != null) ? typedOwner.ToString() : loc.strings.AdjustForm_Dynamic_UnknownOwner;
             labelDistance.Text = hashData.isAuto ? loc.strings.AdjustForm_Dynamic_Distance_NotAvail : hashData.matchDistance.ToString();
             labelDescDistance.Text = hashData.isAuto ? loc.strings.AdjustForm_Dynamic_Distance_Classifier :
                 hashData.matchDistance == 0 ? loc.strings.AdjustForm_Dynamic_Distance_Exact :

@@ -2147,7 +2147,17 @@ namespace FFTriadBuddy
             ImageHashData hashData = screenAnalyzer.unknownHashes[0];
             hashData.UpdatePreviewImage();
 
-            labelLocalHashType.Text = hashData.type.ToString();
+            string hashTypeLocalized = "??";
+            switch (hashData.type)
+            {
+                case EImageHashType.Rule: hashTypeLocalized = loc.strings.MainForm_Dynamic_Screenshot_HashType_Rule; break;
+                case EImageHashType.Cactpot: hashTypeLocalized = loc.strings.MainForm_Dynamic_Screenshot_HashType_Number; break;
+                case EImageHashType.CardImage: hashTypeLocalized = loc.strings.MainForm_Dynamic_Screenshot_HashType_Card; break;
+                case EImageHashType.CardNumber: hashTypeLocalized = loc.strings.MainForm_Dynamic_Screenshot_HashType_Number; break;
+                default: break;
+            }
+
+            labelLocalHashType.Text = hashTypeLocalized;
             pictureBoxLocalHash.Image = hashData.previewImage;
 
             comboBoxLocalHash.SelectedIndex = -1;

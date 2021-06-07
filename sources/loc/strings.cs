@@ -11,6 +11,12 @@
         public static string AdjustForm_CardUp;
         public static string AdjustForm_Current;
         public static string AdjustForm_Distance;
+        public static string AdjustForm_Dynamic_CardState_None;
+        public static string AdjustForm_Dynamic_CardState_Hidden;
+        public static string AdjustForm_Dynamic_CardState_Locked;
+        public static string AdjustForm_Dynamic_CardState_Visible;
+        public static string AdjustForm_Dynamic_CardState_PlacedRed;
+        public static string AdjustForm_Dynamic_CardState_PlacedBlue;
         public static string AdjustForm_Dynamic_Digit_Default;
         public static string AdjustForm_Dynamic_Digit_Override;
         public static string AdjustForm_Dynamic_Distance_Classifier;
