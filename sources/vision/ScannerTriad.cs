@@ -646,9 +646,9 @@ namespace FFTriadBuddy
             if (RuleBoxRect.Width <= 0)
             {
                 RuleBoxRect = new Rectangle(
-                    gridRect.Left + (gridRect.Width * 113 / 100),
+                    gridRect.Left + (gridRect.Width * 115 / 100),
                     gridRect.Top - (gridRect.Height * 5 / 100),
-                    gridRect.Width * 66 / 100,
+                    gridRect.Width * 64 / 100,
                     gridRect.Height * 20 / 100
                     );
             }
