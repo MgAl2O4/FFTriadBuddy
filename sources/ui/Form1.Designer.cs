@@ -2457,7 +2457,7 @@
             this.imageListFlags.Images.SetKeyName(2, "flag-france.png");
             this.imageListFlags.Images.SetKeyName(3, "flag-japan.png");
             this.imageListFlags.Images.SetKeyName(4, "flag-china.png");
-            this.imageListFlags.Images.SetKeyName(5, "flag-ko.png");
+            this.imageListFlags.Images.SetKeyName(5, "flag-southkorea.png");
             // 
             // Form1
             // 
