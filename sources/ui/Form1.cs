@@ -268,6 +268,14 @@ namespace FFTriadBuddy
             columnHeader5.Text = loc.strings.MainForm_Npcs_List_ColumnCompleted;
             columnHeader11.Text = loc.strings.MainForm_Npcs_List_ColumnReward;
 
+            // info
+            tabPageInfo.Text = loc.strings.MainForm_Info_Title;
+            labelInfoBugs.Text = loc.strings.MainForm_Info_BugReports;
+            labelInfoHome.Text = loc.strings.MainForm_Info_HomePage;
+            labelInfoLocalization.Text = loc.strings.MainForm_Info_Localization;
+            labelInfoTranslatorLove.Text = loc.strings.MainForm_Info_TranslatorLove;
+            labelInfoTranslatorNeeded.Text = loc.strings.MainForm_Info_TranslatorNeeded;
+        
             // context menus
             toolStripMenuItem4.Text = loc.strings.MainForm_CtxMenu_CardInfo_NpcReward;
             toolStripMenuFindCardOnline.Text = loc.strings.MainForm_CtxMenu_CardInfo_FindOnline;
@@ -2701,5 +2709,15 @@ namespace FFTriadBuddy
             LocalizationDB.SetCurrentUserLanguage(newLangCode);
             PlayerSettingsDB.Get().forcedLanguage = newLangCode;
         }
+
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var linkSender = sender as LinkLabel;
+            if (linkSender != null)
+            {
+                System.Diagnostics.Process.Start(linkSender.Text);
+            }
+        }
+
     }
 }

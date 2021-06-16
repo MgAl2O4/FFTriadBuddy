@@ -432,6 +432,24 @@
   <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
     <value>Select one card from each deck to swap</value>
   </data>
+  <data name="MainForm_Info_BugReports" xml:space="preserve">
+    <value>Bug reports:</value>
+  </data>
+  <data name="MainForm_Info_HomePage" xml:space="preserve">
+    <value>Project home page:</value>
+  </data>
+  <data name="MainForm_Info_Localization" xml:space="preserve">
+    <value>UI localization:</value>
+  </data>
+  <data name="MainForm_Info_Title" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
+    <value>Thanks to everyone who contributed their translations! You're awesome!</value>
+  </data>
+  <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
+    <value>( volunteers still needed ;) )</value>
+  </data>
   <data name="MainForm_Npcs_List_ColumnCompleted" xml:space="preserve">
     <value>Completed</value>
   </data>

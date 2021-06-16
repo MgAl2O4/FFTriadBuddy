@@ -107,6 +107,12 @@
         public static string MainForm_Dynamic_Simulate_LastCardHint;
         public static string MainForm_Dynamic_Simulate_RedStartButton;
         public static string MainForm_Dynamic_Simulate_SwapRuleButton;
+        public static string MainForm_Info_HomePage;
+        public static string MainForm_Info_BugReports;
+        public static string MainForm_Info_Localization;
+        public static string MainForm_Info_Title;
+        public static string MainForm_Info_TranslatorLove;
+        public static string MainForm_Info_TranslatorNeeded;
         public static string MainForm_Npcs_List_ColumnCompleted;
         public static string MainForm_Npcs_List_ColumnLocation;
         public static string MainForm_Npcs_List_ColumnName;

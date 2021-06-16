@@ -228,6 +228,16 @@
             this.progressBarNpc = new System.Windows.Forms.ProgressBar();
             this.buttonOptimize = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageInfo = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelInfoHome = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.labelInfoBugs = new System.Windows.Forms.Label();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.labelInfoLocalization = new System.Windows.Forms.Label();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.labelInfoTranslatorLove = new System.Windows.Forms.Label();
+            this.labelInfoTranslatorNeeded = new System.Windows.Forms.Label();
             this.pictureBoxFlag = new System.Windows.Forms.PictureBox();
             this.imageListFlags = new System.Windows.Forms.ImageList(this.components);
             this.contextMenuStripCardInfo.SuspendLayout();
@@ -269,6 +279,8 @@
             this.tabPageSetupRegion.SuspendLayout();
             this.tabPageSetupTournament.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPageInfo.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).BeginInit();
             this.SuspendLayout();
             // 
@@ -2299,12 +2311,130 @@
             this.tabControl1.Controls.Add(this.tabPagePlay);
             this.tabControl1.Controls.Add(this.tabPageCards);
             this.tabControl1.Controls.Add(this.tabPageNpcs);
+            this.tabControl1.Controls.Add(this.tabPageInfo);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(685, 266);
             this.tabControl1.TabIndex = 0;
+            // 
+            // tabPageInfo
+            // 
+            this.tabPageInfo.Controls.Add(this.tableLayoutPanel1);
+            this.tabPageInfo.Location = new System.Drawing.Point(4, 25);
+            this.tabPageInfo.Name = "tabPageInfo";
+            this.tabPageInfo.Size = new System.Drawing.Size(677, 237);
+            this.tabPageInfo.TabIndex = 5;
+            this.tabPageInfo.Text = "Info";
+            this.tabPageInfo.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.9291F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 76.0709F));
+            this.tableLayoutPanel1.Controls.Add(this.labelInfoHome, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.linkLabel1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelInfoBugs, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.linkLabel2, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.labelInfoLocalization, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.linkLabel3, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.labelInfoTranslatorLove, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.labelInfoTranslatorNeeded, 1, 5);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.tableLayoutPanel1.RowCount = 7;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(677, 150);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // labelInfoHome
+            // 
+            this.labelInfoHome.AutoSize = true;
+            this.labelInfoHome.Location = new System.Drawing.Point(3, 10);
+            this.labelInfoHome.Name = "labelInfoHome";
+            this.labelInfoHome.Size = new System.Drawing.Size(99, 13);
+            this.labelInfoHome.TabIndex = 0;
+            this.labelInfoHome.Text = "Project home page:";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(165, 10);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(215, 13);
+            this.linkLabel1.TabIndex = 1;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/MgAl2O4/FFTriadBuddy";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
+            // labelInfoBugs
+            // 
+            this.labelInfoBugs.AutoSize = true;
+            this.labelInfoBugs.Location = new System.Drawing.Point(3, 30);
+            this.labelInfoBugs.Name = "labelInfoBugs";
+            this.labelInfoBugs.Size = new System.Drawing.Size(64, 13);
+            this.labelInfoBugs.TabIndex = 2;
+            this.labelInfoBugs.Text = "Bug reports:";
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(165, 30);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(274, 13);
+            this.linkLabel2.TabIndex = 3;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "https://github.com/MgAl2O4/FFTriadBuddy/issues/new";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
+            // labelInfoLocalization
+            // 
+            this.labelInfoLocalization.AutoSize = true;
+            this.labelInfoLocalization.Location = new System.Drawing.Point(3, 70);
+            this.labelInfoLocalization.Name = "labelInfoLocalization";
+            this.labelInfoLocalization.Size = new System.Drawing.Size(76, 13);
+            this.labelInfoLocalization.TabIndex = 4;
+            this.labelInfoLocalization.Text = "UI localization:";
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.Location = new System.Drawing.Point(165, 70);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(200, 13);
+            this.linkLabel3.TabIndex = 5;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "https://crowdin.com/project/fftriadbuddy";
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
+            // labelInfoTranslatorLove
+            // 
+            this.labelInfoTranslatorLove.AutoSize = true;
+            this.labelInfoTranslatorLove.Location = new System.Drawing.Point(165, 90);
+            this.labelInfoTranslatorLove.Name = "labelInfoTranslatorLove";
+            this.labelInfoTranslatorLove.Size = new System.Drawing.Size(347, 13);
+            this.labelInfoTranslatorLove.TabIndex = 9;
+            this.labelInfoTranslatorLove.Text = "Thanks to everyone who contributed their translations! You\'re awesome!";
+            // 
+            // labelInfoTranslatorNeeded
+            // 
+            this.labelInfoTranslatorNeeded.AutoSize = true;
+            this.labelInfoTranslatorNeeded.Location = new System.Drawing.Point(165, 110);
+            this.labelInfoTranslatorNeeded.Name = "labelInfoTranslatorNeeded";
+            this.labelInfoTranslatorNeeded.Size = new System.Drawing.Size(133, 13);
+            this.labelInfoTranslatorNeeded.TabIndex = 10;
+            this.labelInfoTranslatorNeeded.Text = "( volunteers still needed ;) )";
             // 
             // pictureBoxFlag
             // 
@@ -2405,6 +2535,10 @@
             this.tabPageSetupTournament.ResumeLayout(false);
             this.tabPageSetupTournament.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabPageInfo.ResumeLayout(false);
+            this.tabPageInfo.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).EndInit();
             this.ResumeLayout(false);
 
@@ -2611,6 +2745,16 @@
         private DeckCtrl deckCtrlSimulateKnown;
         private System.Windows.Forms.Label labelSimulateUnknown;
         private System.Windows.Forms.Button buttonSkipRuleOpen;
+        private System.Windows.Forms.TabPage tabPageInfo;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label labelInfoHome;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label labelInfoBugs;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.Label labelInfoLocalization;
+        private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.Label labelInfoTranslatorLove;
+        private System.Windows.Forms.Label labelInfoTranslatorNeeded;
     }
 }
 
