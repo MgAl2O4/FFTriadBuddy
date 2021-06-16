@@ -9,10 +9,12 @@ namespace FFTriadBuddy
     public enum ETriadGameSpecialMod
     {
         None = 0,
-        RandomizeRule = 1,
-        RandomizeBlueDeck = 2,
-        SwapCards = 4,
-        BlueCardSelection = 8,
+        SelectVisible3 = 0x1,
+        SelectVisible5 = 0x2,
+        RandomizeRule = 0x4,
+        RandomizeBlueDeck = 0x8,
+        SwapCards = 0x10,
+        BlueCardSelection = 0x20,
     }
 
     public class TriadGameModifier : IComparable
@@ -162,8 +164,54 @@ namespace FFTriadBuddy
         {
             RuleName = "All Open";
             LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 2);
+            SpecialMod = ETriadGameSpecialMod.SelectVisible5;
         }
-        // no special logic
+        
+        // shared with three open
+        public static void StaticMakeKnown(TriadGameData gameData, List<int> redIndices)
+        {
+            const int deckSize = 5;
+
+            TriadDeckInstanceManual deckRedEx = gameData.deckRed as TriadDeckInstanceManual;
+            if (deckRedEx != null && redIndices.Count <= deckSize)
+            {
+                if (gameData.bDebugRules)
+                {
+                    Logger.WriteLine(">> Open:{0}! red indices:{1}", redIndices.Count, string.Join(", ", redIndices));
+                }
+
+                TriadDeck redDeckVisible = new TriadDeck(deckRedEx.deck.knownCards, deckRedEx.deck.unknownCardPool);
+                for (int idx = 0; idx < redIndices.Count; idx++)
+                {
+                    int cardIdx = redIndices[idx];
+                    if (cardIdx < deckRedEx.deck.knownCards.Count)
+                    {
+                        // already known, ignore
+                    }
+                    else
+                    {
+                        int idxU = cardIdx - deckRedEx.deck.knownCards.Count;
+                        var cardOb = deckRedEx.deck.unknownCardPool[idxU];
+                        redDeckVisible.knownCards.Add(cardOb);
+                        redDeckVisible.unknownCardPool.Remove(cardOb);
+                    }
+                }
+
+                // safety for impossible state
+                for (int idx = 0; (idx < redDeckVisible.knownCards.Count) && (redDeckVisible.knownCards.Count > deckSize); idx++)
+                {
+                    var cardOb = redDeckVisible.knownCards[idx];
+                    int orgIdx = deckRedEx.GetCardIndex(cardOb);
+                    if (!redIndices.Contains(orgIdx))
+                    {
+                        redDeckVisible.knownCards.RemoveAt(idx);
+                        idx--;
+                    }
+                }
+
+                gameData.deckRed = new TriadDeckInstanceManual(redDeckVisible);
+            }
+        }
     }
 
     public class TriadGameModifierThreeOpen : TriadGameModifier
@@ -172,6 +220,7 @@ namespace FFTriadBuddy
         {
             RuleName = "Three Open";
             LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 3);
+            SpecialMod = ETriadGameSpecialMod.SelectVisible3;
         }
         // no special logic
     }

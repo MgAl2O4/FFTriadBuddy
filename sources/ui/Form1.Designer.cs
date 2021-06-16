@@ -89,13 +89,62 @@
             this.tabPageCardsIcons = new System.Windows.Forms.TabPage();
             this.flowLayoutPanelCardGrids = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPagePlay = new System.Windows.Forms.TabPage();
+            this.tabControlGameRules = new FFTriadBuddy.TabControlNoTabs();
+            this.tabPageSubGame = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelSimulateUnknown = new System.Windows.Forms.Label();
+            this.labelSimulateKnown = new System.Windows.Forms.Label();
+            this.deckCtrlSimulateUnknown = new FFTriadBuddy.DeckCtrl();
+            this.deckCtrlSimulateKnown = new FFTriadBuddy.DeckCtrl();
+            this.labelGameStateHint = new System.Windows.Forms.Label();
+            this.tabPageSubRoulette = new System.Windows.Forms.TabPage();
+            this.labelRouletteDesc4 = new System.Windows.Forms.Label();
+            this.labelRouletteDesc3 = new System.Windows.Forms.Label();
+            this.labelRouletteDesc2 = new System.Windows.Forms.Label();
+            this.labelRouletteDesc1 = new System.Windows.Forms.Label();
+            this.comboBoxRoulette4 = new System.Windows.Forms.ComboBox();
+            this.comboBoxRoulette3 = new System.Windows.Forms.ComboBox();
+            this.comboBoxRoulette2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxRoulette1 = new System.Windows.Forms.ComboBox();
+            this.buttonConfirmRuleRoulette = new System.Windows.Forms.Button();
+            this.tabPageSubRandom = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
+            this.deckCtrlRandom = new FFTriadBuddy.DeckCtrl();
+            this.buttonConfirmRuleRandom = new System.Windows.Forms.Button();
+            this.tabPageSubSwap = new System.Windows.Forms.TabPage();
+            this.deckCtrlSwapRed = new FFTriadBuddy.DeckCtrl();
+            this.deckCtrlSwapBlue = new FFTriadBuddy.DeckCtrl();
+            this.buttonConfirmRuleSwap = new System.Windows.Forms.Button();
+            this.tabPageSubOpen = new System.Windows.Forms.TabPage();
+            this.labelOpenSelect = new System.Windows.Forms.Label();
+            this.deckCtrlOpenSelect = new FFTriadBuddy.DeckCtrl();
+            this.buttonConfirmRuleOpen = new System.Windows.Forms.Button();
+            this.buttonSkipRuleOpen = new System.Windows.Forms.Button();
+            this.tabPageSubScreenshot = new System.Windows.Forms.TabPage();
+            this.checkBoxDebugScreenshotForceCached = new System.Windows.Forms.CheckBox();
+            this.buttonConfirmRuleScreenshot = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
             this.panelBlueDeck = new System.Windows.Forms.Panel();
+            this.cardCtrlBlue4 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrlBlue5 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrlBlue3 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrlBlue2 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrlBlue1 = new FFTriadBuddy.CardCtrl();
             this.label2 = new System.Windows.Forms.Label();
             this.labelRules = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonUndoRed = new System.Windows.Forms.Button();
             this.buttonReset = new System.Windows.Forms.Button();
             this.panelBoard = new System.Windows.Forms.Panel();
+            this.cardCtrl9 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl8 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl7 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl6 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl5 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl4 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl3 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl2 = new FFTriadBuddy.CardCtrl();
+            this.cardCtrl1 = new FFTriadBuddy.CardCtrl();
             this.labelSpecialRules = new System.Windows.Forms.Label();
             this.labelChance = new System.Windows.Forms.Label();
             this.tabPageScreenshot = new System.Windows.Forms.TabPage();
@@ -105,30 +154,33 @@
             this.panelScreenshotState = new System.Windows.Forms.Panel();
             this.labelScreenshotState = new System.Windows.Forms.Label();
             this.checkBoxUseScreenshots = new System.Windows.Forms.CheckBox();
+            this.tabControlScreenDetection = new FFTriadBuddy.TabControlNoTabs();
+            this.tabPageDetectionLearn = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.buttonDiscardHashes = new System.Windows.Forms.Button();
+            this.pictureBoxLocalHash = new System.Windows.Forms.PictureBox();
+            this.labelLocalHashPending = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.comboBoxLocalHash = new System.Windows.Forms.ComboBox();
+            this.buttonLocalHashStore = new System.Windows.Forms.Button();
+            this.labelLocalHashType = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.tabPageDetectionHistory = new System.Windows.Forms.TabPage();
+            this.listViewDetectionCards = new System.Windows.Forms.ListView();
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewDetectionHashes = new System.Windows.Forms.ListView();
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPageDetectionInfo = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabPageSetup = new System.Windows.Forms.TabPage();
             this.panelCloud = new System.Windows.Forms.Panel();
             this.labelCloudState = new System.Windows.Forms.Label();
             this.checkBoxUseCloudSaves = new System.Windows.Forms.CheckBox();
             this.buttonCloudAuth = new System.Windows.Forms.Button();
-            this.buttonOptimizeAbort = new System.Windows.Forms.Button();
-            this.progressBarDeck = new System.Windows.Forms.ProgressBar();
-            this.labelDeckState = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.labelDescChance = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.labelDescRules = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.labelLevel = new System.Windows.Forms.Label();
-            this.labelLevelPre = new System.Windows.Forms.Label();
-            this.labelLocation = new System.Windows.Forms.Label();
-            this.labelLocationPre = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBoxNpc = new System.Windows.Forms.ComboBox();
-            this.progressBarNpc = new System.Windows.Forms.ProgressBar();
-            this.buttonOptimize = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.pictureBoxFlag = new System.Windows.Forms.PictureBox();
-            this.imageListFlags = new System.Windows.Forms.ImageList(this.components);
             this.tabControlSetupDetails = new FFTriadBuddy.TabControlNoTabs();
             this.tabPageFavDecks = new System.Windows.Forms.TabPage();
             this.buttonAddFav = new System.Windows.Forms.Button();
@@ -158,69 +210,26 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.comboBoxTournamentType = new System.Windows.Forms.ComboBox();
+            this.buttonOptimizeAbort = new System.Windows.Forms.Button();
             this.deckCtrlSetup = new FFTriadBuddy.DeckCtrl();
-            this.tabControlScreenDetection = new FFTriadBuddy.TabControlNoTabs();
-            this.tabPageDetectionLearn = new System.Windows.Forms.TabPage();
-            this.label24 = new System.Windows.Forms.Label();
-            this.buttonDiscardHashes = new System.Windows.Forms.Button();
-            this.pictureBoxLocalHash = new System.Windows.Forms.PictureBox();
-            this.labelLocalHashPending = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.comboBoxLocalHash = new System.Windows.Forms.ComboBox();
-            this.buttonLocalHashStore = new System.Windows.Forms.Button();
-            this.labelLocalHashType = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.tabPageDetectionHistory = new System.Windows.Forms.TabPage();
-            this.listViewDetectionCards = new System.Windows.Forms.ListView();
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listViewDetectionHashes = new System.Windows.Forms.ListView();
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tabPageDetectionInfo = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tabControlGameRules = new FFTriadBuddy.TabControlNoTabs();
-            this.tabPageSubGame = new System.Windows.Forms.TabPage();
-            this.labelGameStateHint = new System.Windows.Forms.Label();
-            this.listViewRedDeck = new System.Windows.Forms.ListView();
-            this.tabPageSubRoulette = new System.Windows.Forms.TabPage();
-            this.labelRouletteDesc4 = new System.Windows.Forms.Label();
-            this.labelRouletteDesc3 = new System.Windows.Forms.Label();
-            this.labelRouletteDesc2 = new System.Windows.Forms.Label();
-            this.labelRouletteDesc1 = new System.Windows.Forms.Label();
-            this.comboBoxRoulette4 = new System.Windows.Forms.ComboBox();
-            this.comboBoxRoulette3 = new System.Windows.Forms.ComboBox();
-            this.comboBoxRoulette2 = new System.Windows.Forms.ComboBox();
-            this.comboBoxRoulette1 = new System.Windows.Forms.ComboBox();
-            this.buttonConfirmRuleRoulette = new System.Windows.Forms.Button();
-            this.tabPageSubRandom = new System.Windows.Forms.TabPage();
-            this.label15 = new System.Windows.Forms.Label();
-            this.deckCtrlRandom = new FFTriadBuddy.DeckCtrl();
-            this.buttonConfirmRuleRandom = new System.Windows.Forms.Button();
-            this.tabPageSubSwap = new System.Windows.Forms.TabPage();
-            this.deckCtrlSwapRed = new FFTriadBuddy.DeckCtrl();
-            this.deckCtrlSwapBlue = new FFTriadBuddy.DeckCtrl();
-            this.buttonConfirmRuleSwap = new System.Windows.Forms.Button();
-            this.tabPageSubScreenshot = new System.Windows.Forms.TabPage();
-            this.checkBoxDebugScreenshotForceCached = new System.Windows.Forms.CheckBox();
-            this.buttonConfirmRuleScreenshot = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
-            this.cardCtrlBlue4 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrlBlue5 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrlBlue3 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrlBlue2 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrlBlue1 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl9 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl8 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl7 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl6 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl5 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl4 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl3 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl2 = new FFTriadBuddy.CardCtrl();
-            this.cardCtrl1 = new FFTriadBuddy.CardCtrl();
+            this.progressBarDeck = new System.Windows.Forms.ProgressBar();
+            this.labelDeckState = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.labelDescChance = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.labelDescRules = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.labelLevel = new System.Windows.Forms.Label();
+            this.labelLevelPre = new System.Windows.Forms.Label();
+            this.labelLocation = new System.Windows.Forms.Label();
+            this.labelLocationPre = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBoxNpc = new System.Windows.Forms.ComboBox();
+            this.progressBarNpc = new System.Windows.Forms.ProgressBar();
+            this.buttonOptimize = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.pictureBoxFlag = new System.Windows.Forms.PictureBox();
+            this.imageListFlags = new System.Windows.Forms.ImageList(this.components);
             this.contextMenuStripCardInfo.SuspendLayout();
             this.contextMenuStripSelectNpc.SuspendLayout();
             this.contextMenuStripFindCard.SuspendLayout();
@@ -233,14 +242,25 @@
             this.tabPageCardsList.SuspendLayout();
             this.tabPageCardsIcons.SuspendLayout();
             this.tabPagePlay.SuspendLayout();
+            this.tabControlGameRules.SuspendLayout();
+            this.tabPageSubGame.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tabPageSubRoulette.SuspendLayout();
+            this.tabPageSubRandom.SuspendLayout();
+            this.tabPageSubSwap.SuspendLayout();
+            this.tabPageSubOpen.SuspendLayout();
+            this.tabPageSubScreenshot.SuspendLayout();
             this.panelBlueDeck.SuspendLayout();
             this.panelBoard.SuspendLayout();
             this.tabPageScreenshot.SuspendLayout();
             this.panelScreenshotState.SuspendLayout();
+            this.tabControlScreenDetection.SuspendLayout();
+            this.tabPageDetectionLearn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLocalHash)).BeginInit();
+            this.tabPageDetectionHistory.SuspendLayout();
+            this.tabPageDetectionInfo.SuspendLayout();
             this.tabPageSetup.SuspendLayout();
             this.panelCloud.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).BeginInit();
             this.tabControlSetupDetails.SuspendLayout();
             this.tabPageFavDecks.SuspendLayout();
             this.tabPageSetupOptimizerStats.SuspendLayout();
@@ -248,17 +268,8 @@
             this.tabControlSetupRules.SuspendLayout();
             this.tabPageSetupRegion.SuspendLayout();
             this.tabPageSetupTournament.SuspendLayout();
-            this.tabControlScreenDetection.SuspendLayout();
-            this.tabPageDetectionLearn.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLocalHash)).BeginInit();
-            this.tabPageDetectionHistory.SuspendLayout();
-            this.tabPageDetectionInfo.SuspendLayout();
-            this.tabControlGameRules.SuspendLayout();
-            this.tabPageSubGame.SuspendLayout();
-            this.tabPageSubRoulette.SuspendLayout();
-            this.tabPageSubRandom.SuspendLayout();
-            this.tabPageSubSwap.SuspendLayout();
-            this.tabPageSubScreenshot.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuStripCardInfo
@@ -751,6 +762,402 @@
             this.tabPagePlay.Text = "Play: Simulate";
             this.tabPagePlay.UseVisualStyleBackColor = true;
             // 
+            // tabControlGameRules
+            // 
+            this.tabControlGameRules.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControlGameRules.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControlGameRules.Controls.Add(this.tabPageSubGame);
+            this.tabControlGameRules.Controls.Add(this.tabPageSubRoulette);
+            this.tabControlGameRules.Controls.Add(this.tabPageSubRandom);
+            this.tabControlGameRules.Controls.Add(this.tabPageSubSwap);
+            this.tabControlGameRules.Controls.Add(this.tabPageSubOpen);
+            this.tabControlGameRules.Controls.Add(this.tabPageSubScreenshot);
+            this.tabControlGameRules.Location = new System.Drawing.Point(225, 6);
+            this.tabControlGameRules.Margin = new System.Windows.Forms.Padding(0);
+            this.tabControlGameRules.Name = "tabControlGameRules";
+            this.tabControlGameRules.SelectedIndex = 0;
+            this.tabControlGameRules.Size = new System.Drawing.Size(452, 170);
+            this.tabControlGameRules.TabIndex = 11;
+            // 
+            // tabPageSubGame
+            // 
+            this.tabPageSubGame.Controls.Add(this.panel1);
+            this.tabPageSubGame.Location = new System.Drawing.Point(0, 0);
+            this.tabPageSubGame.Margin = new System.Windows.Forms.Padding(0);
+            this.tabPageSubGame.Name = "tabPageSubGame";
+            this.tabPageSubGame.Size = new System.Drawing.Size(452, 170);
+            this.tabPageSubGame.TabIndex = 0;
+            this.tabPageSubGame.Text = "Game";
+            this.tabPageSubGame.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.MistyRose;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.labelSimulateUnknown);
+            this.panel1.Controls.Add(this.labelSimulateKnown);
+            this.panel1.Controls.Add(this.deckCtrlSimulateUnknown);
+            this.panel1.Controls.Add(this.deckCtrlSimulateKnown);
+            this.panel1.Controls.Add(this.labelGameStateHint);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(452, 170);
+            this.panel1.TabIndex = 11;
+            // 
+            // labelSimulateUnknown
+            // 
+            this.labelSimulateUnknown.AutoSize = true;
+            this.labelSimulateUnknown.Location = new System.Drawing.Point(3, 80);
+            this.labelSimulateUnknown.Name = "labelSimulateUnknown";
+            this.labelSimulateUnknown.Size = new System.Drawing.Size(142, 13);
+            this.labelSimulateUnknown.TabIndex = 14;
+            this.labelSimulateUnknown.Text = "Unknown cards remaining: 2";
+            // 
+            // labelSimulateKnown
+            // 
+            this.labelSimulateKnown.AutoSize = true;
+            this.labelSimulateKnown.Location = new System.Drawing.Point(3, 3);
+            this.labelSimulateKnown.Name = "labelSimulateKnown";
+            this.labelSimulateKnown.Size = new System.Drawing.Size(72, 13);
+            this.labelSimulateKnown.TabIndex = 13;
+            this.labelSimulateKnown.Text = "Known cards:";
+            // 
+            // deckCtrlSimulateUnknown
+            // 
+            this.deckCtrlSimulateUnknown.Location = new System.Drawing.Point(3, 96);
+            this.deckCtrlSimulateUnknown.Name = "deckCtrlSimulateUnknown";
+            this.deckCtrlSimulateUnknown.Size = new System.Drawing.Size(280, 51);
+            this.deckCtrlSimulateUnknown.TabIndex = 12;
+            // 
+            // deckCtrlSimulateKnown
+            // 
+            this.deckCtrlSimulateKnown.Location = new System.Drawing.Point(3, 19);
+            this.deckCtrlSimulateKnown.Name = "deckCtrlSimulateKnown";
+            this.deckCtrlSimulateKnown.Size = new System.Drawing.Size(280, 51);
+            this.deckCtrlSimulateKnown.TabIndex = 11;
+            // 
+            // labelGameStateHint
+            // 
+            this.labelGameStateHint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelGameStateHint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(186)))));
+            this.labelGameStateHint.Location = new System.Drawing.Point(1, 150);
+            this.labelGameStateHint.Name = "labelGameStateHint";
+            this.labelGameStateHint.Size = new System.Drawing.Size(450, 19);
+            this.labelGameStateHint.TabIndex = 10;
+            this.labelGameStateHint.Text = "[Drag && drop cards on board]";
+            this.labelGameStateHint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tabPageSubRoulette
+            // 
+            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc4);
+            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc3);
+            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc2);
+            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc1);
+            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette4);
+            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette3);
+            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette2);
+            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette1);
+            this.tabPageSubRoulette.Controls.Add(this.buttonConfirmRuleRoulette);
+            this.tabPageSubRoulette.Location = new System.Drawing.Point(0, 0);
+            this.tabPageSubRoulette.Name = "tabPageSubRoulette";
+            this.tabPageSubRoulette.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSubRoulette.Size = new System.Drawing.Size(452, 170);
+            this.tabPageSubRoulette.TabIndex = 1;
+            this.tabPageSubRoulette.Text = "Roulette";
+            this.tabPageSubRoulette.UseVisualStyleBackColor = true;
+            // 
+            // labelRouletteDesc4
+            // 
+            this.labelRouletteDesc4.AutoSize = true;
+            this.labelRouletteDesc4.Location = new System.Drawing.Point(6, 89);
+            this.labelRouletteDesc4.Name = "labelRouletteDesc4";
+            this.labelRouletteDesc4.Size = new System.Drawing.Size(102, 13);
+            this.labelRouletteDesc4.TabIndex = 9;
+            this.labelRouletteDesc4.Text = "Pick roulette rule #4";
+            // 
+            // labelRouletteDesc3
+            // 
+            this.labelRouletteDesc3.AutoSize = true;
+            this.labelRouletteDesc3.Location = new System.Drawing.Point(6, 62);
+            this.labelRouletteDesc3.Name = "labelRouletteDesc3";
+            this.labelRouletteDesc3.Size = new System.Drawing.Size(102, 13);
+            this.labelRouletteDesc3.TabIndex = 8;
+            this.labelRouletteDesc3.Text = "Pick roulette rule #3";
+            // 
+            // labelRouletteDesc2
+            // 
+            this.labelRouletteDesc2.AutoSize = true;
+            this.labelRouletteDesc2.Location = new System.Drawing.Point(6, 35);
+            this.labelRouletteDesc2.Name = "labelRouletteDesc2";
+            this.labelRouletteDesc2.Size = new System.Drawing.Size(102, 13);
+            this.labelRouletteDesc2.TabIndex = 7;
+            this.labelRouletteDesc2.Text = "Pick roulette rule #2";
+            // 
+            // labelRouletteDesc1
+            // 
+            this.labelRouletteDesc1.AutoSize = true;
+            this.labelRouletteDesc1.Location = new System.Drawing.Point(6, 9);
+            this.labelRouletteDesc1.Name = "labelRouletteDesc1";
+            this.labelRouletteDesc1.Size = new System.Drawing.Size(102, 13);
+            this.labelRouletteDesc1.TabIndex = 6;
+            this.labelRouletteDesc1.Text = "Pick roulette rule #1";
+            // 
+            // comboBoxRoulette4
+            // 
+            this.comboBoxRoulette4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxRoulette4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRoulette4.FormattingEnabled = true;
+            this.comboBoxRoulette4.Location = new System.Drawing.Point(131, 86);
+            this.comboBoxRoulette4.Name = "comboBoxRoulette4";
+            this.comboBoxRoulette4.Size = new System.Drawing.Size(315, 21);
+            this.comboBoxRoulette4.TabIndex = 5;
+            this.comboBoxRoulette4.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
+            // 
+            // comboBoxRoulette3
+            // 
+            this.comboBoxRoulette3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxRoulette3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRoulette3.FormattingEnabled = true;
+            this.comboBoxRoulette3.Location = new System.Drawing.Point(131, 59);
+            this.comboBoxRoulette3.Name = "comboBoxRoulette3";
+            this.comboBoxRoulette3.Size = new System.Drawing.Size(315, 21);
+            this.comboBoxRoulette3.TabIndex = 4;
+            this.comboBoxRoulette3.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
+            // 
+            // comboBoxRoulette2
+            // 
+            this.comboBoxRoulette2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxRoulette2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRoulette2.FormattingEnabled = true;
+            this.comboBoxRoulette2.Location = new System.Drawing.Point(131, 32);
+            this.comboBoxRoulette2.Name = "comboBoxRoulette2";
+            this.comboBoxRoulette2.Size = new System.Drawing.Size(315, 21);
+            this.comboBoxRoulette2.TabIndex = 3;
+            this.comboBoxRoulette2.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
+            // 
+            // comboBoxRoulette1
+            // 
+            this.comboBoxRoulette1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxRoulette1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRoulette1.FormattingEnabled = true;
+            this.comboBoxRoulette1.Location = new System.Drawing.Point(131, 6);
+            this.comboBoxRoulette1.Name = "comboBoxRoulette1";
+            this.comboBoxRoulette1.Size = new System.Drawing.Size(315, 21);
+            this.comboBoxRoulette1.TabIndex = 2;
+            this.comboBoxRoulette1.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
+            // 
+            // buttonConfirmRuleRoulette
+            // 
+            this.buttonConfirmRuleRoulette.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConfirmRuleRoulette.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonConfirmRuleRoulette.Location = new System.Drawing.Point(3, 147);
+            this.buttonConfirmRuleRoulette.Name = "buttonConfirmRuleRoulette";
+            this.buttonConfirmRuleRoulette.Size = new System.Drawing.Size(446, 23);
+            this.buttonConfirmRuleRoulette.TabIndex = 1;
+            this.buttonConfirmRuleRoulette.Text = "Apply rule";
+            this.buttonConfirmRuleRoulette.UseVisualStyleBackColor = false;
+            this.buttonConfirmRuleRoulette.Click += new System.EventHandler(this.buttonConfirmRuleRoulette_Click);
+            // 
+            // tabPageSubRandom
+            // 
+            this.tabPageSubRandom.Controls.Add(this.label15);
+            this.tabPageSubRandom.Controls.Add(this.deckCtrlRandom);
+            this.tabPageSubRandom.Controls.Add(this.buttonConfirmRuleRandom);
+            this.tabPageSubRandom.Location = new System.Drawing.Point(0, 0);
+            this.tabPageSubRandom.Name = "tabPageSubRandom";
+            this.tabPageSubRandom.Size = new System.Drawing.Size(452, 170);
+            this.tabPageSubRandom.TabIndex = 2;
+            this.tabPageSubRandom.Text = "Random";
+            this.tabPageSubRandom.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(3, 41);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(129, 13);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "Adjust randomized deck :(";
+            // 
+            // deckCtrlRandom
+            // 
+            this.deckCtrlRandom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.deckCtrlRandom.Location = new System.Drawing.Point(3, 57);
+            this.deckCtrlRandom.Name = "deckCtrlRandom";
+            this.deckCtrlRandom.Size = new System.Drawing.Size(446, 51);
+            this.deckCtrlRandom.TabIndex = 4;
+            // 
+            // buttonConfirmRuleRandom
+            // 
+            this.buttonConfirmRuleRandom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConfirmRuleRandom.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonConfirmRuleRandom.Location = new System.Drawing.Point(3, 147);
+            this.buttonConfirmRuleRandom.Name = "buttonConfirmRuleRandom";
+            this.buttonConfirmRuleRandom.Size = new System.Drawing.Size(446, 23);
+            this.buttonConfirmRuleRandom.TabIndex = 2;
+            this.buttonConfirmRuleRandom.Text = "Apply rule";
+            this.buttonConfirmRuleRandom.UseVisualStyleBackColor = false;
+            this.buttonConfirmRuleRandom.Click += new System.EventHandler(this.buttonConfirmRuleRandom_Click);
+            // 
+            // tabPageSubSwap
+            // 
+            this.tabPageSubSwap.Controls.Add(this.deckCtrlSwapRed);
+            this.tabPageSubSwap.Controls.Add(this.deckCtrlSwapBlue);
+            this.tabPageSubSwap.Controls.Add(this.buttonConfirmRuleSwap);
+            this.tabPageSubSwap.Location = new System.Drawing.Point(0, 0);
+            this.tabPageSubSwap.Name = "tabPageSubSwap";
+            this.tabPageSubSwap.Size = new System.Drawing.Size(452, 170);
+            this.tabPageSubSwap.TabIndex = 3;
+            this.tabPageSubSwap.Text = "Swap";
+            this.tabPageSubSwap.UseVisualStyleBackColor = true;
+            // 
+            // deckCtrlSwapRed
+            // 
+            this.deckCtrlSwapRed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.deckCtrlSwapRed.Location = new System.Drawing.Point(3, 60);
+            this.deckCtrlSwapRed.Name = "deckCtrlSwapRed";
+            this.deckCtrlSwapRed.Size = new System.Drawing.Size(446, 51);
+            this.deckCtrlSwapRed.TabIndex = 4;
+            this.deckCtrlSwapRed.OnCardSelected += new FFTriadBuddy.DeckCtrl.DeckSelectDelegate(this.deckCtrlSwap_OnCardSelected);
+            // 
+            // deckCtrlSwapBlue
+            // 
+            this.deckCtrlSwapBlue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.deckCtrlSwapBlue.Location = new System.Drawing.Point(3, 3);
+            this.deckCtrlSwapBlue.Name = "deckCtrlSwapBlue";
+            this.deckCtrlSwapBlue.Size = new System.Drawing.Size(446, 51);
+            this.deckCtrlSwapBlue.TabIndex = 3;
+            this.deckCtrlSwapBlue.OnCardSelected += new FFTriadBuddy.DeckCtrl.DeckSelectDelegate(this.deckCtrlSwap_OnCardSelected);
+            // 
+            // buttonConfirmRuleSwap
+            // 
+            this.buttonConfirmRuleSwap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConfirmRuleSwap.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonConfirmRuleSwap.Location = new System.Drawing.Point(3, 147);
+            this.buttonConfirmRuleSwap.Name = "buttonConfirmRuleSwap";
+            this.buttonConfirmRuleSwap.Size = new System.Drawing.Size(446, 23);
+            this.buttonConfirmRuleSwap.TabIndex = 2;
+            this.buttonConfirmRuleSwap.Text = "Apply rule";
+            this.buttonConfirmRuleSwap.UseVisualStyleBackColor = false;
+            this.buttonConfirmRuleSwap.Click += new System.EventHandler(this.buttonConfirmRuleSwap_Click);
+            // 
+            // tabPageSubOpen
+            // 
+            this.tabPageSubOpen.Controls.Add(this.labelOpenSelect);
+            this.tabPageSubOpen.Controls.Add(this.deckCtrlOpenSelect);
+            this.tabPageSubOpen.Controls.Add(this.buttonConfirmRuleOpen);
+            this.tabPageSubOpen.Controls.Add(this.buttonSkipRuleOpen);
+            this.tabPageSubOpen.Location = new System.Drawing.Point(0, 0);
+            this.tabPageSubOpen.Name = "tabPageSubOpen";
+            this.tabPageSubOpen.Size = new System.Drawing.Size(452, 170);
+            this.tabPageSubOpen.TabIndex = 5;
+            this.tabPageSubOpen.Text = "Open";
+            this.tabPageSubOpen.UseVisualStyleBackColor = true;
+            // 
+            // labelOpenSelect
+            // 
+            this.labelOpenSelect.AutoSize = true;
+            this.labelOpenSelect.Location = new System.Drawing.Point(3, 44);
+            this.labelOpenSelect.Name = "labelOpenSelect";
+            this.labelOpenSelect.Size = new System.Drawing.Size(101, 13);
+            this.labelOpenSelect.TabIndex = 6;
+            this.labelOpenSelect.Text = "Select visible cards:";
+            // 
+            // deckCtrlOpenSelect
+            // 
+            this.deckCtrlOpenSelect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.deckCtrlOpenSelect.Location = new System.Drawing.Point(3, 60);
+            this.deckCtrlOpenSelect.Name = "deckCtrlOpenSelect";
+            this.deckCtrlOpenSelect.Size = new System.Drawing.Size(446, 51);
+            this.deckCtrlOpenSelect.TabIndex = 5;
+            this.deckCtrlOpenSelect.OnCardSelected += new FFTriadBuddy.DeckCtrl.DeckSelectDelegate(this.deckCtrlOpenSelect_OnCardSelected);
+            // 
+            // buttonConfirmRuleOpen
+            // 
+            this.buttonConfirmRuleOpen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConfirmRuleOpen.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonConfirmRuleOpen.Location = new System.Drawing.Point(134, 147);
+            this.buttonConfirmRuleOpen.Name = "buttonConfirmRuleOpen";
+            this.buttonConfirmRuleOpen.Size = new System.Drawing.Size(314, 23);
+            this.buttonConfirmRuleOpen.TabIndex = 3;
+            this.buttonConfirmRuleOpen.Text = "Apply rule";
+            this.buttonConfirmRuleOpen.UseVisualStyleBackColor = false;
+            this.buttonConfirmRuleOpen.Click += new System.EventHandler(this.buttonConfirmRuleOpen_Click);
+            // 
+            // buttonSkipRuleOpen
+            // 
+            this.buttonSkipRuleOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonSkipRuleOpen.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonSkipRuleOpen.Location = new System.Drawing.Point(3, 147);
+            this.buttonSkipRuleOpen.Name = "buttonSkipRuleOpen";
+            this.buttonSkipRuleOpen.Size = new System.Drawing.Size(125, 23);
+            this.buttonSkipRuleOpen.TabIndex = 7;
+            this.buttonSkipRuleOpen.Text = "Skip";
+            this.buttonSkipRuleOpen.UseVisualStyleBackColor = false;
+            this.buttonSkipRuleOpen.Click += new System.EventHandler(this.buttonSkipRuleOpen_Click);
+            // 
+            // tabPageSubScreenshot
+            // 
+            this.tabPageSubScreenshot.Controls.Add(this.checkBoxDebugScreenshotForceCached);
+            this.tabPageSubScreenshot.Controls.Add(this.buttonConfirmRuleScreenshot);
+            this.tabPageSubScreenshot.Controls.Add(this.label17);
+            this.tabPageSubScreenshot.Location = new System.Drawing.Point(0, 0);
+            this.tabPageSubScreenshot.Name = "tabPageSubScreenshot";
+            this.tabPageSubScreenshot.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSubScreenshot.Size = new System.Drawing.Size(452, 170);
+            this.tabPageSubScreenshot.TabIndex = 4;
+            this.tabPageSubScreenshot.Text = "Screenshot";
+            this.tabPageSubScreenshot.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDebugScreenshotForceCached
+            // 
+            this.checkBoxDebugScreenshotForceCached.AutoSize = true;
+            this.checkBoxDebugScreenshotForceCached.Location = new System.Drawing.Point(9, 55);
+            this.checkBoxDebugScreenshotForceCached.Name = "checkBoxDebugScreenshotForceCached";
+            this.checkBoxDebugScreenshotForceCached.Size = new System.Drawing.Size(151, 17);
+            this.checkBoxDebugScreenshotForceCached.TabIndex = 3;
+            this.checkBoxDebugScreenshotForceCached.Text = "Force using cached image";
+            this.checkBoxDebugScreenshotForceCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.checkBoxDebugScreenshotForceCached.UseVisualStyleBackColor = true;
+            // 
+            // buttonConfirmRuleScreenshot
+            // 
+            this.buttonConfirmRuleScreenshot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConfirmRuleScreenshot.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.buttonConfirmRuleScreenshot.Location = new System.Drawing.Point(3, 147);
+            this.buttonConfirmRuleScreenshot.Name = "buttonConfirmRuleScreenshot";
+            this.buttonConfirmRuleScreenshot.Size = new System.Drawing.Size(446, 23);
+            this.buttonConfirmRuleScreenshot.TabIndex = 2;
+            this.buttonConfirmRuleScreenshot.Text = "Apply rule";
+            this.buttonConfirmRuleScreenshot.UseVisualStyleBackColor = false;
+            this.buttonConfirmRuleScreenshot.Click += new System.EventHandler(this.buttonConfirmRuleScreenshot_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 35);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(189, 13);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "Take game screenshot: DEBUG mode";
+            // 
             // panelBlueDeck
             // 
             this.panelBlueDeck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(166)))));
@@ -764,6 +1171,56 @@
             this.panelBlueDeck.Name = "panelBlueDeck";
             this.panelBlueDeck.Size = new System.Drawing.Size(37, 170);
             this.panelBlueDeck.TabIndex = 9;
+            // 
+            // cardCtrlBlue4
+            // 
+            this.cardCtrlBlue4.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrlBlue4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrlBlue4.Location = new System.Drawing.Point(3, 105);
+            this.cardCtrlBlue4.Name = "cardCtrlBlue4";
+            this.cardCtrlBlue4.Size = new System.Drawing.Size(28, 28);
+            this.cardCtrlBlue4.TabIndex = 4;
+            this.cardCtrlBlue4.Click += new System.EventHandler(this.cardCtrlBlue_Click);
+            // 
+            // cardCtrlBlue5
+            // 
+            this.cardCtrlBlue5.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrlBlue5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrlBlue5.Location = new System.Drawing.Point(3, 137);
+            this.cardCtrlBlue5.Name = "cardCtrlBlue5";
+            this.cardCtrlBlue5.Size = new System.Drawing.Size(28, 28);
+            this.cardCtrlBlue5.TabIndex = 3;
+            this.cardCtrlBlue5.Click += new System.EventHandler(this.cardCtrlBlue_Click);
+            // 
+            // cardCtrlBlue3
+            // 
+            this.cardCtrlBlue3.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrlBlue3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrlBlue3.Location = new System.Drawing.Point(3, 71);
+            this.cardCtrlBlue3.Name = "cardCtrlBlue3";
+            this.cardCtrlBlue3.Size = new System.Drawing.Size(28, 28);
+            this.cardCtrlBlue3.TabIndex = 2;
+            this.cardCtrlBlue3.Click += new System.EventHandler(this.cardCtrlBlue_Click);
+            // 
+            // cardCtrlBlue2
+            // 
+            this.cardCtrlBlue2.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrlBlue2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrlBlue2.Location = new System.Drawing.Point(3, 37);
+            this.cardCtrlBlue2.Name = "cardCtrlBlue2";
+            this.cardCtrlBlue2.Size = new System.Drawing.Size(28, 28);
+            this.cardCtrlBlue2.TabIndex = 1;
+            this.cardCtrlBlue2.Click += new System.EventHandler(this.cardCtrlBlue_Click);
+            // 
+            // cardCtrlBlue1
+            // 
+            this.cardCtrlBlue1.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrlBlue1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrlBlue1.Location = new System.Drawing.Point(3, 3);
+            this.cardCtrlBlue1.Name = "cardCtrlBlue1";
+            this.cardCtrlBlue1.Size = new System.Drawing.Size(28, 28);
+            this.cardCtrlBlue1.TabIndex = 0;
+            this.cardCtrlBlue1.Click += new System.EventHandler(this.cardCtrlBlue_Click);
             // 
             // label2
             // 
@@ -835,6 +1292,123 @@
             this.panelBoard.Name = "panelBoard";
             this.panelBoard.Size = new System.Drawing.Size(170, 170);
             this.panelBoard.TabIndex = 0;
+            // 
+            // cardCtrl9
+            // 
+            this.cardCtrl9.AllowDrop = true;
+            this.cardCtrl9.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl9.Location = new System.Drawing.Point(115, 115);
+            this.cardCtrl9.Name = "cardCtrl9";
+            this.cardCtrl9.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl9.TabIndex = 8;
+            this.cardCtrl9.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl9.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl9.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl8
+            // 
+            this.cardCtrl8.AllowDrop = true;
+            this.cardCtrl8.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl8.Location = new System.Drawing.Point(59, 115);
+            this.cardCtrl8.Name = "cardCtrl8";
+            this.cardCtrl8.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl8.TabIndex = 7;
+            this.cardCtrl8.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl8.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl8.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl7
+            // 
+            this.cardCtrl7.AllowDrop = true;
+            this.cardCtrl7.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl7.Location = new System.Drawing.Point(3, 115);
+            this.cardCtrl7.Name = "cardCtrl7";
+            this.cardCtrl7.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl7.TabIndex = 6;
+            this.cardCtrl7.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl7.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl7.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl6
+            // 
+            this.cardCtrl6.AllowDrop = true;
+            this.cardCtrl6.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl6.Location = new System.Drawing.Point(115, 59);
+            this.cardCtrl6.Name = "cardCtrl6";
+            this.cardCtrl6.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl6.TabIndex = 5;
+            this.cardCtrl6.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl6.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl6.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl5
+            // 
+            this.cardCtrl5.AllowDrop = true;
+            this.cardCtrl5.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl5.Location = new System.Drawing.Point(59, 59);
+            this.cardCtrl5.Name = "cardCtrl5";
+            this.cardCtrl5.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl5.TabIndex = 4;
+            this.cardCtrl5.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl5.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl5.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl4
+            // 
+            this.cardCtrl4.AllowDrop = true;
+            this.cardCtrl4.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl4.Location = new System.Drawing.Point(3, 59);
+            this.cardCtrl4.Name = "cardCtrl4";
+            this.cardCtrl4.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl4.TabIndex = 3;
+            this.cardCtrl4.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl4.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl4.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl3
+            // 
+            this.cardCtrl3.AllowDrop = true;
+            this.cardCtrl3.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl3.Location = new System.Drawing.Point(115, 3);
+            this.cardCtrl3.Name = "cardCtrl3";
+            this.cardCtrl3.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl3.TabIndex = 2;
+            this.cardCtrl3.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl3.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl3.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl2
+            // 
+            this.cardCtrl2.AllowDrop = true;
+            this.cardCtrl2.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl2.Location = new System.Drawing.Point(59, 3);
+            this.cardCtrl2.Name = "cardCtrl2";
+            this.cardCtrl2.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl2.TabIndex = 1;
+            this.cardCtrl2.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl2.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl2.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            // 
+            // cardCtrl1
+            // 
+            this.cardCtrl1.AllowDrop = true;
+            this.cardCtrl1.BackColor = System.Drawing.SystemColors.Control;
+            this.cardCtrl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cardCtrl1.Location = new System.Drawing.Point(3, 3);
+            this.cardCtrl1.Name = "cardCtrl1";
+            this.cardCtrl1.Size = new System.Drawing.Size(50, 50);
+            this.cardCtrl1.TabIndex = 0;
+            this.cardCtrl1.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
+            this.cardCtrl1.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
+            this.cardCtrl1.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
             // 
             // labelSpecialRules
             // 
@@ -935,6 +1509,241 @@
             this.checkBoxUseScreenshots.UseVisualStyleBackColor = true;
             this.checkBoxUseScreenshots.CheckedChanged += new System.EventHandler(this.checkBoxUseScreenshots_CheckedChanged);
             // 
+            // tabControlScreenDetection
+            // 
+            this.tabControlScreenDetection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControlScreenDetection.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControlScreenDetection.Controls.Add(this.tabPageDetectionLearn);
+            this.tabControlScreenDetection.Controls.Add(this.tabPageDetectionHistory);
+            this.tabControlScreenDetection.Controls.Add(this.tabPageDetectionInfo);
+            this.tabControlScreenDetection.Location = new System.Drawing.Point(0, 34);
+            this.tabControlScreenDetection.Multiline = true;
+            this.tabControlScreenDetection.Name = "tabControlScreenDetection";
+            this.tabControlScreenDetection.SelectedIndex = 0;
+            this.tabControlScreenDetection.Size = new System.Drawing.Size(677, 174);
+            this.tabControlScreenDetection.TabIndex = 9;
+            // 
+            // tabPageDetectionLearn
+            // 
+            this.tabPageDetectionLearn.Controls.Add(this.label24);
+            this.tabPageDetectionLearn.Controls.Add(this.buttonDiscardHashes);
+            this.tabPageDetectionLearn.Controls.Add(this.pictureBoxLocalHash);
+            this.tabPageDetectionLearn.Controls.Add(this.labelLocalHashPending);
+            this.tabPageDetectionLearn.Controls.Add(this.label23);
+            this.tabPageDetectionLearn.Controls.Add(this.label22);
+            this.tabPageDetectionLearn.Controls.Add(this.comboBoxLocalHash);
+            this.tabPageDetectionLearn.Controls.Add(this.buttonLocalHashStore);
+            this.tabPageDetectionLearn.Controls.Add(this.labelLocalHashType);
+            this.tabPageDetectionLearn.Controls.Add(this.label19);
+            this.tabPageDetectionLearn.Location = new System.Drawing.Point(0, 0);
+            this.tabPageDetectionLearn.Name = "tabPageDetectionLearn";
+            this.tabPageDetectionLearn.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDetectionLearn.Size = new System.Drawing.Size(677, 174);
+            this.tabPageDetectionLearn.TabIndex = 0;
+            this.tabPageDetectionLearn.Text = "Learn";
+            this.tabPageDetectionLearn.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(90, 122);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(122, 13);
+            this.label24.TabIndex = 9;
+            this.label24.Text = "<< Resets scanner state";
+            // 
+            // buttonDiscardHashes
+            // 
+            this.buttonDiscardHashes.Location = new System.Drawing.Point(9, 117);
+            this.buttonDiscardHashes.Name = "buttonDiscardHashes";
+            this.buttonDiscardHashes.Size = new System.Drawing.Size(75, 23);
+            this.buttonDiscardHashes.TabIndex = 8;
+            this.buttonDiscardHashes.Text = "Discard All";
+            this.buttonDiscardHashes.UseVisualStyleBackColor = true;
+            this.buttonDiscardHashes.Click += new System.EventHandler(this.buttonDiscardHashes_Click);
+            // 
+            // pictureBoxLocalHash
+            // 
+            this.pictureBoxLocalHash.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxLocalHash.Location = new System.Drawing.Point(238, 19);
+            this.pictureBoxLocalHash.Name = "pictureBoxLocalHash";
+            this.pictureBoxLocalHash.Size = new System.Drawing.Size(434, 149);
+            this.pictureBoxLocalHash.TabIndex = 7;
+            this.pictureBoxLocalHash.TabStop = false;
+            // 
+            // labelLocalHashPending
+            // 
+            this.labelLocalHashPending.AutoSize = true;
+            this.labelLocalHashPending.Location = new System.Drawing.Point(90, 93);
+            this.labelLocalHashPending.Name = "labelLocalHashPending";
+            this.labelLocalHashPending.Size = new System.Drawing.Size(137, 13);
+            this.labelLocalHashPending.TabIndex = 6;
+            this.labelLocalHashPending.Text = "(there are 10 more pending)";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(235, 3);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(75, 13);
+            this.label23.TabIndex = 5;
+            this.label23.Text = "Source image:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(6, 22);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(42, 13);
+            this.label22.TabIndex = 4;
+            this.label22.Text = "Detect:";
+            // 
+            // comboBoxLocalHash
+            // 
+            this.comboBoxLocalHash.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxLocalHash.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxLocalHash.FormattingEnabled = true;
+            this.comboBoxLocalHash.Location = new System.Drawing.Point(61, 19);
+            this.comboBoxLocalHash.Name = "comboBoxLocalHash";
+            this.comboBoxLocalHash.Size = new System.Drawing.Size(166, 21);
+            this.comboBoxLocalHash.Sorted = true;
+            this.comboBoxLocalHash.TabIndex = 3;
+            this.comboBoxLocalHash.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocalHash_SelectedIndexChanged);
+            // 
+            // buttonLocalHashStore
+            // 
+            this.buttonLocalHashStore.Location = new System.Drawing.Point(9, 88);
+            this.buttonLocalHashStore.Name = "buttonLocalHashStore";
+            this.buttonLocalHashStore.Size = new System.Drawing.Size(75, 23);
+            this.buttonLocalHashStore.TabIndex = 2;
+            this.buttonLocalHashStore.Text = "Save";
+            this.buttonLocalHashStore.UseVisualStyleBackColor = true;
+            this.buttonLocalHashStore.Click += new System.EventHandler(this.buttonLocalHashStore_Click);
+            // 
+            // labelLocalHashType
+            // 
+            this.labelLocalHashType.AutoSize = true;
+            this.labelLocalHashType.Location = new System.Drawing.Point(60, 3);
+            this.labelLocalHashType.Name = "labelLocalHashType";
+            this.labelLocalHashType.Size = new System.Drawing.Size(24, 13);
+            this.labelLocalHashType.TabIndex = 1;
+            this.labelLocalHashType.Text = "rule";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 3);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(34, 13);
+            this.label19.TabIndex = 0;
+            this.label19.Text = "Type:";
+            // 
+            // tabPageDetectionHistory
+            // 
+            this.tabPageDetectionHistory.Controls.Add(this.listViewDetectionCards);
+            this.tabPageDetectionHistory.Controls.Add(this.listViewDetectionHashes);
+            this.tabPageDetectionHistory.Location = new System.Drawing.Point(0, 0);
+            this.tabPageDetectionHistory.Name = "tabPageDetectionHistory";
+            this.tabPageDetectionHistory.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDetectionHistory.Size = new System.Drawing.Size(677, 174);
+            this.tabPageDetectionHistory.TabIndex = 1;
+            this.tabPageDetectionHistory.Text = "History";
+            this.tabPageDetectionHistory.UseVisualStyleBackColor = true;
+            // 
+            // listViewDetectionCards
+            // 
+            this.listViewDetectionCards.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewDetectionCards.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader8,
+            this.columnHeader9,
+            this.columnHeader10});
+            this.listViewDetectionCards.FullRowSelect = true;
+            this.listViewDetectionCards.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewDetectionCards.HideSelection = false;
+            this.listViewDetectionCards.Location = new System.Drawing.Point(248, 0);
+            this.listViewDetectionCards.MultiSelect = false;
+            this.listViewDetectionCards.Name = "listViewDetectionCards";
+            this.listViewDetectionCards.Size = new System.Drawing.Size(429, 174);
+            this.listViewDetectionCards.TabIndex = 1;
+            this.listViewDetectionCards.UseCompatibleStateImageBehavior = false;
+            this.listViewDetectionCards.View = System.Windows.Forms.View.Details;
+            this.listViewDetectionCards.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewDetectionCards_MouseDown);
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Type";
+            this.columnHeader8.Width = 86;
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "Numbers [U-L-D-R]";
+            this.columnHeader9.Width = 125;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Last detection";
+            this.columnHeader10.Width = 196;
+            // 
+            // listViewDetectionHashes
+            // 
+            this.listViewDetectionHashes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listViewDetectionHashes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader6,
+            this.columnHeader7});
+            this.listViewDetectionHashes.FullRowSelect = true;
+            this.listViewDetectionHashes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewDetectionHashes.HideSelection = false;
+            this.listViewDetectionHashes.Location = new System.Drawing.Point(0, 0);
+            this.listViewDetectionHashes.MultiSelect = false;
+            this.listViewDetectionHashes.Name = "listViewDetectionHashes";
+            this.listViewDetectionHashes.Size = new System.Drawing.Size(240, 174);
+            this.listViewDetectionHashes.TabIndex = 0;
+            this.listViewDetectionHashes.UseCompatibleStateImageBehavior = false;
+            this.listViewDetectionHashes.View = System.Windows.Forms.View.Details;
+            this.listViewDetectionHashes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewDetectionHashes_MouseDown);
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Type";
+            this.columnHeader6.Width = 79;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Last detection";
+            this.columnHeader7.Width = 157;
+            // 
+            // tabPageDetectionInfo
+            // 
+            this.tabPageDetectionInfo.Controls.Add(this.textBox1);
+            this.tabPageDetectionInfo.Location = new System.Drawing.Point(0, 0);
+            this.tabPageDetectionInfo.Name = "tabPageDetectionInfo";
+            this.tabPageDetectionInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDetectionInfo.Size = new System.Drawing.Size(677, 174);
+            this.tabPageDetectionInfo.TabIndex = 2;
+            this.tabPageDetectionInfo.Text = "Info";
+            this.tabPageDetectionInfo.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Location = new System.Drawing.Point(6, 0);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(665, 168);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = resources.GetString("textBox1.Text");
+            // 
             // tabPageSetup
             // 
             this.tabPageSetup.Controls.Add(this.panelCloud);
@@ -1009,195 +1818,6 @@
             this.buttonCloudAuth.Text = "Login";
             this.buttonCloudAuth.UseVisualStyleBackColor = true;
             this.buttonCloudAuth.Click += new System.EventHandler(this.buttonCloudAuth_Click);
-            // 
-            // buttonOptimizeAbort
-            // 
-            this.buttonOptimizeAbort.Location = new System.Drawing.Point(259, 197);
-            this.buttonOptimizeAbort.Name = "buttonOptimizeAbort";
-            this.buttonOptimizeAbort.Size = new System.Drawing.Size(61, 23);
-            this.buttonOptimizeAbort.TabIndex = 23;
-            this.buttonOptimizeAbort.Text = "Abort";
-            this.buttonOptimizeAbort.UseVisualStyleBackColor = true;
-            this.buttonOptimizeAbort.Visible = false;
-            this.buttonOptimizeAbort.Click += new System.EventHandler(this.buttonOptimizeAbort_Click);
-            // 
-            // progressBarDeck
-            // 
-            this.progressBarDeck.Location = new System.Drawing.Point(46, 197);
-            this.progressBarDeck.Name = "progressBarDeck";
-            this.progressBarDeck.Size = new System.Drawing.Size(207, 23);
-            this.progressBarDeck.TabIndex = 13;
-            this.progressBarDeck.Visible = false;
-            // 
-            // labelDeckState
-            // 
-            this.labelDeckState.AutoSize = true;
-            this.labelDeckState.Location = new System.Drawing.Point(185, 124);
-            this.labelDeckState.Name = "labelDeckState";
-            this.labelDeckState.Size = new System.Drawing.Size(0, 13);
-            this.labelDeckState.TabIndex = 12;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 124);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(171, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "Active deck, click card for options:";
-            // 
-            // labelDescChance
-            // 
-            this.labelDescChance.AutoSize = true;
-            this.labelDescChance.Location = new System.Drawing.Point(120, 82);
-            this.labelDescChance.Name = "labelDescChance";
-            this.labelDescChance.Size = new System.Drawing.Size(25, 13);
-            this.labelDescChance.TabIndex = 9;
-            this.labelDescChance.Text = "123";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(43, 82);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 13);
-            this.label7.TabIndex = 8;
-            this.label7.Text = "Win chance:";
-            // 
-            // labelDescRules
-            // 
-            this.labelDescRules.AutoSize = true;
-            this.labelDescRules.Location = new System.Drawing.Point(120, 65);
-            this.labelDescRules.Name = "labelDescRules";
-            this.labelDescRules.Size = new System.Drawing.Size(25, 13);
-            this.labelDescRules.TabIndex = 7;
-            this.labelDescRules.Text = "123";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(43, 65);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(37, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "Rules:";
-            // 
-            // labelLevel
-            // 
-            this.labelLevel.AutoSize = true;
-            this.labelLevel.Location = new System.Drawing.Point(120, 48);
-            this.labelLevel.Name = "labelLevel";
-            this.labelLevel.Size = new System.Drawing.Size(25, 13);
-            this.labelLevel.TabIndex = 5;
-            this.labelLevel.Text = "123";
-            // 
-            // labelLevelPre
-            // 
-            this.labelLevelPre.AutoSize = true;
-            this.labelLevelPre.Location = new System.Drawing.Point(43, 48);
-            this.labelLevelPre.Name = "labelLevelPre";
-            this.labelLevelPre.Size = new System.Drawing.Size(68, 13);
-            this.labelLevelPre.TabIndex = 4;
-            this.labelLevelPre.Text = "Deck power:";
-            // 
-            // labelLocation
-            // 
-            this.labelLocation.AutoSize = true;
-            this.labelLocation.Location = new System.Drawing.Point(120, 31);
-            this.labelLocation.Name = "labelLocation";
-            this.labelLocation.Size = new System.Drawing.Size(25, 13);
-            this.labelLocation.TabIndex = 3;
-            this.labelLocation.Text = "abc";
-            // 
-            // labelLocationPre
-            // 
-            this.labelLocationPre.AutoSize = true;
-            this.labelLocationPre.Location = new System.Drawing.Point(43, 31);
-            this.labelLocationPre.Name = "labelLocationPre";
-            this.labelLocationPre.Size = new System.Drawing.Size(51, 13);
-            this.labelLocationPre.TabIndex = 2;
-            this.labelLocationPre.Text = "Location:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 10);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(32, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "NPC:";
-            // 
-            // comboBoxNpc
-            // 
-            this.comboBoxNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxNpc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBoxNpc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxNpc.FormattingEnabled = true;
-            this.comboBoxNpc.Location = new System.Drawing.Point(46, 7);
-            this.comboBoxNpc.Name = "comboBoxNpc";
-            this.comboBoxNpc.Size = new System.Drawing.Size(623, 21);
-            this.comboBoxNpc.Sorted = true;
-            this.comboBoxNpc.TabIndex = 0;
-            this.comboBoxNpc.SelectedIndexChanged += new System.EventHandler(this.comboBoxNpc_SelectedIndexChanged);
-            // 
-            // progressBarNpc
-            // 
-            this.progressBarNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBarNpc.Location = new System.Drawing.Point(46, 7);
-            this.progressBarNpc.Name = "progressBarNpc";
-            this.progressBarNpc.Size = new System.Drawing.Size(623, 23);
-            this.progressBarNpc.TabIndex = 16;
-            this.progressBarNpc.Visible = false;
-            // 
-            // buttonOptimize
-            // 
-            this.buttonOptimize.Location = new System.Drawing.Point(46, 197);
-            this.buttonOptimize.Name = "buttonOptimize";
-            this.buttonOptimize.Size = new System.Drawing.Size(274, 23);
-            this.buttonOptimize.TabIndex = 14;
-            this.buttonOptimize.Text = "Optimize deck for NPC";
-            this.buttonOptimize.UseVisualStyleBackColor = true;
-            this.buttonOptimize.Click += new System.EventHandler(this.buttonOptimize_Click);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControl1.Controls.Add(this.tabPageSetup);
-            this.tabControl1.Controls.Add(this.tabPageScreenshot);
-            this.tabControl1.Controls.Add(this.tabPagePlay);
-            this.tabControl1.Controls.Add(this.tabPageCards);
-            this.tabControl1.Controls.Add(this.tabPageNpcs);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(685, 266);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // pictureBoxFlag
-            // 
-            this.pictureBoxFlag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxFlag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxFlag.Location = new System.Drawing.Point(641, 2);
-            this.pictureBoxFlag.Name = "pictureBoxFlag";
-            this.pictureBoxFlag.Size = new System.Drawing.Size(40, 20);
-            this.pictureBoxFlag.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxFlag.TabIndex = 0;
-            this.pictureBoxFlag.TabStop = false;
-            this.pictureBoxFlag.Click += new System.EventHandler(this.pictureBoxFlag_Click);
-            // 
-            // imageListFlags
-            // 
-            this.imageListFlags.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListFlags.ImageStream")));
-            this.imageListFlags.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListFlags.Images.SetKeyName(0, "flag-germany.png");
-            this.imageListFlags.Images.SetKeyName(1, "flag-usa.png");
-            this.imageListFlags.Images.SetKeyName(2, "flag-france.png");
-            this.imageListFlags.Images.SetKeyName(3, "flag-japan.png");
-            this.imageListFlags.Images.SetKeyName(4, "flag-china.png");
-            this.imageListFlags.Images.SetKeyName(5, "flag-ko.png");
             // 
             // tabControlSetupDetails
             // 
@@ -1511,6 +2131,17 @@
             this.comboBoxTournamentType.TabIndex = 19;
             this.comboBoxTournamentType.SelectedIndexChanged += new System.EventHandler(this.comboBoxTournamentType_SelectedIndexChanged);
             // 
+            // buttonOptimizeAbort
+            // 
+            this.buttonOptimizeAbort.Location = new System.Drawing.Point(259, 197);
+            this.buttonOptimizeAbort.Name = "buttonOptimizeAbort";
+            this.buttonOptimizeAbort.Size = new System.Drawing.Size(61, 23);
+            this.buttonOptimizeAbort.TabIndex = 23;
+            this.buttonOptimizeAbort.Text = "Abort";
+            this.buttonOptimizeAbort.UseVisualStyleBackColor = true;
+            this.buttonOptimizeAbort.Visible = false;
+            this.buttonOptimizeAbort.Click += new System.EventHandler(this.buttonOptimizeAbort_Click);
+            // 
             // deckCtrlSetup
             // 
             this.deckCtrlSetup.Location = new System.Drawing.Point(46, 140);
@@ -1520,715 +2151,183 @@
             this.deckCtrlSetup.OnCardChanged += new FFTriadBuddy.DeckCtrl.DeckChangedDelegate(this.deckCtrlSetup_OnCardChanged);
             this.deckCtrlSetup.OnDeckRearranged += new FFTriadBuddy.DeckCtrl.DeckRearranged(this.deckCtrlSetup_OnDeckRearranged);
             // 
-            // tabControlScreenDetection
+            // progressBarDeck
             // 
-            this.tabControlScreenDetection.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.progressBarDeck.Location = new System.Drawing.Point(46, 197);
+            this.progressBarDeck.Name = "progressBarDeck";
+            this.progressBarDeck.Size = new System.Drawing.Size(207, 23);
+            this.progressBarDeck.TabIndex = 13;
+            this.progressBarDeck.Visible = false;
+            // 
+            // labelDeckState
+            // 
+            this.labelDeckState.AutoSize = true;
+            this.labelDeckState.Location = new System.Drawing.Point(185, 124);
+            this.labelDeckState.Name = "labelDeckState";
+            this.labelDeckState.Size = new System.Drawing.Size(0, 13);
+            this.labelDeckState.TabIndex = 12;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 124);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(171, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Active deck, click card for options:";
+            // 
+            // labelDescChance
+            // 
+            this.labelDescChance.AutoSize = true;
+            this.labelDescChance.Location = new System.Drawing.Point(120, 82);
+            this.labelDescChance.Name = "labelDescChance";
+            this.labelDescChance.Size = new System.Drawing.Size(25, 13);
+            this.labelDescChance.TabIndex = 9;
+            this.labelDescChance.Text = "123";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(43, 82);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 13);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Win chance:";
+            // 
+            // labelDescRules
+            // 
+            this.labelDescRules.AutoSize = true;
+            this.labelDescRules.Location = new System.Drawing.Point(120, 65);
+            this.labelDescRules.Name = "labelDescRules";
+            this.labelDescRules.Size = new System.Drawing.Size(25, 13);
+            this.labelDescRules.TabIndex = 7;
+            this.labelDescRules.Text = "123";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(43, 65);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(37, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Rules:";
+            // 
+            // labelLevel
+            // 
+            this.labelLevel.AutoSize = true;
+            this.labelLevel.Location = new System.Drawing.Point(120, 48);
+            this.labelLevel.Name = "labelLevel";
+            this.labelLevel.Size = new System.Drawing.Size(25, 13);
+            this.labelLevel.TabIndex = 5;
+            this.labelLevel.Text = "123";
+            // 
+            // labelLevelPre
+            // 
+            this.labelLevelPre.AutoSize = true;
+            this.labelLevelPre.Location = new System.Drawing.Point(43, 48);
+            this.labelLevelPre.Name = "labelLevelPre";
+            this.labelLevelPre.Size = new System.Drawing.Size(68, 13);
+            this.labelLevelPre.TabIndex = 4;
+            this.labelLevelPre.Text = "Deck power:";
+            // 
+            // labelLocation
+            // 
+            this.labelLocation.AutoSize = true;
+            this.labelLocation.Location = new System.Drawing.Point(120, 31);
+            this.labelLocation.Name = "labelLocation";
+            this.labelLocation.Size = new System.Drawing.Size(25, 13);
+            this.labelLocation.TabIndex = 3;
+            this.labelLocation.Text = "abc";
+            // 
+            // labelLocationPre
+            // 
+            this.labelLocationPre.AutoSize = true;
+            this.labelLocationPre.Location = new System.Drawing.Point(43, 31);
+            this.labelLocationPre.Name = "labelLocationPre";
+            this.labelLocationPre.Size = new System.Drawing.Size(51, 13);
+            this.labelLocationPre.TabIndex = 2;
+            this.labelLocationPre.Text = "Location:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(32, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "NPC:";
+            // 
+            // comboBoxNpc
+            // 
+            this.comboBoxNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlScreenDetection.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControlScreenDetection.Controls.Add(this.tabPageDetectionLearn);
-            this.tabControlScreenDetection.Controls.Add(this.tabPageDetectionHistory);
-            this.tabControlScreenDetection.Controls.Add(this.tabPageDetectionInfo);
-            this.tabControlScreenDetection.Location = new System.Drawing.Point(0, 34);
-            this.tabControlScreenDetection.Multiline = true;
-            this.tabControlScreenDetection.Name = "tabControlScreenDetection";
-            this.tabControlScreenDetection.SelectedIndex = 0;
-            this.tabControlScreenDetection.Size = new System.Drawing.Size(677, 174);
-            this.tabControlScreenDetection.TabIndex = 9;
+            this.comboBoxNpc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxNpc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxNpc.FormattingEnabled = true;
+            this.comboBoxNpc.Location = new System.Drawing.Point(46, 7);
+            this.comboBoxNpc.Name = "comboBoxNpc";
+            this.comboBoxNpc.Size = new System.Drawing.Size(623, 21);
+            this.comboBoxNpc.Sorted = true;
+            this.comboBoxNpc.TabIndex = 0;
+            this.comboBoxNpc.SelectedIndexChanged += new System.EventHandler(this.comboBoxNpc_SelectedIndexChanged);
             // 
-            // tabPageDetectionLearn
+            // progressBarNpc
             // 
-            this.tabPageDetectionLearn.Controls.Add(this.label24);
-            this.tabPageDetectionLearn.Controls.Add(this.buttonDiscardHashes);
-            this.tabPageDetectionLearn.Controls.Add(this.pictureBoxLocalHash);
-            this.tabPageDetectionLearn.Controls.Add(this.labelLocalHashPending);
-            this.tabPageDetectionLearn.Controls.Add(this.label23);
-            this.tabPageDetectionLearn.Controls.Add(this.label22);
-            this.tabPageDetectionLearn.Controls.Add(this.comboBoxLocalHash);
-            this.tabPageDetectionLearn.Controls.Add(this.buttonLocalHashStore);
-            this.tabPageDetectionLearn.Controls.Add(this.labelLocalHashType);
-            this.tabPageDetectionLearn.Controls.Add(this.label19);
-            this.tabPageDetectionLearn.Location = new System.Drawing.Point(0, 0);
-            this.tabPageDetectionLearn.Name = "tabPageDetectionLearn";
-            this.tabPageDetectionLearn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDetectionLearn.Size = new System.Drawing.Size(677, 174);
-            this.tabPageDetectionLearn.TabIndex = 0;
-            this.tabPageDetectionLearn.Text = "Learn";
-            this.tabPageDetectionLearn.UseVisualStyleBackColor = true;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(90, 122);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(122, 13);
-            this.label24.TabIndex = 9;
-            this.label24.Text = "<< Resets scanner state";
-            // 
-            // buttonDiscardHashes
-            // 
-            this.buttonDiscardHashes.Location = new System.Drawing.Point(9, 117);
-            this.buttonDiscardHashes.Name = "buttonDiscardHashes";
-            this.buttonDiscardHashes.Size = new System.Drawing.Size(75, 23);
-            this.buttonDiscardHashes.TabIndex = 8;
-            this.buttonDiscardHashes.Text = "Discard All";
-            this.buttonDiscardHashes.UseVisualStyleBackColor = true;
-            this.buttonDiscardHashes.Click += new System.EventHandler(this.buttonDiscardHashes_Click);
-            // 
-            // pictureBoxLocalHash
-            // 
-            this.pictureBoxLocalHash.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.progressBarNpc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxLocalHash.Location = new System.Drawing.Point(238, 19);
-            this.pictureBoxLocalHash.Name = "pictureBoxLocalHash";
-            this.pictureBoxLocalHash.Size = new System.Drawing.Size(434, 149);
-            this.pictureBoxLocalHash.TabIndex = 7;
-            this.pictureBoxLocalHash.TabStop = false;
-            // 
-            // labelLocalHashPending
-            // 
-            this.labelLocalHashPending.AutoSize = true;
-            this.labelLocalHashPending.Location = new System.Drawing.Point(90, 93);
-            this.labelLocalHashPending.Name = "labelLocalHashPending";
-            this.labelLocalHashPending.Size = new System.Drawing.Size(137, 13);
-            this.labelLocalHashPending.TabIndex = 6;
-            this.labelLocalHashPending.Text = "(there are 10 more pending)";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(235, 3);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(75, 13);
-            this.label23.TabIndex = 5;
-            this.label23.Text = "Source image:";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(6, 22);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(42, 13);
-            this.label22.TabIndex = 4;
-            this.label22.Text = "Detect:";
-            // 
-            // comboBoxLocalHash
-            // 
-            this.comboBoxLocalHash.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBoxLocalHash.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxLocalHash.FormattingEnabled = true;
-            this.comboBoxLocalHash.Location = new System.Drawing.Point(61, 19);
-            this.comboBoxLocalHash.Name = "comboBoxLocalHash";
-            this.comboBoxLocalHash.Size = new System.Drawing.Size(166, 21);
-            this.comboBoxLocalHash.Sorted = true;
-            this.comboBoxLocalHash.TabIndex = 3;
-            this.comboBoxLocalHash.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocalHash_SelectedIndexChanged);
-            // 
-            // buttonLocalHashStore
-            // 
-            this.buttonLocalHashStore.Location = new System.Drawing.Point(9, 88);
-            this.buttonLocalHashStore.Name = "buttonLocalHashStore";
-            this.buttonLocalHashStore.Size = new System.Drawing.Size(75, 23);
-            this.buttonLocalHashStore.TabIndex = 2;
-            this.buttonLocalHashStore.Text = "Save";
-            this.buttonLocalHashStore.UseVisualStyleBackColor = true;
-            this.buttonLocalHashStore.Click += new System.EventHandler(this.buttonLocalHashStore_Click);
-            // 
-            // labelLocalHashType
-            // 
-            this.labelLocalHashType.AutoSize = true;
-            this.labelLocalHashType.Location = new System.Drawing.Point(60, 3);
-            this.labelLocalHashType.Name = "labelLocalHashType";
-            this.labelLocalHashType.Size = new System.Drawing.Size(24, 13);
-            this.labelLocalHashType.TabIndex = 1;
-            this.labelLocalHashType.Text = "rule";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 3);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(34, 13);
-            this.label19.TabIndex = 0;
-            this.label19.Text = "Type:";
-            // 
-            // tabPageDetectionHistory
-            // 
-            this.tabPageDetectionHistory.Controls.Add(this.listViewDetectionCards);
-            this.tabPageDetectionHistory.Controls.Add(this.listViewDetectionHashes);
-            this.tabPageDetectionHistory.Location = new System.Drawing.Point(0, 0);
-            this.tabPageDetectionHistory.Name = "tabPageDetectionHistory";
-            this.tabPageDetectionHistory.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDetectionHistory.Size = new System.Drawing.Size(677, 174);
-            this.tabPageDetectionHistory.TabIndex = 1;
-            this.tabPageDetectionHistory.Text = "History";
-            this.tabPageDetectionHistory.UseVisualStyleBackColor = true;
-            // 
-            // listViewDetectionCards
-            // 
-            this.listViewDetectionCards.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewDetectionCards.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader8,
-            this.columnHeader9,
-            this.columnHeader10});
-            this.listViewDetectionCards.FullRowSelect = true;
-            this.listViewDetectionCards.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listViewDetectionCards.HideSelection = false;
-            this.listViewDetectionCards.Location = new System.Drawing.Point(248, 0);
-            this.listViewDetectionCards.MultiSelect = false;
-            this.listViewDetectionCards.Name = "listViewDetectionCards";
-            this.listViewDetectionCards.Size = new System.Drawing.Size(429, 174);
-            this.listViewDetectionCards.TabIndex = 1;
-            this.listViewDetectionCards.UseCompatibleStateImageBehavior = false;
-            this.listViewDetectionCards.View = System.Windows.Forms.View.Details;
-            this.listViewDetectionCards.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewDetectionCards_MouseDown);
-            // 
-            // columnHeader8
-            // 
-            this.columnHeader8.Text = "Type";
-            this.columnHeader8.Width = 86;
-            // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "Numbers [U-L-D-R]";
-            this.columnHeader9.Width = 125;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Last detection";
-            this.columnHeader10.Width = 196;
-            // 
-            // listViewDetectionHashes
-            // 
-            this.listViewDetectionHashes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.listViewDetectionHashes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader6,
-            this.columnHeader7});
-            this.listViewDetectionHashes.FullRowSelect = true;
-            this.listViewDetectionHashes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listViewDetectionHashes.HideSelection = false;
-            this.listViewDetectionHashes.Location = new System.Drawing.Point(0, 0);
-            this.listViewDetectionHashes.MultiSelect = false;
-            this.listViewDetectionHashes.Name = "listViewDetectionHashes";
-            this.listViewDetectionHashes.Size = new System.Drawing.Size(240, 174);
-            this.listViewDetectionHashes.TabIndex = 0;
-            this.listViewDetectionHashes.UseCompatibleStateImageBehavior = false;
-            this.listViewDetectionHashes.View = System.Windows.Forms.View.Details;
-            this.listViewDetectionHashes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewDetectionHashes_MouseDown);
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Type";
-            this.columnHeader6.Width = 79;
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "Last detection";
-            this.columnHeader7.Width = 157;
-            // 
-            // tabPageDetectionInfo
-            // 
-            this.tabPageDetectionInfo.Controls.Add(this.textBox1);
-            this.tabPageDetectionInfo.Location = new System.Drawing.Point(0, 0);
-            this.tabPageDetectionInfo.Name = "tabPageDetectionInfo";
-            this.tabPageDetectionInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDetectionInfo.Size = new System.Drawing.Size(677, 174);
-            this.tabPageDetectionInfo.TabIndex = 2;
-            this.tabPageDetectionInfo.Text = "Info";
-            this.tabPageDetectionInfo.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(6, 0);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(665, 168);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = resources.GetString("textBox1.Text");
-            // 
-            // tabControlGameRules
-            // 
-            this.tabControlGameRules.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlGameRules.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControlGameRules.Controls.Add(this.tabPageSubGame);
-            this.tabControlGameRules.Controls.Add(this.tabPageSubRoulette);
-            this.tabControlGameRules.Controls.Add(this.tabPageSubRandom);
-            this.tabControlGameRules.Controls.Add(this.tabPageSubSwap);
-            this.tabControlGameRules.Controls.Add(this.tabPageSubScreenshot);
-            this.tabControlGameRules.Location = new System.Drawing.Point(225, 6);
-            this.tabControlGameRules.Margin = new System.Windows.Forms.Padding(0);
-            this.tabControlGameRules.Name = "tabControlGameRules";
-            this.tabControlGameRules.SelectedIndex = 0;
-            this.tabControlGameRules.Size = new System.Drawing.Size(452, 170);
-            this.tabControlGameRules.TabIndex = 11;
-            // 
-            // tabPageSubGame
-            // 
-            this.tabPageSubGame.Controls.Add(this.labelGameStateHint);
-            this.tabPageSubGame.Controls.Add(this.listViewRedDeck);
-            this.tabPageSubGame.Location = new System.Drawing.Point(0, 0);
-            this.tabPageSubGame.Margin = new System.Windows.Forms.Padding(0);
-            this.tabPageSubGame.Name = "tabPageSubGame";
-            this.tabPageSubGame.Size = new System.Drawing.Size(452, 170);
-            this.tabPageSubGame.TabIndex = 0;
-            this.tabPageSubGame.Text = "Game";
-            this.tabPageSubGame.UseVisualStyleBackColor = true;
-            // 
-            // labelGameStateHint
-            // 
-            this.labelGameStateHint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelGameStateHint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(186)))));
-            this.labelGameStateHint.Location = new System.Drawing.Point(1, 150);
-            this.labelGameStateHint.Name = "labelGameStateHint";
-            this.labelGameStateHint.Size = new System.Drawing.Size(450, 19);
-            this.labelGameStateHint.TabIndex = 10;
-            this.labelGameStateHint.Text = "[Drag && drop cards on board]";
-            this.labelGameStateHint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // listViewRedDeck
-            // 
-            this.listViewRedDeck.BackColor = System.Drawing.Color.MistyRose;
-            this.listViewRedDeck.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewRedDeck.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.listViewRedDeck.HideSelection = false;
-            this.listViewRedDeck.Location = new System.Drawing.Point(0, 0);
-            this.listViewRedDeck.Name = "listViewRedDeck";
-            this.listViewRedDeck.Size = new System.Drawing.Size(452, 170);
-            this.listViewRedDeck.TabIndex = 1;
-            this.listViewRedDeck.TileSize = new System.Drawing.Size(50, 50);
-            this.listViewRedDeck.UseCompatibleStateImageBehavior = false;
-            this.listViewRedDeck.View = System.Windows.Forms.View.SmallIcon;
-            this.listViewRedDeck.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listViewRedDeck_ItemDrag);
-            this.listViewRedDeck.DragEnter += new System.Windows.Forms.DragEventHandler(this.listViewRedDeck_DragEnter);
-            // 
-            // tabPageSubRoulette
-            // 
-            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc4);
-            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc3);
-            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc2);
-            this.tabPageSubRoulette.Controls.Add(this.labelRouletteDesc1);
-            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette4);
-            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette3);
-            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette2);
-            this.tabPageSubRoulette.Controls.Add(this.comboBoxRoulette1);
-            this.tabPageSubRoulette.Controls.Add(this.buttonConfirmRuleRoulette);
-            this.tabPageSubRoulette.Location = new System.Drawing.Point(0, 0);
-            this.tabPageSubRoulette.Name = "tabPageSubRoulette";
-            this.tabPageSubRoulette.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSubRoulette.Size = new System.Drawing.Size(452, 170);
-            this.tabPageSubRoulette.TabIndex = 1;
-            this.tabPageSubRoulette.Text = "Roulette";
-            this.tabPageSubRoulette.UseVisualStyleBackColor = true;
-            // 
-            // labelRouletteDesc4
-            // 
-            this.labelRouletteDesc4.AutoSize = true;
-            this.labelRouletteDesc4.Location = new System.Drawing.Point(6, 89);
-            this.labelRouletteDesc4.Name = "labelRouletteDesc4";
-            this.labelRouletteDesc4.Size = new System.Drawing.Size(102, 13);
-            this.labelRouletteDesc4.TabIndex = 9;
-            this.labelRouletteDesc4.Text = "Pick roulette rule #4";
-            // 
-            // labelRouletteDesc3
-            // 
-            this.labelRouletteDesc3.AutoSize = true;
-            this.labelRouletteDesc3.Location = new System.Drawing.Point(6, 62);
-            this.labelRouletteDesc3.Name = "labelRouletteDesc3";
-            this.labelRouletteDesc3.Size = new System.Drawing.Size(102, 13);
-            this.labelRouletteDesc3.TabIndex = 8;
-            this.labelRouletteDesc3.Text = "Pick roulette rule #3";
-            // 
-            // labelRouletteDesc2
-            // 
-            this.labelRouletteDesc2.AutoSize = true;
-            this.labelRouletteDesc2.Location = new System.Drawing.Point(6, 35);
-            this.labelRouletteDesc2.Name = "labelRouletteDesc2";
-            this.labelRouletteDesc2.Size = new System.Drawing.Size(102, 13);
-            this.labelRouletteDesc2.TabIndex = 7;
-            this.labelRouletteDesc2.Text = "Pick roulette rule #2";
-            // 
-            // labelRouletteDesc1
-            // 
-            this.labelRouletteDesc1.AutoSize = true;
-            this.labelRouletteDesc1.Location = new System.Drawing.Point(6, 9);
-            this.labelRouletteDesc1.Name = "labelRouletteDesc1";
-            this.labelRouletteDesc1.Size = new System.Drawing.Size(102, 13);
-            this.labelRouletteDesc1.TabIndex = 6;
-            this.labelRouletteDesc1.Text = "Pick roulette rule #1";
-            // 
-            // comboBoxRoulette4
-            // 
-            this.comboBoxRoulette4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxRoulette4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxRoulette4.FormattingEnabled = true;
-            this.comboBoxRoulette4.Location = new System.Drawing.Point(131, 86);
-            this.comboBoxRoulette4.Name = "comboBoxRoulette4";
-            this.comboBoxRoulette4.Size = new System.Drawing.Size(315, 21);
-            this.comboBoxRoulette4.TabIndex = 5;
-            this.comboBoxRoulette4.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
-            // 
-            // comboBoxRoulette3
-            // 
-            this.comboBoxRoulette3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxRoulette3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxRoulette3.FormattingEnabled = true;
-            this.comboBoxRoulette3.Location = new System.Drawing.Point(131, 59);
-            this.comboBoxRoulette3.Name = "comboBoxRoulette3";
-            this.comboBoxRoulette3.Size = new System.Drawing.Size(315, 21);
-            this.comboBoxRoulette3.TabIndex = 4;
-            this.comboBoxRoulette3.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
-            // 
-            // comboBoxRoulette2
-            // 
-            this.comboBoxRoulette2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxRoulette2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxRoulette2.FormattingEnabled = true;
-            this.comboBoxRoulette2.Location = new System.Drawing.Point(131, 32);
-            this.comboBoxRoulette2.Name = "comboBoxRoulette2";
-            this.comboBoxRoulette2.Size = new System.Drawing.Size(315, 21);
-            this.comboBoxRoulette2.TabIndex = 3;
-            this.comboBoxRoulette2.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
-            // 
-            // comboBoxRoulette1
-            // 
-            this.comboBoxRoulette1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxRoulette1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxRoulette1.FormattingEnabled = true;
-            this.comboBoxRoulette1.Location = new System.Drawing.Point(131, 6);
-            this.comboBoxRoulette1.Name = "comboBoxRoulette1";
-            this.comboBoxRoulette1.Size = new System.Drawing.Size(315, 21);
-            this.comboBoxRoulette1.TabIndex = 2;
-            this.comboBoxRoulette1.SelectedIndexChanged += new System.EventHandler(this.comboBoxRoulette_SelectedIndexChanged);
-            // 
-            // buttonConfirmRuleRoulette
-            // 
-            this.buttonConfirmRuleRoulette.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfirmRuleRoulette.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.buttonConfirmRuleRoulette.Location = new System.Drawing.Point(3, 147);
-            this.buttonConfirmRuleRoulette.Name = "buttonConfirmRuleRoulette";
-            this.buttonConfirmRuleRoulette.Size = new System.Drawing.Size(446, 23);
-            this.buttonConfirmRuleRoulette.TabIndex = 1;
-            this.buttonConfirmRuleRoulette.Text = "Apply rule";
-            this.buttonConfirmRuleRoulette.UseVisualStyleBackColor = false;
-            this.buttonConfirmRuleRoulette.Click += new System.EventHandler(this.buttonConfirmRuleRoulette_Click);
-            // 
-            // tabPageSubRandom
-            // 
-            this.tabPageSubRandom.Controls.Add(this.label15);
-            this.tabPageSubRandom.Controls.Add(this.deckCtrlRandom);
-            this.tabPageSubRandom.Controls.Add(this.buttonConfirmRuleRandom);
-            this.tabPageSubRandom.Location = new System.Drawing.Point(0, 0);
-            this.tabPageSubRandom.Name = "tabPageSubRandom";
-            this.tabPageSubRandom.Size = new System.Drawing.Size(452, 170);
-            this.tabPageSubRandom.TabIndex = 2;
-            this.tabPageSubRandom.Text = "Random";
-            this.tabPageSubRandom.UseVisualStyleBackColor = true;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(3, 41);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(129, 13);
-            this.label15.TabIndex = 5;
-            this.label15.Text = "Adjust randomized deck :(";
-            // 
-            // deckCtrlRandom
-            // 
-            this.deckCtrlRandom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.deckCtrlRandom.Location = new System.Drawing.Point(3, 57);
-            this.deckCtrlRandom.Name = "deckCtrlRandom";
-            this.deckCtrlRandom.Size = new System.Drawing.Size(446, 51);
-            this.deckCtrlRandom.TabIndex = 4;
-            // 
-            // buttonConfirmRuleRandom
-            // 
-            this.buttonConfirmRuleRandom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfirmRuleRandom.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.buttonConfirmRuleRandom.Location = new System.Drawing.Point(3, 147);
-            this.buttonConfirmRuleRandom.Name = "buttonConfirmRuleRandom";
-            this.buttonConfirmRuleRandom.Size = new System.Drawing.Size(446, 23);
-            this.buttonConfirmRuleRandom.TabIndex = 2;
-            this.buttonConfirmRuleRandom.Text = "Apply rule";
-            this.buttonConfirmRuleRandom.UseVisualStyleBackColor = false;
-            this.buttonConfirmRuleRandom.Click += new System.EventHandler(this.buttonConfirmRuleRandom_Click);
-            // 
-            // tabPageSubSwap
-            // 
-            this.tabPageSubSwap.Controls.Add(this.deckCtrlSwapRed);
-            this.tabPageSubSwap.Controls.Add(this.deckCtrlSwapBlue);
-            this.tabPageSubSwap.Controls.Add(this.buttonConfirmRuleSwap);
-            this.tabPageSubSwap.Location = new System.Drawing.Point(0, 0);
-            this.tabPageSubSwap.Name = "tabPageSubSwap";
-            this.tabPageSubSwap.Size = new System.Drawing.Size(452, 170);
-            this.tabPageSubSwap.TabIndex = 3;
-            this.tabPageSubSwap.Text = "Swap";
-            this.tabPageSubSwap.UseVisualStyleBackColor = true;
-            // 
-            // deckCtrlSwapRed
-            // 
-            this.deckCtrlSwapRed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.deckCtrlSwapRed.Location = new System.Drawing.Point(3, 60);
-            this.deckCtrlSwapRed.Name = "deckCtrlSwapRed";
-            this.deckCtrlSwapRed.Size = new System.Drawing.Size(446, 51);
-            this.deckCtrlSwapRed.TabIndex = 4;
-            this.deckCtrlSwapRed.OnCardSelected += new FFTriadBuddy.DeckCtrl.DeckSelectDelegate(this.deckCtrlSwap_OnCardSelected);
-            // 
-            // deckCtrlSwapBlue
-            // 
-            this.deckCtrlSwapBlue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.deckCtrlSwapBlue.Location = new System.Drawing.Point(3, 3);
-            this.deckCtrlSwapBlue.Name = "deckCtrlSwapBlue";
-            this.deckCtrlSwapBlue.Size = new System.Drawing.Size(446, 51);
-            this.deckCtrlSwapBlue.TabIndex = 3;
-            this.deckCtrlSwapBlue.OnCardSelected += new FFTriadBuddy.DeckCtrl.DeckSelectDelegate(this.deckCtrlSwap_OnCardSelected);
-            // 
-            // buttonConfirmRuleSwap
-            // 
-            this.buttonConfirmRuleSwap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfirmRuleSwap.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.buttonConfirmRuleSwap.Location = new System.Drawing.Point(3, 147);
-            this.buttonConfirmRuleSwap.Name = "buttonConfirmRuleSwap";
-            this.buttonConfirmRuleSwap.Size = new System.Drawing.Size(446, 23);
-            this.buttonConfirmRuleSwap.TabIndex = 2;
-            this.buttonConfirmRuleSwap.Text = "Apply rule";
-            this.buttonConfirmRuleSwap.UseVisualStyleBackColor = false;
-            this.buttonConfirmRuleSwap.Click += new System.EventHandler(this.buttonConfirmRuleSwap_Click);
-            // 
-            // tabPageSubScreenshot
-            // 
-            this.tabPageSubScreenshot.Controls.Add(this.checkBoxDebugScreenshotForceCached);
-            this.tabPageSubScreenshot.Controls.Add(this.buttonConfirmRuleScreenshot);
-            this.tabPageSubScreenshot.Controls.Add(this.label17);
-            this.tabPageSubScreenshot.Location = new System.Drawing.Point(0, 0);
-            this.tabPageSubScreenshot.Name = "tabPageSubScreenshot";
-            this.tabPageSubScreenshot.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSubScreenshot.Size = new System.Drawing.Size(452, 170);
-            this.tabPageSubScreenshot.TabIndex = 4;
-            this.tabPageSubScreenshot.Text = "Screenshot";
-            this.tabPageSubScreenshot.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxDebugScreenshotForceCached
-            // 
-            this.checkBoxDebugScreenshotForceCached.AutoSize = true;
-            this.checkBoxDebugScreenshotForceCached.Location = new System.Drawing.Point(9, 55);
-            this.checkBoxDebugScreenshotForceCached.Name = "checkBoxDebugScreenshotForceCached";
-            this.checkBoxDebugScreenshotForceCached.Size = new System.Drawing.Size(151, 17);
-            this.checkBoxDebugScreenshotForceCached.TabIndex = 3;
-            this.checkBoxDebugScreenshotForceCached.Text = "Force using cached image";
-            this.checkBoxDebugScreenshotForceCached.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxDebugScreenshotForceCached.UseVisualStyleBackColor = true;
-            // 
-            // buttonConfirmRuleScreenshot
-            // 
-            this.buttonConfirmRuleScreenshot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfirmRuleScreenshot.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.buttonConfirmRuleScreenshot.Location = new System.Drawing.Point(3, 147);
-            this.buttonConfirmRuleScreenshot.Name = "buttonConfirmRuleScreenshot";
-            this.buttonConfirmRuleScreenshot.Size = new System.Drawing.Size(446, 23);
-            this.buttonConfirmRuleScreenshot.TabIndex = 2;
-            this.buttonConfirmRuleScreenshot.Text = "Apply rule";
-            this.buttonConfirmRuleScreenshot.UseVisualStyleBackColor = false;
-            this.buttonConfirmRuleScreenshot.Click += new System.EventHandler(this.buttonConfirmRuleScreenshot_Click);
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 35);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(189, 13);
-            this.label17.TabIndex = 0;
-            this.label17.Text = "Take game screenshot: DEBUG mode";
-            // 
-            // cardCtrlBlue4
-            // 
-            this.cardCtrlBlue4.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrlBlue4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrlBlue4.Location = new System.Drawing.Point(3, 105);
-            this.cardCtrlBlue4.Name = "cardCtrlBlue4";
-            this.cardCtrlBlue4.Size = new System.Drawing.Size(28, 28);
-            this.cardCtrlBlue4.TabIndex = 4;
-            this.cardCtrlBlue4.Click += new System.EventHandler(this.cardCtrlBlue_Click);
-            // 
-            // cardCtrlBlue5
-            // 
-            this.cardCtrlBlue5.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrlBlue5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrlBlue5.Location = new System.Drawing.Point(3, 137);
-            this.cardCtrlBlue5.Name = "cardCtrlBlue5";
-            this.cardCtrlBlue5.Size = new System.Drawing.Size(28, 28);
-            this.cardCtrlBlue5.TabIndex = 3;
-            this.cardCtrlBlue5.Click += new System.EventHandler(this.cardCtrlBlue_Click);
-            // 
-            // cardCtrlBlue3
-            // 
-            this.cardCtrlBlue3.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrlBlue3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrlBlue3.Location = new System.Drawing.Point(3, 71);
-            this.cardCtrlBlue3.Name = "cardCtrlBlue3";
-            this.cardCtrlBlue3.Size = new System.Drawing.Size(28, 28);
-            this.cardCtrlBlue3.TabIndex = 2;
-            this.cardCtrlBlue3.Click += new System.EventHandler(this.cardCtrlBlue_Click);
-            // 
-            // cardCtrlBlue2
-            // 
-            this.cardCtrlBlue2.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrlBlue2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrlBlue2.Location = new System.Drawing.Point(3, 37);
-            this.cardCtrlBlue2.Name = "cardCtrlBlue2";
-            this.cardCtrlBlue2.Size = new System.Drawing.Size(28, 28);
-            this.cardCtrlBlue2.TabIndex = 1;
-            this.cardCtrlBlue2.Click += new System.EventHandler(this.cardCtrlBlue_Click);
-            // 
-            // cardCtrlBlue1
-            // 
-            this.cardCtrlBlue1.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrlBlue1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrlBlue1.Location = new System.Drawing.Point(3, 3);
-            this.cardCtrlBlue1.Name = "cardCtrlBlue1";
-            this.cardCtrlBlue1.Size = new System.Drawing.Size(28, 28);
-            this.cardCtrlBlue1.TabIndex = 0;
-            this.cardCtrlBlue1.Click += new System.EventHandler(this.cardCtrlBlue_Click);
-            // 
-            // cardCtrl9
-            // 
-            this.cardCtrl9.AllowDrop = true;
-            this.cardCtrl9.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl9.Location = new System.Drawing.Point(115, 115);
-            this.cardCtrl9.Name = "cardCtrl9";
-            this.cardCtrl9.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl9.TabIndex = 8;
-            this.cardCtrl9.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl9.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl9.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl8
-            // 
-            this.cardCtrl8.AllowDrop = true;
-            this.cardCtrl8.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl8.Location = new System.Drawing.Point(59, 115);
-            this.cardCtrl8.Name = "cardCtrl8";
-            this.cardCtrl8.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl8.TabIndex = 7;
-            this.cardCtrl8.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl8.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl8.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl7
-            // 
-            this.cardCtrl7.AllowDrop = true;
-            this.cardCtrl7.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl7.Location = new System.Drawing.Point(3, 115);
-            this.cardCtrl7.Name = "cardCtrl7";
-            this.cardCtrl7.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl7.TabIndex = 6;
-            this.cardCtrl7.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl7.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl7.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl6
-            // 
-            this.cardCtrl6.AllowDrop = true;
-            this.cardCtrl6.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl6.Location = new System.Drawing.Point(115, 59);
-            this.cardCtrl6.Name = "cardCtrl6";
-            this.cardCtrl6.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl6.TabIndex = 5;
-            this.cardCtrl6.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl6.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl6.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl5
-            // 
-            this.cardCtrl5.AllowDrop = true;
-            this.cardCtrl5.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl5.Location = new System.Drawing.Point(59, 59);
-            this.cardCtrl5.Name = "cardCtrl5";
-            this.cardCtrl5.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl5.TabIndex = 4;
-            this.cardCtrl5.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl5.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl5.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl4
-            // 
-            this.cardCtrl4.AllowDrop = true;
-            this.cardCtrl4.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl4.Location = new System.Drawing.Point(3, 59);
-            this.cardCtrl4.Name = "cardCtrl4";
-            this.cardCtrl4.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl4.TabIndex = 3;
-            this.cardCtrl4.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl4.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl4.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl3
-            // 
-            this.cardCtrl3.AllowDrop = true;
-            this.cardCtrl3.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl3.Location = new System.Drawing.Point(115, 3);
-            this.cardCtrl3.Name = "cardCtrl3";
-            this.cardCtrl3.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl3.TabIndex = 2;
-            this.cardCtrl3.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl3.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl3.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl2
-            // 
-            this.cardCtrl2.AllowDrop = true;
-            this.cardCtrl2.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl2.Location = new System.Drawing.Point(59, 3);
-            this.cardCtrl2.Name = "cardCtrl2";
-            this.cardCtrl2.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl2.TabIndex = 1;
-            this.cardCtrl2.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl2.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl2.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
-            // 
-            // cardCtrl1
-            // 
-            this.cardCtrl1.AllowDrop = true;
-            this.cardCtrl1.BackColor = System.Drawing.SystemColors.Control;
-            this.cardCtrl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cardCtrl1.Location = new System.Drawing.Point(3, 3);
-            this.cardCtrl1.Name = "cardCtrl1";
-            this.cardCtrl1.Size = new System.Drawing.Size(50, 50);
-            this.cardCtrl1.TabIndex = 0;
-            this.cardCtrl1.DragDrop += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragDrop);
-            this.cardCtrl1.DragEnter += new System.Windows.Forms.DragEventHandler(this.cardCtrl_DragEnter);
-            this.cardCtrl1.DragLeave += new System.EventHandler(this.cardCtrl_DragLeave);
+            this.progressBarNpc.Location = new System.Drawing.Point(46, 7);
+            this.progressBarNpc.Name = "progressBarNpc";
+            this.progressBarNpc.Size = new System.Drawing.Size(623, 23);
+            this.progressBarNpc.TabIndex = 16;
+            this.progressBarNpc.Visible = false;
+            // 
+            // buttonOptimize
+            // 
+            this.buttonOptimize.Location = new System.Drawing.Point(46, 197);
+            this.buttonOptimize.Name = "buttonOptimize";
+            this.buttonOptimize.Size = new System.Drawing.Size(274, 23);
+            this.buttonOptimize.TabIndex = 14;
+            this.buttonOptimize.Text = "Optimize deck for NPC";
+            this.buttonOptimize.UseVisualStyleBackColor = true;
+            this.buttonOptimize.Click += new System.EventHandler(this.buttonOptimize_Click);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControl1.Controls.Add(this.tabPageSetup);
+            this.tabControl1.Controls.Add(this.tabPageScreenshot);
+            this.tabControl1.Controls.Add(this.tabPagePlay);
+            this.tabControl1.Controls.Add(this.tabPageCards);
+            this.tabControl1.Controls.Add(this.tabPageNpcs);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(685, 266);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // pictureBoxFlag
+            // 
+            this.pictureBoxFlag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxFlag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxFlag.Location = new System.Drawing.Point(641, 2);
+            this.pictureBoxFlag.Name = "pictureBoxFlag";
+            this.pictureBoxFlag.Size = new System.Drawing.Size(40, 20);
+            this.pictureBoxFlag.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxFlag.TabIndex = 0;
+            this.pictureBoxFlag.TabStop = false;
+            this.pictureBoxFlag.Click += new System.EventHandler(this.pictureBoxFlag_Click);
+            // 
+            // imageListFlags
+            // 
+            this.imageListFlags.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListFlags.ImageStream")));
+            this.imageListFlags.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListFlags.Images.SetKeyName(0, "flag-germany.png");
+            this.imageListFlags.Images.SetKeyName(1, "flag-usa.png");
+            this.imageListFlags.Images.SetKeyName(2, "flag-france.png");
+            this.imageListFlags.Images.SetKeyName(3, "flag-japan.png");
+            this.imageListFlags.Images.SetKeyName(4, "flag-china.png");
+            this.imageListFlags.Images.SetKeyName(5, "flag-ko.png");
             // 
             // Form1
             // 
@@ -2265,18 +2364,36 @@
             this.tabPageCardsIcons.ResumeLayout(false);
             this.tabPagePlay.ResumeLayout(false);
             this.tabPagePlay.PerformLayout();
+            this.tabControlGameRules.ResumeLayout(false);
+            this.tabPageSubGame.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.tabPageSubRoulette.ResumeLayout(false);
+            this.tabPageSubRoulette.PerformLayout();
+            this.tabPageSubRandom.ResumeLayout(false);
+            this.tabPageSubRandom.PerformLayout();
+            this.tabPageSubSwap.ResumeLayout(false);
+            this.tabPageSubOpen.ResumeLayout(false);
+            this.tabPageSubOpen.PerformLayout();
+            this.tabPageSubScreenshot.ResumeLayout(false);
+            this.tabPageSubScreenshot.PerformLayout();
             this.panelBlueDeck.ResumeLayout(false);
             this.panelBoard.ResumeLayout(false);
             this.tabPageScreenshot.ResumeLayout(false);
             this.tabPageScreenshot.PerformLayout();
             this.panelScreenshotState.ResumeLayout(false);
             this.panelScreenshotState.PerformLayout();
+            this.tabControlScreenDetection.ResumeLayout(false);
+            this.tabPageDetectionLearn.ResumeLayout(false);
+            this.tabPageDetectionLearn.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLocalHash)).EndInit();
+            this.tabPageDetectionHistory.ResumeLayout(false);
+            this.tabPageDetectionInfo.ResumeLayout(false);
+            this.tabPageDetectionInfo.PerformLayout();
             this.tabPageSetup.ResumeLayout(false);
             this.tabPageSetup.PerformLayout();
             this.panelCloud.ResumeLayout(false);
             this.panelCloud.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).EndInit();
             this.tabControlSetupDetails.ResumeLayout(false);
             this.tabPageFavDecks.ResumeLayout(false);
             this.tabPageSetupOptimizerStats.ResumeLayout(false);
@@ -2287,22 +2404,8 @@
             this.tabPageSetupRegion.PerformLayout();
             this.tabPageSetupTournament.ResumeLayout(false);
             this.tabPageSetupTournament.PerformLayout();
-            this.tabControlScreenDetection.ResumeLayout(false);
-            this.tabPageDetectionLearn.ResumeLayout(false);
-            this.tabPageDetectionLearn.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLocalHash)).EndInit();
-            this.tabPageDetectionHistory.ResumeLayout(false);
-            this.tabPageDetectionInfo.ResumeLayout(false);
-            this.tabPageDetectionInfo.PerformLayout();
-            this.tabControlGameRules.ResumeLayout(false);
-            this.tabPageSubGame.ResumeLayout(false);
-            this.tabPageSubRoulette.ResumeLayout(false);
-            this.tabPageSubRoulette.PerformLayout();
-            this.tabPageSubRandom.ResumeLayout(false);
-            this.tabPageSubRandom.PerformLayout();
-            this.tabPageSubSwap.ResumeLayout(false);
-            this.tabPageSubScreenshot.ResumeLayout(false);
-            this.tabPageSubScreenshot.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFlag)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2369,7 +2472,6 @@
         private TabControlNoTabs tabControlGameRules;
         private System.Windows.Forms.TabPage tabPageSubGame;
         private System.Windows.Forms.Label labelGameStateHint;
-        private System.Windows.Forms.ListView listViewRedDeck;
         private System.Windows.Forms.TabPage tabPageSubRoulette;
         private System.Windows.Forms.Label labelRouletteDesc4;
         private System.Windows.Forms.Label labelRouletteDesc3;
@@ -2499,6 +2601,16 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.PictureBox pictureBoxFlag;
         private System.Windows.Forms.ImageList imageListFlags;
+        private System.Windows.Forms.TabPage tabPageSubOpen;
+        private System.Windows.Forms.Label labelOpenSelect;
+        private DeckCtrl deckCtrlOpenSelect;
+        private System.Windows.Forms.Button buttonConfirmRuleOpen;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelSimulateKnown;
+        private DeckCtrl deckCtrlSimulateUnknown;
+        private DeckCtrl deckCtrlSimulateKnown;
+        private System.Windows.Forms.Label labelSimulateUnknown;
+        private System.Windows.Forms.Button buttonSkipRuleOpen;
     }
 }
 

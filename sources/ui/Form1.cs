@@ -81,7 +81,7 @@ namespace FFTriadBuddy
                 deckBlueControls[Idx].drawMode = ECardDrawMode.ImageOnly;
             }
 
-            DeckCtrl[] deckControls = new DeckCtrl[] { deckCtrlSetup, deckCtrlSwapBlue, deckCtrlSwapRed, deckCtrlRandom };
+            DeckCtrl[] deckControls = new DeckCtrl[] { deckCtrlSetup, deckCtrlSwapBlue, deckCtrlSwapRed, deckCtrlRandom, deckCtrlOpenSelect, deckCtrlSimulateKnown, deckCtrlSimulateUnknown };
             for (int Idx = 0; Idx < deckControls.Length; Idx++)
             {
                 deckControls[Idx].SetImageLists(cardIconImages, imageListType, imageListRarity);
@@ -109,6 +109,15 @@ namespace FFTriadBuddy
             deckCtrlSwapRed.deckOwner = ETriadCardOwner.Red;
             deckCtrlRandom.allowRearrange = true;
             deckCtrlRandom.clickAction = EDeckCtrlAction.Pick;
+            deckCtrlOpenSelect.clickAction = EDeckCtrlAction.Highlight;
+            deckCtrlOpenSelect.deckOwner = ETriadCardOwner.Red;
+            
+            deckCtrlSimulateKnown.clickAction = EDeckCtrlAction.None;
+            deckCtrlSimulateKnown.deckOwner = ETriadCardOwner.Red;
+            deckCtrlSimulateUnknown.clickAction = EDeckCtrlAction.None;
+            deckCtrlSimulateUnknown.deckOwner = ETriadCardOwner.Red;
+            deckCtrlSimulateKnown.allowDragOut = true;
+            deckCtrlSimulateUnknown.allowDragOut = true;
 
             CreateCardViewGrids();
 
@@ -223,6 +232,8 @@ namespace FFTriadBuddy
             label15.Text = loc.strings.MainForm_Simulate_Random_Info;
             buttonConfirmRuleRandom.Text = loc.strings.MainForm_Simulate_Game_ApplyRuleButton;
             buttonConfirmRuleSwap.Text = loc.strings.MainForm_Simulate_Game_ApplyRuleButton;
+            buttonConfirmRuleOpen.Text = loc.strings.MainForm_Simulate_Game_ApplyRuleButton;
+            buttonSkipRuleOpen.Text = loc.strings.MainForm_Simulate_Game_SkipRuleButton;
             checkBoxDebugScreenshotForceCached.Text = loc.strings.MainForm_Simulate_Debug_ForceCached;
             label17.Text = loc.strings.MainForm_Simulate_Debug_Info;
             label2.Text = loc.strings.MainForm_Simulate_WinChance;
@@ -231,6 +242,9 @@ namespace FFTriadBuddy
             buttonReset.Text = loc.strings.MainForm_Simulate_ResetButton;
             buttonUndoRed.Text = loc.strings.MainForm_Simulate_UndoRedMoveButton;
             labelSpecialRules.Text = loc.strings.MainForm_Simulate_Game_SpecialRule;
+            labelOpenSelect.Text = loc.strings.MainForm_Simulate_Open_Hint;
+            labelSimulateKnown.Text = loc.strings.MainForm_Simulate_Game_KnownCards;
+            labelSimulateUnknown.Text = string.Format(loc.strings.MainForm_Simulate_Game_UnknownCards, "?");
 
             // cards
             tabPageCards.Text = loc.strings.MainForm_Cards_Title;
@@ -1501,7 +1515,15 @@ namespace FFTriadBuddy
         private void selectNpcToPlayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TriadNpc npcToSelect = (TriadNpc)contextMenuStripSelectNpc.Tag;
-            comboBoxNpc.SelectedItem = npcToSelect;
+            foreach (var item in comboBoxNpc.Items)
+            {
+                var testNpc = ((NpcPickerOb)item).Npc;
+                if (testNpc == npcToSelect)
+                {
+                    comboBoxNpc.SelectedItem = item;
+                    break;
+                }
+            }
 
             contextMenuStripSelectNpc.Close();
         }
@@ -1621,6 +1643,15 @@ namespace FFTriadBuddy
                     deckCtrlSwap_OnCardSelected(null, 0);
                     break;
 
+                case ETriadGameSpecialMod.SelectVisible3:
+                case ETriadGameSpecialMod.SelectVisible5:
+                    tabControlGameRules.SelectedTab = tabPageSubOpen;
+                    deckCtrlOpenSelect.SetDeck(redDeckEx.deck);
+                    deckCtrlOpenSelect.SetSelectCount(specialMod == ETriadGameSpecialMod.SelectVisible3 ? 3 : 5);
+                    deckCtrlOpenSelect.selectedIndices.Clear();
+                    deckCtrlOpenSelect_OnCardSelected(null, -1);
+                    break;
+
                 default:
                     tabControlGameRules.SelectedTab = tabPageSubGame;
                     break;
@@ -1690,6 +1721,34 @@ namespace FFTriadBuddy
             ShowGameData(gameState);
         }
 
+        private void buttonConfirmRuleOpen_Click(object sender, EventArgs e)
+        {
+            TriadGameModifierAllOpen.StaticMakeKnown(gameState, deckCtrlOpenSelect.selectedIndices);
+
+            gameState.resolvedSpecial |= ETriadGameSpecialMod.SelectVisible3 | ETriadGameSpecialMod.SelectVisible5;
+            ShowGameData(gameState);
+        }
+
+
+        private void buttonSkipRuleOpen_Click(object sender, EventArgs e)
+        {
+            gameState.resolvedSpecial |= ETriadGameSpecialMod.SelectVisible3 | ETriadGameSpecialMod.SelectVisible5;
+            ShowGameData(gameState);
+        }
+
+        private void deckCtrlOpenSelect_OnCardSelected(TriadCardInstance cardInst, int slotIdx)
+        {
+            buttonConfirmRuleOpen.Enabled = deckCtrlOpenSelect.numToSelect == deckCtrlOpenSelect.selectedIndices.Count;
+
+            // special case all open + no unknown cards in deck (tutorial npc) => skip rule
+            if (gameState.deckRed != null && gameState.deckRed.deck != null &&
+                gameState.deckRed.deck.unknownCardPool.Count == 0 &&
+                gameState.deckRed.deck.knownCards.Count == deckCtrlOpenSelect.numToSelect)
+            {
+                buttonConfirmRuleOpen_Click(null, null);
+            }
+        }
+
         private void deckCtrlSwap_OnCardSelected(TriadCardInstance cardInst, int slotIdx)
         {
             bool bCanSwap = deckCtrlSwapBlue.HasActiveCard() && deckCtrlSwapRed.HasActiveCard();
@@ -1702,7 +1761,12 @@ namespace FFTriadBuddy
             ETriadGameSpecialMod pendingUIRules = ETriadGameSpecialMod.None;
             if ((gameData.numCardsPlaced == 0) && (gameSession.specialRules != ETriadGameSpecialMod.None))
             {
-                ETriadGameSpecialMod specialUIMask = ETriadGameSpecialMod.RandomizeRule | ETriadGameSpecialMod.RandomizeBlueDeck | ETriadGameSpecialMod.SwapCards;
+                ETriadGameSpecialMod specialUIMask = 
+                    ETriadGameSpecialMod.RandomizeRule | 
+                    ETriadGameSpecialMod.RandomizeBlueDeck | 
+                    ETriadGameSpecialMod.SwapCards |
+                    ETriadGameSpecialMod.SelectVisible3 |
+                    ETriadGameSpecialMod.SelectVisible5;
 
                 pendingUIRules = ((gameSession.specialRules & specialUIMask) & ~gameData.resolvedSpecial);
                 if (pendingUIRules != ETriadGameSpecialMod.None)
@@ -1753,19 +1817,45 @@ namespace FFTriadBuddy
                 }
             }
 
-            listViewRedDeck.Items.Clear();
-            listViewRedDeck.SmallImageList = cardIconImages;
-
-            List<TriadCard> redCards = gameData.deckRed.GetAvailableCards();
-            foreach (TriadCard card in redCards)
+            TriadDeckInstanceManual redDeckEx = gameData.deckRed as TriadDeckInstanceManual;
+            if (redDeckEx != null)
             {
-                ListViewItem cardListItem = new ListViewItem(card.Name.GetLocalized(), card.Id)
-                {
-                    ToolTipText = card.Name.GetLocalized(),
-                    Tag = card
-                };
+                var knownCards = new List<TriadCard>();
+                knownCards.AddRange(redDeckEx.deck.knownCards);
 
-                listViewRedDeck.Items.Add(cardListItem);
+                for (int idx = 0; idx < redDeckEx.deck.knownCards.Count; idx++)
+                {
+                    if (redDeckEx.IsPlaced(idx))
+                    {
+                        knownCards[idx] = null;
+                    }
+                }
+                deckCtrlSimulateKnown.SetDeck(knownCards);
+
+                int numUnknownToPlace = 5 - redDeckEx.deck.knownCards.Count - redDeckEx.numUnknownPlaced;
+                if (numUnknownToPlace > 0)
+                {
+                    labelSimulateUnknown.Text = string.Format(loc.strings.MainForm_Simulate_Game_UnknownCards, numUnknownToPlace);
+                    labelSimulateUnknown.Visible = true;
+                    deckCtrlSimulateUnknown.Visible = true;
+
+                    var unknownCards = new List<TriadCard>();
+                    unknownCards.AddRange(redDeckEx.deck.unknownCardPool);
+
+                    for (int idx = 0; idx < redDeckEx.deck.unknownCardPool.Count; idx++)
+                    {
+                        if (redDeckEx.IsPlaced(idx + redDeckEx.deck.knownCards.Count))
+                        {
+                            unknownCards[idx] = null;
+                        }
+                    }
+                    deckCtrlSimulateUnknown.SetDeck(unknownCards);
+                }
+                else
+                {
+                    labelSimulateUnknown.Visible = false;
+                    deckCtrlSimulateUnknown.Visible = false;
+                }
             }
 
             buttonReset.Text = (gameData.numCardsPlaced == 0) ? loc.strings.MainForm_Dynamic_Simulate_BlueStartButton : loc.strings.MainForm_Simulate_ResetButton;
@@ -1991,19 +2081,6 @@ namespace FFTriadBuddy
             if (gameState.board[boardPos] == null)
             {
                 boardControls[boardPos].SetCard(null);
-            }
-        }
-
-        private void listViewRedDeck_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-            DoDragDrop(((ListViewItem)e.Item).Tag, DragDropEffects.Move);
-        }
-
-        private void listViewRedDeck_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(TriadCard)))
-            {
-                e.Effect = DragDropEffects.Move;
             }
         }
 

@@ -48,9 +48,13 @@ namespace FFTriadBuddy
 
         public ECardDrawMode drawMode;
         public bool allowRearrange;
+        public bool allowDragOut;
         public bool enableHitTest;
         public bool enableLocking;
         public EDeckCtrlAction clickAction;
+
+        public int numToSelect;
+        public List<int> selectedIndices;
 
         public delegate void DeckChangedDelegate(TriadCardInstance cardInst, int slotIdx, bool previewOnly);
         public delegate void DeckSelectDelegate(TriadCardInstance cardInst, int slotIdx);
@@ -77,6 +81,9 @@ namespace FFTriadBuddy
             ignoreDragOnContextClose = false;
             clickAction = EDeckCtrlAction.Pick;
             deckOwner = ETriadCardOwner.Blue;
+            
+            numToSelect = 1;
+            selectedIndices = new List<int>();
 
             cardTileSize = 50;
             cardTileSpacing = 6;
@@ -111,9 +118,16 @@ namespace FFTriadBuddy
 
         public void SetDeck(TriadDeck deck)
         {
-            if ((clickAction == EDeckCtrlAction.Highlight) && (cardClickOwner != null))
+            if (selectedIndices.Count > 0)
             {
-                cardClickOwner.SetHighlighted(false);
+                for (int idx = 0; idx < cardCtrls.Length; idx++)
+                {
+                    if (selectedIndices.Contains(idx))
+                    {
+                        cardCtrls[idx].SetHighlighted(false);
+                    }
+                }
+
                 cardClickOwner = null;
             }
 
@@ -151,9 +165,16 @@ namespace FFTriadBuddy
 
         public void SetDeck(IEnumerable<TriadCard> knownCards)
         {
-            if ((clickAction == EDeckCtrlAction.Highlight) && (cardClickOwner != null))
+            if (selectedIndices.Count > 0)
             {
-                cardClickOwner.SetHighlighted(false);
+                for (int idx = 0; idx < cardCtrls.Length; idx++)
+                {
+                    if (selectedIndices.Contains(idx))
+                    {
+                        cardCtrls[idx].SetHighlighted(false);
+                    }
+                }
+
                 cardClickOwner = null;
             }
             SuspendLayout();
@@ -204,6 +225,10 @@ namespace FFTriadBuddy
                     newCardCtrl.DragLeave += CardCtrl_DragLeave;
                     newCardCtrl.DragDrop += CardCtrl_DragDrop;
                 }
+                else if (allowDragOut)
+                {
+                    newCardCtrl.MouseMove += CardCtrl_MouseMove;
+                }
 
                 setDeckCard(Idx, knownCard, true);
                 Controls.Add(newCardCtrl);
@@ -218,6 +243,11 @@ namespace FFTriadBuddy
         {
             cardTileSize = size;
             cardTileSpacing = spacing;
+        }
+
+        public void SetSelectCount(int numToSelect)
+        {
+            this.numToSelect = numToSelect;
         }
 
         public bool GetActiveCard(out int slotIdx, out TriadCard card)
@@ -281,12 +311,19 @@ namespace FFTriadBuddy
         private void CardCtrl_MouseMove(object sender, MouseEventArgs e)
         {
             CardCtrl cardCtrlSender = (CardCtrl)sender;
-            if (e.Button == MouseButtons.Left && allowRearrange && (deck != null) && !ignoreDragOnContextClose)
+            if (e.Button == MouseButtons.Left && !ignoreDragOnContextClose)
             {
-                dragTargetIdx = dragSourceIdx = (int)cardCtrlSender.Tag;
+                if (allowRearrange && (deck != null))
+                {
+                    dragTargetIdx = dragSourceIdx = (int)cardCtrlSender.Tag;
 
-                DeckReorderMarker dragData = new DeckReorderMarker();
-                DoDragDrop(dragData, DragDropEffects.Move);
+                    DeckReorderMarker dragData = new DeckReorderMarker();
+                    DoDragDrop(dragData, DragDropEffects.Move);
+                }
+                else if (allowDragOut)
+                {
+                    DoDragDrop(cardCtrlSender.GetCard(), DragDropEffects.Move);
+                }
             }
         }
 
@@ -298,31 +335,43 @@ namespace FFTriadBuddy
             cardClickOwner = (CardCtrl)sender;
             if (cardClickOwner != null)
             {
+                int cardIdx = (int)cardClickOwner.Tag;
+
                 if (clickAction == EDeckCtrlAction.Pick)
                 {
-                    toolStripMenuLockOptimization.Checked = lockFlags[(int)cardClickOwner.Tag];
+                    toolStripMenuLockOptimization.Checked = lockFlags[cardIdx];
                     contextMenuStripPickCard.Show(cardClickOwner, new Point(0, 0), ToolStripDropDownDirection.AboveRight);
                 }
                 else if (clickAction == EDeckCtrlAction.Highlight)
                 {
-                    if (prevOwner != null)
-                    {
-                        prevOwner.SetHighlighted(false);
-                    }
+                    var cachedCardInst = cardClickOwner.GetCardInst();
 
-                    if (OnCardSelected != null)
+                    if (selectedIndices.Contains(cardIdx))
                     {
-                        OnCardSelected.Invoke(cardClickOwner.GetCardInst(), (int)cardClickOwner.Tag);
-                    }
-
-                    if (prevOwner == cardClickOwner)
-                    {
+                        selectedIndices.Remove(cardIdx);
                         cardClickOwner = null;
                     }
                     else
                     {
-                        cardClickOwner.SetHighlighted(true);
+                        selectedIndices.Add(cardIdx);
+                        while (selectedIndices.Count > numToSelect)
+                        {
+                            selectedIndices.RemoveAt(0);
+                        }
                     }
+
+                    for (int idx = 0; idx < cardCtrls.Length; idx++)
+                    {
+                        bool wantsSelected = selectedIndices.Contains(idx);
+                        bool isSelected = cardCtrls[idx].IsHighlighted();
+
+                        if (isSelected != wantsSelected)
+                        {
+                            cardCtrls[idx].SetHighlighted(wantsSelected);
+                        }
+                    }
+
+                    OnCardSelected?.Invoke(cachedCardInst, cardIdx);
                 }
             }
         }

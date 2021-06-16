@@ -160,8 +160,12 @@
         public static string MainForm_Simulate_Debug_ForceCached;
         public static string MainForm_Simulate_Debug_Info;
         public static string MainForm_Simulate_Game_ApplyRuleButton;
+        public static string MainForm_Simulate_Game_KnownCards;
         public static string MainForm_Simulate_Game_ListHint;
+        public static string MainForm_Simulate_Game_SkipRuleButton;
         public static string MainForm_Simulate_Game_SpecialRule;
+        public static string MainForm_Simulate_Game_UnknownCards;
+        public static string MainForm_Simulate_Open_Hint;
         public static string MainForm_Simulate_Random_Info;
         public static string MainForm_Simulate_ResetButton;
         public static string MainForm_Simulate_Roulette_Rule1;

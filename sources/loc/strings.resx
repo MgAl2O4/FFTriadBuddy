@@ -599,11 +599,23 @@ Works with Mini Cactpot too :D</value>
   <data name="MainForm_Simulate_Game_ApplyRuleButton" xml:space="preserve">
     <value>Apply rule</value>
   </data>
+  <data name="MainForm_Simulate_Game_KnownCards" xml:space="preserve">
+    <value>Known cards:</value>
+  </data>
   <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
     <value>[Drag &amp;&amp; drop cards on board]</value>
   </data>
+  <data name="MainForm_Simulate_Game_SkipRuleButton" xml:space="preserve">
+    <value>Skip</value>
+  </data>
   <data name="MainForm_Simulate_Game_SpecialRule" xml:space="preserve">
     <value>Special Rule &gt;&gt;</value>
+  </data>
+  <data name="MainForm_Simulate_Game_UnknownCards" xml:space="preserve">
+    <value>Unknown cards remaining: {0}</value>
+  </data>
+  <data name="MainForm_Simulate_Open_Hint" xml:space="preserve">
+    <value>Select visible cards:</value>
   </data>
   <data name="MainForm_Simulate_Random_Info" xml:space="preserve">
     <value>Adjust randomized deck :(</value>
