@@ -395,8 +395,8 @@ namespace FFTriadBuddy
             // 2. adjust Y to be left top corner of grid
             // 3. check if grid is matching given tile size
 
-            int minTileSize = bitmap.Width * 5 / 100;
-            int maxTileSize = bitmap.Width * 15 / 100;
+            int minTileSize = Math.Min(bitmap.Width, bitmap.Height) * 5 / 100;
+            int maxTileSize = Math.Max(bitmap.Width, bitmap.Height) * 15 / 100;
             int maxScanX = bitmap.Width - (minTileSize * 3) - 20;
             int maxScanY = bitmap.Height - (minTileSize * 2) - 20;
 
