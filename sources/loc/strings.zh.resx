@@ -432,6 +432,24 @@
   <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
     <value>从双方卡组中各选一张幻卡进行交换</value>
   </data>
+  <data name="MainForm_Info_BugReports" xml:space="preserve">
+    <value>问题反馈:</value>
+  </data>
+  <data name="MainForm_Info_HomePage" xml:space="preserve">
+    <value>项目主页:</value>
+  </data>
+  <data name="MainForm_Info_Localization" xml:space="preserve">
+    <value>界面本地化:</value>
+  </data>
+  <data name="MainForm_Info_Title" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
+    <value>感谢所有贡献翻译的人！你太棒了！</value>
+  </data>
+  <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
+    <value>(仍需要翻译志愿者 ;) )</value>
+  </data>
   <data name="MainForm_Npcs_List_ColumnCompleted" xml:space="preserve">
     <value>完成</value>
   </data>
@@ -599,11 +617,23 @@
   <data name="MainForm_Simulate_Game_ApplyRuleButton" xml:space="preserve">
     <value>应用规则</value>
   </data>
+  <data name="MainForm_Simulate_Game_KnownCards" xml:space="preserve">
+    <value>已知幻卡:</value>
+  </data>
   <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
     <value>[请将幻卡拖放到牌桌]</value>
   </data>
+  <data name="MainForm_Simulate_Game_SkipRuleButton" xml:space="preserve">
+    <value>跳过</value>
+  </data>
   <data name="MainForm_Simulate_Game_SpecialRule" xml:space="preserve">
     <value>特殊规则 &gt;&gt;</value>
+  </data>
+  <data name="MainForm_Simulate_Game_UnknownCards" xml:space="preserve">
+    <value>剩余未知幻卡: {0}</value>
+  </data>
+  <data name="MainForm_Simulate_Open_Hint" xml:space="preserve">
+    <value>选择可见幻卡:</value>
   </data>
   <data name="MainForm_Simulate_Random_Info" xml:space="preserve">
     <value>调整随机卡组 :(</value>

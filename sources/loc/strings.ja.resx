@@ -432,6 +432,24 @@
   <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
     <value>各デッキからカードを1枚選択して交換する</value>
   </data>
+  <data name="MainForm_Info_BugReports" xml:space="preserve">
+    <value>Bug reports:</value>
+  </data>
+  <data name="MainForm_Info_HomePage" xml:space="preserve">
+    <value>Project home page:</value>
+  </data>
+  <data name="MainForm_Info_Localization" xml:space="preserve">
+    <value>UI localization:</value>
+  </data>
+  <data name="MainForm_Info_Title" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
+    <value>Thanks to everyone who contributed their translations! You're awesome!</value>
+  </data>
+  <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
+    <value>( volunteers still needed ;) )</value>
+  </data>
   <data name="MainForm_Npcs_List_ColumnCompleted" xml:space="preserve">
     <value>完了</value>
   </data>
@@ -598,11 +616,23 @@
   <data name="MainForm_Simulate_Game_ApplyRuleButton" xml:space="preserve">
     <value>ルールを適用</value>
   </data>
+  <data name="MainForm_Simulate_Game_KnownCards" xml:space="preserve">
+    <value>Known cards:</value>
+  </data>
   <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
     <value>[カードをボードへドラッグ&amp;ドロップ]</value>
   </data>
+  <data name="MainForm_Simulate_Game_SkipRuleButton" xml:space="preserve">
+    <value>Skip</value>
+  </data>
   <data name="MainForm_Simulate_Game_SpecialRule" xml:space="preserve">
     <value>特殊ルール &gt;&gt;</value>
+  </data>
+  <data name="MainForm_Simulate_Game_UnknownCards" xml:space="preserve">
+    <value>Unknown cards remaining: {0}</value>
+  </data>
+  <data name="MainForm_Simulate_Open_Hint" xml:space="preserve">
+    <value>Select visible cards:</value>
   </data>
   <data name="MainForm_Simulate_Random_Info" xml:space="preserve">
     <value>ランダムなデッキを調整する :(</value>
