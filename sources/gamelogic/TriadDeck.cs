@@ -117,13 +117,30 @@ namespace FFTriadBuddy
             int numRare5 = rarityCounters[(int)ETriadCardRarity.Legendary];
             int numRare45 = rarityCounters[(int)ETriadCardRarity.Epic] + numRare5;
 
-            if (numRare5 > 1)
+            // temporary, can be removed once all game clients are on 5.5+ version
+            // step up your releases SE :P
+            bool isUsingRulesVer54 =
+                LocalizationDB.Languages[LocalizationDB.UserLanguageIdx] == "cn" ||
+                LocalizationDB.Languages[LocalizationDB.UserLanguageIdx] == "ko";
+
+            if (isUsingRulesVer54)
             {
-                return ETriadDeckState.TooMany5Star;
+                if (numRare45 > 1)
+                {
+                    // reuse "single 5 star" error, don't have better description anymore
+                    return ETriadDeckState.TooMany5Star;
+                }
             }
-            else if (numRare45 > 2)
+            else
             {
-                return ETriadDeckState.TooMany4Star;
+                if (numRare5 > 1)
+                {
+                    return ETriadDeckState.TooMany5Star;
+                }
+                else if (numRare45 > 2)
+                {
+                    return ETriadDeckState.TooMany4Star;
+                }
             }
 
             return ETriadDeckState.Valid;

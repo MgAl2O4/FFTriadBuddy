@@ -315,6 +315,9 @@ namespace FFTriadBuddy
         {
             ApplyLocalization();
 
+            // deck optimizer: temporary :<
+            deckOptimizer.OnLanguageChanged();
+
             InitializeSetupUI();
             InitializeCardsUI();
             InitializeNpcUI();
