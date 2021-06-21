@@ -142,7 +142,7 @@ namespace FFTriadBuddy
         private FastPixelMatch colorMatchCardOwnerRed1 = new FastPixelMatchHueMono(0, 30, 150, 255);
         private FastPixelMatch colorMatchCardOwnerRed2 = new FastPixelMatchHueMono(330, 360, 150, 255);
         private FastPixelMatch colorMatchCardOwnerBlue = new FastPixelMatchHueMono(200, 280, 150, 255);
-        private FastPixelMatch colorMatchTimerBox = new FastPixelMatchHSV(40, 60, 10, 40, 0, 100);
+        private FastPixelMatch colorMatchTimerBox = new FastPixelMatchHSV(40, 60, 5, 40, 0, 100);
         private FastPixelMatch colorMatchTimerActive = new FastPixelMatchMono(80, 255);
         private MLClassifierTriadDigit classifierTriadDigit;
 
