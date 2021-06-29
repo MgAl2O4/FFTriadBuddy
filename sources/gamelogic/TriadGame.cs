@@ -26,6 +26,7 @@ namespace FFTriadBuddy
         public int[] typeMods;
         public int numCardsPlaced;
         public int numRestarts;
+        public int forcedCardIdx;
         public bool bDebugRules;
 
         public const int boardSize = 3;
@@ -38,6 +39,7 @@ namespace FFTriadBuddy
             resolvedSpecial = ETriadGameSpecialMod.None;
             numCardsPlaced = 0;
             numRestarts = 0;
+            forcedCardIdx = -1;
             bDebugRules = false;
 
             for (int Idx = 0; Idx < typeMods.Length; Idx++)
@@ -112,24 +114,9 @@ namespace FFTriadBuddy
         public TriadGameModifier.EFeature modFeatures = TriadGameModifier.EFeature.None;
         public int solverWorkers = 2000;
         public int currentProgress = 0;
-        public TriadCard forcedBlueCard = null;
         public string solverName = null;
 
-#if DEBUG
-        private class SolverPerfStats
-        {
-            public long PlayRandomTurnSelectSpot;
-            public long PlayRandomTurnSelectCard;
-            public long PlayRandomTurnPlaceCard;
-            public long PlaceCardOnPlaced;
-            public long PlaceCardOnPlacedMods;
-            public long PlaceCardCaptures;
-            public long PlaceCardCapturesCombo;
-            public long PlaceCardPostCaptures;
-            public long PlaceCardAllPlaced;
-        }
-        private static SolverPerfStats perfStats = new SolverPerfStats();
-#endif // DEBUG
+        public static int[][] cachedNeis = new int[9][];
 
         public TriadGameData StartGame(TriadDeck deckBlue, TriadDeck deckRed, ETriadGameState state)
         {
@@ -140,7 +127,6 @@ namespace FFTriadBuddy
                 deckRed = new TriadDeckInstanceManual(deckRed)
             };
             currentProgress = 0;
-            forcedBlueCard = null;
 
             return gameData;
         }
@@ -167,11 +153,6 @@ namespace FFTriadBuddy
             TriadCard card = cardDeck.GetCard(cardIdx);
             if (bIsAllowedOwner && (boardPos >= 0) && (gameData.board[boardPos] == null) && (card != null))
             {
-#if DEBUG
-                Stopwatch timer = new Stopwatch();
-                timer.Start();
-#endif // DEBUG
-
                 gameData.board[boardPos] = new TriadCardInstance(card, owner);
                 gameData.numCardsPlaced++;
 
@@ -185,10 +166,6 @@ namespace FFTriadBuddy
                     gameData.deckRed.OnCardPlacedFast(cardIdx);
                     gameData.state = ETriadGameState.InProgressBlue;
                 }
-#if DEBUG
-                perfStats.PlaceCardOnPlaced += timer.ElapsedTicks;
-                timer.Restart();
-#endif // DEBUG
                 bResult = true;
 
                 bool bAllowCombo = false;
@@ -200,18 +177,10 @@ namespace FFTriadBuddy
                         bAllowCombo = bAllowCombo || mod.AllowsCombo();
                     }
                 }
-#if DEBUG
-                perfStats.PlaceCardOnPlacedMods += timer.ElapsedTicks;
-                timer.Restart();
-#endif // DEBUG
 
                 List<int> comboList = new List<int>();
                 int comboCounter = 0;
                 CheckCaptures(gameData, boardPos, comboList, comboCounter);
-#if DEBUG
-                perfStats.PlaceCardCaptures += timer.ElapsedTicks;
-                timer.Restart();
-#endif // DEBUG
 
                 while (bAllowCombo && comboList.Count > 0)
                 {
@@ -224,10 +193,6 @@ namespace FFTriadBuddy
 
                     comboList = nextCombo;
                 }
-#if DEBUG
-                perfStats.PlaceCardCapturesCombo += timer.ElapsedTicks;
-                timer.Restart();
-#endif // DEBUG
 
                 if ((modFeatures & TriadGameModifier.EFeature.PostCapture) != 0)
                 {
@@ -236,19 +201,11 @@ namespace FFTriadBuddy
                         mod.OnPostCaptures(gameData, boardPos);
                     }
                 }
-#if DEBUG
-                perfStats.PlaceCardPostCaptures += timer.ElapsedTicks;
-                timer.Restart();
-#endif // DEBUG
 
                 if (gameData.numCardsPlaced == gameData.board.Length)
                 {
                     OnAllCardsPlaced(gameData);
                 }
-#if DEBUG
-                timer.Stop();
-                perfStats.PlaceCardAllPlaced += timer.ElapsedTicks;
-#endif // DEBUG
             }
 
             return bResult;
@@ -273,7 +230,7 @@ namespace FFTriadBuddy
             y = pos / TriadGameData.boardSize;
         }
 
-        public int[] GetNeighbors(TriadGameData gameData, int boardPos)
+        public static int[] GetNeighbors(TriadGameData gameData, int boardPos)
         {
             int boardPosX = 0;
             int boardPosY = 0;
@@ -290,7 +247,7 @@ namespace FFTriadBuddy
 
         private void CheckCaptures(TriadGameData gameData, int boardPos, List<int> comboList, int comboCounter)
         {
-            int[] neis = GetNeighbors(gameData, boardPos);
+            int[] neis = cachedNeis[boardPos];
             bool bAllowBasicCaptureCombo = (comboCounter > 0);
             if ((comboCounter == 0) && ((modFeatures & TriadGameModifier.EFeature.CaptureNei) != 0))
             {
@@ -313,6 +270,7 @@ namespace FFTriadBuddy
                     {
                         int numPos = checkCard.GetNumber((ETriadGameSide)sideIdx);
                         int numOther = neiCard.GetOppositeNumber((ETriadGameSide)sideIdx);
+
                         if ((modFeatures & TriadGameModifier.EFeature.CaptureWeights) != 0)
                         {
                             foreach (TriadGameModifier mod in modifiers)
@@ -381,10 +339,6 @@ namespace FFTriadBuddy
 
         public bool SolverPlayRandomTurn(TriadGameData gameData, Random random)
         {
-#if DEBUG
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-#endif // DEBUG
             const int boardPosMax = TriadGameData.boardSize * TriadGameData.boardSize;
             int boardPos = -1;
             if (gameData.numCardsPlaced < boardPosMax)
@@ -400,10 +354,6 @@ namespace FFTriadBuddy
                     }
                 }
             }
-#if DEBUG
-            perfStats.PlayRandomTurnSelectSpot += timer.ElapsedTicks;
-            timer.Restart();
-#endif // DEBUG
 
             int cardIdx = -1;
             TriadDeckInstance useDeck = (gameData.state == ETriadGameState.InProgressBlue) ? gameData.deckBlue : gameData.deckRed;
@@ -420,10 +370,6 @@ namespace FFTriadBuddy
                     }
                 }
             }
-#if DEBUG
-            perfStats.PlayRandomTurnSelectCard += timer.ElapsedTicks;
-            timer.Restart();
-#endif // DEBUG
 
             bool bResult = false;
             if (cardIdx >= 0)
@@ -431,10 +377,6 @@ namespace FFTriadBuddy
                 bResult = PlaceCard(gameData, cardIdx, useDeck, (gameData.state == ETriadGameState.InProgressBlue) ? ETriadCardOwner.Blue : ETriadCardOwner.Red, boardPos);
             }
 
-#if DEBUG
-            perfStats.PlayRandomTurnPlaceCard += timer.ElapsedTicks;
-            timer.Stop();
-#endif // DEBUG
             return bResult;
         }
 
@@ -495,10 +437,9 @@ namespace FFTriadBuddy
             ETriadCardOwner turnOwner = (gameData.state == ETriadGameState.InProgressBlue) ? ETriadCardOwner.Blue : ETriadCardOwner.Red;
             int availCardsMask = 0;
 
-            if (gameData.state == ETriadGameState.InProgressBlue && forcedBlueCard != null)
+            if (gameData.state == ETriadGameState.InProgressBlue && gameData.forcedCardIdx >= 0)
             {
-                int forcedBlueCardIdx = useDeck.GetCardIndex(forcedBlueCard);
-                availCardsMask = 1 << forcedBlueCardIdx;
+                availCardsMask = 1 << gameData.forcedCardIdx;
             }
             else
             {
@@ -576,12 +517,18 @@ namespace FFTriadBuddy
             return bResult;
         }
 
+        public static void StaticInitialize()
+        {
+            for (int idxPos = 0; idxPos < 9; idxPos++)
+            {
+                cachedNeis[idxPos] = GetNeighbors(null, idxPos);
+            }
+        }
+
         public static void RunSolverStressTest()
         {
-#if DEBUG
-            int numIterations = 1000 * 100;
+            int numIterations = 1000 * 1000;
             Logger.WriteLine("Solver testing start, numIterations:" + numIterations);
-            perfStats = new SolverPerfStats();
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -604,17 +551,10 @@ namespace FFTriadBuddy
             timer.Stop();
             Logger.WriteLine("Solver testing finished, time taken:" + timer.ElapsedMilliseconds + "ms");
 
-            float TicksToMs = 1000.0f / Stopwatch.Frequency;
-            Logger.WriteLine(">> PlayRandomTurn.SelectSpot: " + (perfStats.PlayRandomTurnSelectSpot * TicksToMs) + "ms");
-            Logger.WriteLine(">> PlayRandomTurn.SelectCard: " + (perfStats.PlayRandomTurnSelectCard * TicksToMs) + "ms");
-            Logger.WriteLine(">> PlayRandomTurn.PlaceCard: " + (perfStats.PlayRandomTurnPlaceCard * TicksToMs) + "ms");
-            Logger.WriteLine("  >> PlaceCard.OnPlaced: " + (perfStats.PlaceCardOnPlaced * TicksToMs) + "ms");
-            Logger.WriteLine("  >> PlaceCard.OnPlacedMods: " + (perfStats.PlaceCardOnPlacedMods * TicksToMs) + "ms");
-            Logger.WriteLine("  >> PlaceCard.Captures: " + (perfStats.PlaceCardCaptures * TicksToMs) + "ms");
-            Logger.WriteLine("  >> PlaceCard.CapturesCombo: " + (perfStats.PlaceCardCapturesCombo * TicksToMs) + "ms");
-            Logger.WriteLine("  >> PlaceCard.PostCaptures: " + (perfStats.PlaceCardPostCaptures * TicksToMs) + "ms");
-            Logger.WriteLine("  >> PlaceCard.AllPlaced: " + (perfStats.PlaceCardAllPlaced * TicksToMs) + "ms");
-#endif // DEBUG
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+            }
         }
     }
 }

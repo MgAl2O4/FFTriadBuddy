@@ -140,11 +140,11 @@ namespace FFTriadBuddy
                 deckBlue.UpdateAvailableCards(screenGame.blueDeck);
             }
 
-            gameSession.forcedBlueCard = screenGame.forcedBlueCard;
             gameState.state = ETriadGameState.InProgressBlue;
             gameState.deckBlue = deckBlue;
             gameState.deckRed = deckRed;
             gameState.numCardsPlaced = 0;
+            gameState.forcedCardIdx = deckBlue.GetCardIndex(screenGame.forcedBlueCard);
 
             bool bBoardChanged = false;
             for (int Idx = 0; Idx < gameState.board.Length; Idx++)

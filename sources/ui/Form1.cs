@@ -394,6 +394,7 @@ namespace FFTriadBuddy
                 bResult = false;
             }
 
+            TriadGameSession.StaticInitialize();
             return bResult;
         }
 
@@ -2019,10 +2020,10 @@ namespace FFTriadBuddy
                     int deckSlotIdx = (int)(((CardCtrl)sender).Tag);
                     TriadCard newForcedCard = blueDeckEx.deck.knownCards[deckSlotIdx];
 
-                    if (gameSession.forcedBlueCard != newForcedCard && !blueDeckEx.IsPlaced(deckSlotIdx))
+                    if (gameState.forcedCardIdx != deckSlotIdx && !blueDeckEx.IsPlaced(deckSlotIdx))
                     {
                         Logger.WriteLine("Force blue card: " + newForcedCard.Name.GetCodeName());
-                        gameSession.forcedBlueCard = newForcedCard;
+                        gameState.forcedCardIdx = deckSlotIdx;
 
                         gameState = gameUndoBlue;
                         PlayBlueCard();
@@ -2038,7 +2039,7 @@ namespace FFTriadBuddy
 
             if (gameSession != null && gameState != null)
             {
-                gameSession.forcedBlueCard = null;
+                gameState.forcedCardIdx = -1;
                 TriadGameData newUndoState = new TriadGameData(gameState);
 
                 Logger.WriteLine("Red> [" + boardPos + "] " + card.Name.GetCodeName());
