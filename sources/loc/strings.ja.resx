@@ -433,19 +433,19 @@
     <value>各デッキからカードを1枚選択して交換する</value>
   </data>
   <data name="MainForm_Info_BugReports" xml:space="preserve">
-    <value>Bug reports:</value>
+    <value>バグ報告:</value>
   </data>
   <data name="MainForm_Info_HomePage" xml:space="preserve">
-    <value>Project home page:</value>
+    <value>ホームページ:</value>
   </data>
   <data name="MainForm_Info_Localization" xml:space="preserve">
-    <value>UI localization:</value>
+    <value>UI のローカライズ:</value>
   </data>
   <data name="MainForm_Info_Title" xml:space="preserve">
-    <value>Info</value>
+    <value>情報</value>
   </data>
   <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
-    <value>Thanks to everyone who contributed their translations! You're awesome!</value>
+    <value>翻訳に貢献してくれた皆さん、ありがとうございます！皆さん素晴らしいです！</value>
   </data>
   <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
     <value>( volunteers still needed ;) )</value>
