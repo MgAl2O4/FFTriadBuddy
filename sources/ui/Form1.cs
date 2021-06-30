@@ -2023,9 +2023,9 @@ namespace FFTriadBuddy
                     if (gameState.forcedCardIdx != deckSlotIdx && !blueDeckEx.IsPlaced(deckSlotIdx))
                     {
                         Logger.WriteLine("Force blue card: " + newForcedCard.Name.GetCodeName());
-                        gameState.forcedCardIdx = deckSlotIdx;
 
                         gameState = gameUndoBlue;
+                        gameState.forcedCardIdx = deckSlotIdx;
                         PlayBlueCard();
                     }
                 }

@@ -31,6 +31,7 @@ namespace FFTriadBuddy
         private Brush fontBrushModPlus;
         private Brush fontBrushModMinus;
         private Brush shadowBrush;
+        private Brush darkenBrush;
 
         private static Color colorBlue = Color.FromArgb(0x87, 0xce, 0xfa);
         private static Color colorBlueHL = Color.FromArgb(0x05, 0x4f, 0x7d);
@@ -40,11 +41,12 @@ namespace FFTriadBuddy
 
         public CardCtrl()
         {
-            drawFont = new Font(FontFamily.GenericMonospace, 8.0f);
+            drawFont = new Font(FontFamily.GenericMonospace, PlayerSettingsDB.Get().useBigUI ? 12.0f : 8.0f);
             fontBrush = new SolidBrush(Color.White);
             fontBrushModPlus = new SolidBrush(Color.FromArgb(0x3b, 0xff, 0x3b));
             fontBrushModMinus = new SolidBrush(Color.FromArgb(0xff, 0x3b, 0x3b));
             shadowBrush = new SolidBrush(Color.Black);
+            darkenBrush = new SolidBrush(Color.FromArgb(64, Color.Black));
 
             InitializeComponent();
 
@@ -202,6 +204,14 @@ namespace FFTriadBuddy
                     float drawMidX = (e.ClipRectangle.Width - sizeChar.Width) / 2.0f;
                     float drawMidY = (e.ClipRectangle.Height - sizeChar.Height) / 2.0f;
 
+                    if (PlayerSettingsDB.Get().useBigUI)
+                    {
+                        e.Graphics.FillRectangle(darkenBrush, drawMidX, drawPad, sizeChar.Width, sizeChar.Height);
+                        e.Graphics.FillRectangle(darkenBrush, drawMidX, e.ClipRectangle.Bottom - sizeChar.Height - drawPad, sizeChar.Width, sizeChar.Height);
+                        e.Graphics.FillRectangle(darkenBrush, drawPad, drawMidY, sizeChar.Width, sizeChar.Height);
+                        e.Graphics.FillRectangle(darkenBrush, e.ClipRectangle.Width - sizeChar.Width - drawPad, drawMidY, sizeChar.Width, sizeChar.Height);
+                    }
+
                     DrawShadowedNum(e.Graphics, cardData.GetRawNumber(ETriadGameSide.Up), drawMidX, drawPad);
                     DrawShadowedNum(e.Graphics, cardData.GetRawNumber(ETriadGameSide.Down), drawMidX, e.ClipRectangle.Bottom - sizeChar.Height - drawPad);
                     DrawShadowedNum(e.Graphics, cardData.GetRawNumber(ETriadGameSide.Right), drawPad, drawMidY);
@@ -214,19 +224,49 @@ namespace FFTriadBuddy
                             (cardData.scoreModifier > 0) ? fontBrushModPlus : fontBrushModMinus);
                     }
 
-                    if (cardData.card.Type != ETriadCardType.None)
+                    if (PlayerSettingsDB.Get().useBigUI)
                     {
-                        int typeIdx = (int)cardData.card.Type - 1;
-                        Image typeImage = cardTypes.Images[typeIdx];
+                        ColorMatrix colormatrix = new ColorMatrix();
+                        colormatrix.Matrix11 = 0.75f;
+                        colormatrix.Matrix22 = 0.75f;
+                        colormatrix.Matrix33 = 0.75f;
+                        colormatrix.Matrix44 = 0.75f;
+                        ImageAttributes imgAttribute = new ImageAttributes();
+                        imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                        e.Graphics.DrawImage(typeImage, e.ClipRectangle.Width - cardTypes.ImageSize.Width, 0);
+                        if (cardData.card.Type != ETriadCardType.None)
+                        {
+                            int typeIdx = (int)cardData.card.Type - 1;
+                            Image typeImage = cardTypes.Images[typeIdx];
+
+                            var destRect = new Rectangle(e.ClipRectangle.Width - cardTypes.ImageSize.Width, 0, typeImage.Width, typeImage.Height);
+                            e.Graphics.DrawImage(typeImage, destRect, 0, 0, typeImage.Width, typeImage.Height, GraphicsUnit.Pixel, imgAttribute);
+                        }
+
+                        {
+                            int rarityIdx = (int)cardData.card.Rarity;
+                            Image rarityImage = cardRarity.Images[rarityIdx];
+
+                            var destRect = new Rectangle(0, 0, rarityImage.Width * 2 / 3, rarityImage.Height * 2 / 3);
+                            e.Graphics.DrawImage(rarityImage, destRect, 0, 0, rarityImage.Width, rarityImage.Height, GraphicsUnit.Pixel, imgAttribute);
+                        }
                     }
-
+                    else
                     {
-                        int rarityIdx = (int)cardData.card.Rarity;
-                        Image rarityImage = cardRarity.Images[rarityIdx];
+                        if (cardData.card.Type != ETriadCardType.None)
+                        {
+                            int typeIdx = (int)cardData.card.Type - 1;
+                            Image typeImage = cardTypes.Images[typeIdx];
 
-                        e.Graphics.DrawImage(rarityImage, 0, 0, rarityImage.Width * 2 / 3, rarityImage.Height * 2 / 3);
+                            e.Graphics.DrawImage(typeImage, e.ClipRectangle.Width - cardTypes.ImageSize.Width, 0);
+                        }
+
+                        {
+                            int rarityIdx = (int)cardData.card.Rarity;
+                            Image rarityImage = cardRarity.Images[rarityIdx];
+
+                            e.Graphics.DrawImage(rarityImage, 0, 0, rarityImage.Width * 2 / 3, rarityImage.Height * 2 / 3);
+                        }
                     }
                 }
             }

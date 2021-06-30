@@ -17,6 +17,7 @@ namespace FFTriadBuddy
         public bool useFullScreenCapture;
         public bool useCloudStorage;
         public bool useXInput;
+        public bool useBigUI;
         public bool isDirty;
         public string DBPath;
         public string cloudToken;
@@ -40,6 +41,7 @@ namespace FFTriadBuddy
             useFullScreenCapture = false;
             useCloudStorage = false;
             useXInput = true;
+            useBigUI = false;
             isDirty = false;
             cloudToken = null;
             forcedLanguage = null;
@@ -97,10 +99,12 @@ namespace FFTriadBuddy
                 if (uiOb != null)
                 {
                     JsonParser.Value BoolTrue = new JsonParser.BoolValue(true);
+                    JsonParser.Value BoolFalse = new JsonParser.BoolValue(false);
 
                     useAutoScan = (JsonParser.BoolValue)uiOb["autoScan", JsonParser.BoolValue.Empty];
                     useFullScreenCapture = (JsonParser.BoolValue)uiOb["forceFSC", JsonParser.BoolValue.Empty];
                     useXInput = (JsonParser.BoolValue)uiOb["xInput", BoolTrue];
+                    useBigUI = (JsonParser.BoolValue)uiOb["bigUI", BoolFalse];
                     forcedLanguage = (JsonParser.StringValue)uiOb["lang", null];
                 }
 
@@ -260,6 +264,7 @@ namespace FFTriadBuddy
                     jsonWriter.WriteBool(useAutoScan, "autoScan");
                     jsonWriter.WriteBool(useFullScreenCapture, "forceFSC");
                     jsonWriter.WriteBool(useXInput, "xInput");
+                    jsonWriter.WriteBool(useBigUI, "bigUI");
                     jsonWriter.WriteString(forcedLanguage, "lang");
 
                     jsonWriter.WriteObjectEnd();
