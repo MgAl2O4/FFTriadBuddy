@@ -255,37 +255,11 @@ namespace FFTriadBuddy
 
                 using (Graphics g = Graphics.FromImage(cachedScreenshot))
                 {
-                    bool bIsNewerThanWindows7 = (Environment.OSVersion.Platform == PlatformID.Win32NT &&
-                        (Environment.OSVersion.Version.Major > 6) || (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor > 1));
-
-                    if (bIsNewerThanWindows7)
-                    {
-                        // can't use PrintWindow API above win7, returns black screen
-                        // copy entire screen - will capture all windows on top of game too
-                        g.CopyFromScreen(cachedGameWindow.Location, Point.Empty, cachedGameWindow.Size);
-                        if (useVerboseLogs) { Logger.WriteLine(">> copied from screen"); }
-                        result = true;
-                    }
-                    else
-                    {
-                        IntPtr hdcBitmap;
-                        try
-                        {
-                            hdcBitmap = g.GetHdc();
-                        }
-                        catch
-                        {
-                            cachedScreenshot.Dispose();
-                            cachedScreenshot = null;
-                            return false;
-                        }
-
-                        // capture window contents only
-                        PrintWindow(windowHandle.Handle, hdcBitmap, 0);
-                        g.ReleaseHdc(hdcBitmap);
-                        if (useVerboseLogs) { Logger.WriteLine(">> captured content"); }
-                        result = true;
-                    }
+                    // can't use PrintWindow API, returns black screen
+                    // copy entire screen - will capture all windows on top of game too
+                    g.CopyFromScreen(cachedGameWindow.Location, Point.Empty, cachedGameWindow.Size);
+                    if (useVerboseLogs) { Logger.WriteLine(">> copied from screen"); }
+                    result = true;
                 }
             }
             else
