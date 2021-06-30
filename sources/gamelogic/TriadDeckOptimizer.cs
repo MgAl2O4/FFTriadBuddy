@@ -102,6 +102,9 @@ namespace FFTriadBuddy
                     }
                 }
             }
+
+            // temporary, set initial rule set 
+            OnLanguageChanged();
         }
 
         public void OnLanguageChanged()
