@@ -88,8 +88,15 @@ namespace FFTriadBuddy
             XInputBatteryInformation headset = new XInputBatteryInformation(),
             gamepad = new XInputBatteryInformation();
 
-            XInputNative.XInputGetBatteryInformation(_playerIndex, (byte)BatteryDeviceType.BATTERY_DEVTYPE_GAMEPAD, ref gamepad);
-            XInputNative.XInputGetBatteryInformation(_playerIndex, (byte)BatteryDeviceType.BATTERY_DEVTYPE_HEADSET, ref headset);
+            try
+            {
+                XInputNative.XInputGetBatteryInformation(_playerIndex, (byte)BatteryDeviceType.BATTERY_DEVTYPE_GAMEPAD, ref gamepad);
+                XInputNative.XInputGetBatteryInformation(_playerIndex, (byte)BatteryDeviceType.BATTERY_DEVTYPE_HEADSET, ref headset);
+            }
+            catch (Exception)
+            {
+                // import errors
+            }
 
             BatteryInformationHeadset = headset;
             BatteryInformationGamepad = gamepad;
@@ -104,7 +111,15 @@ namespace FFTriadBuddy
         public XInputCapabilities GetCapabilities()
         {
             XInputCapabilities capabilities = new XInputCapabilities();
-            XInputNative.XInputGetCapabilities(_playerIndex, XInputConstants.XINPUT_FLAG_GAMEPAD, ref capabilities);
+            try
+            {
+                XInputNative.XInputGetCapabilities(_playerIndex, XInputConstants.XINPUT_FLAG_GAMEPAD, ref capabilities);
+            }
+            catch (Exception)
+            {
+                // import errors
+            }
+
             return capabilities;
         }
 
@@ -266,7 +281,8 @@ namespace FFTriadBuddy
             {
                 for (int i = FIRST_CONTROLLER_INDEX; i <= LAST_CONTROLLER_INDEX; ++i)
                 {
-                    Controllers[i].UpdateState();
+                    bool canRun = Controllers[i].UpdateState();
+                    keepRunning = keepRunning && canRun;
                 }
                 Thread.Sleep(updateFrequency);
             }
@@ -276,9 +292,20 @@ namespace FFTriadBuddy
             }
         }
 
-        public void UpdateState()
+        public bool UpdateState()
         {
-            int result = XInputNative.XInputGetState(_playerIndex, ref gamepadStateCurrent);
+            bool canRun = true;
+
+            int result = 0;
+            try
+            {
+                XInputNative.XInputGetState(_playerIndex, ref gamepadStateCurrent);
+            }
+            catch (Exception)
+            {
+                canRun = false;
+            }
+
             IsConnected = (result == 0);
 
             UpdateBatteryState();
@@ -290,8 +317,15 @@ namespace FFTriadBuddy
 
             if (_stopMotorTimerActive && (DateTime.Now >= _stopMotorTime))
             {
-                XInputVibration stopStrength = new XInputVibration() { LeftMotorSpeed = 0, RightMotorSpeed = 0 };
-                XInputNative.XInputSetState(_playerIndex, ref stopStrength);
+                try
+                {
+                    XInputVibration stopStrength = new XInputVibration() { LeftMotorSpeed = 0, RightMotorSpeed = 0 };
+                    XInputNative.XInputSetState(_playerIndex, ref stopStrength);
+                }
+                catch (Exception)
+                {
+                    canRun = false;
+                }
             }
 
             // event motion check
@@ -310,6 +344,8 @@ namespace FFTriadBuddy
                     OnEventMotionTrigger?.Invoke();
                 }
             }
+
+            return canRun;
         }
         #endregion
 
@@ -332,12 +368,27 @@ namespace FFTriadBuddy
         public void Vibrate(XInputVibration strength)
         {
             _stopMotorTimerActive = false;
-            XInputNative.XInputSetState(_playerIndex, ref strength);
+            try
+            {
+                XInputNative.XInputSetState(_playerIndex, ref strength);
+            }
+            catch (Exception)
+            {
+                // import errors
+            }
         }
 
         public void Vibrate(XInputVibration strength, TimeSpan length)
         {
-            XInputNative.XInputSetState(_playerIndex, ref strength);
+            try
+            {
+                XInputNative.XInputSetState(_playerIndex, ref strength);
+            }
+            catch (Exception)
+            {
+                // import errors
+            }
+
             if (length != TimeSpan.MinValue)
             {
                 _stopMotorTime = DateTime.Now.Add(length);
