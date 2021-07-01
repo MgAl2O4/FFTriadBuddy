@@ -1242,7 +1242,7 @@ namespace FFTriadBuddy
                 cardState.cardImageHash = cardPattern;
                 screenAnalyzer.AddImageHash(cardPattern);
 
-                debugHashes.Add(new ImageUtils.HashPreview() { hashValues = values, bounds = cardHashBox });
+                debugHashes.Add(new ImageUtils.HashPreview() { hashValues = values, bounds = new Rectangle(cardHashBox.X, cardHashBox.Y, 32, 8) });
             }
 
             cardState.name = debugName;
