@@ -81,6 +81,17 @@ namespace FFTriadBuddy
         {
             return (TriadGameModifier)this.MemberwiseClone();
         }
+
+        public override bool Equals(object obj)
+        {
+            var otherMod = obj as TriadGameModifier;
+            return (otherMod != null) && (GetLocalizationId() == otherMod.GetLocalizationId());
+        }
+
+        public override int GetHashCode()
+        {
+            return GetLocalizationId();
+        }
     }
 
     public class TriadGameModifierNone : TriadGameModifier
@@ -166,7 +177,7 @@ namespace FFTriadBuddy
             LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 2);
             SpecialMod = ETriadGameSpecialMod.SelectVisible5;
         }
-        
+
         // shared with three open
         public static void StaticMakeKnown(TriadGameData gameData, List<int> redIndices)
         {

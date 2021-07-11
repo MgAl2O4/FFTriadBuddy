@@ -202,7 +202,7 @@
     <value>カードを選択:</value>
   </data>
   <data name="DeckCtrl_CtxMenu_UseOnlyOwned" xml:space="preserve">
-    <value>所有しているカードのみを使用（クリックで変更）</value>
+    <value>所有しているカードのみを使用(クリックで変更)</value>
   </data>
   <data name="FavDeckCtrl_Edit" xml:space="preserve">
     <value>編集</value>
@@ -448,7 +448,7 @@
     <value>翻訳に貢献してくれた皆さん、ありがとうございます！皆さん素晴らしいです！</value>
   </data>
   <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
-    <value>( volunteers still needed ;) )</value>
+    <value>(ボランティア募集中 ;) )</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnCompleted" xml:space="preserve">
     <value>完了</value>
@@ -617,22 +617,22 @@
     <value>ルールを適用</value>
   </data>
   <data name="MainForm_Simulate_Game_KnownCards" xml:space="preserve">
-    <value>Known cards:</value>
+    <value>既知のカード:</value>
   </data>
   <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
     <value>[カードをボードへドラッグ&amp;ドロップ]</value>
   </data>
   <data name="MainForm_Simulate_Game_SkipRuleButton" xml:space="preserve">
-    <value>Skip</value>
+    <value>スキップ</value>
   </data>
   <data name="MainForm_Simulate_Game_SpecialRule" xml:space="preserve">
     <value>特殊ルール &gt;&gt;</value>
   </data>
   <data name="MainForm_Simulate_Game_UnknownCards" xml:space="preserve">
-    <value>Unknown cards remaining: {0}</value>
+    <value>不明なカードの残り: {0}</value>
   </data>
   <data name="MainForm_Simulate_Open_Hint" xml:space="preserve">
-    <value>Select visible cards:</value>
+    <value>表示中のカードを選択:</value>
   </data>
   <data name="MainForm_Simulate_Random_Info" xml:space="preserve">
     <value>ランダムなデッキを調整する :(</value>

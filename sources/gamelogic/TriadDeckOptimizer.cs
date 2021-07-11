@@ -121,7 +121,7 @@ namespace FFTriadBuddy
             {
                 maxSlotsPerRarity.Clear();
 
-                maxSlotsPerRarity.Add(ETriadCardRarity.Legendary, 1);                
+                maxSlotsPerRarity.Add(ETriadCardRarity.Legendary, 1);
                 if (!wantsRulesVer54)
                 {
                     maxSlotsPerRarity.Add(ETriadCardRarity.Epic, 2);

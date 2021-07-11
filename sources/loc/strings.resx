@@ -427,7 +427,7 @@
     <value>[Place last red card to trigger modifier]</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_RedStartButton" xml:space="preserve">
-    <value>Red start: drag &amp;&amp; drop card on board</value>
+    <value>Red start: drag &amp; drop card on board</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
     <value>Select one card from each deck to swap</value>
@@ -621,7 +621,7 @@ Works with Mini Cactpot too :D</value>
     <value>Known cards:</value>
   </data>
   <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
-    <value>[Drag &amp;&amp; drop cards on board]</value>
+    <value>[Drag &amp; drop cards on board]</value>
   </data>
   <data name="MainForm_Simulate_Game_SkipRuleButton" xml:space="preserve">
     <value>Skip</value>

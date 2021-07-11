@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="FFTriadBuddy.UI.DeckView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FFTriadBuddy.UI"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:DeckViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="50" d:DesignWidth="280">
+    <UserControl.Resources>
+        <ContextMenu x:Key="menuPickCard">
+            <MenuItem Header="{Binding OwnerObject.DeckCtrl_CtxMenu_PickCard}" IsEnabled="False"/>
+            <MenuItem Header="{Binding OwnerObject.DeckCtrl_CtxMenu_UseOnlyOwned}" IsCheckable="True" StaysOpenOnClick="True" IsChecked="{Binding OwnerObject.IsUsingOnlyOwnedCards}"/>
+            <MenuItem Header="{Binding OwnerObject.DeckCtrl_CtxMenu_LockForOptimization}"
+                      IsCheckable="True" StaysOpenOnClick="True" 
+                      IsChecked="{Binding IsShowingLock, Mode=OneWay}" 
+                      Command="{Binding OwnerObject.CommandToggleLock}" CommandParameter="{Binding Path=.}"/>
+            <MenuItem StaysOpenOnClick="True">
+                <MenuItem.Header>
+                    <local:SearchableComboBox Width="200" 
+                              ItemsSource="{Binding OwnerObject.CardPickerItems}"
+                              DisplayMemberPath="DescDeckPicker"
+                              SelectedItem="{Binding CardModel, Mode=OneWay}"
+                              SelectionEffectivelyChanged="SearchableComboBox_SelectionEffectivelyChanged"/>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.Resources>
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <!-- fake binding for design time background -->
+                <DataTrigger Binding="{Binding NumToSelect, FallbackValue=-10}" Value="-10">
+                    <Setter Property="Background" Value="Gray"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top">
+        <ItemsControl Name="cards" ItemsSource="{Binding Cards}">
+            <ItemsControl.Resources>
+                <Thickness x:Key="marginDefault" Top="0"/>
+                <Thickness x:Key="marginSelectable" Top="6"/>
+
+                <Style TargetType="{x:Type local:CardView}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CanReorderCards, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DeckView}}}" Value="True">
+                            <Setter Property="local:CardDragDropExtension.IsDragSource" Value="True"/>
+                            <Setter Property="local:CardDragDropExtension.IsDragDestination" Value="True"/>
+                            <Setter Property="local:CardDragDropExtension.CardContext" Value="{Binding}"/>
+                            <Setter Property="local:CardDragDropExtension.CardContainer" Value="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DeckView}}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="0" To="-6" AutoReverse="False" Duration="0:0:0.1" RepeatBehavior="1x"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="-3" To="0" AutoReverse="False" Duration="0:0:0.3" RepeatBehavior="1x"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="Margin" Value="{StaticResource marginSelectable}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding NumToSelect}" Value="0">
+                                        <Setter Property="Margin" Value="{StaticResource marginDefault}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0, 0, 5, 0">
+                        <local:CardView ContextMenu="{StaticResource menuPickCard}"
+                                        ContextMenuService.IsEnabled="{Binding CanPickCards, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DeckView}}}"
+                                        ContextMenuService.Placement="Top"
+                                        PreviewMouseLeftButtonDown="Card_MouseDown" PreviewMouseLeftButtonUp="Card_MouseUp"
+                                        IsEnabled="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DeckView}}}">
+                            <local:CardView.RenderTransform>
+                                <TranslateTransform/>
+                            </local:CardView.RenderTransform>
+                        </local:CardView>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Viewbox>
+</UserControl>

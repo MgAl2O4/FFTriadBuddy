@@ -96,6 +96,11 @@ namespace MgAl2O4.GoogleAPI
 
                     bHasValidResponse = true;
                 }
+                else
+                {
+                    // null response is still valid (no settings saved yet)
+                    bHasValidResponse = true;
+                }
             }
 
             UpdateCurrentState(bHasValidResponse);

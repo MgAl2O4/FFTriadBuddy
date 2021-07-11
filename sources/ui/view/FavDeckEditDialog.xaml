@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="FFTriadBuddy.UI.FavDeckEditDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FFTriadBuddy.UI"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:FavDeckEditViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*" MinHeight="120"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*" MinWidth="420"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding FavDeckForm_Info}" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <local:DeckView DataContext="{Binding FavDeck}" CanPickCards="True" CanReorderCards="True" Height="Auto" Margin="10" Width="Auto" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="{Binding FavDeckForm_Name}" VerticalAlignment="Center" Grid.Row="2"/>
+        <TextBox Grid.Column="1" Margin="10,0" TextWrapping="Wrap" Text="{Binding FavDeck.Name}" Grid.Row="2"/>
+        <StackPanel Grid.Column="1" Grid.Row="3" Margin="0,10,10,10" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{Binding AdjustForm_SaveButton}" Command="{Binding CommandSave}" Padding="20,0" MinWidth="100" Margin="10,0,0,0"/>
+            <Button Content="{Binding AdjustForm_CancelButton}" IsCancel="True" Padding="20,0" MinWidth="100" Margin="10,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

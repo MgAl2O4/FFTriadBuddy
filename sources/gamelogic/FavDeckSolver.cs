@@ -8,9 +8,10 @@ namespace FFTriadBuddy
         private TriadDeck deck;
         private TriadGameSession session;
         private TriadNpc npc;
-        private int calcId;
+        public int calcId;
 
         public int contextId;
+        public int progress => session.currentProgress;
 
         public delegate void SolvedDelegate(int id, TriadGameResultChance chance);
         public event SolvedDelegate OnSolved;

@@ -1,0 +1,256 @@
+﻿<UserControl x:Class="FFTriadBuddy.UI.CardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FFTriadBuddy.UI"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:CardViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="52" d:DesignWidth="52">
+    <UserControl.Resources>
+        <Color x:Key="ColorBorderBlue">#87cefa</Color>
+        <Color x:Key="ColorBorderBlueHL">#054f7d</Color>
+        <Color x:Key="ColorBorderRed">#fa8795</Color>
+        <Color x:Key="ColorBorderRedHL">#7d0513</Color>
+        <SolidColorBrush x:Key="BrushBorderBlue" Color="{StaticResource ColorBorderBlue}"/>
+        <SolidColorBrush x:Key="BrushBorderBlueHL" Color="{StaticResource ColorBorderBlueHL}"/>
+        <SolidColorBrush x:Key="BrushBorderRed" Color="{StaticResource ColorBorderRed}"/>
+        <SolidColorBrush x:Key="BrushBorderRedHL" Color="{StaticResource ColorBorderRedHL}"/>
+        <SolidColorBrush x:Key="BrushBorderLocked" Color="Gray"/>
+        <SolidColorBrush x:Key="BrushNumSide" Color="White"/>
+        <SolidColorBrush x:Key="BrushNumOutline" Color="Black"/>
+        <SolidColorBrush x:Key="BrushNumModPositive" Color="#3bff3b"/>
+        <SolidColorBrush x:Key="BrushNumModNegative" Color="#ff3b3b"/>
+        <SolidColorBrush x:Key="BrushMaskHidden" Color="#B8860B"/>
+        <SolidColorBrush x:Key="BrushMaskHiddenDisabled" Color="#80B8860B"/>
+        <SolidColorBrush x:Key="BrushMaskDisabled" Color="#66FF0000"/>
+        <Thickness x:Key="BorderMargin" Left="3" Top="3" Right="3" Bottom="3"/>
+
+        <Style TargetType="{x:Type local:OutlinedTextBlock}" x:Key="textStyle">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="StrokeThickness" Value="3"/>
+            <Setter Property="Stroke" Value="#cc000000"/>
+        </Style>
+        <Style TargetType="{x:Type FrameworkElement}" x:Key="detailsStyle">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsShowingDetails}" Value="False">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CardDragMode}" Value="DragOut">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CardDragMode}" Value="DragIn">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type local:OutlinedTextBlock}" BasedOn="{StaticResource textStyle}"/>
+    </UserControl.Resources>
+    <Viewbox ToolTip="{Binding Tooltip}" Margin="0" RenderTransformOrigin="0.5,0.5">
+        <Grid>
+            <Image x:Name="imageCard" Source="{Binding CardImage}"/>
+            <Image Source="{Binding DragImage}" IsHitTestVisible="False">
+                <Image.RenderTransform>
+                    <TranslateTransform/>
+                </Image.RenderTransform>
+                <Image.Resources>
+                    <Storyboard x:Key="animDragIn" >
+                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.75" To="1" AutoReverse="False" Duration="0:0:0.25" RepeatBehavior="1x" />
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="-10" To="0" AutoReverse="False" Duration="0:0:0.25" RepeatBehavior="1x"/>
+                    </Storyboard>
+                    <Storyboard x:Key="animDragOut" >
+                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.75" To="1" AutoReverse="False" Duration="0:0:0.25" RepeatBehavior="1x" />
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="10" To="0" AutoReverse="False" Duration="0:0:0.25" RepeatBehavior="1x"/>
+                    </Storyboard>
+                </Image.Resources>
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CardDragMode}" Value="DragIn">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="animDragIn" Storyboard="{StaticResource animDragIn}" />
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="animDragIn"/>
+                                </DataTrigger.ExitActions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CardDragMode}" Value="DragOut">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="animDragOut" Storyboard="{StaticResource animDragOut}" />
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="animDragOut"/>
+                                </DataTrigger.ExitActions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Rectangle x:Name="rectMask">
+                <Rectangle.Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Setter Property="IsHitTestVisible" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasCardImage, FallbackValue=False}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Fill" Value="{StaticResource BrushMaskDisabled}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HasCardImage}" Value="False">
+                                <Setter Property="IsHitTestVisible" Value="True"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding HasCardImage}" Value="False"/>
+                                    <Condition Binding="{Binding IsHighlighted}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Fill" Value="{StaticResource BrushMaskHidden}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding HasCardImage}" Value="False"/>
+                                    <Condition Binding="{Binding IsHighlighted}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Fill" Value="{StaticResource BrushMaskHiddenDisabled}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding HasCardImage}" Value="False"/>
+                                    <Condition Binding="{Binding IsShowingDetails}" Value="False"/>
+                                    <Condition Binding="{Binding IsHidden}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}" BasedOn="{StaticResource detailsStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CardOwner}" Value="Blue">
+                                <Setter Property="Margin" Value="{StaticResource BorderMargin}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CardOwner}" Value="Red">
+                                <Setter Property="Margin" Value="{StaticResource BorderMargin}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Image x:Name="imageRarity" HorizontalAlignment="Left" VerticalAlignment="Top" Source="{Binding RarityImage}" Height="17" Width="18" Opacity="0.75"/>
+                <Image x:Name="imageType" HorizontalAlignment="Right" VerticalAlignment="Top" Source="{Binding TypeImage}" Height="20" Width="20" Opacity="0.75"/>
+                <Polygon Points="0, 13, 10, 19, 10, 33, 0, 39" Fill="Black" Opacity="0.3"/>
+                <Polygon Points="52, 13, 42, 19, 42, 33, 52, 39" Fill="Black" Opacity="0.3"/>
+                <Polygon Points="17, 0, 21, 16, 31, 16, 35, 0" Fill="Black" Opacity="0.3"/>
+                <Polygon Points="17, 52, 21, 36, 31, 36, 35, 52" Fill="Black" Opacity="0.3"/>
+                <local:OutlinedTextBlock x:Name="textNumU" Text="{Binding NumUp, StringFormat=\{0:X\}}" Fill="{StaticResource BrushNumSide}" Margin="0,-2,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <local:OutlinedTextBlock x:Name="textNumL" Text="{Binding NumLeft, StringFormat=\{0:X\}}" Fill="{StaticResource BrushNumSide}" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <local:OutlinedTextBlock x:Name="textNumD" Text="{Binding NumDown, StringFormat=\{0:X\}}" Fill="{StaticResource BrushNumSide}" Margin="0,0,0,-1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                <local:OutlinedTextBlock x:Name="textNumR" Text="{Binding NumRight, StringFormat=\{0:X\}}"  Fill="{StaticResource BrushNumSide}" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <local:OutlinedTextBlock x:Name="textMod" Text="{Binding NumMod}" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="#80000000">
+                    <local:OutlinedTextBlock.Style>
+                        <Style TargetType="{x:Type local:OutlinedTextBlock}" BasedOn="{StaticResource textStyle}">
+                            <Setter Property="Fill" Value="{StaticResource BrushNumModPositive}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsModNegative}" Value="True">
+                                    <Setter Property="Fill" Value="{StaticResource BrushNumModNegative}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding NumMod}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:OutlinedTextBlock.Style>
+                </local:OutlinedTextBlock>
+            </Grid>
+            <Rectangle x:Name="rectBorder" StrokeThickness="5" IsHitTestVisible="False">
+                <Rectangle.Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Style.Resources>
+                            <Storyboard x:Key="animBlinkBlue" >
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" AutoReverse="False" Duration="0:0:1.5" RepeatBehavior="Forever">
+                                    <ColorAnimationUsingKeyFrames.KeyFrames>
+                                        <DiscreteColorKeyFrame Value="{StaticResource ColorBorderBlueHL}" KeyTime="0%"/>
+                                        <DiscreteColorKeyFrame Value="Transparent" KeyTime="50%"/>
+                                    </ColorAnimationUsingKeyFrames.KeyFrames>
+                                </ColorAnimationUsingKeyFrames>
+                            </Storyboard>
+                            <Storyboard x:Key="animBlinkRed" >
+                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke.(SolidColorBrush.Color)" AutoReverse="False" Duration="0:0:1.5" RepeatBehavior="Forever">
+                                    <ColorAnimationUsingKeyFrames.KeyFrames>
+                                        <DiscreteColorKeyFrame Value="{StaticResource ColorBorderRedHL}" KeyTime="0%"/>
+                                        <DiscreteColorKeyFrame Value="Transparent" KeyTime="50%"/>
+                                    </ColorAnimationUsingKeyFrames.KeyFrames>
+                                </ColorAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </Style.Resources>
+
+                        <Setter Property="Stroke" Value="Transparent"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CardOwner}" Value="Blue">
+                                <Setter Property="Stroke" Value="{StaticResource BrushBorderBlue}"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardOwner}" Value="Blue"/>
+                                    <Condition Binding="{Binding IsHighlighted}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Stroke" Value="{StaticResource BrushBorderBlueHL}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardOwner}" Value="Blue"/>
+                                    <Condition Binding="{Binding IsHighlighted}" Value="True"/>
+                                    <Condition Binding="{Binding IsBlinkingOnHighlight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CardView}}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard Name="blinkBlue" Storyboard="{StaticResource animBlinkBlue}" />
+                                </MultiDataTrigger.EnterActions>
+                                <MultiDataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="blinkBlue"/>
+                                </MultiDataTrigger.ExitActions>
+                                <Setter Property="Stroke" Value="{StaticResource BrushBorderBlueHL}"/>
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding CardOwner}" Value="Red">
+                                <Setter Property="Stroke" Value="{StaticResource BrushBorderRed}"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardOwner}" Value="Red"/>
+                                    <Condition Binding="{Binding IsHighlighted}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Stroke" Value="{StaticResource BrushBorderRedHL}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardOwner}" Value="Red"/>
+                                    <Condition Binding="{Binding IsHighlighted}" Value="True"/>
+                                    <Condition Binding="{Binding IsBlinkingOnHighlight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CardView}}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard Name="blinkRed" Storyboard="{StaticResource animBlinkRed}" />
+                                </MultiDataTrigger.EnterActions>
+                                <MultiDataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="blinkRed"/>
+                                </MultiDataTrigger.ExitActions>
+                                <Setter Property="Stroke" Value="{StaticResource BrushBorderRedHL}"/>
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding IsShowingLock}" Value="True">
+                                <Setter Property="Stroke" Value="{StaticResource BrushBorderLocked}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+        </Grid>
+    </Viewbox>
+</UserControl>

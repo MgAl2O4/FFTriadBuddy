@@ -1,0 +1,70 @@
+﻿<Window x:Class="FFTriadBuddy.UI.OverlayWindowInteractive"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FFTriadBuddy.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance Type=local:OverlayWindowViewModel, IsDesignTimeCreatable=True}"
+             Topmost="True" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" 
+             AllowsTransparency="True" Background="{x:Null}" Opacity="0.8"
+             Loaded="Window_Loaded" Closed="Window_Closed" PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp">
+    <Window.Resources>
+        <Storyboard x:Key="animDash">
+            <DoubleAnimation Storyboard.TargetProperty="StrokeDashOffset" Duration="0:0:1" From="0" To="7" RepeatBehavior="Forever"/>
+        </Storyboard>
+        <Style x:Key="autoScanRect" TargetType="{x:Type Rectangle}">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAutoScanActive}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Name="playAnimDash" Storyboard="{StaticResource animDash}"/>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="playAnimDash"/>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Canvas x:Name="canvas">
+        <Border x:Name="panelCapture" BorderBrush="{StaticResource brushBorder}" BorderThickness="1" Canvas.Left="10" Canvas.Top="10" Background="{StaticResource BrushWindowBackground}" MouseMove="Border_MouseMove" MouseLeftButtonDown="Border_MouseLeftButtonDown" IsHitTestVisible="True"
+                local:CanvasExtensions.ScreenBounds="{Binding MarkerCapturePanel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="buttonCapture" Grid.ColumnSpan="3" Margin="5" HorizontalContentAlignment="Stretch" Command="{Binding CommandCapture}">
+                    <Button.Content>
+                        <Grid>
+                            <TextBlock Text="{Binding OverlayForm_Capture_Button}" Padding="8" HorizontalAlignment="Center"/>
+                            <Rectangle Margin="2" Stroke="{StaticResource {x:Static SystemColors.HotTrackBrushKey}}" RadiusX="5" RadiusY="5" StrokeDashArray="5 2" StrokeThickness="2" Style="{StaticResource autoScanRect}"/>
+                        </Grid>
+                    </Button.Content>
+                </Button>
+                <CheckBox x:Name="checkDetails" Content="{Binding OverlayForm_Capture_Details}" Grid.Row="2" Margin="5,5,0,5" Command="{Binding CommandToggleDetails}" CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
+                <CheckBox x:Name="checkAuto" Content="{Binding OverlayForm_Capture_AutoScan}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="0,5,5,5" IsChecked="{Binding UseAutoScan}"/>
+                <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="5,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Width="40" Height="40" Source="{Binding AnalyzerStateIcon}"/>
+                    <local:NoAutoWidthDecorator Grid.Column="1" Margin="5,0,0,0">
+                        <TextBlock x:Name="noAutoText" Text=" "/>
+                    </local:NoAutoWidthDecorator>
+                    <TextBlock TextWrapping="Wrap" Grid.Column="1" Margin="5,0,0,0" Text="{Binding DescAnalyzerState}" MaxWidth="{Binding ActualWidth, ElementName=noAutoText}" VerticalAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Canvas>
+</Window>

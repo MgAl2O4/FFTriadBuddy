@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>FFTriadBuddy</RootNamespace>
     <AssemblyName>FFTriadBuddy</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -68,8 +69,18 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <ApplicationDefinition Include="ui\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
     <Compile Include="data\ImageHashDB.cs" />
     <Compile Include="data\LocalizationDB.cs" />
     <Compile Include="data\PlayerSettingsDB.cs" />
@@ -87,18 +98,77 @@
     <Compile Include="googleapi\GoogleDriveService.cs" />
     <Compile Include="googleapi\GoogleOAuth2.cs" />
     <Compile Include="loc\strings.cs" />
-    <Compile Include="ui\FormAdjustCard.cs">
-      <SubType>Form</SubType>
+    <Compile Include="ui\modelproxy\NpcModelProxy.cs" />
+    <Compile Include="ui\modelproxy\RuleModelProxy.cs" />
+    <Compile Include="ui\modelproxy\SettingsModel.cs" />
+    <Compile Include="ui\modelproxy\TournamentModelProxy.cs" />
+    <Compile Include="ui\modelproxy\TriadGameModel.cs" />
+    <Compile Include="ui\viewmodel\AdjustCardViewModel.cs" />
+    <Compile Include="ui\viewmodel\AdjustHashViewModel.cs" />
+    <Compile Include="ui\viewmodel\ContextActionViewModel.cs" />
+    <Compile Include="ui\viewmodel\FavDeckEditViewModel.cs" />
+    <Compile Include="ui\viewmodel\ImageCardDataViewModel.cs" />
+    <Compile Include="ui\modelproxy\ImageHashDataModelProxy.cs" />
+    <Compile Include="ui\viewmodel\MainWindowViewModel.cs" />
+    <Compile Include="ui\viewmodel\OverlayWindowViewModel.cs" />
+    <Compile Include="ui\viewmodel\PageCardsViewModel.cs" />
+    <Compile Include="ui\viewmodel\PageInfoViewModel.cs" />
+    <Compile Include="ui\viewmodel\PageNpcsViewModel.cs" />
+    <Compile Include="ui\viewmodel\PageScreenshotViewModel.cs" />
+    <Compile Include="ui\viewmodel\PageSetupViewModel.cs" />
+    <Compile Include="ui\viewmodel\PageSimulateViewModel.cs" />
+    <Compile Include="ui\viewmodel\SetupFavDeckViewModel.cs" />
+    <Compile Include="ui\viewmodel\SimulateRulesViewModel.cs" />
+    <Compile Include="ui\viewmodel\SolvableDeckViewModel.cs" />
+    <Compile Include="ui\viewmodel\WinChanceViewModel.cs" />
+    <Compile Include="ui\view\AdjustCardDialog.xaml.cs">
+      <DependentUpon>AdjustCardDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\FormAdjustCard.Designer.cs">
-      <DependentUpon>FormAdjustCard.cs</DependentUpon>
+    <Compile Include="ui\view\AdjustHashDialog.xaml.cs">
+      <DependentUpon>AdjustHashDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\FormAdjustHash.cs">
-      <SubType>Form</SubType>
+    <Compile Include="ui\view\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\FormAdjustHash.Designer.cs">
-      <DependentUpon>FormAdjustHash.cs</DependentUpon>
+    <Compile Include="ui\view\FavDeckEditDialog.xaml.cs">
+      <DependentUpon>FavDeckEditDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\view\FavDeckPreview.xaml.cs">
+      <DependentUpon>FavDeckPreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\OverlayWindowTransparent.xaml.cs">
+      <DependentUpon>OverlayWindowTransparent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\OverlayWindowInteractive.xaml.cs">
+      <DependentUpon>OverlayWindowInteractive.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\utils\CanvasExtensions.cs" />
+    <Compile Include="ui\view\utils\Converters.cs" />
+    <Compile Include="ui\view\utils\ListViewExtensions.cs" />
+    <Compile Include="ui\view\controls\NumTextBox.xaml.cs">
+      <DependentUpon>NumTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\controls\OutlinedTextBlock.cs" />
+    <Compile Include="ui\view\PageCards.xaml.cs">
+      <DependentUpon>PageCards.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\PageInfo.xaml.cs">
+      <DependentUpon>PageInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\PageNpcs.xaml.cs">
+      <DependentUpon>PageNpcs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\PageScreenshot.xaml.cs">
+      <DependentUpon>PageScreenshot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\controls-triad\PlayerDeckPreview.xaml.cs">
+      <DependentUpon>PlayerDeckPreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\PageSimulate.xaml.cs">
+      <DependentUpon>PageSimulate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\utils\OverlayWindowService.cs" />
+    <Compile Include="ui\view\utils\ViewUtils.cs" />
     <Compile Include="utils-shared\LocResourceManager.cs" />
     <Compile Include="vision\MLClassifierTriadDigit.cs" />
     <Compile Include="vision\MLClassifierCactpot.cs" />
@@ -109,20 +179,7 @@
     <Compile Include="utils\tlsh\TlshBuilder.cs" />
     <Compile Include="utils\tlsh\TlshHash.cs" />
     <Compile Include="utils\tlsh\TlshUtilities.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ui\CardCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ui\CardCtrl.Designer.cs">
-      <DependentUpon>CardCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ui\CardGridCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ui\CardGridCtrl.Designer.cs">
-      <DependentUpon>CardGridCtrl.cs</DependentUpon>
-    </Compile>
     <Compile Include="utils-shared\AssetManager.cs" />
     <Compile Include="utils-shared\GithubUpdater.cs" />
     <Compile Include="utils-shared\JsonParser.cs" />
@@ -130,41 +187,6 @@
     <Compile Include="utils-shared\MLDataExporter.cs" />
     <Compile Include="utils-shared\MLUtils.cs" />
     <Compile Include="utils\DataCoverter.cs" />
-    <Compile Include="ui\DeckCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ui\DeckCtrl.Designer.cs">
-      <DependentUpon>DeckCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ui\FavDeckCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ui\FavDeckCtrl.Designer.cs">
-      <DependentUpon>FavDeckCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ui\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ui\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ui\FormFavEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ui\FormFavEdit.Designer.cs">
-      <DependentUpon>FormFavEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ui\FormOverlay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ui\FormOverlay.Designer.cs">
-      <DependentUpon>FormOverlay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ui\HitInvisControls.cs" />
-    <Compile Include="ui\ListViewColumnSorter.cs" />
-    <Compile Include="ui\TabControlNoTabs.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="utils\TestManager.cs" />
     <Compile Include="utils\XInputStub.cs" />
     <Compile Include="vision\ScannerBase.cs" />
@@ -173,45 +195,116 @@
     <Compile Include="vision\ScannerCactpot.cs" />
     <Compile Include="vision\ScreenReader.cs" />
     <Compile Include="vision\ImageUtils.cs" />
+    <Compile Include="ui\modelproxy\BulkObservableCollection.cs" />
+    <Compile Include="ui\modelproxy\CardModelProxy.cs" />
+    <Compile Include="ui\modelproxy\IconDB.cs" />
+    <Compile Include="ui\modelproxy\ModelProxyDB.cs" />
+    <Compile Include="ui\viewmodel\CardCollectionViewModel.cs" />
+    <Compile Include="ui\view\utils\CardDragDropExtension.cs" />
+    <Compile Include="ui\viewmodel\ViewModelUtils.cs" />
+    <Compile Include="ui\viewmodel\CardViewModel.cs" />
+    <Compile Include="ui\view\controls-triad\CardGridView.xaml.cs">
+      <DependentUpon>CardGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\controls-triad\CardView.xaml.cs">
+      <DependentUpon>CardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\controls-triad\DeckView.xaml.cs">
+      <DependentUpon>DeckView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\viewmodel\DeckViewModel.cs" />
+    <Compile Include="ui\view\PageSetup.xaml.cs">
+      <DependentUpon>PageSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\view\controls\SearchableComboBox.xaml.cs">
+      <DependentUpon>SearchableComboBox.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ui\view\AdjustCardDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\AdjustHashDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\controls-triad\CardGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\controls-triad\CardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\controls-triad\DeckView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\FavDeckEditDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\FavDeckPreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="ui\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ui\view\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="ui\view\controls\NumTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\OverlayWindowTransparent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\view\PageCards.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\view\PageInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\view\PageNpcs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\view\PageScreenshot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\PageSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\controls-triad\PlayerDeckPreview.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ui\view\controls\SearchableComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Include="loc\strings.resx" />
     <None Include="loc\strings.ja.resx" />
     <None Include="loc\strings.zh.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="ui\CardCtrl.resx">
-      <DependentUpon>CardCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\CardGridCtrl.resx">
-      <DependentUpon>CardGridCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\DeckCtrl.resx">
-      <DependentUpon>DeckCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\FavDeckCtrl.resx">
-      <DependentUpon>FavDeckCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\FormAdjustCard.resx">
-      <DependentUpon>FormAdjustCard.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\FormAdjustHash.resx">
-      <DependentUpon>FormAdjustHash.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\FormFavEdit.resx">
-      <DependentUpon>FormFavEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ui\FormOverlay.resx">
-      <DependentUpon>FormOverlay.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -222,6 +315,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Page Include="ui\view\PageSimulate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\view\OverlayWindowInteractive.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="FFTriadBuddy.UI.NumTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FFTriadBuddy.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="100" MouseWheel="UserControl_MouseWheel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="textMarker" Grid.RowSpan="2" Text="888" Foreground="{x:Null}" />
+        <TextBox x:Name="textNum" Grid.RowSpan="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Width="{Binding ActualWidth, Mode=OneWay, ElementName=textMarker}"/>
+        <RepeatButton BorderThickness="0" Grid.Column="1" Grid.Row="0" Width="13" Background="Transparent" Click="RepeatButtonUp_Click">
+            <Path Fill="Black" Data="M 0 3 L 6 3 L 3 0 Z"/>
+        </RepeatButton>
+        <RepeatButton BorderThickness="0" Grid.Column="1" Grid.Row="1" Width="13" Background="Transparent" Click="RepeatButtonDown_Click">
+            <Path Fill="Black" Data="M 0 0 L 3 3 L 6 0 Z"/>
+        </RepeatButton>
+    </Grid>
+</UserControl>
