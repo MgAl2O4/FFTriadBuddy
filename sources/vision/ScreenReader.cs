@@ -199,12 +199,6 @@ namespace FFTriadBuddy
             Rectangle result = GetGameWindowBoundsRaw(windowHandle);
             Screen activeScreen = Screen.FromHandle(windowHandle.Handle);
 
-            if (result.Width > 0 && PlayerSettingsDB.Get().useFullScreenCapture)
-            {
-                result = Screen.GetBounds(result);
-                activeScreen = Screen.FromRectangle(result);
-            }
-
             if (activeScreen != cachedScreen)
             {
                 cachedScreen = activeScreen;

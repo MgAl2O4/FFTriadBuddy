@@ -112,7 +112,7 @@
         public static string MainForm_Info_HomePage = "Project home page:";
         public static string MainForm_Info_BugReports = "Bug reports:";
         public static string MainForm_Info_Localization = "UI localization:";
-        public static string MainForm_Info_Title = "Info";
+        public static string MainForm_Info_Title = "Info & Settings";
         public static string MainForm_Info_TranslatorLove = "Thanks to everyone who contributed their translations! You're awesome!";
         public static string MainForm_Info_TranslatorNeeded = "( volunteers still needed ;) )";
         public static string MainForm_Npcs_List_ColumnCompleted = "Completed";
@@ -220,5 +220,9 @@
         public static string OverlayForm_Dynamic_Status_ScannerErrors = "Failed to recognize minigame";
         public static string OverlayForm_Dynamic_Status_UnknownHash = "Unknown pattern! Check Play:Screenshot for details";
         public static string OverlayForm_Dynamic_Status_WaitingForTurn = "Waiting for blue turn";
+        public static string Settings_FontSize = "Font size";
+        public static string Settings_MarkerDurationCard = "Marker duration: card";
+        public static string Settings_MarkerDurationSwap = "Marker duration: swap";
+        public static string Settings_MarkerDurationCactpot = "Marker duration: cactpot";
     }
 }

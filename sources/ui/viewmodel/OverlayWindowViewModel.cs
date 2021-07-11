@@ -174,11 +174,6 @@ namespace FFTriadBuddy.UI
         public ICommand CommandCapture { get; private set; }
         public ICommand CommandToggleDetails { get; private set; }
 
-        private float markerDurationCard = 4.0f;
-        private float markerDurationCactpot = 2.0f;
-        private float markerDurationSwapCard = 4.0f;
-        private float markerDurationSwapWarning = 8.0f;
-
         public string OverlayForm_Capture_AutoScan => loc.strings.OverlayForm_Capture_AutoScan;
         public string OverlayForm_Capture_Button => loc.strings.OverlayForm_Capture_Button;
         public string OverlayForm_Capture_Details => loc.strings.OverlayForm_Capture_Details;
@@ -285,6 +280,7 @@ namespace FFTriadBuddy.UI
             }
 
             Rectangle boardBox = Rectangle.Empty;
+            var settingsDB = PlayerSettingsDB.Get();
 
             var updateFlags = TriadGameScreenMemory.EUpdateFlags.None;
             if (ScreenAnalyzer.activeScanner is ScannerTriad)
@@ -310,11 +306,11 @@ namespace FFTriadBuddy.UI
                         try
                         {
                             Rectangle rectDeckPos = ScreenAnalyzer.scannerTriad.GetBlueCardBox(blueCardIdx);
-                            var newMarkerDeck = new ScreenCardVM() { DrawMode = ScreenCoordVM.Mode.Default, Duration = markerDurationCard };
+                            var newMarkerDeck = new ScreenCardVM() { DrawMode = ScreenCoordVM.Mode.Default, Duration = settingsDB.markerDurationCard };
                             AssignGameBoundsToMarker(newMarkerDeck, rectDeckPos);
 
                             Rectangle rectBoardPos = ScreenAnalyzer.scannerTriad.GetBoardCardBox(boardCardIdx);
-                            var newMarkerBoard = new ScreenCardVM() { DrawMode = ScreenCoordVM.Mode.Default, Duration = markerDurationCard };
+                            var newMarkerBoard = new ScreenCardVM() { DrawMode = ScreenCoordVM.Mode.Default, Duration = settingsDB.markerDurationCard };
                             AssignGameBoundsToMarker(newMarkerBoard, rectBoardPos);
 
                             switch (bestChance.expectedResult)
@@ -351,7 +347,7 @@ namespace FFTriadBuddy.UI
 
                     if (fromIdx >= 0 && toIdx >= 0)
                     {
-                        var newMarker = new ScreenCactpotVM() { Duration = markerDurationCactpot };
+                        var newMarker = new ScreenCactpotVM() { Duration = settingsDB.markerDurationCactpot };
                         Rectangle gameFromBox = ScreenAnalyzer.scannerCactpot.GetCircleBox(fromIdx);
                         Rectangle gameToBox = ScreenAnalyzer.scannerCactpot.GetCircleBox(toIdx);
 
@@ -375,7 +371,7 @@ namespace FFTriadBuddy.UI
                     {
                         Rectangle gameBoardPos = ScreenAnalyzer.scannerCactpot.GetCircleBox(markerPos);
 
-                        var newMarker = new ScreenCoordVM() { Duration = markerDurationCactpot };
+                        var newMarker = new ScreenCoordVM() { Duration = settingsDB.markerDurationCactpot };
                         AssignGameBoundsToMarker(newMarker, gameBoardPos);
                         MarkerCactpotCircle = newMarker;
                     }
@@ -433,7 +429,7 @@ namespace FFTriadBuddy.UI
                 Rectangle ruleRect = ScreenAnalyzer.scannerTriad.GetRuleBox();
                 if (gameWindowRect.Width > 0 && ruleRect.Width > 0)
                 {
-                    var newMarker = new ScreenCoordVM() { DrawMode = ScreenCoordVM.Mode.SwapWarning, Duration = markerDurationSwapWarning };
+                    var newMarker = new ScreenCoordVM() { DrawMode = ScreenCoordVM.Mode.SwapWarning, Duration = settingsDB.markerDurationSwap };
                     AssignGamePosToMarker(newMarker, ruleRect.Left, ruleRect.Top);
                     MarkerSwapWarning = newMarker;
                 }
@@ -443,7 +439,7 @@ namespace FFTriadBuddy.UI
             {
                 Rectangle gameDeckPos = ScreenAnalyzer.scannerTriad.GetBlueCardBox(ScreenMemory.swappedBlueCardIdx);
 
-                var newMarker = new ScreenCoordVM() { Duration = markerDurationSwapCard };
+                var newMarker = new ScreenCoordVM() { Duration = settingsDB.markerDurationCard };
                 AssignGameBoundsToMarker(newMarker, gameDeckPos, -10);
                 MarkerSwapCard = newMarker;
             }

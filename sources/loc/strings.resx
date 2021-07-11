@@ -442,7 +442,7 @@
     <value>UI localization:</value>
   </data>
   <data name="MainForm_Info_Title" xml:space="preserve">
-    <value>Info</value>
+    <value>Info &amp; Settings</value>
   </data>
   <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
     <value>Thanks to everyone who contributed their translations! You're awesome!</value>
@@ -754,5 +754,17 @@ Works with Mini Cactpot too :D</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>Waiting for blue turn</value>
+  </data>
+  <data name="Settings_FontSize" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="Settings_MarkerDurationCactpot" xml:space="preserve">
+    <value>Marker duration: cactpot</value>
+  </data>
+  <data name="Settings_MarkerDurationCard" xml:space="preserve">
+    <value>Marker duration: card</value>
+  </data>
+  <data name="Settings_MarkerDurationSwap" xml:space="preserve">
+    <value>Marker duration: swap</value>
   </data>
 </root>

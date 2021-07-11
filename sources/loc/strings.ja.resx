@@ -442,7 +442,7 @@
     <value>UI のローカライズ:</value>
   </data>
   <data name="MainForm_Info_Title" xml:space="preserve">
-    <value>情報</value>
+    <value>情報と設定</value>
   </data>
   <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
     <value>翻訳に貢献してくれた皆さん、ありがとうございます！皆さん素晴らしいです！</value>
@@ -753,5 +753,17 @@
   </data>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>自分の手番を待っています</value>
+  </data>
+  <data name="Settings_FontSize" xml:space="preserve">
+    <value>フォント サイズ</value>
+  </data>
+  <data name="Settings_MarkerDurationCactpot" xml:space="preserve">
+    <value>マーカーの継続時間: ミニ・くじ</value>
+  </data>
+  <data name="Settings_MarkerDurationCard" xml:space="preserve">
+    <value>マーカーの継続時間: カード</value>
+  </data>
+  <data name="Settings_MarkerDurationSwap" xml:space="preserve">
+    <value>マーカーの継続時間: スワップ</value>
   </data>
 </root>

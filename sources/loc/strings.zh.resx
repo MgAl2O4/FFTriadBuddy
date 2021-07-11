@@ -442,7 +442,7 @@
     <value>界面本地化:</value>
   </data>
   <data name="MainForm_Info_Title" xml:space="preserve">
-    <value>关于</value>
+    <value>信息与设定</value>
   </data>
   <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
     <value>感谢所有贡献翻译的人！你太棒了！</value>
@@ -754,5 +754,17 @@
   </data>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>等待蓝方回合</value>
+  </data>
+  <data name="Settings_FontSize" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="Settings_MarkerDurationCactpot" xml:space="preserve">
+    <value>标记持续时间：仙人微彩</value>
+  </data>
+  <data name="Settings_MarkerDurationCard" xml:space="preserve">
+    <value>标记持续时间：卡</value>
+  </data>
+  <data name="Settings_MarkerDurationSwap" xml:space="preserve">
+    <value>标记持续时间：交换</value>
   </data>
 </root>

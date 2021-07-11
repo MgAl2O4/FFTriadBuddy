@@ -39,7 +39,13 @@ namespace FFTriadBuddy.UI
                 OverlayWindowService.Initialize();
 
                 var window = new MainWindow();
-                //window.FontSize = 16;
+
+                var settingsDB = PlayerSettingsDB.Get();
+                window.FontSize = settingsDB.fontSize;
+
+                if (settingsDB.lastHeight > window.MinHeight) { window.Height = settingsDB.lastHeight; }
+                if (settingsDB.lastWidth > window.MinWidth) { window.Width = settingsDB.lastWidth; }
+
                 window.Show();
             }
             else

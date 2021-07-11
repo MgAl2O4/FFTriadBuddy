@@ -13,15 +13,21 @@ namespace FFTriadBuddy
         public TriadCard[] starterCards;
         public Dictionary<TriadNpc, TriadDeck> lastDeck;
         public List<TriadDeckNamed> favDecks;
-        public bool useAutoScan;
-        public bool useFullScreenCapture;
         public bool useCloudStorage;
         public bool useXInput;
-        public bool useBigUI;
         public bool isDirty;
         public string DBPath;
         public string cloudToken;
         public string forcedLanguage;
+
+        public int lastNpcId;
+        public float lastWidth;
+        public float lastHeight;
+
+        public float fontSize;
+        public float markerDurationCard;
+        public float markerDurationSwap;
+        public float markerDurationCactpot;
 
         private static PlayerSettingsDB instance = new PlayerSettingsDB();
 
@@ -37,14 +43,20 @@ namespace FFTriadBuddy
             favDecks = new List<TriadDeckNamed>();
             starterCards = new TriadCard[5];
             customHashes = new List<ImageHashData>();
-            useAutoScan = false;
-            useFullScreenCapture = false;
             useCloudStorage = false;
             useXInput = true;
-            useBigUI = false;
             isDirty = false;
             cloudToken = null;
             forcedLanguage = null;
+
+            lastNpcId = -1;
+            lastWidth = 0;
+            lastHeight = 0;
+
+            fontSize = 12.0f;
+            markerDurationCard = 4.0f;
+            markerDurationSwap = 10.0f;
+            markerDurationCactpot = 1.5f;
         }
 
         public static PlayerSettingsDB Get()
@@ -101,11 +113,17 @@ namespace FFTriadBuddy
                     JsonParser.Value BoolTrue = new JsonParser.BoolValue(true);
                     JsonParser.Value BoolFalse = new JsonParser.BoolValue(false);
 
-                    useAutoScan = (JsonParser.BoolValue)uiOb["autoScan", JsonParser.BoolValue.Empty];
-                    useFullScreenCapture = (JsonParser.BoolValue)uiOb["forceFSC", JsonParser.BoolValue.Empty];
                     useXInput = (JsonParser.BoolValue)uiOb["xInput", BoolTrue];
-                    useBigUI = (JsonParser.BoolValue)uiOb["bigUI", BoolFalse];
                     forcedLanguage = (JsonParser.StringValue)uiOb["lang", null];
+
+                    TryGettingFloatValue(uiOb, "fontSize", ref fontSize);
+                    TryGettingFloatValue(uiOb, "markerCard", ref markerDurationCard);
+                    TryGettingFloatValue(uiOb, "markerSwap", ref markerDurationSwap);
+                    TryGettingFloatValue(uiOb, "markerCactpot", ref markerDurationCactpot);
+
+                    TryGettingIntValue(uiOb, "lastNpcId", ref lastNpcId);
+                    TryGettingFloatValue(uiOb, "lastWidth", ref lastWidth);
+                    TryGettingFloatValue(uiOb, "lastHeight", ref lastHeight);
                 }
 
                 JsonParser.ObjectValue cloudOb = (JsonParser.ObjectValue)jsonOb["cloud", null];
@@ -186,6 +204,39 @@ namespace FFTriadBuddy
             return ownedCards.Count > 0;
         }
 
+        private void TryGettingIntValue(JsonParser.ObjectValue ob, string key, ref int value)
+        {
+            if (ob.entries.ContainsKey(key))
+            {
+                var jsonValue = ob[key];
+                var jsonInt = jsonValue as JsonParser.IntValue;
+
+                if (jsonInt != null)
+                {
+                    value = jsonInt.Number;
+                }
+            }
+        }
+
+        private void TryGettingFloatValue(JsonParser.ObjectValue ob, string key, ref float value)
+        {
+            if (ob.entries.ContainsKey(key))
+            {
+                var jsonValue = ob[key];
+                var jsonInt = jsonValue as JsonParser.IntValue;
+                var jsonFloat = jsonValue as JsonParser.FloatValue;
+
+                if (jsonInt != null)
+                {
+                    value = jsonInt.Number;
+                }
+                else if (jsonFloat != null)
+                {
+                    value = jsonFloat.Number;
+                }
+            }
+        }
+        
         public bool MergeWithContent(string jsonString)
         {
             PlayerSettingsDB mergeDB = new PlayerSettingsDB();
@@ -261,12 +312,15 @@ namespace FFTriadBuddy
                 if (!bLimitedMode)
                 {
                     jsonWriter.WriteObjectStart("ui");
-                    jsonWriter.WriteBool(useAutoScan, "autoScan");
-                    jsonWriter.WriteBool(useFullScreenCapture, "forceFSC");
                     jsonWriter.WriteBool(useXInput, "xInput");
-                    jsonWriter.WriteBool(useBigUI, "bigUI");
                     jsonWriter.WriteString(forcedLanguage, "lang");
-
+                    jsonWriter.WriteInt(lastNpcId, "lastNpcId");
+                    jsonWriter.WriteFloat(lastWidth, "lastWidth");
+                    jsonWriter.WriteFloat(lastHeight, "lastHeight");
+                    jsonWriter.WriteFloat(fontSize, "fontSize");
+                    jsonWriter.WriteFloat(markerDurationCard, "markerCard");
+                    jsonWriter.WriteFloat(markerDurationSwap, "markerSwap");
+                    jsonWriter.WriteFloat(markerDurationCactpot, "markerCactpot");
                     jsonWriter.WriteObjectEnd();
                 }
 

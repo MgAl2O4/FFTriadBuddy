@@ -35,8 +35,13 @@ namespace FFTriadBuddy.UI
 
         public TriadGameModel()
         {
-            var defaultNpc = TriadNpcDB.Get().Find("Triple Triad master");
-            SetNpc(defaultNpc);
+            TriadNpc npcOb = TriadNpcDB.Get().npcs.Find(x => x?.Id == PlayerSettingsDB.Get().lastNpcId);
+            if (npcOb == null)
+            {
+                npcOb = TriadNpcDB.Get().Find("Triple Triad master");
+            }
+
+            SetNpc(npcOb);
         }
 
         public void SetNpc(TriadNpc npc)
@@ -51,6 +56,8 @@ namespace FFTriadBuddy.UI
             SetPlayerDeck(useDeck, notifySetupChange: false);
 
             UpdateSession();
+
+            PlayerSettingsDB.Get().lastNpcId = npc.Id;
         }
 
         public void SetGameRules(List<TriadGameModifier> mods)
@@ -80,8 +87,12 @@ namespace FFTriadBuddy.UI
             Logger.WriteLine("Game.SetPlayerDeck: {0}", deck);
             PlayerDeck = deck;
 
+            if (Npc != null && deck != null)
+            {
+                PlayerSettingsDB.Get().UpdatePlayerDeckForNpc(Npc, deck);
+            }
+        
             OnDeckChanged?.Invoke(deck);
-
             if (notifySetupChange)
             {
                 OnSetupChanged?.Invoke(this);
@@ -112,10 +123,19 @@ namespace FFTriadBuddy.UI
                     cardsCopy = savedDeck.knownCards.ToArray();
                 }
             }
+            
             if (cardsCopy == null)
             {
                 cardsCopy = new TriadCard[5];
-                Array.Copy(settingsDB.starterCards, cardsCopy, cardsCopy.Length);
+
+                if (PlayerDeck == null)
+                {
+                    Array.Copy(settingsDB.starterCards, cardsCopy, cardsCopy.Length);
+                }
+                else
+                {
+                    Array.Copy(PlayerDeck.knownCards.ToArray(), cardsCopy, cardsCopy.Length);
+                }
             }
 
             return new TriadDeck(cardsCopy);

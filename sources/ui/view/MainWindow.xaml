@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FFTriadBuddy.UI"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="340" MinHeight="340" MinWidth="850" Width="850" PreviewKeyDown="Window_PreviewKeyDown">
+        Title="{Binding WindowTitle}" Height="340" MinHeight="340" MinWidth="850" Width="850" PreviewKeyDown="Window_PreviewKeyDown" SizeChanged="Window_SizeChanged">
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>

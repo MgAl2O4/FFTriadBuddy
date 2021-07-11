@@ -25,5 +25,12 @@ namespace FFTriadBuddy.UI
                 }
             }
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var settingsDB = PlayerSettingsDB.Get();
+            settingsDB.lastWidth = (float)Width;
+            settingsDB.lastHeight = (float)Height;
+        }
     }
 }
