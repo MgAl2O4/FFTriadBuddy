@@ -14,7 +14,13 @@ namespace FFTriadBuddy.UI
 
         public CardCollectionViewModel()
         {
-            CommandSelect = new RelayCommand<CardModelProxy>((cardInfo) => cardInfo.IsOwned = !cardInfo.IsOwned);
+            CommandSelect = new RelayCommand<CardViewModel>((cardInfo) =>
+            {
+                if (cardInfo.CardModel != null)
+                {
+                    cardInfo.CardModel.IsOwned = !cardInfo.CardModel.IsOwned;
+                }
+            });
         }
     }
 }
