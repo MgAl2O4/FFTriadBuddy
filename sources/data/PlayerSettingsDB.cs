@@ -236,7 +236,7 @@ namespace FFTriadBuddy
                 }
             }
         }
-        
+
         public bool MergeWithContent(string jsonString)
         {
             PlayerSettingsDB mergeDB = new PlayerSettingsDB();

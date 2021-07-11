@@ -143,23 +143,13 @@ namespace FFTriadBuddy.UI
             get => useDetails;
             set
             {
-                bool oldDD = ShowDetailsDeck;
-                bool oldDB = ShowDetailsBoard;
-
                 if (value != useDetails)
                 {
                     PropertySetAndNotify(value, ref useDetails);
                 }
 
-                if (oldDD != ShowDetailsDeck)
-                {
-                    OnPropertyChanged("ShowDetailsDeck");
-                }
-
-                if (oldDB != ShowDetailsBoard)
-                {
-                    OnPropertyChanged("ShowDetailsBoard");
-                }
+                OnPropertyChanged("ShowDetailsDeck");
+                OnPropertyChanged("ShowDetailsBoard");
             }
         }
         public bool ShowDetailsDeck => (ScreenAnalyzer == null) || (useDetails && (ScreenAnalyzer?.activeScanner is ScannerTriad));
@@ -576,7 +566,7 @@ namespace FFTriadBuddy.UI
                     if (canRunAutoCapture)
                     {
                         bool bIsMouseOverGrid = IsCursorInScanArea();
-                        if (bDebugMode || true) { Logger.WriteLine("Checking auto scan: mouse:{0}, state:{1}", bIsMouseOverGrid ? "OverGrid" : "ok", ScreenAnalyzer.GetCurrentState()); }
+                        if (bDebugMode) { Logger.WriteLine("Checking auto scan: mouse:{0}, state:{1}", bIsMouseOverGrid ? "OverGrid" : "ok", ScreenAnalyzer.GetCurrentState()); }
 
                         if (!bIsMouseOverGrid && ScreenAnalyzer.GetCurrentState() == ScreenAnalyzer.EState.NoErrors)
                         {

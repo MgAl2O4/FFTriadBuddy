@@ -122,7 +122,7 @@ namespace FFTriadBuddy.UI
         {
             var mainWindow = App.Current.MainWindow;
             mainWindow.FontSize = PlayerSettingsDB.Get().fontSize;
-            
+
             foreach (Window window in mainWindow.OwnedWindows)
             {
                 window.FontSize = mainWindow.FontSize;

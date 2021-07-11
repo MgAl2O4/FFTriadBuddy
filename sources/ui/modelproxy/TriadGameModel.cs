@@ -91,7 +91,7 @@ namespace FFTriadBuddy.UI
             {
                 PlayerSettingsDB.Get().UpdatePlayerDeckForNpc(Npc, deck);
             }
-        
+
             OnDeckChanged?.Invoke(deck);
             if (notifySetupChange)
             {
@@ -123,7 +123,7 @@ namespace FFTriadBuddy.UI
                     cardsCopy = savedDeck.knownCards.ToArray();
                 }
             }
-            
+
             if (cardsCopy == null)
             {
                 cardsCopy = new TriadCard[5];
