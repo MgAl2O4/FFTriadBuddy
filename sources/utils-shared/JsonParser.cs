@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace MgAl2O4.Utils
@@ -272,6 +273,15 @@ namespace MgAl2O4.Utils
         private StringBuilder builder = new StringBuilder();
         private Stack<char> containerStack = new Stack<char>();
         private bool bNeedsSeparator = false;
+        private NumberFormatInfo nfi = CultureInfo.InvariantCulture.NumberFormat;
+
+        public JsonWriter()
+        {
+            if (nfi.NumberDecimalSeparator != ".")
+            {
+                nfi.NumberDecimalSeparator = ".";
+            }
+        }
 
         public override string ToString()
         {
@@ -298,12 +308,12 @@ namespace MgAl2O4.Utils
 
         public void WriteInt(int value, string key = null)
         {
-            WriteRawValue(value.ToString(), key);
+            WriteRawValue(value.ToString(nfi), key);
         }
 
         public void WriteFloat(float value, string key = null)
         {
-            WriteRawValue(value.ToString(), key);
+            WriteRawValue(value.ToString("N", nfi), key);
         }
 
         public void WriteNull(string key = null)
