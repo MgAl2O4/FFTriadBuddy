@@ -273,15 +273,6 @@ namespace MgAl2O4.Utils
         private StringBuilder builder = new StringBuilder();
         private Stack<char> containerStack = new Stack<char>();
         private bool bNeedsSeparator = false;
-        private NumberFormatInfo nfi = CultureInfo.InvariantCulture.NumberFormat;
-
-        public JsonWriter()
-        {
-            if (nfi.NumberDecimalSeparator != ".")
-            {
-                nfi.NumberDecimalSeparator = ".";
-            }
-        }
 
         public override string ToString()
         {
@@ -308,12 +299,25 @@ namespace MgAl2O4.Utils
 
         public void WriteInt(int value, string key = null)
         {
-            WriteRawValue(value.ToString(nfi), key);
+            WriteRawValue(value.ToString(), key);
         }
 
         public void WriteFloat(float value, string key = null)
         {
-            WriteRawValue(value.ToString("N", nfi), key);
+            var strValue = value.ToString();
+
+            if (strValue.Contains(","))
+            {
+                strValue = strValue.Replace(',', '.');
+            }
+
+            var sep = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            if (sep != "." && sep != ",")
+            {
+                strValue = strValue.Replace(sep, ".");
+            }
+
+            WriteRawValue(strValue, key);
         }
 
         public void WriteNull(string key = null)

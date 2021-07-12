@@ -124,6 +124,8 @@ namespace FFTriadBuddy
                     TryGettingIntValue(uiOb, "lastNpcId", ref lastNpcId);
                     TryGettingFloatValue(uiOb, "lastWidth", ref lastWidth);
                     TryGettingFloatValue(uiOb, "lastHeight", ref lastHeight);
+
+                    fontSize = Math.Min(Math.Max(fontSize, 10), 40);
                 }
 
                 JsonParser.ObjectValue cloudOb = (JsonParser.ObjectValue)jsonOb["cloud", null];
