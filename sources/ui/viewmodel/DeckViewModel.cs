@@ -34,7 +34,7 @@ namespace FFTriadBuddy.UI
         public bool IsShowingDetails { get => isShowingDetails; set => PropertySetAndNotify(value, ref isShowingDetails); }
 
         private bool isUsingOnlyOwnedCards = false;
-        public bool IsUsingOnlyOwnedCards { get => isUsingOnlyOwnedCards; set => PropertySetAndNotify(value, ref isUsingOnlyOwnedCards); }
+        public bool IsUsingOnlyOwnedCards { get => isUsingOnlyOwnedCards; set { PropertySetAndNotify(value, ref isUsingOnlyOwnedCards); CardPickerItems.Refresh(); } }
 
         private CardViewModel selectedPreview = null;
         public CardViewModel SelectedPreview { get => selectedPreview; set => PropertySetAndNotify(value, ref selectedPreview); }
