@@ -202,7 +202,22 @@ namespace MgAl2O4.Utils
 
                     if (activeContainer != null && activeValue != null)
                     {
-                        activeContainer.Add(activeKey, activeValue);
+                        bool needsKey = activeContainer is JsonParser.ObjectValue;
+                        if (needsKey && string.IsNullOrEmpty(activeKey))
+                        {
+                            int snipStart = Math.Max(0, Idx - 20);
+                            int snipEnd = Math.Min(Idx + 20, jsonStr.Length - 1);
+
+                            Logger.WriteLine("Json parsing failed: Key is missing! (pos:{0}, container:{1}, value:{2}) snip[{3}...{4}]:'{5}'",
+                                Idx,
+                                containerStack.Count > 0 ? containerStack[containerStack.Count - 1].Item1 : "??",
+                                activeValue.ToString(),
+                                snipStart, snipEnd, jsonStr.Substring(snipStart, snipEnd - snipStart));
+                        }
+                        else
+                        {
+                            activeContainer.Add(activeKey, activeValue);
+                        }
                     }
 
                     activeValue = null;
