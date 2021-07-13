@@ -192,7 +192,7 @@ namespace MgAl2O4.Utils
                             }
                             else if (strCurrent.Contains("."))
                             {
-                                activeValue = new FloatValue(float.Parse(strCurrent));
+                                activeValue = new FloatValue(float.Parse(strCurrent, CultureInfo.InvariantCulture));
                             }
                             else
                             {
