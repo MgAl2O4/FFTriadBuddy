@@ -204,6 +204,7 @@ namespace FFTriadBuddy.UI
                 activeDeck.Cards[idx].CardModel = modelProxyDB.GetCardProxy(deckOb.knownCards[idx]);
             }
 
+            DeckSolver.RefreshSolver(MainWindow.GameModel, deckOb);
             UpdateDeckState();
         }
 

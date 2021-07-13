@@ -74,7 +74,7 @@ namespace FFTriadBuddy.UI
 
         public void EnableTrackingProgress()
         {
-            timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(0.1) };
+            timer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = TimeSpan.FromSeconds(0.1) };
             timer.Tick += ProgressUpdate_Tick;
         }
 
