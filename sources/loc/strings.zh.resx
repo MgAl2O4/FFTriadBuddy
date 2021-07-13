@@ -759,12 +759,12 @@
     <value>字体大小</value>
   </data>
   <data name="Settings_MarkerDurationCactpot" xml:space="preserve">
-    <value>标记持续时间：仙人微彩</value>
+    <value>标记持续时间: 仙人微彩</value>
   </data>
   <data name="Settings_MarkerDurationCard" xml:space="preserve">
-    <value>标记持续时间：卡</value>
+    <value>标记持续时间: 幻卡</value>
   </data>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
-    <value>标记持续时间：交换</value>
+    <value>标记持续时间: 交换</value>
   </data>
 </root>

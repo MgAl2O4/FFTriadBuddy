@@ -214,7 +214,7 @@
     <value>Fav #{0}</value>
   </data>
   <data name="FavDeckForm_Dynamic_RemoveMsg" xml:space="preserve">
-    <value>Favorite deck will be removed, do you want to continue?</value>
+    <value>Favoriten Deck wird entfernt, möchtest du fortfahren?</value>
   </data>
   <data name="FavDeckForm_Dynamic_UpdateButton" xml:space="preserve">
     <value>Akutalisieren</value>
