@@ -12,6 +12,8 @@ namespace FFTriadBuddy.UI
     /// </summary>
     public partial class App : Application
     {
+        private bool canSaveSettings = false;
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Logger.Initialize(e.Args);
@@ -37,6 +39,7 @@ namespace FFTriadBuddy.UI
             {
                 DialogWindowService.Initialize();
                 OverlayWindowService.Initialize();
+                canSaveSettings = true;
 
                 var window = new MainWindow();
 
@@ -56,7 +59,11 @@ namespace FFTriadBuddy.UI
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            SettingsModel.Close();
+            if (canSaveSettings)
+            {
+                SettingsModel.Close();
+            }
+
             XInputStub.StopPolling();
             Logger.Close();
         }
