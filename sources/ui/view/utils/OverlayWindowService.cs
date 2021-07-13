@@ -44,6 +44,25 @@ namespace FFTriadBuddy.UI
             return false;
         }
 
+        private void MoveOverlayToScreen(System.Drawing.Rectangle screenBounds)
+        {
+            if (overlayWindowI != null)
+            {
+                overlayWindowI.Left = screenBounds.X;
+                overlayWindowI.Top = screenBounds.Y;
+                overlayWindowI.Width = screenBounds.Width;
+                overlayWindowI.Height = screenBounds.Height;
+            }
+
+            if (overlayWindowT != null)
+            {
+                overlayWindowT.Left = screenBounds.X;
+                overlayWindowT.Top = screenBounds.Y;
+                overlayWindowT.Width = screenBounds.Width;
+                overlayWindowT.Height = screenBounds.Height;
+            }
+        }
+
         public void OnProcessingGameWindow(System.Drawing.Rectangle gameWindowBounds, out bool invalidatedPosition)
         {
             invalidatedPosition = false;
@@ -53,16 +72,7 @@ namespace FFTriadBuddy.UI
                 var centerPt = new Point(overlayWindowI.Left + (overlayWindowI.ActualWidth * 0.5), overlayWindowI.Top + (overlayWindowI.ActualHeight * 0.5));
                 if (!screenBounds.Contains((int)centerPt.X, (int)centerPt.Y))
                 {
-                    overlayWindowI.Left = screenBounds.X;
-                    overlayWindowI.Top = screenBounds.Y;
-                    overlayWindowI.Width = screenBounds.Width;
-                    overlayWindowI.Height = screenBounds.Height;
-
-                    overlayWindowT.Left = screenBounds.X;
-                    overlayWindowT.Top = screenBounds.Y;
-                    overlayWindowT.Width = screenBounds.Width;
-                    overlayWindowT.Height = screenBounds.Height;
-
+                    MoveOverlayToScreen(screenBounds);
                     invalidatedPosition = true;
                 }
             }
@@ -78,6 +88,8 @@ namespace FFTriadBuddy.UI
             }
 
             var screenBounds = System.Windows.Forms.Screen.GetBounds(gameWindowBounds);
+            MoveOverlayToScreen(screenBounds);
+
             return screenBounds;
         }
 
