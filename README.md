@@ -19,7 +19,7 @@ Program will attempt to auto update on startup from this repository.
 
 ## Known issues
 
-UI buttons glitching out after mouse over:
+UI buttons glitching out after mouse over:  
 Please refer to [this bug report](https://github.com/MgAl2O4/FFTriadBuddy/issues/53#issuecomment-879286853) for solution, it's a known incompatibility between UI framework and Nahimic software.
 
 
