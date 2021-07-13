@@ -476,7 +476,7 @@ namespace FFTriadBuddy.UI
                 SyncDeckVM(RedDeck, ScreenMemory.deckRed.cards);
 
                 SyncDeckVM(RedKnownCards, ScreenMemory.deckRed.deck.knownCards);
-                int deckIdx = 0;
+                int deckIdx = 5;
                 for (int idx = 0; idx < RedKnownCards.Cards.Count; idx++, deckIdx++)
                 {
                     RedKnownCards.Cards[idx].IsPreview = ScreenMemory.deckRed.IsPlaced(deckIdx);
