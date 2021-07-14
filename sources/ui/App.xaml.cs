@@ -35,6 +35,20 @@ namespace FFTriadBuddy.UI
                 }
             }
 
+#if DEBUG
+            if (Array.Find(e.Args, x => x == "-runTests") != null)
+            {
+                TestManager.RunTests();
+                canStart = false;
+            }
+            else if (Array.Find(e.Args, x => x == "-dataConvert") != null)
+            {
+                var converter = new DataConverter();
+                converter.Run();
+                canStart = false;
+            }
+#endif // DEBUG
+
             if (canStart)
             {
                 DialogWindowService.Initialize();

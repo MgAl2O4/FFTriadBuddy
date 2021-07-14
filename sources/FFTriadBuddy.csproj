@@ -301,10 +301,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Include="loc\strings.resx" />
-    <None Include="loc\strings.de.resx"/>
-    <None Include="loc\strings.fr.resx"/>
+    <None Include="loc\strings.de.resx" />
+    <None Include="loc\strings.fr.resx" />
     <None Include="loc\strings.ja.resx" />
-    <None Include="loc\strings.ko.resx"/>
+    <None Include="loc\strings.ko.resx" />
     <None Include="loc\strings.zh.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
