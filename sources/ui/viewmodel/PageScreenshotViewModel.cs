@@ -409,7 +409,7 @@ namespace FFTriadBuddy.UI
 
                         ImageHashData digitPattern = new ImageHashData() { type = EImageHashType.CardNumber, previewBounds = cardVM.cardState.sideInfo[idx].scanBox, previewContextBounds = cardVM.cardState.scanBox, isKnown = true };
                         digitPattern.CalculateHash(cardVM.cardState.sideInfo[idx].hashValues);
-                        digitPattern.ownerOb = cardVM.cardState.sideNumber[idx];
+                        digitPattern.ownerOb = AdjustedNum[idx];
 
                         PlayerSettingsDB.Get().RemoveKnownHash(digitPattern);
                         if (AdjustedNum[idx] != cardVM.cardState.sideInfo[idx].matchNum)
