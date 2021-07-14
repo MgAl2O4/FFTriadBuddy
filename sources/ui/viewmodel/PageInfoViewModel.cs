@@ -7,6 +7,7 @@ namespace FFTriadBuddy.UI
     public class PageInfoViewModel : LocalizedViewModel, IDataErrorInfo
     {
         public MainWindowViewModel MainWindow;
+        public LocalSavesViewModel LocalSaves { get; } = new LocalSavesViewModel();
 
         private float valueFontSize = 0;
         public float ValueFontSize
@@ -71,6 +72,7 @@ namespace FFTriadBuddy.UI
         public string MainForm_Info_TranslatorLove => loc.strings.MainForm_Info_TranslatorLove;
         public string MainForm_Info_TranslatorNeeded => loc.strings.MainForm_Info_TranslatorNeeded;
 
+        public string Settings_Title => loc.strings.Settings_Title;
         public string Settings_FontSize => loc.strings.Settings_FontSize;
         public string Settings_MarkerDurationCard => loc.strings.Settings_MarkerDurationCard;
         public string Settings_MarkerDurationSwap => loc.strings.Settings_MarkerDurationSwap;
@@ -116,6 +118,12 @@ namespace FFTriadBuddy.UI
             valueMarkerCard = settingsDB.markerDurationCard;
             valueMarkerSwap = settingsDB.markerDurationSwap;
             valueMarkerCactpot = settingsDB.markerDurationCactpot;
+        }
+
+        public override void RefreshLocalization()
+        {
+            base.RefreshLocalization();
+            LocalSaves.RefreshLocalization();
         }
 
         private void UpdateFontSize()

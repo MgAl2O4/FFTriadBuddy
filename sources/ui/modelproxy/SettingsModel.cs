@@ -32,7 +32,11 @@ namespace FFTriadBuddy.UI
             var settingsDB = PlayerSettingsDB.Get();
 
             bool loaded = settingsDB.Load();
-            if (!loaded)
+            if (loaded)
+            {
+                settingsDB.SaveBackup();
+            }
+            else
             {
                 Logger.WriteLine("Warning: failed to load player settings!");
             }

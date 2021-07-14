@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace FFTriadBuddy
 {
@@ -94,7 +95,6 @@ namespace FFTriadBuddy
                 }
             }
 
-            Logger.WriteLine("Loaded player cards: " + ownedCards.Count + ", npcs: " + completedNpcs.Count + ", hashes: " + customHashes.Count);
             return bResult;
         }
 
@@ -102,6 +102,11 @@ namespace FFTriadBuddy
         {
             TriadCardDB cardDB = TriadCardDB.Get();
             TriadNpcDB npcDB = TriadNpcDB.Get();
+
+            ownedCards.Clear();
+            completedNpcs.Clear();
+            lastDeck.Clear();
+            favDecks.Clear();
 
             try
             {
@@ -203,7 +208,13 @@ namespace FFTriadBuddy
                 Logger.WriteLine("Loading failed! Exception:" + ex);
             }
 
+            Logger.WriteLine("Loaded player cards: " + ownedCards.Count + ", npcs: " + completedNpcs.Count + ", hashes: " + customHashes.Count);
             return ownedCards.Count > 0;
+        }
+
+        public void OnImport()
+        {
+            OnUpdated?.Invoke(true, true, true);
         }
 
         private void TryGettingIntValue(JsonParser.ObjectValue ob, string key, ref int value)
@@ -425,6 +436,41 @@ namespace FFTriadBuddy
             }
 
             return jsonWriter.ToString();
+        }
+
+        public string GetBackupFolderPath()
+        {
+            var assembly = Assembly.GetEntryAssembly().GetName();
+            string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), assembly.Name);
+            return settingsPath;
+        }
+
+        public void SaveBackup()
+        {
+            string backupJson = SaveToJson(true);
+            if (!string.IsNullOrEmpty(backupJson))
+            {
+                var assembly = Assembly.GetEntryAssembly().GetName();
+                int currentVersion = assembly.Version.Major;
+                string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), assembly.Name);
+
+                string backupPath = Path.Combine(settingsPath, "settings-backup-v" + currentVersion + ".json");
+
+                try
+                {
+                    if (File.Exists(backupPath))
+                    {
+                        File.Delete(backupPath);
+                    }
+
+                    File.WriteAllText(backupPath, backupJson);
+                    Logger.WriteLine("Saved player settings backup");
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Failed to save backup: {0}, exception:{1}", backupPath, ex);
+                }
+            }
         }
 
         public void MarkDirty()

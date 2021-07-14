@@ -60,6 +60,9 @@ namespace FFTriadBuddy.UI
 
         private void LoadOwnedCards()
         {
+            List<CardModelProxy> removeList = new List<CardModelProxy>();
+            removeList.AddRange(ownedCards);
+
             ownedCards.SuspendNotifies();
             ownedCards.Clear();
 
@@ -71,7 +74,13 @@ namespace FFTriadBuddy.UI
                 {
                     cardProxy.IsOwned = true;
                     ownedCards.Add(cardProxy);
+                    removeList.Remove(cardProxy);
                 }
+            }
+
+            foreach (var card in removeList)
+            {
+                card.IsOwned = false;
             }
 
             ownedCards.ResumeNotifies();

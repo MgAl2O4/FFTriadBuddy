@@ -240,6 +240,18 @@
   <data name="Game_WindowNamePrefix" xml:space="preserve">
     <value>FINAL FANTASY</value>
   </data>
+  <data name="LocalSaves_Export" xml:space="preserve">
+    <value>設定をエクスポート</value>
+  </data>
+  <data name="LocalSaves_Import" xml:space="preserve">
+    <value>設定をインポート</value>
+  </data>
+  <data name="LocalSaves_ShowBackupFolder" xml:space="preserve">
+    <value>バックアップを表示</value>
+  </data>
+  <data name="LocalSaves_Title" xml:space="preserve">
+    <value>ローカルセーブ</value>
+  </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
     <value>アイコン</value>
   </data>
@@ -765,5 +777,8 @@
   </data>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
     <value>マーカーの継続時間: スワップ</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>設定</value>
   </data>
 </root>

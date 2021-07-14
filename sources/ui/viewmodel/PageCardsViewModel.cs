@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace FFTriadBuddy.UI
@@ -44,6 +45,7 @@ namespace FFTriadBuddy.UI
             CreateGridViews();
 
             ModelProxyDB.Get().OwnedCards.CollectionChanged += (s, e) => OnPropertyChanged("NumOwnedCards");
+            PlayerSettingsDB.Get().OnUpdated += OnSettingsUpdated;
 
             CommandToggleOwnedCard = new RelayCommand<CardModelProxy>(CommandToggleOwnedCardFunc);
             CommandSearchCard = new RelayCommand<string>(CommandSearchCardFunc);
@@ -83,6 +85,17 @@ namespace FFTriadBuddy.UI
 
                 currentGridVM.Cards.Add(new CardViewModel() { CardModel = cardProxy });
                 currentSortGroup = cardProxy.GameSortGroup;
+            }
+        }
+
+        private void OnSettingsUpdated(bool bCards, bool bNpcs, bool bDecks)
+        {
+            if (bCards)
+            {
+                GridViews.Clear();
+                CreateGridViews();
+
+                CollectionViewSource.GetDefaultView(GridViews).Refresh();
             }
         }
 

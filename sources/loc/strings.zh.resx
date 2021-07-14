@@ -240,6 +240,18 @@
   <data name="Game_WindowNamePrefix" xml:space="preserve">
     <value>最终幻想</value>
   </data>
+  <data name="LocalSaves_Export" xml:space="preserve">
+    <value>导出设置</value>
+  </data>
+  <data name="LocalSaves_Import" xml:space="preserve">
+    <value>导入设置</value>
+  </data>
+  <data name="LocalSaves_ShowBackupFolder" xml:space="preserve">
+    <value>显示备份</value>
+  </data>
+  <data name="LocalSaves_Title" xml:space="preserve">
+    <value>本地救球</value>
+  </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
     <value>图示</value>
   </data>
@@ -766,5 +778,8 @@
   </data>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
     <value>标记持续时间: 交换</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>设置</value>
   </data>
 </root>

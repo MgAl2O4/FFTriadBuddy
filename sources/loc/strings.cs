@@ -45,6 +45,10 @@
         public static string Game_ProcessName_DX11 = "ffxiv_dx11";
         public static string Game_ProcessName_DX9 = "ffxiv";
         public static string Game_WindowNamePrefix = "FINAL FANTASY";
+        public static string LocalSaves_Export = "Export settings";
+        public static string LocalSaves_Import = "Import settings";
+        public static string LocalSaves_ShowBackupFolder = "Show backups";
+        public static string LocalSaves_Title = "Local saves";
         public static string MainForm_Cards_IconsTitle = "Icons";
         public static string MainForm_Cards_ListTitle = "List";
         public static string MainForm_Cards_List_ColumnId = "#";
@@ -224,5 +228,6 @@
         public static string Settings_MarkerDurationCard = "Marker duration: card";
         public static string Settings_MarkerDurationSwap = "Marker duration: swap";
         public static string Settings_MarkerDurationCactpot = "Marker duration: cactpot";
+        public static string Settings_Title = "Settings";
     }
 }
