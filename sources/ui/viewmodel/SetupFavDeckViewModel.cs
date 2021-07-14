@@ -165,9 +165,9 @@ namespace FFTriadBuddy.UI
             }
 
             var favDeck = new SolvableDeckViewModel() { Deck = deck };
-            AssignFavDeckFrom(favDeck, activeDeck);
-
             favDecks.Add(favDeck);
+
+            AssignFavDeckFrom(favDeck, activeDeck);
         }
     }
 }
