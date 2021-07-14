@@ -174,29 +174,44 @@ namespace MgAl2O4.Utils
                         strCurrent = strCurrent.Trim();
                         if (strCurrent.Length > 0)
                         {
-                            if (bHasStringValue)
+                            try
                             {
-                                activeValue = new StringValue(strCurrent);
+                                if (bHasStringValue)
+                                {
+                                    activeValue = new StringValue(strCurrent);
+                                }
+                                else if (strCurrent.Equals("null", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    activeValue = new NullValue();
+                                }
+                                else if (strCurrent.Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    activeValue = new BoolValue(true);
+                                }
+                                else if (strCurrent.Equals("false", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    activeValue = new BoolValue(false);
+                                }
+                                else if (strCurrent.Contains("."))
+                                {
+                                    activeValue = new FloatValue(float.Parse(strCurrent, CultureInfo.InvariantCulture));
+                                }
+                                else
+                                {
+                                    activeValue = new IntValue(int.Parse(strCurrent));
+                                }
                             }
-                            else if (strCurrent.Equals("null", StringComparison.InvariantCultureIgnoreCase))
+                            catch (Exception ex)
                             {
-                                activeValue = new NullValue();
-                            }
-                            else if (strCurrent.Equals("true", StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                activeValue = new BoolValue(true);
-                            }
-                            else if (strCurrent.Equals("false", StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                activeValue = new BoolValue(false);
-                            }
-                            else if (strCurrent.Contains("."))
-                            {
-                                activeValue = new FloatValue(float.Parse(strCurrent, CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                activeValue = new IntValue(int.Parse(strCurrent));
+                                int snipStart = Math.Max(0, Idx - 20);
+                                int snipEnd = Math.Min(Idx + 20, jsonStr.Length - 1);
+
+                                Logger.WriteLine("Json parsing failed: unknown value '{0}'! (pos:{1}, container:{2}) snip[{3}...{4}]:'{5}', ex:{6}",
+                                    strCurrent,
+                                    Idx,
+                                    containerStack.Count > 0 ? containerStack[containerStack.Count - 1].Item1 : "??",
+                                    snipStart, snipEnd, jsonStr.Substring(snipStart, snipEnd - snipStart),
+                                    ex);
                             }
                         }
                     }
