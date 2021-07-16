@@ -1378,18 +1378,24 @@ namespace FFTriadBuddy
                     npc = configOb["npc"] as JsonParser.StringValue;
                 }
 
-                JsonParser.ArrayValue deckRedArr = configOb.entries["deckRed"] as JsonParser.ArrayValue;
-                for (int idx = 0; idx < deckRedArr.entries.Count; idx++)
+                if (configOb.entries.ContainsKey("deckRed"))
                 {
-                    deckRed[idx] = new VerifyCard();
-                    deckRed[idx].Load(deckRedArr.entries[idx] as JsonParser.ObjectValue);
+                    JsonParser.ArrayValue deckRedArr = configOb.entries["deckRed"] as JsonParser.ArrayValue;
+                    for (int idx = 0; idx < deckRedArr.entries.Count; idx++)
+                    {
+                        deckRed[idx] = new VerifyCard();
+                        deckRed[idx].Load(deckRedArr.entries[idx] as JsonParser.ObjectValue);
+                    }
                 }
 
-                JsonParser.ArrayValue deckBlueArr = configOb.entries["deckBlue"] as JsonParser.ArrayValue;
-                for (int idx = 0; idx < deckBlueArr.entries.Count; idx++)
+                if (configOb.entries.ContainsKey("deckBlue"))
                 {
-                    deckBlue[idx] = new VerifyCard();
-                    deckBlue[idx].Load(deckBlueArr.entries[idx] as JsonParser.ObjectValue);
+                    JsonParser.ArrayValue deckBlueArr = configOb.entries["deckBlue"] as JsonParser.ArrayValue;
+                    for (int idx = 0; idx < deckBlueArr.entries.Count; idx++)
+                    {
+                        deckBlue[idx] = new VerifyCard();
+                        deckBlue[idx].Load(deckBlueArr.entries[idx] as JsonParser.ObjectValue);
+                    }
                 }
 
                 JsonParser.ArrayValue boardArr = configOb.entries["board"] as JsonParser.ArrayValue;

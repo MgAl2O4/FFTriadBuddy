@@ -101,6 +101,7 @@ namespace FFTriadBuddy
             {
                 Logger.WriteLine("==> Testing: " + Path.GetFileNameWithoutExtension(configPath));
                 TriadGameScreenMemory.RunTest(configPath);
+                TriadGameSession.RunTest(configPath);
             }
         }
 #endif // DEBUG

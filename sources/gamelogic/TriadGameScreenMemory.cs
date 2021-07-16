@@ -695,6 +695,11 @@ namespace FFTriadBuddy
 
             string configText = System.IO.File.ReadAllText(configPath);
             JsonParser.ObjectValue rootOb = JsonParser.ParseJson(configText);
+            if (rootOb["type"] != "Screen")
+            {
+                return;
+            }
+
             ScannerTriad.VerifyConfig configData = new ScannerTriad.VerifyConfig();
             configData.Load(rootOb);
 
