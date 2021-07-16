@@ -398,6 +398,7 @@ namespace FFTriadBuddy
         {
             TriadCardInstance checkCard = gameData.board[boardPos];
             int numSame = 0;
+            int neiCaptureMask = 0;
             for (int sideIdx = 0; sideIdx < 4; sideIdx++)
             {
                 int testNeiPos = neiPos[sideIdx];
@@ -410,6 +411,11 @@ namespace FFTriadBuddy
                     if (numPos == numOther)
                     {
                         numSame++;
+
+                        if (neiCard.owner != checkCard.owner)
+                        {
+                            neiCaptureMask |= (1 << sideIdx);
+                        }
                     }
                 }
             }
@@ -419,18 +425,15 @@ namespace FFTriadBuddy
                 for (int sideIdx = 0; sideIdx < 4; sideIdx++)
                 {
                     int testNeiPos = neiPos[sideIdx];
-                    if (testNeiPos >= 0 && gameData.board[testNeiPos] != null)
+                    if ((neiCaptureMask & (1 << sideIdx)) != 0)
                     {
                         TriadCardInstance neiCard = gameData.board[testNeiPos];
-                        if (neiCard.owner != checkCard.owner)
-                        {
-                            neiCard.owner = checkCard.owner;
-                            captureList.Add(testNeiPos);
+                        neiCard.owner = checkCard.owner;
+                        captureList.Add(testNeiPos);
 
-                            if (gameData.bDebugRules)
-                            {
-                                Logger.WriteLine(">> " + RuleName + "! [" + testNeiPos + "] " + neiCard.card.Name.GetCodeName() + " => " + neiCard.owner);
-                            }
+                        if (gameData.bDebugRules)
+                        {
+                            Logger.WriteLine(">> " + RuleName + "! [" + testNeiPos + "] " + neiCard.card.Name.GetCodeName() + " => " + neiCard.owner);
                         }
                     }
                 }

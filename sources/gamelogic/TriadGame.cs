@@ -249,16 +249,20 @@ namespace FFTriadBuddy
 
         private void CheckCaptures(TriadGameData gameData, int boardPos, List<int> comboList, int comboCounter)
         {
+            // combo:
+            // - modifiers are active only in intial placement
+            // - only card captured via modifiers can initiate combo (same, plus)
+            // - type modifiers (ascention, descention) values are baked in card and influence combo
+            // - can't proc another plus/same as a result of combo
+
             int[] neis = cachedNeis[boardPos];
-            bool bAllowBasicCaptureCombo = (comboCounter > 0);
-            if ((comboCounter == 0) && ((modFeatures & TriadGameModifier.EFeature.CaptureNei) != 0))
+            bool allowMods = comboCounter == 0;
+            if (allowMods && (modFeatures & TriadGameModifier.EFeature.CaptureNei) != 0)
             {
                 foreach (TriadGameModifier mod in modifiers)
                 {
                     mod.OnCheckCaptureNeis(gameData, boardPos, neis, comboList);
                 }
-
-                bAllowBasicCaptureCombo = bAllowBasicCaptureCombo || (comboList.Count > 0);
             }
 
             TriadCardInstance checkCard = gameData.board[boardPos];
@@ -273,7 +277,7 @@ namespace FFTriadBuddy
                         int numPos = checkCard.GetNumber((ETriadGameSide)sideIdx);
                         int numOther = neiCard.GetOppositeNumber((ETriadGameSide)sideIdx);
 
-                        if ((modFeatures & TriadGameModifier.EFeature.CaptureWeights) != 0)
+                        if (allowMods && (modFeatures & TriadGameModifier.EFeature.CaptureWeights) != 0)
                         {
                             foreach (TriadGameModifier mod in modifiers)
                             {
@@ -282,7 +286,7 @@ namespace FFTriadBuddy
                         }
 
                         bool bIsCaptured = (numPos > numOther);
-                        if ((modFeatures & TriadGameModifier.EFeature.CaptureMath) != 0)
+                        if (allowMods && (modFeatures & TriadGameModifier.EFeature.CaptureMath) != 0)
                         {
                             foreach (TriadGameModifier mod in modifiers)
                             {
@@ -293,7 +297,7 @@ namespace FFTriadBuddy
                         if (bIsCaptured)
                         {
                             neiCard.owner = checkCard.owner;
-                            if (bAllowBasicCaptureCombo)
+                            if (comboCounter > 0)
                             {
                                 comboList.Add(neiPos);
                             }
