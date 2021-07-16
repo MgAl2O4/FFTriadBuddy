@@ -100,8 +100,24 @@ namespace FFTriadBuddy
             foreach (var configPath in configPaths)
             {
                 Logger.WriteLine("==> Testing: " + Path.GetFileNameWithoutExtension(configPath));
-                TriadGameScreenMemory.RunTest(configPath);
-                TriadGameSession.RunTest(configPath);
+                bool bNeedsDebugRun = false;
+
+                try
+                {
+                    TriadGameScreenMemory.RunTest(configPath, bNeedsDebugRun);
+                    TriadGameSession.RunTest(configPath, bNeedsDebugRun);
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Exception:" + ex);
+                    bNeedsDebugRun = true;
+                }
+
+                if (bNeedsDebugRun)
+                {
+                    TriadGameScreenMemory.RunTest(configPath, bNeedsDebugRun);
+                    TriadGameSession.RunTest(configPath, bNeedsDebugRun);
+                }
             }
         }
 #endif // DEBUG

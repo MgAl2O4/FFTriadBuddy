@@ -611,7 +611,7 @@ namespace FFTriadBuddy
                 }
             }
 
-            public bool VerifyState(TriadGameData gameState)
+            public bool VerifyState(TriadGameData gameState, bool debugMode)
             {
                 if (expectedState != null)
                 {
@@ -619,19 +619,22 @@ namespace FFTriadBuddy
                     {
                         if (gameState.board[idx].owner != expectedState[idx])
                         {
-                            string expectedCode = "";
-                            string currentCode = "";
-                            Func<ETriadCardOwner, char> GetOwnerCode = (owner) => (owner == ETriadCardOwner.Blue) ? 'B' : (owner == ETriadCardOwner.Red) ? 'R' : '.';
-
-                            for (int codeIdx = 0; codeIdx < 9; codeIdx++)
+                            if (debugMode)
                             {
-                                if (codeIdx == 3 || codeIdx == 6) { expectedCode += ' '; currentCode += ' '; }
+                                string expectedCode = "";
+                                string currentCode = "";
+                                Func<ETriadCardOwner, char> GetOwnerCode = (owner) => (owner == ETriadCardOwner.Blue) ? 'B' : (owner == ETriadCardOwner.Red) ? 'R' : '.';
 
-                                expectedCode += GetOwnerCode(gameState.board[codeIdx].owner);
-                                currentCode += GetOwnerCode(expectedState[codeIdx]);
+                                for (int codeIdx = 0; codeIdx < 9; codeIdx++)
+                                {
+                                    if (codeIdx == 3 || codeIdx == 6) { expectedCode += ' '; currentCode += ' '; }
+
+                                    expectedCode += GetOwnerCode(gameState.board[codeIdx].owner);
+                                    currentCode += GetOwnerCode(expectedState[codeIdx]);
+                                }
+
+                                Logger.WriteLine("Failed, mismatch at [{0}]! Expected:{1}, got{2}", idx, expectedCode, currentCode);
                             }
-
-                            Logger.WriteLine("Failed, mismatch at [{0}]! Expected:{1}, got{2}", idx, expectedCode, currentCode);
                             return false;
                         }
                     }
@@ -641,7 +644,7 @@ namespace FFTriadBuddy
             }
         }
 
-        public static void RunTest(string configPath)
+        public static void RunTest(string configPath, bool debugMode)
         {
             string testName = System.IO.Path.GetFileNameWithoutExtension(configPath);
 
@@ -673,7 +676,7 @@ namespace FFTriadBuddy
             }
 
             testSession.UpdateSpecialRules();
-            TriadGameData testGameData = new TriadGameData() { bDebugRules = true };
+            TriadGameData testGameData = new TriadGameData() { bDebugRules = debugMode };
 
             if (configData.board.Length > 0)
             {
@@ -728,7 +731,7 @@ namespace FFTriadBuddy
                     testGameData.state = (move.owner == ETriadCardOwner.Blue) ? ETriadGameState.InProgressBlue : ETriadGameState.InProgressRed;
                 }
 
-                Logger.WriteLine("move[{0}]: [{1}] {2}: {3}", idx, move.boardPos, move.owner, move.card);
+                if (debugMode) { Logger.WriteLine("move[{0}]: [{1}] {2}: {3}", idx, move.boardPos, move.owner, move.card); }
 
                 bool result = testSession.PlaceCard(testGameData, move.card, move.owner, move.boardPos);
                 if (!result)
@@ -737,7 +740,7 @@ namespace FFTriadBuddy
                     throw new Exception(exceptionMsg);
                 }
 
-                result = move.VerifyState(testGameData);
+                result = move.VerifyState(testGameData, debugMode);
                 if (!result)
                 {
                     string exceptionMsg = string.Format("Test {0} failed! Finished with bad state!", testName);

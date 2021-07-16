@@ -689,7 +689,7 @@ namespace FFTriadBuddy
 
         private static Dictionary<string, TriadGameModifier> mapValidationRules;
 
-        public static void RunTest(string configPath)
+        public static void RunTest(string configPath, bool debugMode)
         {
             string testName = System.IO.Path.GetFileNameWithoutExtension(configPath);
 
