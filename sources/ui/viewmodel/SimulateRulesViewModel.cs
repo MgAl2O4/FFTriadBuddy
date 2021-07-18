@@ -166,6 +166,8 @@ namespace FFTriadBuddy.UI
             SyncDeckVM(OverrideRedDeck, deckRedOb.knownCards, deckRedOb.unknownCardPool);
             OverrideRedDeck.NumToSelect = 1;
 
+            GameModel.OnDeckChanged += OnSwapDeckChanged;
+
             activeRuleMask = ETriadGameSpecialMod.SwapCards;
             ActiveRule = Rule.Swap;
             CommandApply = MapCommandApply[ActiveRule];
@@ -178,6 +180,8 @@ namespace FFTriadBuddy.UI
 
         private void ApplyRuleSwap()
         {
+            GameModel.OnDeckChanged -= OnSwapDeckChanged;
+
             int redIdx = OverrideRedDeck.SelectedIndices[0];
             int blueIdx = OverrideBlueDeck.SelectedIndices[0];
 
@@ -185,6 +189,12 @@ namespace FFTriadBuddy.UI
             var blueCardOb = OverrideBlueDeck.Cards[blueIdx].CardModel.cardOb;
 
             TriadGameModifierSwap.StaticSwapCards(GameModel.GameState, blueCardOb, blueIdx, redCardOb, redIdx);
+        }
+
+        private void OnSwapDeckChanged(TriadDeck deckBlueOb)
+        {
+            SyncDeckVM(OverrideBlueDeck, deckBlueOb.knownCards, deckBlueOb.unknownCardPool);
+            OverrideBlueDeck.NumToSelect = 1;
         }
 
         public void RequestRuleXOpen(int count)
