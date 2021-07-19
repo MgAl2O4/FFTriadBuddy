@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows;
 
 namespace FFTriadBuddy.UI
 {
@@ -19,7 +18,7 @@ namespace FFTriadBuddy.UI
                 if (IsPropertyValueValid(value, GetValidFontSizeRange))
                 {
                     PlayerSettingsDB.Get().fontSize = valueFontSize;
-                    UpdateFontSize();
+                    ViewModelServices.AppWindow.SetFontSize(valueFontSize);
                 }
             }
         }
@@ -66,12 +65,25 @@ namespace FFTriadBuddy.UI
             }
         }
 
+        private bool valueAlwaysOnTop = false;
+        public bool ValueAlwaysOnTop
+        {
+            get => valueAlwaysOnTop;
+            set
+            {
+                PropertySetAndNotify(value, ref valueAlwaysOnTop);
+                PlayerSettingsDB.Get().alwaysOnTop = valueAlwaysOnTop;
+                ViewModelServices.AppWindow.SetAlwaysOnTop(valueAlwaysOnTop);
+            }
+        }
+
         public string MainForm_Info_HomePage => loc.strings.MainForm_Info_HomePage;
         public string MainForm_Info_BugReports => loc.strings.MainForm_Info_BugReports;
         public string MainForm_Info_Localization => loc.strings.MainForm_Info_Localization;
         public string MainForm_Info_TranslatorLove => loc.strings.MainForm_Info_TranslatorLove;
         public string MainForm_Info_TranslatorNeeded => loc.strings.MainForm_Info_TranslatorNeeded;
 
+        public string Settings_AlwaysOnTop => loc.strings.Settings_AlwaysOnTop;
         public string Settings_Title => loc.strings.Settings_Title;
         public string Settings_FontSize => loc.strings.Settings_FontSize;
         public string Settings_MarkerDurationCard => loc.strings.Settings_MarkerDurationCard;
@@ -115,6 +127,7 @@ namespace FFTriadBuddy.UI
 
             // avoid setters here
             valueFontSize = settingsDB.fontSize;
+            ValueAlwaysOnTop = settingsDB.alwaysOnTop;
             valueMarkerCard = settingsDB.markerDurationCard;
             valueMarkerSwap = settingsDB.markerDurationSwap;
             valueMarkerCactpot = settingsDB.markerDurationCactpot;
@@ -124,17 +137,6 @@ namespace FFTriadBuddy.UI
         {
             base.RefreshLocalization();
             LocalSaves.RefreshLocalization();
-        }
-
-        private void UpdateFontSize()
-        {
-            var mainWindow = App.Current.MainWindow;
-            mainWindow.FontSize = PlayerSettingsDB.Get().fontSize;
-
-            foreach (Window window in mainWindow.OwnedWindows)
-            {
-                window.FontSize = mainWindow.FontSize;
-            }
         }
 
         private (float, float) GetValidFontSizeRange()

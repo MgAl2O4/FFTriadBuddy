@@ -66,6 +66,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
@@ -77,16 +79,19 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Settings_FontSize}" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="2" Grid.Row="0" Margin="0,0,0,5" Text="{Binding ValueFontSize, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
+                        <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding ValueFontSize, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
 
-                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Settings_MarkerDurationCard}" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding ValueMarkerCard, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Settings_AlwaysOnTop}" HorizontalAlignment="Right"/>
+                        <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding ValueAlwaysOnTop}" VerticalAlignment="Center"/>
 
-                        <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding Settings_MarkerDurationSwap}" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding ValueMarkerSwap, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding Settings_MarkerDurationCard}" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding ValueMarkerCard, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
 
-                        <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding Settings_MarkerDurationCactpot}" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding ValueMarkerCactpot, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding Settings_MarkerDurationSwap}" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding ValueMarkerSwap, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="5" Text="{Binding Settings_MarkerDurationCactpot}" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding ValueMarkerCactpot, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
                     </Grid>
                 </ScrollViewer>
             </GroupBox>

@@ -101,9 +101,16 @@ namespace FFTriadBuddy.UI
         Rectangle GetScreenBounds(Rectangle gameWindowBounds);
     }
 
+    public interface IAppWindowService
+    {
+        void SetFontSize(float value);
+        void SetAlwaysOnTop(bool value);
+    }
+
     public class ViewModelServices
     {
         public static IDialogWindowService DialogWindow;
         public static IOverlayWindowService OverlayWindow;
+        public static IAppWindowService AppWindow;
     }
 }

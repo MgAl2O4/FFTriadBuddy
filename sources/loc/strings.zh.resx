@@ -767,6 +767,9 @@
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>等待蓝方回合</value>
   </data>
+  <data name="Settings_AlwaysOnTop" xml:space="preserve">
+    <value>总在最上面</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>字体大小</value>
   </data>

@@ -767,6 +767,9 @@ Works with Mini Cactpot too :D</value>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>Waiting for blue turn</value>
   </data>
+  <data name="Settings_AlwaysOnTop" xml:space="preserve">
+    <value>Always on top</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>Font size</value>
   </data>

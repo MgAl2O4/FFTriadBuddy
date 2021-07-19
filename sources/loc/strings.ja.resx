@@ -766,6 +766,9 @@
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>自分の手番を待っています</value>
   </data>
+  <data name="Settings_AlwaysOnTop" xml:space="preserve">
+    <value>常に最前面に表示する</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>フォント サイズ</value>
   </data>

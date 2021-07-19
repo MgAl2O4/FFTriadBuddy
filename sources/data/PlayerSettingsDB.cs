@@ -16,6 +16,7 @@ namespace FFTriadBuddy
         public List<TriadDeckNamed> favDecks;
         public bool useCloudStorage;
         public bool useXInput;
+        public bool alwaysOnTop;
         public bool isDirty;
         public string DBPath;
         public string cloudToken;
@@ -46,6 +47,7 @@ namespace FFTriadBuddy
             customHashes = new List<ImageHashData>();
             useCloudStorage = false;
             useXInput = true;
+            alwaysOnTop = false;
             isDirty = false;
             cloudToken = null;
             forcedLanguage = null;
@@ -119,6 +121,7 @@ namespace FFTriadBuddy
                     JsonParser.Value BoolFalse = new JsonParser.BoolValue(false);
 
                     useXInput = (JsonParser.BoolValue)uiOb["xInput", BoolTrue];
+                    alwaysOnTop = (JsonParser.BoolValue)uiOb["onTop", BoolFalse];
                     forcedLanguage = (JsonParser.StringValue)uiOb["lang", null];
 
                     TryGettingFloatValue(uiOb, "fontSize", ref fontSize);
@@ -326,6 +329,7 @@ namespace FFTriadBuddy
                 {
                     jsonWriter.WriteObjectStart("ui");
                     jsonWriter.WriteBool(useXInput, "xInput");
+                    jsonWriter.WriteBool(alwaysOnTop, "onTop");
                     jsonWriter.WriteString(forcedLanguage, "lang");
                     jsonWriter.WriteInt(lastNpcId, "lastNpcId");
                     jsonWriter.WriteFloat(lastWidth, "lastWidth");

@@ -53,12 +53,15 @@ namespace FFTriadBuddy.UI
             {
                 DialogWindowService.Initialize();
                 OverlayWindowService.Initialize();
+                AppWindowService.Initialize();
+
                 canSaveSettings = true;
 
                 var window = new MainWindow();
 
                 var settingsDB = PlayerSettingsDB.Get();
                 window.FontSize = settingsDB.fontSize;
+                window.Topmost = settingsDB.alwaysOnTop;
 
                 if (settingsDB.lastHeight > window.MinHeight) { window.Height = settingsDB.lastHeight; }
                 if (settingsDB.lastWidth > window.MinWidth) { window.Width = settingsDB.lastWidth; }

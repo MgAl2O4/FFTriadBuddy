@@ -33,4 +33,29 @@ namespace FFTriadBuddy.UI
             settingsDB.lastHeight = (float)Height;
         }
     }
+
+    public class AppWindowService : IAppWindowService
+    {
+        public void SetAlwaysOnTop(bool value)
+        {
+            var mainWindow = App.Current.MainWindow;
+            mainWindow.Topmost = value;
+        }
+
+        public void SetFontSize(float value)
+        {
+            var mainWindow = App.Current.MainWindow;
+            mainWindow.FontSize = value;
+
+            foreach (Window window in mainWindow.OwnedWindows)
+            {
+                window.FontSize = mainWindow.FontSize;
+            }
+        }
+
+        public static void Initialize()
+        {
+            ViewModelServices.AppWindow = new AppWindowService();
+        }
+    }
 }
