@@ -306,6 +306,7 @@
     <None Include="loc\strings.ja.resx" />
     <None Include="loc\strings.ko.resx" />
     <None Include="loc\strings.zh.resx" />
+    <None Include="loc\strings.es.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

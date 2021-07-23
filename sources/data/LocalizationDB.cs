@@ -89,7 +89,6 @@ namespace FFTriadBuddy
     public class LocalizationDB
     {
         public readonly static string[] Languages = { "de", "en", "fr", "ja", "cn", "ko" };
-        public readonly static string[] CultureCodes = { "de", "en", "fr", "ja", "zh", "ko" };
         public readonly static string CodeLanguage = "en";
         public readonly static int CodeLanguageIdx = Array.IndexOf(Languages, CodeLanguage);
         public static int UserLanguageIdx = -1;
@@ -169,16 +168,30 @@ namespace FFTriadBuddy
             {
                 newLangIdx = Array.IndexOf(Languages, "cn");
             }
+            else
+            {
+                newLangIdx = CodeLanguageIdx;
+            }
 
+            bool changed = false;
             if (newLangIdx != UserLanguageIdx)
             {
                 UserLanguageIdx = newLangIdx;
-                Logger.WriteLine("Init localization: culture:{0} -> gameData:{1}", cultureCode, Languages[UserLanguageIdx]);
+                changed = true;
+            }
 
+            var locManager = LocResourceManager.Get();
+            if (locManager.UserCultureCode != cultureCode)
+            {
                 CultureInfo.CurrentUICulture = new CultureInfo(cultureCode);
-                LocResourceManager.SetCurrentUserLanguage(CultureInfo.CurrentUICulture, typeof(loc.strings));
+                locManager.SetCurrentUserLanguage(CultureInfo.CurrentUICulture, typeof(loc.strings));
+                changed = true;
+            }
 
+            if (changed)
+            {
                 OnLanguageChanged?.Invoke();
+                Logger.WriteLine("Init localization: culture:{0} -> gameData:{1}, UI:{2}", cultureCode, Languages[UserLanguageIdx], locManager.UserCultureCode);
             }
         }
 

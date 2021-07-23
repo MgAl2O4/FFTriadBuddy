@@ -92,9 +92,10 @@ namespace FFTriadBuddy.UI
             mapFlags = new Dictionary<string, BitmapImage>();
             mapFlags.Add("de", LoadImageFromAsset("flags/flag-germany.png"));
             mapFlags.Add("en", LoadImageFromAsset("flags/flag-usa.png"));
+            mapFlags.Add("es", LoadImageFromAsset("flags/flag-spain.png"));
             mapFlags.Add("fr", LoadImageFromAsset("flags/flag-france.png"));
             mapFlags.Add("ja", LoadImageFromAsset("flags/flag-japan.png"));
-            mapFlags.Add("cn", LoadImageFromAsset("flags/flag-china.png"));
+            mapFlags.Add("zh", LoadImageFromAsset("flags/flag-china.png"));
             mapFlags.Add("ko", LoadImageFromAsset("flags/flag-southkorea.png"));
         }
     }

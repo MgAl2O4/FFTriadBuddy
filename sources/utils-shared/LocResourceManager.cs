@@ -11,6 +11,45 @@ namespace MgAl2O4.Utils
     {
         private static LocResourceManager instance = new LocResourceManager();
         private Dictionary<string, string> strings = new Dictionary<string, string>();
+        
+        private Dictionary<string, string> mapCultureAssets = new Dictionary<string, string>();
+        private string neutralCultureAsset;
+
+        private readonly string neutralCultureCode = "en"; // actual language used in culture neutral file: loc/strings.resx
+        private string userCultureCode;
+        public string UserCultureCode => string.IsNullOrEmpty(userCultureCode) ? neutralCultureCode : userCultureCode;
+
+        public readonly string[] SupportedCultureCodes;
+
+        public LocResourceManager()
+        {
+            var listAssets = AssetManager.Get().ListAssets();
+            foreach (var assetPath in listAssets)
+            {
+                if (assetPath.EndsWith(".resx"))
+                {
+                    string fileName = Path.GetFileName(assetPath).Replace(".resx", "");
+                    int sepPos = fileName.IndexOf('.');
+                    if (sepPos > 0)
+                    {
+                        string locCode = fileName.Substring(sepPos + 1);
+                        mapCultureAssets.Add(locCode, assetPath);
+                    }
+                    else
+                    {
+                        // default to neutral culture resx
+                        neutralCultureAsset = assetPath;
+                    }
+                }
+            }
+
+            var allCodes = new List<string>();
+            allCodes.Add(neutralCultureCode);
+            allCodes.AddRange(mapCultureAssets.Keys);
+            allCodes.Sort();
+
+            SupportedCultureCodes = allCodes.ToArray();
+        }
 
         public static LocResourceManager Get()
         {
@@ -31,29 +70,9 @@ namespace MgAl2O4.Utils
             return resultStr;
         }
 
-        public static void SetCurrentUserLanguage(CultureInfo cultureInfo, Type stringContainerType)
+        public void SetCurrentUserLanguage(CultureInfo cultureInfo, Type stringContainerType)
         {
-            var mapCultureAssets = new Dictionary<string, string>();
-            var listAssets = AssetManager.Get().ListAssets();
-
-            foreach (var assetPath in listAssets)
-            {
-                if (assetPath.EndsWith(".resx"))
-                {
-                    string fileName = Path.GetFileName(assetPath).Replace(".resx", "");
-                    int sepPos = fileName.IndexOf('.');
-                    if (sepPos > 0)
-                    {
-                        string locCode = fileName.Substring(sepPos + 1);
-                        mapCultureAssets.Add(locCode, assetPath);
-                    }
-                    else
-                    {
-                        // default to neutral culture resx
-                        mapCultureAssets.Add("", assetPath);
-                    }
-                }
-            }
+            string firstKnownMatch = null;
 
             var loadList = new List<string>();
             while (cultureInfo != null && cultureInfo != CultureInfo.InvariantCulture && cultureInfo.Name.Length > 0)
@@ -62,16 +81,23 @@ namespace MgAl2O4.Utils
                 {
                     Logger.WriteLine("Found localization resource for: {0}", cultureInfo.Name);
                     loadList.Add(assetPath);
+
+                    if (firstKnownMatch == null)
+                    {
+                        firstKnownMatch = cultureInfo.Name;
+                    }
                 }
 
                 cultureInfo = cultureInfo.Parent;
             }
 
             // always include neutral culture for fallback
-            loadList.Add(mapCultureAssets[""]);
+            loadList.Add(neutralCultureAsset);
 
-            Get().LoadResourceHierarchy(loadList);
-            Get().CopyToStringContainer(stringContainerType);
+            LoadResourceHierarchy(loadList);
+            CopyToStringContainer(stringContainerType);
+
+            userCultureCode = firstKnownMatch;
         }
 
         public void LoadResourceHierarchy(List<string> paths)

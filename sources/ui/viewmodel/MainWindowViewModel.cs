@@ -1,4 +1,6 @@
 ﻿using MgAl2O4.Utils;
+using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -34,7 +36,7 @@ namespace FFTriadBuddy.UI
         private bool isUpdateNotifyVisible = false;
         public bool IsUpdateNotifyVisible { get => isUpdateNotifyVisible; set => PropertySetAndNotify(value, ref isUpdateNotifyVisible); }
 
-        public BitmapImage LanguageFlag => IconDB.Get().mapFlags[LocalizationDB.Languages[LocalizationDB.UserLanguageIdx]];
+        public BitmapImage LanguageFlag => IconDB.Get().mapFlags[LocResourceManager.Get().UserCultureCode];
         public ICommand CommandChangeLanguage { get; private set; }
         public ICommand CommandHideUpdateNotify { get; private set; }
         public ICommand CommandDebugScreenshot { get; private set; }
@@ -92,11 +94,16 @@ namespace FFTriadBuddy.UI
 
         private void SwitchToNextLanguage(object dummyParam)
         {
-            int newLang = (LocalizationDB.UserLanguageIdx + 1) % LocalizationDB.Languages.Length;
-            string newLangCode = LocalizationDB.CultureCodes[newLang];
+            LocResourceManager locManager = LocResourceManager.Get();
+            string[] cultureCodes = locManager.SupportedCultureCodes.ToArray();
 
-            PlayerSettingsDB.Get().forcedLanguage = newLangCode;
-            LocalizationDB.SetCurrentUserLanguage(newLangCode);
+            int currentIdx = Array.IndexOf(cultureCodes, locManager.UserCultureCode);
+            int nextValidIdx = (currentIdx < 0) ? 0 : ((currentIdx + 1) % cultureCodes.Length);
+
+            string newCultureCode = cultureCodes[nextValidIdx];
+
+            PlayerSettingsDB.Get().forcedLanguage = newCultureCode;
+            LocalizationDB.SetCurrentUserLanguage(newCultureCode);
         }
 
         public void SwitchToPage(PageType page)
