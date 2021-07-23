@@ -250,13 +250,13 @@
     <value>显示备份</value>
   </data>
   <data name="LocalSaves_Title" xml:space="preserve">
-    <value>本地救球</value>
+    <value>本地存档</value>
   </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
-    <value>图示</value>
+    <value>图标视图</value>
   </data>
   <data name="MainForm_Cards_ListTitle" xml:space="preserve">
-    <value>表格</value>
+    <value>列表视图</value>
   </data>
   <data name="MainForm_Cards_List_ColumnId" xml:space="preserve">
     <value>编号</value>

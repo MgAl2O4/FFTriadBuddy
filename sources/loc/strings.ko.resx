@@ -240,6 +240,18 @@
   <data name="Game_WindowNamePrefix" xml:space="preserve">
     <value>파이널 판타지</value>
   </data>
+  <data name="LocalSaves_Export" xml:space="preserve">
+    <value>Export settings</value>
+  </data>
+  <data name="LocalSaves_Import" xml:space="preserve">
+    <value>Import settings</value>
+  </data>
+  <data name="LocalSaves_ShowBackupFolder" xml:space="preserve">
+    <value>Show backups</value>
+  </data>
+  <data name="LocalSaves_Title" xml:space="preserve">
+    <value>Local saves</value>
+  </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
     <value>아이콘</value>
   </data>
@@ -755,6 +767,9 @@ Works with Mini Cactpot too :D</value>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
     <value>Waiting for blue turn</value>
   </data>
+  <data name="Settings_AlwaysOnTop" xml:space="preserve">
+    <value>Always on top</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>Font size</value>
   </data>
@@ -766,5 +781,8 @@ Works with Mini Cactpot too :D</value>
   </data>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
     <value>Marker duration: swap</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Settings</value>
   </data>
 </root>
