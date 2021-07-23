@@ -32,8 +32,7 @@ Bug happens. Whenever it's related to Play: Screenshot mode not recognizing imag
 
 ## Translation
 
-Localization of game data (cards, npcs, rules, tournaments, etc) is created from client datamining and is more or less automatic.  
-Tool's UI is now separate from it, but relies on people to contribute translations.
+Localization of game data (cards, npcs, rules, tournaments, etc) is created from client datamining and is more or less automatic. Tool's UI is now separate from it, but relies on people to contribute translations.
 
 You can help with translation here: https://crowdin.com/project/fftriadbuddy
 
