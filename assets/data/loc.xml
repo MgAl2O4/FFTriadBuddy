@@ -326,13 +326,13 @@
   <loc type="3" id="302" de="Saphir-Waffe" en="The Sapphire Weapon" fr="Arme Saphir" ja="サファイアウェポン" cn="蓝宝石神兵" ko="사파이어 웨폰" />
   <loc type="3" id="303" de="2P" en="2P" fr="2P" ja="２Ｐ" cn="2P" ko="2P" />
   <loc type="3" id="304" de="Shadowbringers Krieger des Lichts" en="Shadowbringers Warrior of Light" fr="Guerrier de la Lumière (Shadowbringers)" ja="ウォーリア・オブ・ライト（漆黒）" cn="光之战士（暗影）" ko="빛의 전사(칠흑)" />
-  <loc type="3" id="305" de="Blaubert Veilchenblau" en="The Great Azuro" fr="Bleuet masqué" ja="マスク・ザ・ブルー" cn="蓝色假面" ko="" />
+  <loc type="3" id="305" de="Blaubert Veilchenblau" en="The Great Azuro" fr="Bleuet masqué" ja="マスク・ザ・ブルー" cn="蓝色假面" ko="청가면" />
   <loc type="3" id="306" de="Muttersau" en="Mother Porxie" fr="mère porxie" ja="マザーポークシー" cn="仙子猪之母" ko="마더 포크시" />
-  <loc type="3" id="307" de="Trinität der Sucher" en="Trinity Seeker" fr="trinité soudée" ja="トリニティ・シーカー" cn="求道之三位一体" ko="" />
-  <loc type="3" id="308" de="Trinität der Eingeschworenen" en="Trinity Avowed" fr="trinité féale" ja="トリニティ・アヴァウド" cn="誓约之三位一体" ko="" />
-  <loc type="3" id="309" de="Azulmagia" en="Azulmagia" fr="Azulmagia" ja="アポカリョープス" cn="启示者" ko="" />
-  <loc type="3" id="310" de="Siegfried" en="Siegfried" fr="Siegfried" ja="ジークフリード" cn="齐格弗里德" ko="" />
-  <loc type="3" id="311" de="Gogo der Mime" en="Gogo, Master of Mimicry" fr="Gogo le mime" ja="ものまね士ゴゴ" cn="模仿师格格" ko="" />
+  <loc type="3" id="307" de="Trinität der Sucher" en="Trinity Seeker" fr="trinité soudée" ja="トリニティ・シーカー" cn="求道之三位一体" ko="탐구의 삼위일체" />
+  <loc type="3" id="308" de="Trinität der Eingeschworenen" en="Trinity Avowed" fr="trinité féale" ja="トリニティ・アヴァウド" cn="誓约之三位一体" ko="맹세의 삼위일체" />
+  <loc type="3" id="309" de="Azulmagia" en="Azulmagia" fr="Azulmagia" ja="アポカリョープス" cn="启示者" ko="아포칼리옵스" />
+  <loc type="3" id="310" de="Siegfried" en="Siegfried" fr="Siegfried" ja="ジークフリード" cn="齐格弗里德" ko="지크프리드" />
+  <loc type="3" id="311" de="Gogo der Mime" en="Gogo, Master of Mimicry" fr="Gogo le mime" ja="ものまね士ゴゴ" cn="模仿师格格" ko="흉내쟁이 고고" />
   <loc type="3" id="312" de="Smaragd-Waffe" en="The Emerald Weapon" fr="Arme Émeraude" ja="エメラルドウェポン" cn="绿宝石神兵" ko="에메랄드 웨폰" />
   <loc type="3" id="313" de="Ryne" en="Ryne" fr="Ryne" ja="リーン" cn="琳" ko="린" />
   <loc type="3" id="314" de="Gaia" en="Gaia" fr="Gaïa" ja="ガイア" cn="盖娅" ko="가이아" />
@@ -448,7 +448,7 @@
   <loc type="4" id="98" de="desertiert[a] Legionär" en="furtive former imperial" fr="soldat impérial plein d'entrain" ja="威勢のいい帝国兵" cn="很有气势的帝国兵" ko="주눅들지 않는 제국병" />
   <loc type="4" id="99" de="Arsieu" en="Arsieu" fr="Arsieu" ja="アルシウ" cn="阿尔希乌" ko="아르시우" />
   <loc type="4" id="100" de="Lewto-Sue" en="Lewto-Sue" fr="Lewto-Sue" ja="リュート・スー" cn="琉托·素" ko="류토 수" />
-  <loc type="4" id="101" de="Droyn" en="Droyn" fr="Droyn" ja="ドロイン" cn="德罗因" ko="" />
+  <loc type="4" id="101" de="Droyn" en="Droyn" fr="Droyn" ja="ドロイン" cn="德罗因" ko="드로인" />
   <loc type="4" id="102" de="Sladkey" en="Sladkey" fr="Sladkey" ja="スラッドキー" cn="" ko="" />
   <loc type="5" id="1" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
   <loc type="5" id="2" de="Obere Decks" en="Limsa Lominsa Upper Decks" fr="Limsa Lominsa - Le Tillac" ja="リムサ・ロミンサ：上甲板層" cn="利姆萨·罗敏萨上层甲板" ko="림사 로민사 상층 갑판" />
