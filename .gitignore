@@ -5,7 +5,7 @@ sources/googleapi/GoogleClientIdentifiers.cs
 test/*
 datasource/*
 releases/*
-ml/patternMatch/data/*
+ml/*/data/*
 ml/.vscode/*
 !datasource/!Start.bat
 

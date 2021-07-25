@@ -1,30 +1,16 @@
-import numpy as np
+import random
+from .agent import Agent
 
-class AgentRandom:
+class AgentRandom(Agent):
     def __init__(self, game):
-        pass
+        self.randGen = random.Random()
+
+    def setSeed(self, seedValue):
+        self.randGen = random.Random(seedValue)
 
     def findAction(self, game, state):
         actions = game.getAllowedActions(state)
-        return np.random.choice(actions)
+        return self.randGen.choice(actions)
 
     def findTrainingAction(self, game, state):
         return self.findAction(game, state)
-
-    def onTrainingGameStart(self, game, playerId):
-        pass
-
-    def onTrainingGameEnd(self, game, playerId):
-        pass
-
-    def onTrainingStep(self, game, playerId, state, action, nextState, reward):
-        pass
-
-    def Train(self):
-        pass
-
-    def Save(self, name):
-        pass
-
-    def Load(self, name):
-        pass

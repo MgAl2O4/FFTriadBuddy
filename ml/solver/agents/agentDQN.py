@@ -1,18 +1,22 @@
 import os
+import math
 import numpy as np
+from .agent import Agent
 from utils.trainingMemory import TrainingMemoryCircular
 from utils.estimatorTorch import EstimatorModel
 
-class AgentDQN:
+# Deep Q Network
+#
+class AgentDQN(Agent):
     def __init__(self, game):
-        self.memorySize = 100 * 1000
-        self.batchSize = 100
+        self.memorySize = 1 * 1000 * 1000
+        self.batchSize = 256
         self.numLayersHidden = [500, 500]
-        self.learningRate = 0.001
+        self.learningRate = 0.0001
         self.discountFactor = 0.99
         self.epsilonStart = 1
         self.epsilonEnd = 0.1
-        self.epsilonDecrement = 0.001
+        self.epsilonDecay = 2000
 
         self.numActions = game.getMaxActions()
         numInputs = len(game.getState(0))
@@ -21,6 +25,9 @@ class AgentDQN:
         self.estimatorTarget = EstimatorModel(numInputs, self.numLayersHidden, self.numActions, self.learningRate)
         self.replayMemory = TrainingMemoryCircular(self.memorySize)
         self.epsilon = self.epsilonStart
+        self.numSteps = 0
+        self.historyLoss = []
+        self.historyReward = []
         self.trainedOnce = False
 
 
@@ -37,32 +44,43 @@ class AgentDQN:
 
         return self.findAction(game, state)
 
-    def onTrainingGameStart(self, game, playerId):
-        pass
-
-    def onTrainingGameEnd(self, game, playerId):
-        pass
-
     def onTrainingStep(self, game, playerId, state, action, nextState, reward):
-        self.epsilon = max(self.epsilonEnd, self.epsilon - self.epsilonDecrement)
+        self.numSteps += 1
+        self.epsilon = self.epsilonEnd + ((self.epsilonStart - self.epsilonEnd) * math.exp(-1.0 * self.numSteps / self.epsilonDecay))
 
         memorySample = (state, action, nextState, reward, game.isFinished())
+        self.historyReward.append(reward)
         self.replayMemory.add(memorySample)
         if len(self.replayMemory) >= self.batchSize:
             self.trainOnBatch(game)
 
-    def Train(self):
+    def train(self):
         updateTargetCheckpoint = 'updateTarget.tmp'
         self.estimatorQ.save(updateTargetCheckpoint)
         self.estimatorTarget.load(updateTargetCheckpoint)
         os.remove(updateTargetCheckpoint)
+        self.trainAvgLoss = np.average(self.historyLoss)
+        self.trainAvgReward = np.average(self.historyReward)
+        self.historyLoss = []
+        self.historyReward = []
 
-    def Save(self, name):
+    def save(self, name):
         self.estimatorQ.save(name)
 
-    def Load(self, name):
+    def load(self, name):
         self.estimatorQ.load(name)
         self.estimatorTarget.load(name)
+
+    def getTrainingDetails(self):
+        return {
+            'epsilon': self.epsilon,
+            'memory': len(self.replayMemory) / self.replayMemory.capacity,
+            'loss': self.trainAvgLoss,
+            'reward': self.trainAvgReward,
+        }
+
+    def generateModelCode(self, name):
+        self.estimatorQ.generateModelCode(name)
 
     def sanitizeActions(self, game, state, actionValues, badValue = -np.inf):
         maskedValues = badValue * np.ones(self.numActions, dtype=float)
@@ -80,7 +98,9 @@ class AgentDQN:
 
         bestActions = np.argmax(targets, axis=1)
         nextTargets = self.estimatorTarget.predict(nextStates)
-        updateTarget = rewards + np.invert(dones).astype(np.float) * self.discountFactor * nextTargets[np.arange(self.batchSize), bestActions]
+        predictedRewards = rewards + (np.invert(dones).astype(np.float) * self.discountFactor * nextTargets[np.arange(self.batchSize), bestActions])
 
-        self.estimatorQ.fit(states, actions, updateTarget)
+        loss = self.estimatorQ.fit(states, actions, predictedRewards)
+        self.historyLoss.append(loss)
+
         self.trainedOnce = True
