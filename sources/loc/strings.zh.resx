@@ -768,7 +768,7 @@
     <value>等待蓝方回合</value>
   </data>
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
-    <value>总在最上面</value>
+    <value>窗口总在最前</value>
   </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>字体大小</value>

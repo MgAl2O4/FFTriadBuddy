@@ -127,7 +127,7 @@
     <value>L:</value>
   </data>
   <data name="AdjustForm_CardList" xml:space="preserve">
-    <value>Adjusted:</value>
+    <value>조정됨:</value>
   </data>
   <data name="AdjustForm_CardRight" xml:space="preserve">
     <value>R:</value>
@@ -145,64 +145,64 @@
     <value>거리:</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_Hidden" xml:space="preserve">
-    <value>Hidden</value>
+    <value>숨김</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_Locked" xml:space="preserve">
-    <value>Locked</value>
+    <value>잠김</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_None" xml:space="preserve">
-    <value>None</value>
+    <value>없음</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_PlacedBlue" xml:space="preserve">
-    <value>Placed: Blue</value>
+    <value>파란색 차례</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_PlacedRed" xml:space="preserve">
-    <value>Placed: Red</value>
+    <value>빨간색 차례</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_Visible" xml:space="preserve">
-    <value>Visible</value>
+    <value>보이기</value>
   </data>
   <data name="AdjustForm_Dynamic_Digit_Default" xml:space="preserve">
     <value>자동</value>
   </data>
   <data name="AdjustForm_Dynamic_Digit_Override" xml:space="preserve">
-    <value>custom</value>
+    <value>사용자 정의</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_Classifier" xml:space="preserve">
-    <value>&lt;= Classifier based</value>
+    <value>&lt;= 분류 기반</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_DefaultHint" xml:space="preserve">
-    <value>&lt;= Lower is more accurate</value>
+    <value>&lt;= 낮은쪽이 더 정확</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_Exact" xml:space="preserve">
-    <value>&lt;= Exact match</value>
+    <value>&lt;= 정확히 일치</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_NotAvail" xml:space="preserve">
-    <value>N/A</value>
+    <value>해당 없음</value>
   </data>
   <data name="AdjustForm_Dynamic_UnknownOwner" xml:space="preserve">
-    <value>unknown</value>
+    <value>알 수 없음</value>
   </data>
   <data name="AdjustForm_HashList" xml:space="preserve">
-    <value>Detect:</value>
+    <value>감지:</value>
   </data>
   <data name="AdjustForm_SaveButton" xml:space="preserve">
     <value>저장</value>
   </data>
   <data name="AdjustForm_Title" xml:space="preserve">
-    <value>Adjust detection</value>
+    <value>조정 감지함</value>
   </data>
   <data name="App_Title" xml:space="preserve">
-    <value>FF Triad Buddy</value>
+    <value>FF 트라이어드 버디</value>
   </data>
   <data name="DeckCtrl_CtxMenu_LockForOptimization" xml:space="preserve">
-    <value>Lock card for deck optimization</value>
+    <value>덱 최적화를 위한 카드 잠금</value>
   </data>
   <data name="DeckCtrl_CtxMenu_PickCard" xml:space="preserve">
-    <value>Pick card:</value>
+    <value>카드 선택:</value>
   </data>
   <data name="DeckCtrl_CtxMenu_UseOnlyOwned" xml:space="preserve">
-    <value>Use only owned cards (click to change)</value>
+    <value>갖고 있는 카드만 사용 (눌러서 변경)</value>
   </data>
   <data name="FavDeckCtrl_Edit" xml:space="preserve">
     <value>편집</value>
@@ -211,25 +211,25 @@
     <value>추가</value>
   </data>
   <data name="FavDeckForm_Dynamic_AutoName" xml:space="preserve">
-    <value>Fav #{0}</value>
+    <value>즐겨찾기 #{0}</value>
   </data>
   <data name="FavDeckForm_Dynamic_RemoveMsg" xml:space="preserve">
-    <value>Favorite deck will be removed, do you want to continue?</value>
+    <value>즐겨찾기한 덱을 제거합니다, 확실한가요?</value>
   </data>
   <data name="FavDeckForm_Dynamic_UpdateButton" xml:space="preserve">
-    <value>Update</value>
+    <value>업데이트</value>
   </data>
   <data name="FavDeckForm_Info" xml:space="preserve">
-    <value>Favorite deck, click card for options:</value>
+    <value>즐겨찾기 덱, 카드를 눌러서 설정:</value>
   </data>
   <data name="FavDeckForm_Name" xml:space="preserve">
-    <value>Short name:</value>
+    <value>짧은 이름:</value>
   </data>
   <data name="FavDeckForm_RemoveButton" xml:space="preserve">
     <value>제거</value>
   </data>
   <data name="FavDeckForm_Title" xml:space="preserve">
-    <value>Edit favorite deck</value>
+    <value>즐겨찾기 덱 편집</value>
   </data>
   <data name="Game_ProcessName_DX11" xml:space="preserve">
     <value>ffxiv_dx11</value>
@@ -241,16 +241,16 @@
     <value>파이널 판타지</value>
   </data>
   <data name="LocalSaves_Export" xml:space="preserve">
-    <value>Export settings</value>
+    <value>설정 내보내기</value>
   </data>
   <data name="LocalSaves_Import" xml:space="preserve">
-    <value>Import settings</value>
+    <value>설정 가져오기</value>
   </data>
   <data name="LocalSaves_ShowBackupFolder" xml:space="preserve">
-    <value>Show backups</value>
+    <value>백업 목록 보기</value>
   </data>
   <data name="LocalSaves_Title" xml:space="preserve">
-    <value>Local saves</value>
+    <value>이 컴퓨터에 저장</value>
   </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
     <value>아이콘</value>
@@ -262,46 +262,46 @@
     <value>#</value>
   </data>
   <data name="MainForm_Cards_List_ColumnName" xml:space="preserve">
-    <value>Name</value>
+    <value>이름</value>
   </data>
   <data name="MainForm_Cards_List_ColumnOwned" xml:space="preserve">
-    <value>Owned</value>
+    <value>갖고있음</value>
   </data>
   <data name="MainForm_Cards_List_ColumnPower" xml:space="preserve">
-    <value>Power</value>
+    <value>성능</value>
   </data>
   <data name="MainForm_Cards_List_ColumnRarity" xml:space="preserve">
-    <value>Rarity</value>
+    <value>레어도</value>
   </data>
   <data name="MainForm_Cards_List_ColumnType" xml:space="preserve">
-    <value>Type</value>
+    <value>구분</value>
   </data>
   <data name="MainForm_Cards_NumOwned" xml:space="preserve">
-    <value>Number of owned cards:</value>
+    <value>갖고 있는 카드 개수:</value>
   </data>
   <data name="MainForm_Cards_Title" xml:space="preserve">
-    <value>Cards</value>
+    <value>카드</value>
   </data>
   <data name="MainForm_CtxMenu_CardInfo_FindOnline" xml:space="preserve">
-    <value>Find online</value>
+    <value>온라인에서 찾기</value>
   </data>
   <data name="MainForm_CtxMenu_CardInfo_NpcReward" xml:space="preserve">
-    <value>Npc reward:</value>
+    <value>NPC 보상:</value>
   </data>
   <data name="MainForm_CtxMenu_FindCard" xml:space="preserve">
-    <value>Find card:</value>
+    <value>카드 찾기:</value>
   </data>
   <data name="MainForm_CtxMenu_FindNpc" xml:space="preserve">
-    <value>Find npc:</value>
+    <value>NPC 찾기:</value>
   </data>
   <data name="MainForm_CtxMenu_Learn_Adjust" xml:space="preserve">
-    <value>Adjust...</value>
+    <value>조정...</value>
   </data>
   <data name="MainForm_CtxMenu_Learn_Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>지우기</value>
   </data>
   <data name="MainForm_CtxMenu_SelectNpc_Rewards" xml:space="preserve">
-    <value>Rewards (click to add/remove)</value>
+    <value>보상 (눌러서 추가/삭제)</value>
   </data>
   <data name="MainForm_CtxMenu_SelectNpc_Select" xml:space="preserve">
     <value>Select npc to play</value>
@@ -433,135 +433,135 @@
     <value>lost</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_EndGame_BlueWin" xml:space="preserve">
-    <value>yay!</value>
+    <value>이겼다!</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_LastCardHint" xml:space="preserve">
-    <value>[Place last red card to trigger modifier]</value>
+    <value>[수정 트리거를 위한 마지막 빨간 카드 놓기]</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_RedStartButton" xml:space="preserve">
-    <value>Red start: drag &amp; drop card on board</value>
+    <value>빨강 시작: 카드를 보드에 끌어다 놓으세요</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
-    <value>Select one card from each deck to swap</value>
+    <value>서로 바꿀 카드를 각각의 덱에서 고르세요</value>
   </data>
   <data name="MainForm_Info_BugReports" xml:space="preserve">
-    <value>Bug reports:</value>
+    <value>버그 보고:</value>
   </data>
   <data name="MainForm_Info_HomePage" xml:space="preserve">
-    <value>Project home page:</value>
+    <value>프로젝트 웹사이트:</value>
   </data>
   <data name="MainForm_Info_Localization" xml:space="preserve">
-    <value>UI localization:</value>
+    <value>UI 지역화:</value>
   </data>
   <data name="MainForm_Info_Title" xml:space="preserve">
-    <value>Info &amp; Settings</value>
+    <value>정보 &amp; 설정</value>
   </data>
   <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
-    <value>Thanks to everyone who contributed their translations! You're awesome!</value>
+    <value>모든 번역 제공자분들에게 감사드립니다! 당신은 대단해요!</value>
   </data>
   <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
-    <value>( volunteers still needed ;) )</value>
+    <value>(봉사자가 아직 필요해요 😵)</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnCompleted" xml:space="preserve">
-    <value>Completed</value>
+    <value>완료함</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnLocation" xml:space="preserve">
-    <value>Location</value>
+    <value>위치</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnName" xml:space="preserve">
-    <value>Name</value>
+    <value>이름</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnPower" xml:space="preserve">
-    <value>Power</value>
+    <value>파워</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnReward" xml:space="preserve">
-    <value>Reward</value>
+    <value>보상</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnRules" xml:space="preserve">
-    <value>Rules</value>
+    <value>규칙</value>
   </data>
   <data name="MainForm_Npcs_NumKnown" xml:space="preserve">
-    <value>Number of npcs with cards:</value>
+    <value>카드를 갖고 있는 NPC 수:</value>
   </data>
   <data name="MainForm_Npcs_Title" xml:space="preserve">
-    <value>Npcs</value>
+    <value>NPC들</value>
   </data>
   <data name="MainForm_Screenshot_CurrentState" xml:space="preserve">
-    <value>Current state:</value>
+    <value>현재 상태:</value>
   </data>
   <data name="MainForm_Screenshot_History_CardsColumnDetection" xml:space="preserve">
-    <value>Last detection</value>
+    <value>마지막 감지</value>
   </data>
   <data name="MainForm_Screenshot_History_CardsColumnSides" xml:space="preserve">
-    <value>Numbers [U-L-D-R]</value>
+    <value>숫자 [U-L-D-R]</value>
   </data>
   <data name="MainForm_Screenshot_History_CardsColumnType" xml:space="preserve">
-    <value>Type</value>
+    <value>형식</value>
   </data>
   <data name="MainForm_Screenshot_History_HashColumnDetection" xml:space="preserve">
-    <value>Last detection</value>
+    <value>마지막 감지</value>
   </data>
   <data name="MainForm_Screenshot_History_HashColumnType" xml:space="preserve">
-    <value>Type</value>
+    <value>형식</value>
   </data>
   <data name="MainForm_Screenshot_InfoLines" xml:space="preserve">
-    <value>Rules:
-- game must be in Windowed or Borderless Windowed mode
-- UI: set scale to 100%, use dark scheme
-- npc must be selected
-- capture during Blue turn, after all card animations finished (!!!)
+    <value>규칙:
+- 게임을 창 또는 전체 창 모드로 실행해야 합니다.
+- UI: 배율은 100%로, 어두운 구성표로 사용합니다.
+- NPC를 선택해야 합니다.
+- 모든 카드 애니메이션이 완료된 후, 파랑 턴에 갈무리 합니다 (!!!)
 
-Gamepad: press both trigger buttons to capture
+게임 패드: 트리거 버튼을 동시에 눌러 갈무리 할 수 있습니다
 
-Works with Mini Cactpot too :D</value>
+미니 복권에서도 쓸 수 있습니다! 🥰</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DetectList" xml:space="preserve">
-    <value>Detect:</value>
+    <value>감지:</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DiscardAllButton" xml:space="preserve">
-    <value>Discard All</value>
+    <value>모두 버리기</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DiscardAllInfo" xml:space="preserve">
-    <value>&lt;&lt; Resets scanner state</value>
+    <value>&lt;&lt; 스캔 상태 초기화</value>
   </data>
   <data name="MainForm_Screenshot_Learn_PendingPlural" xml:space="preserve">
-    <value>(there are {0} more pending)</value>
+    <value>({0} 이상 대기중)</value>
   </data>
   <data name="MainForm_Screenshot_Learn_PendingSingular" xml:space="preserve">
-    <value>(there is 1 more pending)</value>
+    <value>(1 이상 대기중)</value>
   </data>
   <data name="MainForm_Screenshot_Learn_SaveButton" xml:space="preserve">
-    <value>Save</value>
+    <value>저장</value>
   </data>
   <data name="MainForm_Screenshot_Learn_SourceImage" xml:space="preserve">
-    <value>Source image:</value>
+    <value>소스 이미지:</value>
   </data>
   <data name="MainForm_Screenshot_Learn_Type" xml:space="preserve">
-    <value>Type:</value>
+    <value>형식:</value>
   </data>
   <data name="MainForm_Screenshot_ListHint" xml:space="preserve">
     <value>^ Right click on lists for options</value>
   </data>
   <data name="MainForm_Screenshot_RemovePatternsButton" xml:space="preserve">
-    <value>Remove local patterns</value>
+    <value>로컬 패턴 해제</value>
   </data>
   <data name="MainForm_Screenshot_RemovePatternsTitle" xml:space="preserve">
     <value>Use to clear all custom patterns and start from scratch:</value>
   </data>
   <data name="MainForm_Screenshot_Title" xml:space="preserve">
-    <value>Play: Screenshot</value>
+    <value>플레이: 스크린샷</value>
   </data>
   <data name="MainForm_Setup_Cloud_AuthButton" xml:space="preserve">
-    <value>Login:</value>
+    <value>로그인:</value>
   </data>
   <data name="MainForm_Setup_Cloud_Desc" xml:space="preserve">
-    <value>Save in Google:</value>
+    <value>구글에 저장:</value>
   </data>
   <data name="MainForm_Setup_Deck_OptimizeAbortButton" xml:space="preserve">
-    <value>Abort</value>
+    <value>중단</value>
   </data>
   <data name="MainForm_Setup_Deck_OptimizeStartButton" xml:space="preserve">
-    <value>Optimize deck for NPC</value>
+    <value>NPC용 덱 최적화</value>
   </data>
   <data name="MainForm_Setup_Deck_Title" xml:space="preserve">
     <value>Active deck, click card for options:</value>
@@ -630,79 +630,79 @@ Works with Mini Cactpot too :D</value>
     <value>Apply rule</value>
   </data>
   <data name="MainForm_Simulate_Game_KnownCards" xml:space="preserve">
-    <value>Known cards:</value>
+    <value>알고 있는 카드:</value>
   </data>
   <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
-    <value>[Drag &amp; drop cards on board]</value>
+    <value>[카드를 보드에 끌어다 놓기]</value>
   </data>
   <data name="MainForm_Simulate_Game_SkipRuleButton" xml:space="preserve">
-    <value>Skip</value>
+    <value>건너뛰기</value>
   </data>
   <data name="MainForm_Simulate_Game_SpecialRule" xml:space="preserve">
-    <value>Special Rule &gt;&gt;</value>
+    <value>특별한 룰 &gt;&gt;</value>
   </data>
   <data name="MainForm_Simulate_Game_UnknownCards" xml:space="preserve">
-    <value>Unknown cards remaining: {0}</value>
+    <value>남은 알 수 없는 카드: {0}</value>
   </data>
   <data name="MainForm_Simulate_Open_Hint" xml:space="preserve">
-    <value>Select visible cards:</value>
+    <value>보이는 카드 선택:</value>
   </data>
   <data name="MainForm_Simulate_Random_Info" xml:space="preserve">
-    <value>Adjust randomized deck :(</value>
+    <value>임의 덱 조정 :(</value>
   </data>
   <data name="MainForm_Simulate_ResetButton" xml:space="preserve">
-    <value>Reset</value>
+    <value>초기화</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule1" xml:space="preserve">
-    <value>Pick roulette rule #1</value>
+    <value>루렛 규칙 선택 #1</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule2" xml:space="preserve">
-    <value>Pick roulette rule #2</value>
+    <value>루렛 규칙 선택 #2</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule3" xml:space="preserve">
-    <value>Pick roulette rule #3</value>
+    <value>루렛 규칙 선택 #3</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule4" xml:space="preserve">
-    <value>Pick roulette rule #4</value>
+    <value>루렛 규칙 선택 #4</value>
   </data>
   <data name="MainForm_Simulate_RuleList" xml:space="preserve">
-    <value>Current rules:</value>
+    <value>현재 규칙:</value>
   </data>
   <data name="MainForm_Simulate_Title" xml:space="preserve">
-    <value>Play: Simulate</value>
+    <value>플레이: 시뮬레이션</value>
   </data>
   <data name="MainForm_Simulate_UndoRedMoveButton" xml:space="preserve">
-    <value>Undo last Red move</value>
+    <value>마지막 빨강 이동 물리기</value>
   </data>
   <data name="MainForm_Simulate_WinChance" xml:space="preserve">
-    <value>Win chance:</value>
+    <value>승리 찬스:</value>
   </data>
   <data name="MainForm_UpdateNotify" xml:space="preserve">
-    <value>New version downloaded, please restart program to finish update. Click here to hide.</value>
+    <value>새 버전으로 업데이트하려면 다시 시작하세요. 여기를 누르면 보이지 않습니다</value>
   </data>
   <data name="OverlayForm_Capture_AutoScan" xml:space="preserve">
-    <value>Auto scan</value>
+    <value>자동 스캔</value>
   </data>
   <data name="OverlayForm_Capture_Button" xml:space="preserve">
-    <value>Capture</value>
+    <value>갈무리</value>
   </data>
   <data name="OverlayForm_Capture_Details" xml:space="preserve">
-    <value>Show details</value>
+    <value>자세히 보기</value>
   </data>
   <data name="OverlayForm_Capture_Status" xml:space="preserve">
-    <value>Status</value>
+    <value>상태</value>
   </data>
   <data name="OverlayForm_CardInfo_Swapped" xml:space="preserve">
-    <value>SWAPPED</value>
+    <value>서로바뀜</value>
   </data>
   <data name="OverlayForm_DeckInfo_Mismatch" xml:space="preserve">
-    <value>Blue deck is not matching Setup page! Solver needs to observe a few games to guess correct one.</value>
+    <value>파란 덱이 설정 페이지와 다릅니다! 추측해보려면 몇몇 게임을 관찰할 필요가 있습니다.</value>
   </data>
   <data name="OverlayForm_Details_Npc" xml:space="preserve">
     <value>NPC: {0}</value>
   </data>
   <data name="OverlayForm_Details_RedDeck" xml:space="preserve">
-    <value>Red deck details:</value>
+    <value>빨강 덱 자세히 보기:</value>
   </data>
   <data name="OverlayForm_Details_RedInfo" xml:space="preserve">
     <value>&lt; Potential red cards, not including visible ones below:</value>
@@ -714,75 +714,75 @@ Works with Mini Cactpot too :D</value>
     <value>Var placed: {0}</value>
   </data>
   <data name="OverlayForm_Details_Rules" xml:space="preserve">
-    <value>Rules: {0}</value>
+    <value>규칙: {0}</value>
   </data>
   <data name="OverlayForm_Details_ScanId" xml:space="preserve">
     <value>Scan Id: {0}</value>
   </data>
   <data name="OverlayForm_Dynamic_NpcUnknown" xml:space="preserve">
-    <value>unknown</value>
+    <value>알 수 없음</value>
   </data>
   <data name="OverlayForm_Dynamic_RulesWaiting" xml:space="preserve">
-    <value>npc changed, waiting for scan...</value>
+    <value>NPC 변경됨, 스캔을 기다립니다...</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_ActiveTurn" xml:space="preserve">
-    <value>Ready (active turn!)</value>
+    <value>준비완료 (현재 턴!)</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_AutoScanMouseOverBoard" xml:space="preserve">
-    <value>Move cursor away from scan zone!</value>
+    <value>스캔 구역에 마우스가 있습니다. 비켜주세요.</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_CactpotReady" xml:space="preserve">
-    <value>Mini cactpot: Ready</value>
+    <value>미니 복권: 준비됨</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_FailedCardMatching" xml:space="preserve">
-    <value>Unknown cards! Check Play:Screenshot for details</value>
+    <value>알 수 없는 카드! 플레이 확인: 스크린샷으로 세부사항</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingCards" xml:space="preserve">
-    <value>Can't find blue deck</value>
+    <value>파랑 덱을 찾을 수 없습니다</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingGameProcess" xml:space="preserve">
-    <value>Game is not running</value>
+    <value>게임을 찾을 수 없습니다</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingGameWindow" xml:space="preserve">
-    <value>Can't find game window</value>
+    <value>게임 윈도우를 찾을 수 없습니다</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingGrid" xml:space="preserve">
-    <value>Can't find board</value>
+    <value>보드를 찾을 수 없습니다</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_NoInputImage" xml:space="preserve">
-    <value>Can't retrieve image to analyze</value>
+    <value>분석할 이미지를 불러올 수 없습니다</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_NoScannerMatch" xml:space="preserve">
-    <value>Can't find minigame window</value>
+    <value>미니게임 윈도우를 찾을 수 없습니다</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_Ready" xml:space="preserve">
-    <value>Ready</value>
+    <value>준비 완료</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_ScannerErrors" xml:space="preserve">
-    <value>Failed to recognize minigame</value>
+    <value>미니게임을 인식할 수 없습니다</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_UnknownHash" xml:space="preserve">
-    <value>Unknown pattern! Check Play:Screenshot for details</value>
+    <value>알 수 없는 패턴! 플레이 확인: 스크린샷으로 세부사항</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
-    <value>Waiting for blue turn</value>
+    <value>파랑 턴을 기다립니다</value>
   </data>
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
-    <value>Always on top</value>
+    <value>언제나 맨 위</value>
   </data>
   <data name="Settings_FontSize" xml:space="preserve">
-    <value>Font size</value>
+    <value>글꼴 크기</value>
   </data>
   <data name="Settings_MarkerDurationCactpot" xml:space="preserve">
-    <value>Marker duration: cactpot</value>
+    <value>마커 길이: 복권</value>
   </data>
   <data name="Settings_MarkerDurationCard" xml:space="preserve">
-    <value>Marker duration: card</value>
+    <value>마커 길이: 카드</value>
   </data>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
-    <value>Marker duration: swap</value>
+    <value>마거 길이: 서로바꿈</value>
   </data>
   <data name="Settings_Title" xml:space="preserve">
-    <value>Settings</value>
+    <value>설정</value>
   </data>
 </root>
