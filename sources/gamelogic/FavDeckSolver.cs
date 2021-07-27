@@ -6,14 +6,15 @@ namespace FFTriadBuddy
     public class FavDeckSolver
     {
         private TriadDeck deck;
-        private TriadGameSession session;
+        private TriadGameSession currentGame;
         private TriadNpc npc;
+        private TriadGameSession solverSession;
         public int calcId;
 
         public int contextId;
-        public int progress => session.currentProgress;
+        public int progress => solverSession?.currentProgress ?? 0;
 
-        public delegate void SolvedDelegate(int id, TriadGameResultChance chance);
+        public delegate void SolvedDelegate(int id, TriadDeck deck, TriadGameResultChance chance);
         public event SolvedDelegate OnSolved;
 
         public FavDeckSolver()
@@ -33,12 +34,12 @@ namespace FFTriadBuddy
         public void Update(TriadGameSession currentGame, TriadNpc npc)
         {
             bool isDirty = true;
-            if (session != null && session.modifiers.Count == currentGame.modifiers.Count)
+            if (solverSession != null && solverSession.modifiers.Count == currentGame.modifiers.Count)
             {
                 int numMatching = 0;
                 for (int Idx = 0; Idx < currentGame.modifiers.Count; Idx++)
                 {
-                    TriadGameModifier currentMod = session.modifiers[Idx];
+                    TriadGameModifier currentMod = solverSession.modifiers[Idx];
                     TriadGameModifier reqMod = currentGame.modifiers[Idx];
 
                     if (currentMod.GetType() == reqMod.GetType())
@@ -47,7 +48,7 @@ namespace FFTriadBuddy
                     }
                 }
 
-                isDirty = (numMatching != session.modifiers.Count);
+                isDirty = (numMatching != solverSession.modifiers.Count);
             }
 
             if (npc != this.npc)
@@ -58,34 +59,46 @@ namespace FFTriadBuddy
 
             if (isDirty)
             {
-                session = new TriadGameSession();
-                session.solverName = "Fav #" + (contextId + 1);
+                this.currentGame = currentGame;
+                CalcWinChance();
+            }
+        }
 
+        private class CalcContext
+        {
+            public TriadGameSession session;
+            public TriadGameData gameData;
+            public int calcId;
+        }
+
+        private void CalcWinChance()
+        {
+            if (currentGame != null && deck != null && npc != null)
+            {
+                calcId++;
+
+                solverSession = new TriadGameSession() { solverName = string.Format("Solv{0}:{1}", contextId + 1, calcId) };
                 foreach (TriadGameModifier mod in currentGame.modifiers)
                 {
                     TriadGameModifier modCopy = (TriadGameModifier)Activator.CreateInstance(mod.GetType());
                     modCopy.OnMatchInit();
 
-                    session.modifiers.Add(modCopy);
+                    solverSession.modifiers.Add(modCopy);
                 }
 
-                session.UpdateSpecialRules();
-                CalcWinChance();
-            }
-        }
+                solverSession.UpdateSpecialRules();
 
-        private void CalcWinChance()
-        {
-            if (session != null && deck != null && npc != null)
-            {
-                calcId++;
+                var gameData = solverSession.StartGame(deck, npc.Deck, ETriadGameState.InProgressRed);
+                var calcContext = new CalcContext() { session = solverSession, gameData = gameData, calcId = calcId };
 
-                Task.Run(() =>
+                Action<object> solverAction = (ctxOb) =>
                 {
-                    TriadGameData gameState = session.StartGame(deck, npc.Deck, ETriadGameState.InProgressRed);
-                    session.SolverFindBestMove(gameState, out int bestNextPos, out TriadCard bestNextCard, out TriadGameResultChance bestChance);
-                    OnSolved(contextId, bestChance);
-                });
+                    var ctx = ctxOb as CalcContext;
+                    ctx.session.SolverFindBestMove(ctx.gameData, out int bestNextPos, out TriadCard bestNextCard, out TriadGameResultChance bestChance);
+                    OnSolved(ctx.calcId, ctx.gameData.deckBlue.deck, bestChance);
+                };
+
+                new TaskFactory().StartNew(solverAction, calcContext);
             }
         }
     }

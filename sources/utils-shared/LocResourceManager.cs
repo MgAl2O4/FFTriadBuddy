@@ -11,7 +11,7 @@ namespace MgAl2O4.Utils
     {
         private static LocResourceManager instance = new LocResourceManager();
         private Dictionary<string, string> strings = new Dictionary<string, string>();
-        
+
         private Dictionary<string, string> mapCultureAssets = new Dictionary<string, string>();
         private string neutralCultureAsset;
 

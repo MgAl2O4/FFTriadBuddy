@@ -1,4 +1,5 @@
 ﻿using MgAl2O4.GoogleAPI;
+using MgAl2O4.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows.Data;
@@ -85,6 +86,10 @@ namespace FFTriadBuddy.UI
 
         private TriadDeck optimizerFoundDeck;
         private bool optimizerFoundDeckDelay = false;
+        private bool optimizerHistoryOverride = false;
+        private int optimizerWaitingForSolveId = -1;
+
+        private List<Tuple<TriadDeck, TriadGameResultChance>> deckOptimizerHistory = new List<Tuple<TriadDeck, TriadGameResultChance>>();
 
         public ICommand CommandPickNpc { get; private set; }
         public ICommand CommandToggleTournament { get; private set; }
@@ -138,7 +143,7 @@ namespace FFTriadBuddy.UI
             DeckOptimizer.OnFoundDeck += DeckOptimizer_OnFoundDeck;
             DeckSolver.Deck = activeDeck;
             DeckSolver.EnableTrackingProgress();
-            DeckSolver.solver.OnSolved += (_, chance) => MainWindow.GameModel.SetCachedWinChance(chance);
+            DeckSolver.solver.OnSolved += DeckOptimizer_OnSolved;
 
             // force combo box initial values, assign underlying value to avoid setter's notifies
             var viewRules = CollectionViewSource.GetDefaultView(Rules);
@@ -308,6 +313,8 @@ namespace FFTriadBuddy.UI
             OptimizerProgress = 0;
             OptimizerTimeLeftDesc = "--";
             IsDeckOptimizerRunning = true;
+            optimizerHistoryOverride = false;
+            deckOptimizerHistory.Clear();
 
             var updateTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(0.25) };
             updateTimer.Tick += DeckOptimizerUpdateTimer_Tick;
@@ -320,7 +327,15 @@ namespace FFTriadBuddy.UI
             DeckOptimizerUpdateTimer_Tick(null, null);
             OptimizerTimeLeftDesc = "--";
 
-            MainWindow.GameModel.SetPlayerDeck(DeckOptimizer.optimizedDeck);
+            if (!optimizerHistoryOverride)
+            {
+                MainWindow.GameModel.SetPlayerDeck(DeckOptimizer.optimizedDeck);
+                if (DeckSolver.IsSolverRunning)
+                {
+                    optimizerWaitingForSolveId = DeckSolver.SolverTaskId;
+                    Logger.WriteLine("Optimizer history: waiting for final solver task: {0}", optimizerWaitingForSolveId);
+                }
+            }
         }
 
         private void DeckOptimizerUpdateTimer_Tick(object sender, EventArgs e)
@@ -368,6 +383,50 @@ namespace FFTriadBuddy.UI
             MainWindow.GameModel.SetPlayerDeck(optimizerFoundDeck);
             optimizerFoundDeckDelay = false;
             ((DispatcherTimer)sender).Stop();
+
+            // solver has better accuracy than optimizer, collect all win chances and assign best one to avoid going down with %
+            if (DeckSolver.IsSolverRunning)
+            {
+                optimizerWaitingForSolveId = DeckSolver.SolverTaskId;
+            }
+        }
+
+        private void DeckOptimizer_OnSolved(int id, TriadDeck deck, TriadGameResultChance chance)
+        {
+            MainWindow.GameModel.SetCachedWinChance(deck, chance);
+
+            if (optimizerWaitingForSolveId >= 0)
+            {
+                if (optimizerWaitingForSolveId == id)
+                {
+                    optimizerWaitingForSolveId = -1;
+                }
+
+                deckOptimizerHistory.Add(new Tuple<TriadDeck, TriadGameResultChance>(deck, chance));
+                UpdateDeckOptimizerHistory();
+            }
+        }
+
+        private void UpdateDeckOptimizerHistory()
+        {
+            var currentChance = MainWindow.GameModel.CachedWinChance;
+
+            TriadDeck switchToDeck = null;
+            foreach (var entry in deckOptimizerHistory)
+            {
+                if (entry.Item2.IsBetterThan(currentChance))
+                {
+                    currentChance = entry.Item2;
+                    switchToDeck = entry.Item1;
+                }
+            }
+
+            if (switchToDeck != null)
+            {
+                Logger.WriteLine("Optimizer history: switch back to win:{0:P0}, deck:{1}", currentChance.winChance, switchToDeck);
+                optimizerHistoryOverride = true;
+                MainWindow.GameModel.SetPlayerDeck(switchToDeck);
+            }
         }
 
         private void UpdateModelRules()

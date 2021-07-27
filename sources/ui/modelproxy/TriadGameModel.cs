@@ -99,10 +99,13 @@ namespace FFTriadBuddy.UI
             }
         }
 
-        public void SetCachedWinChance(TriadGameResultChance winChance)
+        public void SetCachedWinChance(TriadDeck deck, TriadGameResultChance winChance)
         {
-            CachedWinChance = winChance;
-            OnCachedWinChanceChanged?.Invoke(this);
+            if (PlayerDeck.Equals(deck))
+            {
+                CachedWinChance = winChance;
+                OnCachedWinChanceChanged?.Invoke(this);
+            }
         }
 
         public void ResolveSpecialRule(ETriadGameSpecialMod specialMod)

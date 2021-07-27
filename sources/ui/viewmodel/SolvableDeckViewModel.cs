@@ -15,6 +15,7 @@ namespace FFTriadBuddy.UI
 
         private bool isSolverRunning = false;
         public bool IsSolverRunning { get => isSolverRunning; set => PropertySetAndNotify(value, ref isSolverRunning); }
+        public int SolverTaskId => solver.calcId;
 
         public int Progress => solver.progress;
         public string DescProbability => isSolverRunning ? "..." : WinChance.DescProbability;
@@ -28,13 +29,16 @@ namespace FFTriadBuddy.UI
             NextSolverId++;
         }
 
-        private void Solver_OnSolved(int id, TriadGameResultChance chance)
+        private void Solver_OnSolved(int id, TriadDeck deck, TriadGameResultChance chance)
         {
             IsSolverRunning = false;
             timer?.Stop();
 
-            WinChance.SetValue(chance);
-            OnPropertyChanged("DescProbability");
+            if (cachedDeckModel.Equals(deck))
+            {
+                WinChance.SetValue(chance);
+                OnPropertyChanged("DescProbability");
+            }
         }
 
         public void InitializeFor(TriadGameModel gameModel)
