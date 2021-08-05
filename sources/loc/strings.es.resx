@@ -782,6 +782,9 @@ Funciona también con Mini Cactpot :D</value>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
     <value>Duración del marcador: intercambio</value>
   </data>
+  <data name="Settings_SkipOptionalSimulateRules" xml:space="preserve">
+    <value>Omitir reglas opcionales en simulado</value>
+  </data>
   <data name="Settings_Title" xml:space="preserve">
     <value>Configuración</value>
   </data>

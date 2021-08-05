@@ -229,6 +229,7 @@
         public static string Settings_MarkerDurationCard = "Marker duration: card";
         public static string Settings_MarkerDurationSwap = "Marker duration: swap";
         public static string Settings_MarkerDurationCactpot = "Marker duration: cactpot";
+        public static string Settings_SkipOptionalSimulateRules = "Skip optional rules in simulate";
         public static string Settings_Title = "Settings";
     }
 }

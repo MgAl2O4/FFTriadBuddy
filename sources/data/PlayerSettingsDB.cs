@@ -17,6 +17,7 @@ namespace FFTriadBuddy
         public bool useCloudStorage;
         public bool useXInput;
         public bool alwaysOnTop;
+        public bool skipOptionalSimulateRules;
         public bool isDirty;
         public string DBPath;
         public string cloudToken;
@@ -48,6 +49,7 @@ namespace FFTriadBuddy
             useCloudStorage = false;
             useXInput = true;
             alwaysOnTop = false;
+            skipOptionalSimulateRules = false;
             isDirty = false;
             cloudToken = null;
             forcedLanguage = null;
@@ -122,6 +124,7 @@ namespace FFTriadBuddy
 
                     useXInput = (JsonParser.BoolValue)uiOb["xInput", BoolTrue];
                     alwaysOnTop = (JsonParser.BoolValue)uiOb["onTop", BoolFalse];
+                    skipOptionalSimulateRules = (JsonParser.BoolValue)uiOb["skipOptRules", BoolFalse];
                     forcedLanguage = (JsonParser.StringValue)uiOb["lang", null];
 
                     TryGettingFloatValue(uiOb, "fontSize", ref fontSize);
@@ -330,6 +333,7 @@ namespace FFTriadBuddy
                     jsonWriter.WriteObjectStart("ui");
                     jsonWriter.WriteBool(useXInput, "xInput");
                     jsonWriter.WriteBool(alwaysOnTop, "onTop");
+                    jsonWriter.WriteBool(skipOptionalSimulateRules, "skipOptRules");
                     jsonWriter.WriteString(forcedLanguage, "lang");
                     jsonWriter.WriteInt(lastNpcId, "lastNpcId");
                     jsonWriter.WriteFloat(lastWidth, "lastWidth");

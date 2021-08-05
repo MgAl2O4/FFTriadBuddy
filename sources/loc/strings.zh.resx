@@ -782,6 +782,9 @@
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
     <value>标记持续时间: 交换</value>
   </data>
+  <data name="Settings_SkipOptionalSimulateRules" xml:space="preserve">
+    <value>在模拟中跳过可选规则</value>
+  </data>
   <data name="Settings_Title" xml:space="preserve">
     <value>设置</value>
   </data>

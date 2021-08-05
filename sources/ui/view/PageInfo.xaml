@@ -70,6 +70,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -92,6 +93,9 @@
 
                         <TextBlock Grid.Column="0" Grid.Row="5" Text="{Binding Settings_MarkerDurationCactpot}" HorizontalAlignment="Right"/>
                         <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding ValueMarkerCactpot, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource settingText}"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="6" Text="{Binding Settings_SkipOptionalSimulateRules}" HorizontalAlignment="Right"/>
+                        <CheckBox Grid.Column="2" Grid.Row="6" IsChecked="{Binding ValueSkipOptionalRules}" VerticalAlignment="Center"/>
                     </Grid>
                 </ScrollViewer>
             </GroupBox>

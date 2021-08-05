@@ -200,6 +200,12 @@ namespace FFTriadBuddy.UI
         public void RequestRuleXOpen(int count)
         {
             activeRuleMask = ETriadGameSpecialMod.SelectVisible3 | ETriadGameSpecialMod.SelectVisible5;
+            if (PlayerSettingsDB.Get().skipOptionalSimulateRules)
+            {
+                MarkRuleResolved();
+                return;
+            }
+
             NumXOpen = count;
 
             // ignore when it's all open vs 5 cards total (e.g. tutorial npc)

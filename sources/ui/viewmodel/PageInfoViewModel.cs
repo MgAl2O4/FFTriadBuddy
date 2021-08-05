@@ -77,6 +77,17 @@ namespace FFTriadBuddy.UI
             }
         }
 
+        private bool valueSkipOptionalRules = false;
+        public bool ValueSkipOptionalRules
+        {
+            get => valueSkipOptionalRules;
+            set
+            {
+                PropertySetAndNotify(value, ref valueSkipOptionalRules);
+                PlayerSettingsDB.Get().skipOptionalSimulateRules = valueSkipOptionalRules;
+            }
+        }
+
         public string MainForm_Info_HomePage => loc.strings.MainForm_Info_HomePage;
         public string MainForm_Info_BugReports => loc.strings.MainForm_Info_BugReports;
         public string MainForm_Info_Localization => loc.strings.MainForm_Info_Localization;
@@ -89,6 +100,7 @@ namespace FFTriadBuddy.UI
         public string Settings_MarkerDurationCard => loc.strings.Settings_MarkerDurationCard;
         public string Settings_MarkerDurationSwap => loc.strings.Settings_MarkerDurationSwap;
         public string Settings_MarkerDurationCactpot => loc.strings.Settings_MarkerDurationCactpot;
+        public string Settings_SkipOptionalSimulateRules => loc.strings.Settings_SkipOptionalSimulateRules;
 
         public string Error => null;
         public string this[string columnName]
@@ -125,9 +137,11 @@ namespace FFTriadBuddy.UI
         {
             var settingsDB = PlayerSettingsDB.Get();
 
+            ValueAlwaysOnTop = settingsDB.alwaysOnTop;
+            ValueSkipOptionalRules = settingsDB.skipOptionalSimulateRules;
+
             // avoid setters here
             valueFontSize = settingsDB.fontSize;
-            ValueAlwaysOnTop = settingsDB.alwaysOnTop;
             valueMarkerCard = settingsDB.markerDurationCard;
             valueMarkerSwap = settingsDB.markerDurationSwap;
             valueMarkerCactpot = settingsDB.markerDurationCactpot;
