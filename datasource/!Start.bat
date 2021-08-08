@@ -9,10 +9,8 @@ if %GamePath%=="" goto MISSING_PATH
 echo Game path: %GamePath%
 echo.
 echo Export data using commands:
-echo   ui 82500 82999
-echo   allexd TripleTriad TripleTriadCard TripleTriadCardType TripleTriadCardResident
-echo   allexd TripleTriadRule TripleTriadResident TripleTriadCompetition TripleTriadTournament
-echo   allexd ENpcResident ENpcBase Item Level Map PlaceName
+echo   ui 82100 82999
+echo   allexd
 echo   exit
 echo.
 
@@ -71,7 +69,7 @@ goto FINISHED
 echo Can't find SaintCoinach binaries!
 echo.
 echo Grab latest release of SaintCoinach.Cmd from github:
-echo    https://github.com/ufx/SaintCoinach/releases
+echo    https://github.com/xivapi/SaintCoinach/releases
 echo.
 echo Expected path: datasource/SaintCoinach/SaintCoinach.Cmd.exe
 goto FINISHED
