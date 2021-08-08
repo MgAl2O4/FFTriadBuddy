@@ -769,6 +769,9 @@
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
     <value>常に最前面に表示する</value>
   </data>
+  <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
+    <value>常に小さなアイコンを使用</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>フォント サイズ</value>
   </data>

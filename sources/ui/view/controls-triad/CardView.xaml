@@ -31,6 +31,12 @@
             <Setter Property="IsHitTestVisible" Value="False"/>
             <Setter Property="StrokeThickness" Value="3"/>
             <Setter Property="Stroke" Value="#cc000000"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsUsingImageBig}" Value="True">
+                    <Setter Property="FontSize" Value="28"/>
+                    <Setter Property="StrokeThickness" Value="5"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type FrameworkElement}" x:Key="detailsStyle">
             <Setter Property="Visibility" Value="Visible"/>
@@ -47,10 +53,47 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type FrameworkElement}" BasedOn="{StaticResource detailsStyle}" x:Key="detailsStyleSmall">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsUsingImageBig}" Value="True">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type FrameworkElement}" BasedOn="{StaticResource detailsStyle}" x:Key="detailsStyleBig">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsUsingImageBig}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="{x:Type local:OutlinedTextBlock}" BasedOn="{StaticResource textStyle}"/>
     </UserControl.Resources>
     <Viewbox ToolTip="{Binding Tooltip}" Margin="0" RenderTransformOrigin="0.5,0.5">
         <Grid>
+            <Rectangle x:Name="rectBackground">
+                <Rectangle.Style>
+                    <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Setter Property="IsHitTestVisible" Value="False"/>
+                        <Setter Property="Fill" Value="Transparent"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsUsingImageBig, FallbackValue=False}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CardOwner}" Value="Blue">
+                                <Setter Property="Fill" Value="{StaticResource BrushBorderBlue}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CardOwner}" Value="Red">
+                                <Setter Property="Fill" Value="{StaticResource BrushBorderRed}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsShowingLock}" Value="True">
+                                <Setter Property="Fill" Value="{StaticResource BrushBorderLocked}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
             <Image x:Name="imageCard" Source="{Binding CardImage}"/>
             <Image Source="{Binding DragImage}" IsHitTestVisible="False">
                 <Image.RenderTransform>
@@ -133,9 +176,9 @@
                     </Style>
                 </Rectangle.Style>
             </Rectangle>
-            <Grid>
+            <Grid x:Name="gridSmall">
                 <Grid.Style>
-                    <Style TargetType="{x:Type Grid}" BasedOn="{StaticResource detailsStyle}">
+                    <Style TargetType="{x:Type Grid}" BasedOn="{StaticResource detailsStyleSmall}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding CardOwner}" Value="Blue">
                                 <Setter Property="Margin" Value="{StaticResource BorderMargin}"/>
@@ -157,6 +200,33 @@
                 <local:OutlinedTextBlock x:Name="textNumD" Text="{Binding NumDown, StringFormat=\{0:X\}}" Fill="{StaticResource BrushNumSide}" Margin="0,0,0,-1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                 <local:OutlinedTextBlock x:Name="textNumR" Text="{Binding NumRight, StringFormat=\{0:X\}}"  Fill="{StaticResource BrushNumSide}" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <local:OutlinedTextBlock x:Name="textMod" Text="{Binding NumMod}" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="#80000000">
+                    <local:OutlinedTextBlock.Style>
+                        <Style TargetType="{x:Type local:OutlinedTextBlock}" BasedOn="{StaticResource textStyle}">
+                            <Setter Property="Fill" Value="{StaticResource BrushNumModPositive}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsModNegative}" Value="True">
+                                    <Setter Property="Fill" Value="{StaticResource BrushNumModNegative}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding NumMod}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:OutlinedTextBlock.Style>
+                </local:OutlinedTextBlock>
+            </Grid>
+            <Grid x:Name="gridBig" Style="{StaticResource detailsStyleBig}">
+                <Image x:Name="imageRarityB" HorizontalAlignment="Left" VerticalAlignment="Top" Source="{Binding RarityImage}" Height="25.5" Width="27" Opacity="0.75"/>
+                <Image x:Name="imageTypeB" HorizontalAlignment="Right" VerticalAlignment="Top" Source="{Binding TypeImage}" Height="30" Width="30" Opacity="0.75"/>
+                <Polygon Points="0, 48, 18, 54, 18, 76, 0, 82" Fill="Black" Opacity="0.3"/>
+                <Polygon Points="104, 48, 86, 54, 86, 76, 104, 82" Fill="Black" Opacity="0.3"/>
+                <Polygon Points="40, 0, 43, 32, 60, 32, 63, 0" Fill="Black" Opacity="0.3"/>
+                <Polygon Points="40, 128, 43, 96, 60, 96, 63, 128" Fill="Black" Opacity="0.3"/>
+                <local:OutlinedTextBlock x:Name="textNumUB" Text="{Binding NumUp, StringFormat=\{0:X\}}" Fill="{StaticResource BrushNumSide}" Margin="0,-2,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <local:OutlinedTextBlock x:Name="textNumLB" Text="{Binding NumLeft, StringFormat=\{0:X\}}" Fill="{StaticResource BrushNumSide}" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <local:OutlinedTextBlock x:Name="textNumDB" Text="{Binding NumDown, StringFormat=\{0:X\}}" Fill="{StaticResource BrushNumSide}" Margin="0,0,0,-1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                <local:OutlinedTextBlock x:Name="textNumRB" Text="{Binding NumRight, StringFormat=\{0:X\}}"  Fill="{StaticResource BrushNumSide}" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <local:OutlinedTextBlock x:Name="textModB" Text="{Binding NumMod}" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="#80000000">
                     <local:OutlinedTextBlock.Style>
                         <Style TargetType="{x:Type local:OutlinedTextBlock}" BasedOn="{StaticResource textStyle}">
                             <Setter Property="Fill" Value="{StaticResource BrushNumModPositive}"/>
@@ -196,9 +266,13 @@
 
                         <Setter Property="Stroke" Value="Transparent"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding CardOwner}" Value="Blue">
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardOwner}" Value="Blue"/>
+                                    <Condition Binding="{Binding IsUsingImageBig}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
                                 <Setter Property="Stroke" Value="{StaticResource BrushBorderBlue}"/>
-                            </DataTrigger>
+                            </MultiDataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding CardOwner}" Value="Blue"/>
@@ -220,9 +294,13 @@
                                 </MultiDataTrigger.ExitActions>
                                 <Setter Property="Stroke" Value="{StaticResource BrushBorderBlueHL}"/>
                             </MultiDataTrigger>
-                            <DataTrigger Binding="{Binding CardOwner}" Value="Red">
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardOwner}" Value="Red"/>
+                                    <Condition Binding="{Binding IsUsingImageBig}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
                                 <Setter Property="Stroke" Value="{StaticResource BrushBorderRed}"/>
-                            </DataTrigger>
+                            </MultiDataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding CardOwner}" Value="Red"/>
@@ -244,9 +322,13 @@
                                 </MultiDataTrigger.ExitActions>
                                 <Setter Property="Stroke" Value="{StaticResource BrushBorderRedHL}"/>
                             </MultiDataTrigger>
-                            <DataTrigger Binding="{Binding IsShowingLock}" Value="True">
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsShowingLock}" Value="True"/>
+                                    <Condition Binding="{Binding IsUsingImageBig}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
                                 <Setter Property="Stroke" Value="{StaticResource BrushBorderLocked}"/>
-                            </DataTrigger>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Rectangle.Style>

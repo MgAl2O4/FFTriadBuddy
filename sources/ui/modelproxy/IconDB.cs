@@ -8,6 +8,7 @@ namespace FFTriadBuddy.UI
     public class IconDB
     {
         public List<BitmapImage> mapCardImages;
+        public List<BitmapImage> mapCardImagesBig;
         public Dictionary<ETriadCardType, BitmapImage> mapCardTypes;
         public Dictionary<ETriadCardRarity, BitmapImage> mapCardRarities;
         public Dictionary<string, BitmapImage> mapFlags;
@@ -47,9 +48,13 @@ namespace FFTriadBuddy.UI
         private void LoadCardImages()
         {
             mapCardImages = new List<BitmapImage>();
+            mapCardImagesBig = new List<BitmapImage>();
 
             string nullImagePath = "icons/082500.png";
             var nullImg = LoadImageFromAsset(nullImagePath);
+
+            string nullImageBigPath = "icons/082100.png";
+            var nullImgBig = LoadImageFromAsset(nullImageBigPath);
 
             TriadCardDB cardDB = TriadCardDB.Get();
             for (int idx = 0; idx < cardDB.cards.Count; idx++)
@@ -59,10 +64,20 @@ namespace FFTriadBuddy.UI
                     string loadPath = "icons/" + cardDB.cards[idx].IconPath;
                     var loadedImage = LoadImageFromAsset(loadPath);
                     mapCardImages.Add(loadedImage);
+
+                    var loadPathIdStr = loadPath.Substring(loadPath.Length - 7, 3);
+                    int loadPathId = int.Parse(loadPathIdStr);
+
+                    string loadPathBig = loadPath.Substring(0, loadPath.Length - 7);
+                    loadPathBig += (loadPathId - 400);
+                    loadPathBig += ".png";
+                    loadedImage = LoadImageFromAsset(loadPathBig);
+                    mapCardImagesBig.Add(loadedImage);
                 }
                 else
                 {
                     mapCardImages.Add(nullImg);
+                    mapCardImagesBig.Add(nullImgBig);
                 }
             }
         }

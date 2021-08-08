@@ -30,7 +30,7 @@ namespace FFTriadBuddy.UI
                 if (cardModel != null)
                 {
                     IconDB icons = IconDB.Get();
-                    CardImage = icons.mapCardImages[cardModel.cardOb.Id];
+                    CardImage = isUsingImageBig ? icons.mapCardImagesBig[cardModel.cardOb.Id] : icons.mapCardImages[cardModel.cardOb.Id];
                     TypeImage = icons.mapCardTypes[cardModel.cardOb.Type];
                     RarityImage = icons.mapCardRarities[cardModel.cardOb.Rarity];
                 }
@@ -98,6 +98,25 @@ namespace FFTriadBuddy.UI
 
         private bool isShowingLock = false;
         public bool IsShowingLock { get => isShowingLock; set => PropertySetAndNotify(value, ref isShowingLock); }
+
+        private bool isUsingImageBig = false;
+        public bool IsUsingImageBig
+        {
+            get => isUsingImageBig;
+            set
+            {
+                PropertySetAndNotify(value, ref isUsingImageBig);
+
+                IconDB icons = IconDB.Get();
+                CardImage =
+                    (cardModel == null) ? null :
+                    isUsingImageBig ? icons.mapCardImagesBig[cardModel.cardOb.Id] :
+                    icons.mapCardImages[CardModel.cardOb.Id];
+                OnPropertyChanged();
+                OnPropertyChanged("CardImage");
+                OnPropertyChanged("HasCardImage");
+            }
+        }
 
         public void Assign(TriadCardInstance cardData)
         {

@@ -57,12 +57,14 @@ namespace FFTriadBuddy.UI
             GameModel = new TriadGameModel();
             GameModel.OnNpcChanged += (npc) => OnPropertyChanged("WindowTitle");
 
+            // info must be created before any deckVM (settings)
+            PageInfo = new PageInfoViewModel();
+
             PageSetup = new PageSetupViewModel(this);
             PageScreenshot = new PageScreenshotViewModel(this);
             PageSimulate = new PageSimulateViewModel(this);
             PageCards = new PageCardsViewModel(this);
             PageNpcs = new PageNpcsViewModel(this);
-            PageInfo = new PageInfoViewModel();
             Overlay = new OverlayWindowViewModel(this);
 
             CommandChangeLanguage = new RelayCommand<object>(SwitchToNextLanguage);

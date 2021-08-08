@@ -71,6 +71,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -96,6 +97,9 @@
 
                         <TextBlock Grid.Column="0" Grid.Row="6" Text="{Binding Settings_SkipOptionalSimulateRules}" HorizontalAlignment="Right"/>
                         <CheckBox Grid.Column="2" Grid.Row="6" IsChecked="{Binding ValueSkipOptionalRules}" VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="0" Grid.Row="7" Text="{Binding Settings_AlwaysSmallIcons}" HorizontalAlignment="Right"/>
+                        <CheckBox Grid.Column="2" Grid.Row="7" IsChecked="{Binding ValueUseSmallIcons}" VerticalAlignment="Center"/>
                     </Grid>
                 </ScrollViewer>
             </GroupBox>

@@ -770,6 +770,9 @@ Works with Mini Cactpot too :D</value>
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
     <value>Always on top</value>
   </data>
+  <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
+    <value>Always use small icons</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>Font size</value>
   </data>

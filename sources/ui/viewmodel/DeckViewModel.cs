@@ -33,6 +33,10 @@ namespace FFTriadBuddy.UI
         private bool isShowingDetails = true;
         public bool IsShowingDetails { get => isShowingDetails; set => PropertySetAndNotify(value, ref isShowingDetails); }
 
+        private bool useSmallIcons = false;
+        private bool canUseBigIcons = true;
+        public bool CanUseBigIcons { get => canUseBigIcons; set { PropertySetAndNotify(value, ref canUseBigIcons); UpdateAllCardIcons(); } }
+
         private bool isUsingOnlyOwnedCards = false;
         public bool IsUsingOnlyOwnedCards { get => isUsingOnlyOwnedCards; set { PropertySetAndNotify(value, ref isUsingOnlyOwnedCards); CardPickerItems.Refresh(); } }
 
@@ -56,6 +60,19 @@ namespace FFTriadBuddy.UI
 
             cardPickerItems.Source = ModelProxyDB.Get().Cards;
             cardPickerItems.View.Filter += CardPickerItems_Filter;
+
+            useSmallIcons = PlayerSettingsDB.Get().useSmallIcons;
+            // CanUseBigIcons can be overriden to disable big icons permanently
+            SettingsWeakEventManager.AddHandler(PageInfoViewModel.lastInstance, PageInfo_OnSettingsChanged);
+        }
+
+        private void PageInfo_OnSettingsChanged(object sender, SettingsEventArgs e)
+        {
+            if (e.Type == SettingsEventArgs.Setting.UseSmallIcons)
+            {
+                useSmallIcons = e.BoolValue;
+                UpdateAllCardIcons();
+            }
         }
 
         public bool IsCardDropAllowed(CardViewModel sourceCard, object sourceContainer)
@@ -166,7 +183,19 @@ namespace FFTriadBuddy.UI
         {
             cardVM.CardOwner = DeckOwner;
             cardVM.IsShowingDetails = IsShowingDetails;
+            cardVM.IsUsingImageBig = CanUseBigIcons && !useSmallIcons;
             cardVM.IsPreview = SelectedPreview == cardVM;
+        }
+
+        private void UpdateAllCardIcons()
+        {
+            foreach (var cardVM in Cards)
+            {
+                if (cardVM != null)
+                {
+                    cardVM.IsUsingImageBig = CanUseBigIcons && !useSmallIcons;
+                }
+            }
         }
 
         public void ForceCardsUpdate()

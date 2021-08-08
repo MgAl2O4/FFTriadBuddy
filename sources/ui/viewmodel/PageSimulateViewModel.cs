@@ -58,6 +58,9 @@ namespace FFTriadBuddy.UI
         public int SpecialRuleSwitcherIdx => (int)SpecialRules.ActiveRule;
         public int SpecialRuleSwitcherBoardIdx => (SpecialRules.ActiveRule == SimulateRulesViewModel.Rule.None) ? 0 : 1;
 
+        private TriadGameData cachedLastState;
+        private TriadGameModel.Move cachedLastMove;
+
         public ICommand CommandReset { get; private set; }
         public ICommand CommandBlueFirst { get; private set; }
         public ICommand CommandRedUndo { get; private set; }
@@ -94,9 +97,11 @@ namespace FFTriadBuddy.UI
             {
                 var boardVM = new BoardCardVM(idx);
                 boardVM.Card.OwnerObject = this;
+                boardVM.Card.IsUsingImageBig = PlayerSettingsDB.Get().useSmallIcons == false;
                 BoardCards.Add(boardVM);
             }
 
+            PlayerDeck.CanUseBigIcons = false;
             for (int idx = 0; idx < 5; idx++)
             {
                 PlayerDeck.Cards.Add(new CardViewModel());
@@ -122,6 +127,8 @@ namespace FFTriadBuddy.UI
             PlayerDeck.SetCustomSelect(new RelayCommand<CardViewModel>((card) => MainWindow.GameModel.SetGameForcedBlueCard(card.CardModel.cardOb)));
             RedKnownCards.CanReceiveDropCards = false;
             RedUnknownCards.CanReceiveDropCards = false;
+
+            MainWindow.PageInfo.OnSettingsChanged += PageInfo_OnSettingsChanged;
         }
 
         public override void RefreshLocalization()
@@ -135,6 +142,8 @@ namespace FFTriadBuddy.UI
         public void GameModel_OnGameStateChanged(TriadGameData state, TriadGameModel.Move move)
         {
             var modelProxyDB = ModelProxyDB.Get();
+            cachedLastState = state;
+            cachedLastMove = move;
 
             // player deck
             for (int idx = 0; idx < PlayerDeck.Cards.Count; idx++)
@@ -233,6 +242,26 @@ namespace FFTriadBuddy.UI
         {
             SyncDeckVM(RedKnownCards, npcOb.Deck.knownCards);
             SyncDeckVM(RedUnknownCards, npcOb.Deck.unknownCardPool);
+        }
+
+        private void PageInfo_OnSettingsChanged(object sender, SettingsEventArgs e)
+        {
+            if (e.Type == SettingsEventArgs.Setting.UseSmallIcons)
+            {
+                // updating just IsUsingImageBig is causing weird artifacts, rebuild entire VM 
+                // this isn't changing often (or hopefully: at all)
+
+                BoardCards.Clear();
+                for (int idx = 0; idx < 9; idx++)
+                {
+                    var boardVM = new BoardCardVM(idx);
+                    boardVM.Card.OwnerObject = this;
+                    boardVM.Card.IsUsingImageBig = PlayerSettingsDB.Get().useSmallIcons == false;
+                    BoardCards.Add(boardVM);
+                }
+
+                GameModel_OnGameStateChanged(cachedLastState, cachedLastMove);
+            }
         }
 
         private void SyncDeckVM(DeckViewModel deckVM, List<TriadCard> cards)

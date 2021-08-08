@@ -1,8 +1,21 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 
 namespace FFTriadBuddy.UI
 {
+    public class SettingsEventArgs : EventArgs
+    {
+        public enum Setting
+        {
+            UseSmallIcons,
+        }
+
+        public Setting Type;
+        public bool BoolValue;
+        public float FloatValue;
+    }
+
     public class PageInfoViewModel : LocalizedViewModel, IDataErrorInfo
     {
         public MainWindowViewModel MainWindow;
@@ -88,6 +101,19 @@ namespace FFTriadBuddy.UI
             }
         }
 
+        private bool valueUseSmallIcons = false;
+        public bool ValueUseSmallIcons
+        {
+            get => valueUseSmallIcons;
+            set
+            {
+                PropertySetAndNotify(value, ref valueUseSmallIcons);
+                PlayerSettingsDB.Get().useSmallIcons = valueUseSmallIcons;
+
+                OnSettingsChanged?.Invoke(this, new SettingsEventArgs() { Type = SettingsEventArgs.Setting.UseSmallIcons, BoolValue = value });
+            }
+        }
+
         public string MainForm_Info_HomePage => loc.strings.MainForm_Info_HomePage;
         public string MainForm_Info_BugReports => loc.strings.MainForm_Info_BugReports;
         public string MainForm_Info_Localization => loc.strings.MainForm_Info_Localization;
@@ -101,6 +127,7 @@ namespace FFTriadBuddy.UI
         public string Settings_MarkerDurationSwap => loc.strings.Settings_MarkerDurationSwap;
         public string Settings_MarkerDurationCactpot => loc.strings.Settings_MarkerDurationCactpot;
         public string Settings_SkipOptionalSimulateRules => loc.strings.Settings_SkipOptionalSimulateRules;
+        public string Settings_AlwaysSmallIcons => loc.strings.Settings_AlwaysSmallIcons;
 
         public string Error => null;
         public string this[string columnName]
@@ -133,9 +160,13 @@ namespace FFTriadBuddy.UI
             }
         }
 
+        public event EventHandler<SettingsEventArgs> OnSettingsChanged;
+        public static PageInfoViewModel lastInstance;
+
         public PageInfoViewModel()
         {
             var settingsDB = PlayerSettingsDB.Get();
+            lastInstance = this;
 
             ValueAlwaysOnTop = settingsDB.alwaysOnTop;
             ValueSkipOptionalRules = settingsDB.skipOptionalSimulateRules;
@@ -145,6 +176,7 @@ namespace FFTriadBuddy.UI
             valueMarkerCard = settingsDB.markerDurationCard;
             valueMarkerSwap = settingsDB.markerDurationSwap;
             valueMarkerCactpot = settingsDB.markerDurationCactpot;
+            valueUseSmallIcons = settingsDB.useSmallIcons;
         }
 
         public override void RefreshLocalization()
@@ -167,6 +199,68 @@ namespace FFTriadBuddy.UI
         {
             var (minV, maxV) = funcRange();
             return (value >= minV) && (value <= maxV);
+        }
+    }
+
+    public class SettingsWeakEventManager : WeakEventManager
+    {
+        private SettingsWeakEventManager() { }
+
+        public static void AddHandler(PageInfoViewModel sourceVM, EventHandler<SettingsEventArgs> handler)
+        {
+            if (sourceVM != null && handler != null)
+            {
+                CurrentManager.ProtectedAddHandler(sourceVM, handler);
+            }
+        }
+
+        public static void RemoveHandler(PageInfoViewModel sourceVM, EventHandler<SettingsEventArgs> handler)
+        {
+            if (sourceVM != null && handler != null)
+            {
+                CurrentManager.ProtectedRemoveHandler(sourceVM, handler);
+            }
+        }
+
+        private static SettingsWeakEventManager CurrentManager
+        {
+            get
+            {
+                Type managerType = typeof(SettingsWeakEventManager);
+                SettingsWeakEventManager manager =
+                    (SettingsWeakEventManager)GetCurrentManager(managerType);
+
+                // at first use, create and register a new manager
+                if (manager == null)
+                {
+                    manager = new SettingsWeakEventManager();
+                    SetCurrentManager(managerType, manager);
+                }
+
+                return manager;
+            }
+        }
+
+        protected override ListenerList NewListenerList()
+        {
+            return new ListenerList<SettingsEventArgs>();
+        }
+
+        protected override void StartListening(object source)
+        {
+            PageInfoViewModel typedSource = (PageInfoViewModel)source;
+            typedSource.OnSettingsChanged += new EventHandler<SettingsEventArgs>(OnSettingsChanged);
+        }
+
+        protected override void StopListening(object source)
+        {
+            PageInfoViewModel typedSource = (PageInfoViewModel)source;
+            typedSource.OnSettingsChanged -= new EventHandler<SettingsEventArgs>(OnSettingsChanged);
+        }
+
+        void OnSettingsChanged(object sender, SettingsEventArgs e)
+        {
+            DeliverEvent(sender, e);
         }
     }
 }

@@ -770,6 +770,9 @@
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
     <value>窗口总在最前</value>
   </data>
+  <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
+    <value>始终使用小图标</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>字体大小</value>
   </data>
