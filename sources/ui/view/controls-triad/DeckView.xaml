@@ -8,7 +8,7 @@
              d:DataContext="{d:DesignInstance Type=local:DeckViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="50" d:DesignWidth="280">
     <UserControl.Resources>
-        <ContextMenu x:Key="menuPickCard">
+        <ContextMenu x:Key="menuPickCard" Opened="ContextMenu_Opened">
             <MenuItem Header="{Binding OwnerObject.DeckCtrl_CtxMenu_PickCard}" IsEnabled="False"/>
             <MenuItem Header="{Binding OwnerObject.DeckCtrl_CtxMenu_UseOnlyOwned}" IsCheckable="True" StaysOpenOnClick="True" IsChecked="{Binding OwnerObject.IsUsingOnlyOwnedCards}"/>
             <MenuItem Header="{Binding OwnerObject.DeckCtrl_CtxMenu_LockForOptimization}"

@@ -152,8 +152,11 @@ namespace FFTriadBuddy.UI
         {
             if (param.cardVM != null && param.cardModel != null)
             {
-                param.cardVM.CardModel = param.cardModel;
-                OnCardsChanged?.Invoke(this);
+                if (param.cardVM.CardModel == null || param.cardVM.CardModel.Id != param.cardModel.Id)
+                {
+                    param.cardVM.CardModel = param.cardModel;
+                    OnCardsChanged?.Invoke(this);
+                }
             }
         }
 
