@@ -1,6 +1,7 @@
 ﻿using MgAl2O4.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
@@ -158,6 +159,7 @@ namespace FFTriadBuddy.UI
         private Dictionary<Icon, BitmapSource> cachedIcons = new Dictionary<Icon, BitmapSource>();
         private DispatcherTimer timerAutoScan;
         private DispatcherTimer timerAutoScanUpkeep;
+        private Stopwatch perfTimer = new Stopwatch();
         private bool canStopAutoCapture = true;
         private bool canRunAutoCapture = false;
 
@@ -506,6 +508,15 @@ namespace FFTriadBuddy.UI
         private void TimerAutoScan_Tick(object sender, EventArgs e)
         {
             bool bDebugMode = false;
+            
+            bool useVerboseLogs = Logger.IsSuperVerbose();
+            bool scannedTimer = false;
+            bool scannedFull = false;
+            if (useVerboseLogs)
+            {
+                perfTimer.Restart();
+            }
+
             UpdateAutoScanState();
 
             bool attemptScan = (ScreenAnalyzer != null) && (ScreenAnalyzer.activeScanner == null || ScreenAnalyzer.activeScanner is ScannerTriad);
@@ -514,12 +525,14 @@ namespace FFTriadBuddy.UI
                 if (timerAutoScanUpkeep.IsEnabled)
                 {
                     // always retry in upkeep mode
+                    if (useVerboseLogs) { Logger.WriteLine("Auto scan: upkeep, force scan!"); }
                 }
                 else if (ScreenAnalyzer.scannerTriad.cachedGameState == null ||
                     canStopAutoCapture && ScreenAnalyzer.scannerTriad.cachedGameState.turnState == ScannerTriad.ETurnState.MissingTimer)
                 {
                     attemptScan = false;
                     canRunAutoCapture = false;
+                    if (useVerboseLogs) { Logger.WriteLine("Auto scan: missing timer, no scan, no capture"); }
 
                     var isOverlayActive = MainWindow.PageScreenshot.IsOverlayActive;
                     var wantsAutoScan = IsUsingAutoScan();
@@ -544,6 +557,7 @@ namespace FFTriadBuddy.UI
 
                 ScreenAnalyzer.scanClipBounds = Rectangle.Empty;
                 canStopAutoCapture = true;
+                scannedTimer = true;
             }
 
             UpdateAnalyzerDesc();
@@ -560,6 +574,7 @@ namespace FFTriadBuddy.UI
                 if (turnState == ScannerTriad.ETurnState.Waiting)
                 {
                     canRunAutoCapture = true;
+                    if (useVerboseLogs) { Logger.WriteLine("Auto scan: in Waiting state, can capture"); }
                 }
                 else if (turnState == ScannerTriad.ETurnState.Active)
                 {
@@ -570,10 +585,22 @@ namespace FFTriadBuddy.UI
 
                         if (!bIsMouseOverGrid && ScreenAnalyzer.GetCurrentState() == ScreenAnalyzer.EState.NoErrors)
                         {
+                            if (useVerboseLogs) { Logger.WriteLine("Auto scan: in Active state, no capture"); }
                             canRunAutoCapture = false;
+                            scannedFull = true;
                             CommandCapture.Execute(null);
                         }
                     }
+                }
+            }
+
+            if (useVerboseLogs)
+            {
+                perfTimer.Stop();
+
+                if (scannedFull || scannedTimer)
+                {
+                    Logger.WriteLine("Auto scan stats: time:{0}ms, scannedTimer:{1}, scannedFull:{2}", perfTimer.ElapsedMilliseconds, scannedTimer, scannedFull);
                 }
             }
         }

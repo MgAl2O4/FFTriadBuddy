@@ -53,6 +53,11 @@ namespace MgAl2O4.Utils
 
         public static void WriteLine(string str)
         {
+            if (isSuperVerbose)
+            {
+                str = DateTime.Now.ToString("hh:mm:ss.fff") + ": " + str;
+            }
+
             Console.WriteLine(str);
 
             if (logWriter != null)
