@@ -120,7 +120,6 @@ namespace FFTriadBuddy
             // temporary, can be removed once all game clients are on 5.5+ version
             // step up your releases SE :P
             bool isUsingRulesVer54 =
-                LocalizationDB.Languages[LocalizationDB.UserLanguageIdx] == "cn" ||
                 LocalizationDB.Languages[LocalizationDB.UserLanguageIdx] == "ko";
 
             if (isUsingRulesVer54)
