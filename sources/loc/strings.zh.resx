@@ -773,6 +773,9 @@
   <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
     <value>始终使用小图标</value>
   </data>
+  <data name="Settings_DisableHardwareAcceleration" xml:space="preserve">
+    <value>禁用硬件加速</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>字体大小</value>
   </data>

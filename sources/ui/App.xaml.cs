@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Resources;
 using System.Windows;
+using System.Windows.Media;
 
 namespace FFTriadBuddy.UI
 {
@@ -51,15 +52,19 @@ namespace FFTriadBuddy.UI
 
             if (canStart)
             {
+                int renderingTier = RenderCapability.Tier >> 16;
+                Logger.WriteLine("Rendering tier:{0}", renderingTier);
+
                 DialogWindowService.Initialize();
                 OverlayWindowService.Initialize();
                 AppWindowService.Initialize();
 
                 canSaveSettings = true;
 
-                var window = new MainWindow();
-
                 var settingsDB = PlayerSettingsDB.Get();
+                ViewModelServices.AppWindow.SetSoftwareRendering(settingsDB.useSoftwareRendering);
+
+                var window = new MainWindow();
                 window.FontSize = settingsDB.fontSize;
                 window.Topmost = settingsDB.alwaysOnTop;
 

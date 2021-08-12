@@ -114,6 +114,19 @@ namespace FFTriadBuddy.UI
             }
         }
 
+        private bool valueDisableHardwareAcceleration = false;
+        public bool ValueDisableHardwareAcceleration
+        {
+            get => valueDisableHardwareAcceleration;
+            set
+            {
+                PropertySetAndNotify(value, ref valueDisableHardwareAcceleration);
+                PlayerSettingsDB.Get().useSoftwareRendering = valueDisableHardwareAcceleration;
+
+                ViewModelServices.AppWindow.SetSoftwareRendering(valueDisableHardwareAcceleration);
+            }
+        }
+
         public string MainForm_Info_HomePage => loc.strings.MainForm_Info_HomePage;
         public string MainForm_Info_BugReports => loc.strings.MainForm_Info_BugReports;
         public string MainForm_Info_Localization => loc.strings.MainForm_Info_Localization;
@@ -128,6 +141,7 @@ namespace FFTriadBuddy.UI
         public string Settings_MarkerDurationCactpot => loc.strings.Settings_MarkerDurationCactpot;
         public string Settings_SkipOptionalSimulateRules => loc.strings.Settings_SkipOptionalSimulateRules;
         public string Settings_AlwaysSmallIcons => loc.strings.Settings_AlwaysSmallIcons;
+        public string Settings_DisableHardwareAcceleration => loc.strings.Settings_DisableHardwareAcceleration;
 
         public string Error => null;
         public string this[string columnName]
@@ -177,6 +191,7 @@ namespace FFTriadBuddy.UI
             valueMarkerSwap = settingsDB.markerDurationSwap;
             valueMarkerCactpot = settingsDB.markerDurationCactpot;
             valueUseSmallIcons = settingsDB.useSmallIcons;
+            valueDisableHardwareAcceleration = settingsDB.useSoftwareRendering;
         }
 
         public override void RefreshLocalization()

@@ -105,6 +105,7 @@ namespace FFTriadBuddy.UI
     {
         void SetFontSize(float value);
         void SetAlwaysOnTop(bool value);
+        void SetSoftwareRendering(bool value);
     }
 
     public class ViewModelServices

@@ -226,6 +226,7 @@
         public static string OverlayForm_Dynamic_Status_WaitingForTurn = "Waiting for blue turn";
         public static string Settings_AlwaysOnTop = "Always on top";
         public static string Settings_AlwaysSmallIcons = "Always use small icons";
+        public static string Settings_DisableHardwareAcceleration = "Disable hardware acceleration";
         public static string Settings_FontSize = "Font size";
         public static string Settings_MarkerDurationCard = "Marker duration: card";
         public static string Settings_MarkerDurationSwap = "Marker duration: swap";

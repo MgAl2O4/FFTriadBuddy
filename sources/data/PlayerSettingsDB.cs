@@ -17,6 +17,7 @@ namespace FFTriadBuddy
         public bool useCloudStorage;
         public bool useXInput;
         public bool useSmallIcons;
+        public bool useSoftwareRendering;
         public bool alwaysOnTop;
         public bool skipOptionalSimulateRules;
         public bool isDirty;
@@ -126,6 +127,7 @@ namespace FFTriadBuddy
 
                     useXInput = (JsonParser.BoolValue)uiOb["xInput", BoolTrue];
                     useSmallIcons = (JsonParser.BoolValue)uiOb["smallIcons", BoolFalse];
+                    useSoftwareRendering = (JsonParser.BoolValue)uiOb["noGPU", BoolFalse];
                     alwaysOnTop = (JsonParser.BoolValue)uiOb["onTop", BoolFalse];
                     skipOptionalSimulateRules = (JsonParser.BoolValue)uiOb["skipOptRules", BoolFalse];
                     forcedLanguage = (JsonParser.StringValue)uiOb["lang", null];
@@ -336,6 +338,7 @@ namespace FFTriadBuddy
                     jsonWriter.WriteObjectStart("ui");
                     jsonWriter.WriteBool(useXInput, "xInput");
                     jsonWriter.WriteBool(useSmallIcons, "smallIcons");
+                    jsonWriter.WriteBool(useSoftwareRendering, "noGPU");
                     jsonWriter.WriteBool(alwaysOnTop, "onTop");
                     jsonWriter.WriteBool(skipOptionalSimulateRules, "skipOptRules");
                     jsonWriter.WriteString(forcedLanguage, "lang");

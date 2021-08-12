@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace FFTriadBuddy.UI
 {
@@ -51,6 +53,11 @@ namespace FFTriadBuddy.UI
             {
                 window.FontSize = mainWindow.FontSize;
             }
+        }
+
+        public void SetSoftwareRendering(bool value)
+        {
+            RenderOptions.ProcessRenderMode = value ? RenderMode.SoftwareOnly : RenderMode.Default;
         }
 
         public static void Initialize()

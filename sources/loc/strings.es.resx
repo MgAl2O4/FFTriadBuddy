@@ -773,6 +773,9 @@ Funciona también con Mini Cactpot :D</value>
   <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
     <value>Usar siempre iconos pequeños</value>
   </data>
+  <data name="Settings_DisableHardwareAcceleration" xml:space="preserve">
+    <value>Desactivar aceleración por hardware</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>Tamaño de la fuente</value>
   </data>
