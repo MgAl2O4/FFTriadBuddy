@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriadBuddyPlugin", "TriadBuddyPlugin.csproj", "{62DB4DE9-25F8-4523-B008-417EF61088E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62DB4DE9-25F8-4523-B008-417EF61088E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62DB4DE9-25F8-4523-B008-417EF61088E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62DB4DE9-25F8-4523-B008-417EF61088E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62DB4DE9-25F8-4523-B008-417EF61088E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C307E9A7-265A-47C9-9ADF-6190A84D75E1}
+	EndGlobalSection
+EndGlobal

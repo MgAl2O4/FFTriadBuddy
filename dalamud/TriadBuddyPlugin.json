@@ -1,0 +1,11 @@
+{
+  "Author": "MgAl2O4",
+  "Name": "TriadBuddy",
+  "Description": "Triple triad solver, NPC matches only. Use: /triadbuddy for details",
+  "InternalName": "TriadBuddy",
+  "AssemblyVersion": "1.0.0.0",
+  "RepoUrl": "https://github.com/MgAl2O4/FFTriadBuddy",
+  "ApplicableVersion": "any",
+  "Tags": [ "solver", "TripleTriad" ],
+  "DalamudApiLevel": 3
+}
