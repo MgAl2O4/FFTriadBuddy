@@ -49,6 +49,12 @@
     <Reference Include="FFXIVClientStructs">
       <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
     </Reference>
+    <Reference Include="Lumina">
+      <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Lumina.dll</HintPath>
+    </Reference>
+    <Reference Include="Lumina.Excel">
+      <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Lumina.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -61,6 +67,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\sources\gamelogic\TriadCard.cs">
+      <Link>gamelogic\TriadCard.cs</Link>
+    </Compile>
+    <Compile Include="..\sources\gamelogic\TriadDeck.cs">
+      <Link>gamelogic\TriadDeck.cs</Link>
+    </Compile>
+    <Compile Include="..\sources\gamelogic\TriadGame.cs">
+      <Link>gamelogic\TriadGame.cs</Link>
+    </Compile>
+    <Compile Include="..\sources\gamelogic\TriadGameModifier.cs">
+      <Link>gamelogic\TriadGameModifier.cs</Link>
+    </Compile>
+    <Compile Include="data\GameDataLoader.cs" />
+    <Compile Include="data\TriadCardDB.cs" />
+    <Compile Include="data\TriadNpcDB.cs" />
+    <Compile Include="gamelogic\NothingToSeeHere.cs" />
     <Compile Include="plugin\Plugin.cs" />
     <Compile Include="plugin\PluginUI.cs" />
     <Compile Include="plugin\GameUI.cs" />

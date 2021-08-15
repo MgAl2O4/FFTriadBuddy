@@ -13,6 +13,7 @@ namespace TriadBuddyPlugin
         private DalamudPluginInterface pluginInterface;
         private PluginUI pluginUI;
         private GameUI gameUI;
+        private GameDataLoader dataLoader;
 
         // When loaded by LivePluginLoader, the executing assembly will be wrong.
         // Supplying this property allows LivePluginLoader to supply the correct location, so that
@@ -22,6 +23,11 @@ namespace TriadBuddyPlugin
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
+            FFTriadBuddy.TriadGameSession.StaticInitialize();
+
+            dataLoader = new GameDataLoader();
+            dataLoader.StartAsyncWork(pluginInterface);
+
             this.pluginInterface = pluginInterface;
             gameUI = new GameUI(pluginInterface);
 
@@ -43,7 +49,10 @@ namespace TriadBuddyPlugin
             try
             {
                 // TODO: async? run every X ms? - check low spec perf, seems to be negligible
-                gameUI.Update();
+                if (dataLoader.IsDataReady)
+                {
+                    gameUI.Update();
+                }
             }
             catch (Exception ex)
             {
