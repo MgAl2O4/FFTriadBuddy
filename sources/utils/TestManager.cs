@@ -105,7 +105,7 @@ namespace FFTriadBuddy
                 try
                 {
                     TriadGameScreenMemory.RunTest(configPath, bNeedsDebugRun);
-                    TriadGameSession.RunTest(configPath, bNeedsDebugRun);
+                    TriadGameTests.RunTest(configPath, bNeedsDebugRun);
                 }
                 catch (Exception ex)
                 {
@@ -116,7 +116,7 @@ namespace FFTriadBuddy
                 if (bNeedsDebugRun)
                 {
                     TriadGameScreenMemory.RunTest(configPath, bNeedsDebugRun);
-                    TriadGameSession.RunTest(configPath, bNeedsDebugRun);
+                    TriadGameTests.RunTest(configPath, bNeedsDebugRun);
                 }
             }
         }

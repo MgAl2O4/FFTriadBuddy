@@ -508,7 +508,7 @@ namespace FFTriadBuddy.UI
         private void TimerAutoScan_Tick(object sender, EventArgs e)
         {
             bool bDebugMode = false;
-            
+
             bool useVerboseLogs = Logger.IsSuperVerbose();
             bool scannedTimer = false;
             bool scannedFull = false;
