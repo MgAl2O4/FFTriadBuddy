@@ -95,6 +95,7 @@
     <Compile Include="gamelogic\TriadGame.cs" />
     <Compile Include="gamelogic\TriadGameModifier.cs" />
     <Compile Include="gamelogic\TriadGameScreenMemory.cs" />
+    <Compile Include="gamelogic\TriadGameScreenTests.cs" />
     <Compile Include="gamelogic\TriadGameTests.cs" />
     <Compile Include="googleapi\GoogleDriveService.cs" />
     <Compile Include="googleapi\GoogleOAuth2.cs" />
