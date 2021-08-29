@@ -363,7 +363,7 @@ namespace FFTriadBuddy.UI
             }
         }
 
-        private void DeckOptimizer_OnFoundDeck(TriadDeck deck)
+        private void DeckOptimizer_OnFoundDeck(TriadDeck deck, float dummyChance)
         {
             optimizerFoundDeck = deck;
 

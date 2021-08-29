@@ -33,7 +33,7 @@ namespace FFTriadBuddy
         private bool bAbort;
         private bool debugMode;
 
-        public delegate void FoundDeckDelegate(TriadDeck deck);
+        public delegate void FoundDeckDelegate(TriadDeck deck, float estWinChance);
         public delegate void UpdatePossibleCount(string numPossibleDesc);
         public event FoundDeckDelegate OnFoundDeck;
 
@@ -684,7 +684,11 @@ namespace FFTriadBuddy
                                             {
                                                 bestScore = testScore;
                                                 bestDeck = testDeck;
-                                                OnFoundDeck.Invoke(testDeck);
+
+                                                // score: num games * (2 if win, 1 if draw, 0 if lose)
+                                                // max score = 100% win = num games * 2
+                                                float estWinChance = 1.0f * testScore / (numGamesToPlay * 2);
+                                                OnFoundDeck.Invoke(testDeck, estWinChance);
                                             }
                                         }
                                     }
