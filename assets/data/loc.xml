@@ -338,16 +338,16 @@
   <loc type="3" id="314" de="Gaia" en="Gaia" fr="Gaïa" ja="ガイア" cn="盖娅" ko="가이아" />
   <loc type="3" id="315" de="Edens Verheißung" en="Eden's Promise" fr="Promesse d'Éden" ja="プロミス・オブ・エデン" cn="伊甸之约" ko="에덴의 약속" />
   <loc type="3" id="316" de="Phoenix" en="Phoenix" fr="Phénix" ja="フェニックス" cn="不死鸟" ko="피닉스" />
-  <loc type="3" id="317" de="Kerkermeister" en="Keeper of the Keys" fr="gardien hypogéen" ja="キーパー・オブ・ダンジョン" cn="宝库守护者" />
-  <loc type="3" id="318" de="Luna-Bahamut" en="Lunar Bahamut" fr="Luna-Bahamut" ja="ルナバハムート" cn="真月巴哈姆特" />
-  <loc type="3" id="319" de="Valens van Varro" en="Valens van Varro" fr="Valens van Varro" ja="ウァレンス・ヴァン・ウァロ" cn="瓦伦斯·范·瓦罗" />
-  <loc type="3" id="320" de="Luna-Ifrit" en="Lunar Ifrit" fr="Luna-Ifrit" ja="ルナイフリート" cn="" />
-  <loc type="3" id="321" de="Shemhazai der IV. Legion" en="4th-make Shemhazai" fr="Shemhazai de la 4e légion" ja="IVレギオン・シュミハザ" cn="" />
-  <loc type="3" id="322" de="Cuchulainn der IV. Legion" en="4th-make Cuchulainn" fr="Cúchulainn de la 4e légion" ja="IVレギオン・キュクレイン" cn="" />
-  <loc type="3" id="323" de="G-Krieger" en="G-Warrior" fr="Guerrier-G" ja="Gウォリアー" cn="究极战士G型" />
-  <loc type="3" id="324" de="Diamant-Waffe" en="The Diamond Weapon" fr="Arme Diamant" ja="ダイヤウェポン" cn="钻石神兵" />
-  <loc type="3" id="325" de="Diablo-Armament" en="The Diablo Armament" fr="batterie d'artillerie Diablo" ja="ディアブロ・アーマメント" cn="" />
-  <loc type="3" id="326" de="2B" en="2B" fr="2B" ja="２Ｂ" cn="2B" />
+  <loc type="3" id="317" de="Kerkermeister" en="Keeper of the Keys" fr="gardien hypogéen" ja="キーパー・オブ・ダンジョン" cn="宝库守护者" ko="지하미궁 수호자" />
+  <loc type="3" id="318" de="Luna-Bahamut" en="Lunar Bahamut" fr="Luna-Bahamut" ja="ルナバハムート" cn="真月巴哈姆特" ko="루나 바하무트" />
+  <loc type="3" id="319" de="Valens van Varro" en="Valens van Varro" fr="Valens van Varro" ja="ウァレンス・ヴァン・ウァロ" cn="瓦伦斯·范·瓦罗" ko="발렌스 반 바로" />
+  <loc type="3" id="320" de="Luna-Ifrit" en="Lunar Ifrit" fr="Luna-Ifrit" ja="ルナイフリート" cn="" ko="" />
+  <loc type="3" id="321" de="Shemhazai der IV. Legion" en="4th-make Shemhazai" fr="Shemhazai de la 4e légion" ja="IVレギオン・シュミハザ" cn="" ko="" />
+  <loc type="3" id="322" de="Cuchulainn der IV. Legion" en="4th-make Cuchulainn" fr="Cúchulainn de la 4e légion" ja="IVレギオン・キュクレイン" cn="" ko="" />
+  <loc type="3" id="323" de="G-Krieger" en="G-Warrior" fr="Guerrier-G" ja="Gウォリアー" cn="究极战士G型" ko="G 워리어" />
+  <loc type="3" id="324" de="Diamant-Waffe" en="The Diamond Weapon" fr="Arme Diamant" ja="ダイヤウェポン" cn="钻石神兵" ko="다이아몬드 웨폰" />
+  <loc type="3" id="325" de="Diablo-Armament" en="The Diablo Armament" fr="batterie d'artillerie Diablo" ja="ディアブロ・アーマメント" cn="" ko="" />
+  <loc type="3" id="326" de="2B" en="2B" fr="2B" ja="２Ｂ" cn="2B" ko="2B" />
   <loc type="4" id="1" de="Aurifort Kreuz" en="Aurifort of the Three Clubs" fr="Aurifort l'As de trèfle" ja="クラブのオリフォル" cn="梅花天王欧里福" ko="오리포르" />
   <loc type="4" id="2" de="Baderon" en="Baderon" fr="Baderon" ja="バデロン" cn="巴德龙" ko="바데론" />
   <loc type="4" id="3" de="Botan" en="Botan" fr="Botan" ja="ボタン" cn="牡丹" ko="보탄" />

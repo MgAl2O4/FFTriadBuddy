@@ -179,9 +179,6 @@ namespace FFTriadBuddy.UI
         {
             base.RefreshLocalization();
 
-            // temp until all game clients are on new rule set
-            DeckOptimizer.OnLanguageChanged();
-
             DeckSolver.RefreshLocalization();
             UpdateCloudStorageState();
             UpdateDeckState();
