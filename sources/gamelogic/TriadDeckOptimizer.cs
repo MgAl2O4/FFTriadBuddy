@@ -102,30 +102,6 @@ namespace FFTriadBuddy
                     }
                 }
             }
-
-            // temporary, set initial rule set 
-            OnLanguageChanged();
-        }
-
-        public void OnLanguageChanged()
-        {
-            // temporary, can be removed once all game clients are on 5.5+ version
-            // step up your releases SE :P
-            bool wantsRulesVer54 =
-                LocalizationDB.Languages[LocalizationDB.UserLanguageIdx] == "ko";
-
-            bool hasRulesVer54 = (maxSlotsPerRarity.Count == 1);
-
-            if (wantsRulesVer54 != hasRulesVer54)
-            {
-                maxSlotsPerRarity.Clear();
-
-                maxSlotsPerRarity.Add(ETriadCardRarity.Legendary, 1);
-                if (!wantsRulesVer54)
-                {
-                    maxSlotsPerRarity.Add(ETriadCardRarity.Epic, 2);
-                }
-            }
         }
 
         public void Initialize(TriadNpc npc, TriadGameModifier[] regionMods, List<TriadCard> lockedCards)
