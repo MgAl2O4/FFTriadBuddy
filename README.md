@@ -11,6 +11,9 @@ Features:
 * all game rules are supported
 * **super secret** Mini Cactpot mode for in-game overlay
 
+Dalamud plugin can be found here: https://github.com/MgAl2O4/FFTriadBuddyDalamud
+
+
 ## Instructions
 1. Download [latest release](https://github.com/MgAl2O4/FFTriadBuddy/releases/latest)
 2. Unpack and run. 
