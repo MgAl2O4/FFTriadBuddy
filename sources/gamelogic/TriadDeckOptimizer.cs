@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FFTriadBuddy
@@ -50,6 +51,9 @@ namespace FFTriadBuddy
 
         private const int DeckSlotCommon = -1;
         private const int DeckSlotLocked = -2;
+
+        private ManualResetEvent loopPauseEvent = new ManualResetEvent(true);
+        private bool isPaused;
 
         public TriadDeckOptimizer()
         {
@@ -578,6 +582,90 @@ namespace FFTriadBuddy
             return isPoolValid;
         }
 
+        private class SlotIterator
+        {
+            public const int numSlots = 5;
+            public TriadCard[][] slotLists = new TriadCard[numSlots][];
+            private bool[] isSlotCommon = new bool[numSlots];
+
+            public struct ItemInfo
+            {
+                public int Idx0;
+                public int Idx1;
+                public int Idx2;
+                public int Idx3;
+                public int Idx4;
+                public TriadCard[] Cards;
+
+                public ItemInfo(int idx0, int idx1, int idx2, int idx3, int idx4, SlotIterator iterator)
+                {
+                    Idx0 = idx0;
+                    Idx1 = idx1;
+                    Idx2 = idx2;
+                    Idx3 = idx3;
+                    Idx4 = idx4;
+                    Cards = new TriadCard[5] { iterator.slotLists[0][Idx0], iterator.slotLists[1][Idx1], iterator.slotLists[2][Idx2], iterator.slotLists[3][Idx3], iterator.slotLists[4][Idx4] };
+                }
+
+                public bool IsValid()
+                {
+                    return (Cards[0] != Cards[1]) && (Cards[0] != Cards[2]) && (Cards[0] != Cards[3]) && (Cards[0] != Cards[4]) &&
+                        (Cards[1] != Cards[2]) && (Cards[1] != Cards[3]) && (Cards[1] != Cards[4]) &&
+                        (Cards[2] != Cards[3]) && (Cards[2] != Cards[4]) &&
+                        (Cards[3] != Cards[4]);
+                }
+            }
+
+            public SlotIterator(CardPool cardPool, List<TriadCard> lockedCards)
+            {
+                for (int idx = 0; idx < numSlots; idx++)
+                {
+                    slotLists[idx] =
+                        (cardPool.deckSlotTypes[idx] == DeckSlotCommon) ? cardPool.commonList :
+                        (cardPool.deckSlotTypes[idx] >= 0) ? cardPool.priorityLists[cardPool.deckSlotTypes[idx]] :
+                        new TriadCard[1] { lockedCards[idx] };
+
+                    isSlotCommon[idx] = (cardPool.deckSlotTypes[idx] == DeckSlotCommon);
+                }
+            }
+
+            private int FindLoopStart(int SlotIdx, int IdxS0, int IdxS1, int IdxS2, int IdxS3)
+            {
+                if (!isSlotCommon[SlotIdx]) { return 0; }
+
+                if (SlotIdx >= 4 && isSlotCommon[3]) { return IdxS3 + 1; }
+                if (SlotIdx >= 3 && isSlotCommon[2]) { return IdxS2 + 1; }
+                if (SlotIdx >= 2 && isSlotCommon[1]) { return IdxS1 + 1; }
+                if (SlotIdx >= 1 && isSlotCommon[0]) { return IdxS0 + 1; }
+
+                return 0;
+            }
+
+            public IEnumerable<ItemInfo> GetDecks()
+            {
+                for (int IdxS0 = 0; IdxS0 < slotLists[0].Length; IdxS0++)
+                {
+                    int startS1 = FindLoopStart(1, IdxS0, -1, -1, -1);
+                    for (int IdxS1 = startS1; IdxS1 < slotLists[1].Length; IdxS1++)
+                    {
+                        int startS2 = FindLoopStart(2, IdxS0, IdxS1, -1, -1);
+                        for (int IdxS2 = startS2; IdxS2 < slotLists[2].Length; IdxS2++)
+                        {
+                            int startS3 = FindLoopStart(3, IdxS0, IdxS1, IdxS2, -1);
+                            for (int IdxS3 = startS3; IdxS3 < slotLists[3].Length; IdxS3++)
+                            {
+                                int startS4 = FindLoopStart(4, IdxS0, IdxS1, IdxS2, IdxS3);
+                                for (int IdxS4 = startS4; IdxS4 < slotLists[4].Length; IdxS4++)
+                                {
+                                    yield return new ItemInfo(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4, this);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void FindDecksScored(TriadGameModifier[] regionMods, List<TriadCard> lockedCards)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -597,87 +685,45 @@ namespace FFTriadBuddy
             TriadDeck bestDeck = new TriadDeck(PlayerSettingsDB.Get().starterCards);
 
             // no more flexible slot count after this point => loop land
-            const int numSlots = 5;
-            TriadCard[][] slotLists = new TriadCard[numSlots][];
-            for (int idx = 0; idx < numSlots; idx++)
+            SlotIterator slotIterator = new SlotIterator(currentPool, lockedCards);
+            Parallel.ForEach(slotIterator.GetDecks(), (deckInfo, state) =>
             {
-                slotLists[idx] =
-                    (currentPool.deckSlotTypes[idx] == DeckSlotCommon) ? currentPool.commonList :
-                    (currentPool.deckSlotTypes[idx] >= 0) ? currentPool.priorityLists[currentPool.deckSlotTypes[idx]] :
-                    new TriadCard[1] { lockedCards[idx] };
-            }
+                if (bAbort) { state.Break(); }
 
-            Func<int, int, int, int, int, int> FindLoopStart = (SlotIdx, IdxS0, IdxS1, IdxS2, IdxS3) =>
-            {
-                if (bAbort) { return slotLists[SlotIdx].Length; }
-                if (currentPool.deckSlotTypes[SlotIdx] != DeckSlotCommon) { return 0; }
-
-                if (SlotIdx >= 4 && currentPool.deckSlotTypes[3] == DeckSlotCommon) { return IdxS3 + 1; }
-                if (SlotIdx >= 3 && currentPool.deckSlotTypes[2] == DeckSlotCommon) { return IdxS2 + 1; }
-                if (SlotIdx >= 2 && currentPool.deckSlotTypes[1] == DeckSlotCommon) { return IdxS1 + 1; }
-                if (SlotIdx >= 1 && currentPool.deckSlotTypes[0] == DeckSlotCommon) { return IdxS0 + 1; }
-
-                return 0;
-            };
-
-            Parallel.For(0, slotLists[0].Length, IdxS0 =>
-            //for (int IdxS0 = 0; IdxS0 < slotLists[0].Length; IdxS0++)
-            {
-                int startS1 = FindLoopStart(1, IdxS0, -1, -1, -1);
-                Parallel.For(startS1, slotLists[1].Length, IdxS1 =>
-                //for (int IdxS1 = startS1; IdxS1 < slotLists[1].Length; IdxS1++)
+                if (isPaused)
                 {
-                    int startS2 = FindLoopStart(2, IdxS0, IdxS1, -1, -1);
-                    Parallel.For(startS2, slotLists[2].Length, IdxS2 =>
-                    //for (int IdxS2 = startS2; IdxS2 < slotLists[2].Length; IdxS2++)
+                    loopPauseEvent.WaitOne();
+                }
+
+                if (deckInfo.IsValid())
+                {
+                    Random randomGen = GetRandomStream(deckInfo.Idx0, deckInfo.Idx1, deckInfo.Idx2, deckInfo.Idx3, deckInfo.Idx4);
+                    // TODO: custom permutation lookup
                     {
-                        int startS3 = FindLoopStart(3, IdxS0, IdxS1, IdxS2, -1);
-                        for (int IdxS3 = startS3; IdxS3 < slotLists[3].Length; IdxS3++)
+                        Logger.WriteLine($"test: {deckInfo.Idx0}-{deckInfo.Idx1}-{deckInfo.Idx2}-{deckInfo.Idx3}-{deckInfo.Idx4}");
+
+                        TriadDeck testDeck = new TriadDeck(deckInfo.Cards);
+                        int testScore = GetDeckScore(currentSolver, testDeck, randomGen, 1);
+                        if (testScore > bestScore)
                         {
-                            int startS4 = FindLoopStart(4, IdxS0, IdxS1, IdxS2, IdxS3);
-                            for (int IdxS4 = startS4; IdxS4 < slotLists[4].Length; IdxS4++)
+                            lock (lockOb)
                             {
-                                TriadCard[] testDeckCards = new TriadCard[] { slotLists[0][IdxS0], slotLists[1][IdxS1], slotLists[2][IdxS2], slotLists[3][IdxS3], slotLists[4][IdxS4] };
-                                if (testDeckCards[0] != testDeckCards[1] &&
-                                    testDeckCards[0] != testDeckCards[2] &&
-                                    testDeckCards[0] != testDeckCards[3] &&
-                                    testDeckCards[0] != testDeckCards[4] &&
-                                    testDeckCards[1] != testDeckCards[2] &&
-                                    testDeckCards[1] != testDeckCards[3] &&
-                                    testDeckCards[1] != testDeckCards[4] &&
-                                    testDeckCards[2] != testDeckCards[3] &&
-                                    testDeckCards[2] != testDeckCards[4] &&
-                                    testDeckCards[3] != testDeckCards[4])
-                                {
-                                    Random randomGen = GetRandomStream(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4);
-                                    // TODO: custom permutation lookup
-                                    {
-                                        TriadDeck testDeck = new TriadDeck(testDeckCards);
-                                        int testScore = GetDeckScore(currentSolver, testDeck, randomGen, 1);
-                                        if (testScore > bestScore)
-                                        {
-                                            lock (lockOb)
-                                            {
-                                                bestScore = testScore;
-                                                bestDeck = testDeck;
+                                bestScore = testScore;
+                                bestDeck = testDeck;
 
-                                                // score: num games * (2 if win, 1 if draw, 0 if lose)
-                                                // max score = 100% win = num games * 2
-                                                float estWinChance = 1.0f * testScore / (numGamesToPlay * 2);
-                                                OnFoundDeck.Invoke(testDeck, estWinChance);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                lock (lockOb)
-                                {
-                                    numTestedDecks++;
-                                }
+                                // score: num games * (2 if win, 1 if draw, 0 if lose)
+                                // max score = 100% win = num games * 2
+                                float estWinChance = 1.0f * testScore / (numGamesToPlay * 2);
+                                OnFoundDeck.Invoke(testDeck, estWinChance);
                             }
                         }
-                    });
-                });
+                    }
+
+                    lock (lockOb)
+                    {
+                        numTestedDecks++;
+                    }
+                }
             });
 
             stopwatch.Stop();
@@ -724,6 +770,24 @@ namespace FFTriadBuddy
             int.TryParse(numIntervalsDesc, out numSeconds);
 
             return Math.Max(0, numSeconds);
+        }
+
+        public void SetPaused(bool wantsPaused)
+        {
+            if (wantsPaused && !isPaused)
+            {
+                loopPauseEvent.Reset();
+                isPaused = true;
+
+                Logger.WriteLine("DeckOptimizer: PAUSE");
+            }
+            else if (!wantsPaused && isPaused)
+            {
+                Logger.WriteLine("DeckOptimizer: RESUME");
+
+                isPaused = false;
+                loopPauseEvent.Set();
+            }
         }
     }
 }
