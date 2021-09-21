@@ -700,8 +700,6 @@ namespace FFTriadBuddy
                     Random randomGen = GetRandomStream(deckInfo.Idx0, deckInfo.Idx1, deckInfo.Idx2, deckInfo.Idx3, deckInfo.Idx4);
                     // TODO: custom permutation lookup
                     {
-                        Logger.WriteLine($"test: {deckInfo.Idx0}-{deckInfo.Idx1}-{deckInfo.Idx2}-{deckInfo.Idx3}-{deckInfo.Idx4}");
-
                         TriadDeck testDeck = new TriadDeck(deckInfo.Cards);
                         int testScore = GetDeckScore(currentSolver, testDeck, randomGen, 1);
                         if (testScore > bestScore)
@@ -778,13 +776,9 @@ namespace FFTriadBuddy
             {
                 loopPauseEvent.Reset();
                 isPaused = true;
-
-                Logger.WriteLine("DeckOptimizer: PAUSE");
             }
             else if (!wantsPaused && isPaused)
             {
-                Logger.WriteLine("DeckOptimizer: RESUME");
-
                 isPaused = false;
                 loopPauseEvent.Set();
             }
