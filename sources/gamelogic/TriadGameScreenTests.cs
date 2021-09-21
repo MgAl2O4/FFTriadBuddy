@@ -232,7 +232,7 @@ namespace FFTriadBuddy
                     if (move.owner == ETriadCardOwner.Blue)
                     {
                         CopyGameStateToScreen(testGameData, screenGame);
-                        if (shouldForceBlueSelection) 
+                        if (shouldForceBlueSelection)
                         {
                             screenGame.forcedBlueCard = screenGame.blueDeck[move.cardIdx];
                         }
