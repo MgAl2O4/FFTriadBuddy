@@ -14,9 +14,9 @@ namespace FFTriadBuddy
         public TriadDeck optimizedDeck;
 
         private TriadNpc npc;
-        private BigInteger numPossibleDecks;
-        private BigInteger numTestedDecks;
-        private BigInteger numMsElapsed;
+        private long numPossibleDecks;
+        private long numTestedDecks;
+        private long numMsElapsed;
 
         private float scoreAvgSides;
         private float scoreStdSides;
@@ -641,8 +641,9 @@ namespace FFTriadBuddy
                 return 0;
             }
 
-            public IEnumerable<ItemInfo> GetDecks()
+            public IEnumerable<ItemInfo> GetDecks(long skipIdx)
             {
+                long skipCounter = skipIdx;
                 for (int IdxS0 = 0; IdxS0 < slotLists[0].Length; IdxS0++)
                 {
                     int startS1 = FindLoopStart(1, IdxS0, -1, -1, -1);
@@ -657,6 +658,13 @@ namespace FFTriadBuddy
                                 int startS4 = FindLoopStart(4, IdxS0, IdxS1, IdxS2, IdxS3);
                                 for (int IdxS4 = startS4; IdxS4 < slotLists[4].Length; IdxS4++)
                                 {
+                                    // i'm lazy.
+                                    if (skipCounter > 0)
+                                    {
+                                        skipCounter--;
+                                        continue;
+                                    }
+
                                     yield return new ItemInfo(IdxS0, IdxS1, IdxS2, IdxS3, IdxS4, this);
                                 }
                             }
@@ -686,43 +694,52 @@ namespace FFTriadBuddy
 
             // no more flexible slot count after this point => loop land
             SlotIterator slotIterator = new SlotIterator(currentPool, lockedCards);
-            Parallel.ForEach(slotIterator.GetDecks(), (deckInfo, state) =>
+            long lowestPauseIdx = 0;
+            bool canFinishLoop = false;
+
+            do
             {
-                if (bAbort) { state.Break(); }
+                var loopResult = Parallel.ForEach(slotIterator.GetDecks(lowestPauseIdx), (deckInfo, state) =>
+                {
+                    if (isPaused) { state.Break(); }
+                    else if (bAbort) { state.Stop(); }
+
+                    if (deckInfo.IsValid())
+                    {
+                        Random randomGen = GetRandomStream(deckInfo.Idx0, deckInfo.Idx1, deckInfo.Idx2, deckInfo.Idx3, deckInfo.Idx4);
+                        // TODO: custom permutation lookup
+                        {
+                            TriadDeck testDeck = new TriadDeck(deckInfo.Cards);
+                            int testScore = GetDeckScore(currentSolver, testDeck, randomGen, 1);
+                            if (testScore > bestScore)
+                            {
+                                lock (lockOb)
+                                {
+                                    bestScore = testScore;
+                                    bestDeck = testDeck;
+
+                                    // score: num games * (2 if win, 1 if draw, 0 if lose)
+                                    // max score = 100% win = num games * 2
+                                    float estWinChance = 1.0f * testScore / (numGamesToPlay * 2);
+                                    OnFoundDeck.Invoke(testDeck, estWinChance);
+                                }
+                            }
+                        }
+
+                        Interlocked.Increment(ref numTestedDecks);
+                    }
+                });
 
                 if (isPaused)
                 {
                     loopPauseEvent.WaitOne();
+                    lowestPauseIdx = loopResult.LowestBreakIteration ?? 0;
+                    Interlocked.Exchange(ref numTestedDecks, lowestPauseIdx);
                 }
 
-                if (deckInfo.IsValid())
-                {
-                    Random randomGen = GetRandomStream(deckInfo.Idx0, deckInfo.Idx1, deckInfo.Idx2, deckInfo.Idx3, deckInfo.Idx4);
-                    // TODO: custom permutation lookup
-                    {
-                        TriadDeck testDeck = new TriadDeck(deckInfo.Cards);
-                        int testScore = GetDeckScore(currentSolver, testDeck, randomGen, 1);
-                        if (testScore > bestScore)
-                        {
-                            lock (lockOb)
-                            {
-                                bestScore = testScore;
-                                bestDeck = testDeck;
+                canFinishLoop = bAbort || loopResult.IsCompleted || loopResult.LowestBreakIteration == null;
 
-                                // score: num games * (2 if win, 1 if draw, 0 if lose)
-                                // max score = 100% win = num games * 2
-                                float estWinChance = 1.0f * testScore / (numGamesToPlay * 2);
-                                OnFoundDeck.Invoke(testDeck, estWinChance);
-                            }
-                        }
-                    }
-
-                    lock (lockOb)
-                    {
-                        numTestedDecks++;
-                    }
-                }
-            });
+            } while (!canFinishLoop);
 
             stopwatch.Stop();
             Logger.WriteLine("Building list of decks: " + stopwatch.ElapsedMilliseconds + "ms, num:" + numPossibleDecks);
@@ -733,7 +750,7 @@ namespace FFTriadBuddy
         {
             if (numPossibleDecks > 0)
             {
-                string desc = (100 * numTestedDecks / numPossibleDecks).ToString();
+                string desc = (100 * Interlocked.Read(ref numTestedDecks) / numPossibleDecks).ToString();
                 int progressPct = int.Parse(desc);
                 return Math.Max(0, Math.Min(100, progressPct));
             }
@@ -743,7 +760,7 @@ namespace FFTriadBuddy
 
         public string GetNumTestedDesc()
         {
-            return numTestedDecks.ToString("N0", CultureInfo.InvariantCulture);
+            return Interlocked.Read(ref numTestedDecks).ToString("N0", CultureInfo.InvariantCulture);
         }
 
         public string GetNumPossibleDecksDesc()
@@ -756,11 +773,12 @@ namespace FFTriadBuddy
             int numSeconds = int.MaxValue;
             numMsElapsed += ElapsedMs;
 
-            BigInteger numTestedPerMs = numTestedDecks / numMsElapsed;
-            BigInteger numMsPerTest = (numTestedDecks == 0) ? 1 : (numMsElapsed / numTestedDecks);
-            BigInteger numTestsRemaning = numPossibleDecks - numTestedDecks;
+            long numTestedDecksSafe = Interlocked.Read(ref numTestedDecks);
+            long numTestedPerMs = numTestedDecksSafe / numMsElapsed;
+            long numMsPerTest = (numTestedDecksSafe == 0) ? 1 : (numMsElapsed / numTestedDecksSafe);
+            long numTestsRemaning = numPossibleDecks - numTestedDecksSafe;
 
-            BigInteger numSecRemaning = (numTestedPerMs > 0) ?
+            long numSecRemaning = (numTestedPerMs > 0) ?
                 ((numTestsRemaning / numTestedPerMs) / 1000) :
                 ((numTestsRemaning * numMsPerTest) / 1000);
 
