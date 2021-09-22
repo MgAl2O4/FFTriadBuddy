@@ -733,8 +733,8 @@ namespace FFTriadBuddy
                 if (isPaused)
                 {
                     loopPauseEvent.WaitOne();
-                    lowestPauseIdx = loopResult.LowestBreakIteration ?? 0;
-                    Interlocked.Exchange(ref numTestedDecks, lowestPauseIdx);
+                    lowestPauseIdx += loopResult.LowestBreakIteration ?? 0;
+                    Interlocked.Exchange(ref numTestedDecks, Math.Min(lowestPauseIdx, numPossibleDecks));
                 }
 
                 canFinishLoop = bAbort || loopResult.IsCompleted || loopResult.LowestBreakIteration == null;
