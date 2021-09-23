@@ -770,6 +770,12 @@
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
     <value>언제나 맨 위</value>
   </data>
+  <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
+    <value>Always use small icons</value>
+  </data>
+  <data name="Settings_DisableHardwareAcceleration" xml:space="preserve">
+    <value>Disable hardware acceleration</value>
+  </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>글꼴 크기</value>
   </data>
@@ -781,6 +787,9 @@
   </data>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
     <value>마거 길이: 서로바꿈</value>
+  </data>
+  <data name="Settings_SkipOptionalSimulateRules" xml:space="preserve">
+    <value>Skip optional rules in simulate</value>
   </data>
   <data name="Settings_Title" xml:space="preserve">
     <value>설정</value>

@@ -169,13 +169,13 @@
     <value>Benutzerdefiniert</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_Classifier" xml:space="preserve">
-    <value>&lt;= Classifier based</value>
+    <value>&lt;= Klassifikatorbasiert</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_DefaultHint" xml:space="preserve">
-    <value>&lt;= Lower is more accurate</value>
+    <value>&lt;= Niedriger ist genau</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_Exact" xml:space="preserve">
-    <value>&lt;= Exact match</value>
+    <value>&lt;= Exakte Übereinstimmung</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_NotAvail" xml:space="preserve">
     <value>k.A.</value>
@@ -220,7 +220,7 @@
     <value>Akutalisieren</value>
   </data>
   <data name="FavDeckForm_Info" xml:space="preserve">
-    <value>Favorite deck, click card for options:</value>
+    <value>Bevorzugtes Deck, für Optionen Karte anklicken:</value>
   </data>
   <data name="FavDeckForm_Name" xml:space="preserve">
     <value>Kurzname:</value>
@@ -229,7 +229,7 @@
     <value>Entfernen</value>
   </data>
   <data name="FavDeckForm_Title" xml:space="preserve">
-    <value>Edit favorite deck</value>
+    <value>Favoriten bearbeiten</value>
   </data>
   <data name="Game_ProcessName_DX11" xml:space="preserve">
     <value>ffxiv_dx11</value>
@@ -241,16 +241,16 @@
     <value>FINALE FANTASIE</value>
   </data>
   <data name="LocalSaves_Export" xml:space="preserve">
-    <value>Export settings</value>
+    <value>Einstellungen exportieren</value>
   </data>
   <data name="LocalSaves_Import" xml:space="preserve">
-    <value>Import settings</value>
+    <value>Einstellungen importieren</value>
   </data>
   <data name="LocalSaves_ShowBackupFolder" xml:space="preserve">
-    <value>Show backups</value>
+    <value>Backups anzeigen</value>
   </data>
   <data name="LocalSaves_Title" xml:space="preserve">
-    <value>Local saves</value>
+    <value>Lokale Speicherung</value>
   </data>
   <data name="MainForm_Cards_IconsTitle" xml:space="preserve">
     <value>Symbole</value>
@@ -265,7 +265,7 @@
     <value>Name</value>
   </data>
   <data name="MainForm_Cards_List_ColumnOwned" xml:space="preserve">
-    <value>Owned</value>
+    <value>Im Besitz</value>
   </data>
   <data name="MainForm_Cards_List_ColumnPower" xml:space="preserve">
     <value>Power</value>
@@ -280,55 +280,55 @@
     <value>Anzahl der eigenen Karten:</value>
   </data>
   <data name="MainForm_Cards_Title" xml:space="preserve">
-    <value>Cards</value>
+    <value>Karten</value>
   </data>
   <data name="MainForm_CtxMenu_CardInfo_FindOnline" xml:space="preserve">
-    <value>Find online</value>
+    <value>Online finden</value>
   </data>
   <data name="MainForm_CtxMenu_CardInfo_NpcReward" xml:space="preserve">
-    <value>Npc reward:</value>
+    <value>NPC Belohnung:</value>
   </data>
   <data name="MainForm_CtxMenu_FindCard" xml:space="preserve">
-    <value>Find card:</value>
+    <value>Karte finden:</value>
   </data>
   <data name="MainForm_CtxMenu_FindNpc" xml:space="preserve">
-    <value>Find npc:</value>
+    <value>NPC finden:</value>
   </data>
   <data name="MainForm_CtxMenu_Learn_Adjust" xml:space="preserve">
-    <value>Adjust...</value>
+    <value>Anpassen...</value>
   </data>
   <data name="MainForm_CtxMenu_Learn_Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Löschen</value>
   </data>
   <data name="MainForm_CtxMenu_SelectNpc_Rewards" xml:space="preserve">
-    <value>Rewards (click to add/remove)</value>
+    <value>Belohnungen (Zum Hinzufügen/Entfernen klicken)</value>
   </data>
   <data name="MainForm_CtxMenu_SelectNpc_Select" xml:space="preserve">
-    <value>Select npc to play</value>
+    <value>Wähle NPC zum Starten</value>
   </data>
   <data name="MainForm_Dynamic_CardOwnedColumn" xml:space="preserve">
-    <value>Yes</value>
+    <value>Ja</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_HasDuplicates" xml:space="preserve">
-    <value>Found duplicate cards!</value>
+    <value>Doppelte Karten gefunden!</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_MissingCards" xml:space="preserve">
-    <value>Missing cards!</value>
+    <value>Fehlende Karten!</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_TooMany4Star" xml:space="preserve">
-    <value>More than two 4+ star!</value>
+    <value>Mehr als zwei 4+ Sterne!</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_TooMany5Star" xml:space="preserve">
-    <value>Only one 5 star allowed!</value>
+    <value>Nur ein 5 Sterne erlaubt!</value>
   </data>
   <data name="MainForm_Dynamic_NpcCompletedColumn" xml:space="preserve">
-    <value>Yes</value>
+    <value>Ja</value>
   </data>
   <data name="MainForm_Dynamic_RuleListEmpty" xml:space="preserve">
-    <value>(none)</value>
+    <value>(keine)</value>
   </data>
   <data name="MainForm_Dynamic_Screenhot_Status_NoErrors" xml:space="preserve">
-    <value>Active</value>
+    <value>Aktiv</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_BoardRow_Bottom" xml:space="preserve">
     <value>bot</value>
@@ -340,67 +340,67 @@
     <value>top</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardLocation_BlueDeck" xml:space="preserve">
-    <value>Blue {0}</value>
+    <value>Blau {0}</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardLocation_Board" xml:space="preserve">
-    <value>Board {0} {1}</value>
+    <value>Brett {0} {1}</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardLocation_RedDeck" xml:space="preserve">
-    <value>Red {0}</value>
+    <value>Rot {0}</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardNotDetected" xml:space="preserve">
-    <value>not detected!</value>
+    <value>nicht erkannt!</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_HashType_Card" xml:space="preserve">
-    <value>Card</value>
+    <value>Karte</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_HashType_Number" xml:space="preserve">
-    <value>Number</value>
+    <value>Nummer</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_HashType_Rule" xml:space="preserve">
-    <value>Rule</value>
+    <value>Regel</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_MatchType_Auto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatisch</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_MatchType_Exact" xml:space="preserve">
-    <value>Exact</value>
+    <value>Exakt</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_MatchType_Similar" xml:space="preserve">
-    <value>Similar</value>
+    <value>Ähnlich</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_SelectDetectionMatch" xml:space="preserve">
-    <value>(select match)</value>
+    <value>(Match auswählen)</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_Disabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>Deaktiviert</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_FailedCardMatching" xml:space="preserve">
-    <value>Failed to recognize some of cards! Game state won't be accurate</value>
+    <value>Einige Karten konnten nicht erkannt werden! Der Spielstatus ist nicht korrekt</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_MissingGridOrCards" xml:space="preserve">
-    <value>Can't find board! Try resetting UI position, turning off reshade, etc...</value>
+    <value>Kann das Board nicht finden! Versuche die UI-Position zurückzusetzen, deaktiviere das reshade, etc...</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_UnknownHash" xml:space="preserve">
-    <value>Can't recognize pattern! See details below</value>
+    <value>Muster kann nicht erkannt werden! Siehe Details unten</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudSave_Loaded" xml:space="preserve">
-    <value>Cloud save applied</value>
+    <value>Cloudspeicherung angewendet</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_ApiFailure" xml:space="preserve">
-    <value>API call failed</value>
+    <value>API-Zugriff fehlgeschlagen</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_AuthInProgress" xml:space="preserve">
-    <value>authorizing...</value>
+    <value>autorisieren...</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_Disabled" xml:space="preserve">
-    <value>disabled, local only</value>
+    <value>deaktiviert, nur lokal</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_NoDatabase" xml:space="preserve">
-    <value>database failure</value>
+    <value>Datenbankfehler</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_NoErrors" xml:space="preserve">
-    <value>active</value>
+    <value>aktiv</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_NotAuthorized" xml:space="preserve">
     <value>Auth erforderlich</value>
@@ -412,7 +412,7 @@
     <value>Synchronisiert</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_Uploaded" xml:space="preserve">
-    <value>stored</value>
+    <value>gespeichert</value>
   </data>
   <data name="MainForm_Dynamic_Setup_OptimizerProgressAborted" xml:space="preserve">
     <value>abgebrochen um {0:P0}</value>
@@ -421,10 +421,10 @@
     <value>Blau beginnt</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_ChanceIsDraw" xml:space="preserve">
-    <value>(DRAW)</value>
+    <value>(ZIEH)</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_ChangeBlueHint" xml:space="preserve">
-    <value>Click to change card</value>
+    <value>Klicken, um die Karte zu ändern</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_EndGame_BlueDraw" xml:space="preserve">
     <value>unentschieden</value>
@@ -436,37 +436,37 @@
     <value>Juhu!</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_LastCardHint" xml:space="preserve">
-    <value>[Place last red card to trigger modifier]</value>
+    <value>[Legen Sie die letzte rote Karte, um den Modifikator auszulösen]</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_RedStartButton" xml:space="preserve">
-    <value>Red start: drag &amp; drop card on board</value>
+    <value>Rot startet: Karte per Drag &amp; Drop auf das Board</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_SwapRuleButton" xml:space="preserve">
-    <value>Select one card from each deck to swap</value>
+    <value>Wählen Sie eine Karte von jedem Deck zum Tausch</value>
   </data>
   <data name="MainForm_Info_BugReports" xml:space="preserve">
-    <value>Bug reports:</value>
+    <value>Fehlermeldungen:</value>
   </data>
   <data name="MainForm_Info_HomePage" xml:space="preserve">
-    <value>Project home page:</value>
+    <value>Projekt Homepage:</value>
   </data>
   <data name="MainForm_Info_Localization" xml:space="preserve">
-    <value>UI localization:</value>
+    <value>UI Lokalisierung:</value>
   </data>
   <data name="MainForm_Info_Title" xml:space="preserve">
-    <value>Info &amp; Settings</value>
+    <value>Info &amp; Einstellungen</value>
   </data>
   <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
-    <value>Thanks to everyone who contributed their translations! You're awesome!</value>
+    <value>Vielen Dank an alle, die ihre Übersetzungen beigesteuert haben! Ihr seid großartig!</value>
   </data>
   <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
-    <value>( volunteers still needed ;) )</value>
+    <value>( Freiwillige werden noch gesucht ;) )</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnCompleted" xml:space="preserve">
-    <value>Completed</value>
+    <value>Abgeschlossen</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnLocation" xml:space="preserve">
-    <value>Location</value>
+    <value>Standort</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnName" xml:space="preserve">
     <value>Name</value>
@@ -475,314 +475,323 @@
     <value>Power</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnReward" xml:space="preserve">
-    <value>Reward</value>
+    <value>Belohnung</value>
   </data>
   <data name="MainForm_Npcs_List_ColumnRules" xml:space="preserve">
-    <value>Rules</value>
+    <value>Regeln</value>
   </data>
   <data name="MainForm_Npcs_NumKnown" xml:space="preserve">
-    <value>Number of npcs with cards:</value>
+    <value>Anzahl der NPCs mit Karten:</value>
   </data>
   <data name="MainForm_Npcs_Title" xml:space="preserve">
-    <value>Npcs</value>
+    <value>NPCs</value>
   </data>
   <data name="MainForm_Screenshot_CurrentState" xml:space="preserve">
-    <value>Current state:</value>
+    <value>Aktueller Status</value>
   </data>
   <data name="MainForm_Screenshot_History_CardsColumnDetection" xml:space="preserve">
-    <value>Last detection</value>
+    <value>Letzte Erfassung</value>
   </data>
   <data name="MainForm_Screenshot_History_CardsColumnSides" xml:space="preserve">
-    <value>Numbers [U-L-D-R]</value>
+    <value>Nummern [U-L-D-R]</value>
   </data>
   <data name="MainForm_Screenshot_History_CardsColumnType" xml:space="preserve">
-    <value>Type</value>
+    <value>Typ</value>
   </data>
   <data name="MainForm_Screenshot_History_HashColumnDetection" xml:space="preserve">
-    <value>Last detection</value>
+    <value>Letzte Erfassung</value>
   </data>
   <data name="MainForm_Screenshot_History_HashColumnType" xml:space="preserve">
-    <value>Type</value>
+    <value>Typ</value>
   </data>
   <data name="MainForm_Screenshot_InfoLines" xml:space="preserve">
-    <value>Rules:
-- game must be in Windowed or Borderless Windowed mode
-- UI: set scale to 100%, use dark scheme
-- npc must be selected
-- capture during Blue turn, after all card animations finished (!!!)
+    <value>Regeln:
+- Das Spiel muss im Fenstermodus oder im randlosen Fenstermodus sein.
+- UI: Skalierung auf 100% setzen, dunkles Schema verwenden
+- NPC muss ausgewählt sein
+- Aufnahme während des blauen Zuges, nachdem alle Kartenanimationen abgeschlossen sind (!!!)
 
-Gamepad: press both trigger buttons to capture
+Gamepad: Drücken Sie beide Trigger-Tasten zum Erfassen
 
-Works with Mini Cactpot too :D</value>
+Funktioniert auch mit Mini Cactpot :D</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DetectList" xml:space="preserve">
-    <value>Detect:</value>
+    <value>Ermittelt:</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DiscardAllButton" xml:space="preserve">
-    <value>Discard All</value>
+    <value>Alle Verwerfen</value>
   </data>
   <data name="MainForm_Screenshot_Learn_DiscardAllInfo" xml:space="preserve">
-    <value>&lt;&lt; Resets scanner state</value>
+    <value>&lt;&lt; Setzt den Status des Scanners zurück</value>
   </data>
   <data name="MainForm_Screenshot_Learn_PendingPlural" xml:space="preserve">
-    <value>(there are {0} more pending)</value>
+    <value>(es sind {0} weitere ausstehend)</value>
   </data>
   <data name="MainForm_Screenshot_Learn_PendingSingular" xml:space="preserve">
-    <value>(there is 1 more pending)</value>
+    <value>(weitere 1 steht noch aus)</value>
   </data>
   <data name="MainForm_Screenshot_Learn_SaveButton" xml:space="preserve">
-    <value>Save</value>
+    <value>Speichern</value>
   </data>
   <data name="MainForm_Screenshot_Learn_SourceImage" xml:space="preserve">
-    <value>Source image:</value>
+    <value>Quellbild:</value>
   </data>
   <data name="MainForm_Screenshot_Learn_Type" xml:space="preserve">
-    <value>Type:</value>
+    <value>Typ:</value>
   </data>
   <data name="MainForm_Screenshot_ListHint" xml:space="preserve">
-    <value>^ Right click on lists for options</value>
+    <value>^ Rechtsklicken Sie auf Listen für Optionen</value>
   </data>
   <data name="MainForm_Screenshot_RemovePatternsButton" xml:space="preserve">
-    <value>Remove local patterns</value>
+    <value>Lokale Muster entfernen</value>
   </data>
   <data name="MainForm_Screenshot_RemovePatternsTitle" xml:space="preserve">
-    <value>Use to clear all custom patterns and start from scratch:</value>
+    <value>Verwenden Sie diese Option, um alle benutzerdefinierten Muster zu löschen und von vorne zu beginnen:</value>
   </data>
   <data name="MainForm_Screenshot_Title" xml:space="preserve">
-    <value>Play: Screenshot</value>
+    <value>Spielen: Screenshot</value>
   </data>
   <data name="MainForm_Setup_Cloud_AuthButton" xml:space="preserve">
     <value>Login:</value>
   </data>
   <data name="MainForm_Setup_Cloud_Desc" xml:space="preserve">
-    <value>Save in Google:</value>
+    <value>In Google speichern:</value>
   </data>
   <data name="MainForm_Setup_Deck_OptimizeAbortButton" xml:space="preserve">
-    <value>Abort</value>
+    <value>Abbrechen</value>
   </data>
   <data name="MainForm_Setup_Deck_OptimizeStartButton" xml:space="preserve">
-    <value>Optimize deck for NPC</value>
+    <value>Deck für NPC optimieren</value>
   </data>
   <data name="MainForm_Setup_Deck_Title" xml:space="preserve">
-    <value>Active deck, click card for options:</value>
+    <value>Aktives Deck, für Optionen Karte anklicken:</value>
   </data>
   <data name="MainForm_Setup_Fav_AddSlotButton" xml:space="preserve">
-    <value>Add favorite deck slot</value>
+    <value>Favoriten Deck-Slot hinzufügen</value>
   </data>
   <data name="MainForm_Setup_NPC" xml:space="preserve">
     <value>NPC:</value>
   </data>
   <data name="MainForm_Setup_NPC_DeckPower" xml:space="preserve">
-    <value>Deck power:</value>
+    <value>Deck Power:</value>
   </data>
   <data name="MainForm_Setup_NPC_Location" xml:space="preserve">
-    <value>Location:</value>
+    <value>Standort:</value>
   </data>
   <data name="MainForm_Setup_NPC_Rules" xml:space="preserve">
-    <value>Rules:</value>
+    <value>Regeln:</value>
   </data>
   <data name="MainForm_Setup_NPC_WinChance" xml:space="preserve">
-    <value>Win chance:</value>
+    <value>Gewinnchance:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumOwned" xml:space="preserve">
-    <value>Num owned cards:</value>
+    <value>Anzahl der Karten im Besitz:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumPossible" xml:space="preserve">
-    <value>Num possible decks:</value>
+    <value>Anzahl möglicher Decks:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumTested" xml:space="preserve">
-    <value>Num tested decks:</value>
+    <value>Anzahl getesteter Decks:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_Progress" xml:space="preserve">
-    <value>Progress:</value>
+    <value>Fortschritt:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_TimeLeft" xml:space="preserve">
-    <value>Time left:</value>
+    <value>Verbleibende Zeit:</value>
   </data>
   <data name="MainForm_Setup_OptimizeStats_Title" xml:space="preserve">
-    <value>Optimization stats:</value>
+    <value>Optimierungsstatus:</value>
   </data>
   <data name="MainForm_Setup_RulesToggle" xml:space="preserve">
-    <value>Toggle npc rules, disable for tournament</value>
+    <value>NPC-Regeln ein-/ausschalten für Turnier</value>
   </data>
   <data name="MainForm_Setup_Rules_Region1" xml:space="preserve">
-    <value>Region rule 1:</value>
+    <value>Regionalregel 1:</value>
   </data>
   <data name="MainForm_Setup_Rules_Region2" xml:space="preserve">
-    <value>Region rule 2:</value>
+    <value>Regionalregel 2:</value>
   </data>
   <data name="MainForm_Setup_Rules_Tournament" xml:space="preserve">
-    <value>Tournament:</value>
+    <value>Turnier:</value>
   </data>
   <data name="MainForm_Setup_Rules_TournamentRules" xml:space="preserve">
-    <value>Rules:</value>
+    <value>Regeln:</value>
   </data>
   <data name="MainForm_Setup_Title" xml:space="preserve">
-    <value>Setup</value>
+    <value>Konfiguration</value>
   </data>
   <data name="MainForm_Simulate_Debug_ForceCached" xml:space="preserve">
-    <value>Force using cached image</value>
+    <value>Erzwinge mit zwischengespeichertem Bild</value>
   </data>
   <data name="MainForm_Simulate_Debug_Info" xml:space="preserve">
-    <value>Take game screenshot: DEBUG mode</value>
+    <value>Machen Sie einen Screenshot vom Spiel: DEBUG-Modus</value>
   </data>
   <data name="MainForm_Simulate_Game_ApplyRuleButton" xml:space="preserve">
-    <value>Apply rule</value>
+    <value>Regel anwenden</value>
   </data>
   <data name="MainForm_Simulate_Game_KnownCards" xml:space="preserve">
-    <value>Known cards:</value>
+    <value>Bekannte Karten:</value>
   </data>
   <data name="MainForm_Simulate_Game_ListHint" xml:space="preserve">
-    <value>[Drag &amp; drop cards on board]</value>
+    <value>[Karten auf das Board ziehen und ablegen]</value>
   </data>
   <data name="MainForm_Simulate_Game_SkipRuleButton" xml:space="preserve">
-    <value>Skip</value>
+    <value>Überspringen</value>
   </data>
   <data name="MainForm_Simulate_Game_SpecialRule" xml:space="preserve">
-    <value>Special Rule &gt;&gt;</value>
+    <value>Sonderregel &gt;&gt;</value>
   </data>
   <data name="MainForm_Simulate_Game_UnknownCards" xml:space="preserve">
-    <value>Unknown cards remaining: {0}</value>
+    <value>Unbekannte Karten verbleibend: {0}</value>
   </data>
   <data name="MainForm_Simulate_Open_Hint" xml:space="preserve">
-    <value>Select visible cards:</value>
+    <value>Sichtbare Karten auswählen:</value>
   </data>
   <data name="MainForm_Simulate_Random_Info" xml:space="preserve">
-    <value>Adjust randomized deck :(</value>
+    <value>Zufälliges Deck anpassen :(</value>
   </data>
   <data name="MainForm_Simulate_ResetButton" xml:space="preserve">
-    <value>Reset</value>
+    <value>Zurücksetzen</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule1" xml:space="preserve">
-    <value>Pick roulette rule #1</value>
+    <value>Wähle Roulette Regel #1 aus</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule2" xml:space="preserve">
-    <value>Pick roulette rule #2</value>
+    <value>Wähle Roulette Regel #2 aus</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule3" xml:space="preserve">
-    <value>Pick roulette rule #3</value>
+    <value>Wähle Roulette Regel #3 aus</value>
   </data>
   <data name="MainForm_Simulate_Roulette_Rule4" xml:space="preserve">
-    <value>Pick roulette rule #4</value>
+    <value>Wählen Sie Roulette-Regel #4</value>
   </data>
   <data name="MainForm_Simulate_RuleList" xml:space="preserve">
-    <value>Current rules:</value>
+    <value>Aktuelle Regeln:</value>
   </data>
   <data name="MainForm_Simulate_Title" xml:space="preserve">
-    <value>Play: Simulate</value>
+    <value>Spielen: Simulieren</value>
   </data>
   <data name="MainForm_Simulate_UndoRedMoveButton" xml:space="preserve">
-    <value>Undo last Red move</value>
+    <value>Letzten roten Zug rückgängig machen</value>
   </data>
   <data name="MainForm_Simulate_WinChance" xml:space="preserve">
-    <value>Win chance:</value>
+    <value>Gewinnchance:</value>
   </data>
   <data name="MainForm_UpdateNotify" xml:space="preserve">
-    <value>New version downloaded, please restart program to finish update. Click here to hide.</value>
+    <value>Neue Version heruntergeladen, bitte starten Sie das Programm neu, um das Update abzuschließen. Klicken Sie hier, um es auszublenden.</value>
   </data>
   <data name="OverlayForm_Capture_AutoScan" xml:space="preserve">
-    <value>Auto scan</value>
+    <value>Automatischer Scan</value>
   </data>
   <data name="OverlayForm_Capture_Button" xml:space="preserve">
-    <value>Capture</value>
+    <value>Erfassen</value>
   </data>
   <data name="OverlayForm_Capture_Details" xml:space="preserve">
-    <value>Show details</value>
+    <value>Details anzeigen</value>
   </data>
   <data name="OverlayForm_Capture_Status" xml:space="preserve">
     <value>Status</value>
   </data>
   <data name="OverlayForm_CardInfo_Swapped" xml:space="preserve">
-    <value>SWAPPED</value>
+    <value>GETAUSCHT</value>
   </data>
   <data name="OverlayForm_DeckInfo_Mismatch" xml:space="preserve">
-    <value>Blue deck is not matching Setup page! Solver needs to observe a few games to guess correct one.</value>
+    <value>Das blaue Deck passt nicht zur Setup-Seite! Der Solver muss ein paar Spiele beobachten, um das richtige Spiel zu erraten.</value>
   </data>
   <data name="OverlayForm_Details_Npc" xml:space="preserve">
     <value>NPC: {0}</value>
   </data>
   <data name="OverlayForm_Details_RedDeck" xml:space="preserve">
-    <value>Red deck details:</value>
+    <value>Details zum roten Deck</value>
   </data>
   <data name="OverlayForm_Details_RedInfo" xml:space="preserve">
-    <value>&lt; Potential red cards, not including visible ones below:</value>
+    <value>&lt; Mögliche rote Karten, ohne die unten sichtbaren:</value>
   </data>
   <data name="OverlayForm_Details_RedPlacedAll" xml:space="preserve">
-    <value>All placed: {0}</value>
+    <value>Alle platziert: {0}</value>
   </data>
   <data name="OverlayForm_Details_RedPlacedVariable" xml:space="preserve">
-    <value>Var placed: {0}</value>
+    <value>Var platziert: {0}</value>
   </data>
   <data name="OverlayForm_Details_Rules" xml:space="preserve">
-    <value>Rules: {0}</value>
+    <value>Regeln: {0}</value>
   </data>
   <data name="OverlayForm_Details_ScanId" xml:space="preserve">
-    <value>Scan Id: {0}</value>
+    <value>Scan-ID: {0}</value>
   </data>
   <data name="OverlayForm_Dynamic_NpcUnknown" xml:space="preserve">
-    <value>unknown</value>
+    <value>unbekannt</value>
   </data>
   <data name="OverlayForm_Dynamic_RulesWaiting" xml:space="preserve">
-    <value>npc changed, waiting for scan...</value>
+    <value>NPC geändert, warten auf Scan...</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_ActiveTurn" xml:space="preserve">
-    <value>Ready (active turn!)</value>
+    <value>Bereit (aktiver Zug!)</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_AutoScanMouseOverBoard" xml:space="preserve">
-    <value>Move cursor away from scan zone!</value>
+    <value>Bewegen Sie den Cursor aus dem Scanbereich heraus!</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_CactpotReady" xml:space="preserve">
-    <value>Mini cactpot: Ready</value>
+    <value>Mini Cactpot: Bereit</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_FailedCardMatching" xml:space="preserve">
-    <value>Unknown cards! Check Play:Screenshot for details</value>
+    <value>Unbekannte Karten! Überprüfe Play:Screenshot für Details</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingCards" xml:space="preserve">
-    <value>Can't find blue deck</value>
+    <value>Blaues Deck kann nicht gefunden werden</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingGameProcess" xml:space="preserve">
-    <value>Game is not running</value>
+    <value>Spiel läuft nicht!</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingGameWindow" xml:space="preserve">
-    <value>Can't find game window</value>
+    <value>Spielfenster nicht gefunden</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_MissingGrid" xml:space="preserve">
-    <value>Can't find board</value>
+    <value>Board nicht gefunden</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_NoInputImage" xml:space="preserve">
-    <value>Can't retrieve image to analyze</value>
+    <value>Bild kann nicht zur Analyse abgerufen werden</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_NoScannerMatch" xml:space="preserve">
-    <value>Can't find minigame window</value>
+    <value>Minigame Fenster nicht gefunden</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_Ready" xml:space="preserve">
-    <value>Ready</value>
+    <value>Bereit</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_ScannerErrors" xml:space="preserve">
-    <value>Failed to recognize minigame</value>
+    <value>Minispiel konnte nicht erkannt werden</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_UnknownHash" xml:space="preserve">
-    <value>Unknown pattern! Check Play:Screenshot for details</value>
+    <value>Unbekanntes Muster! Siehe Play:Screenshot für Details</value>
   </data>
   <data name="OverlayForm_Dynamic_Status_WaitingForTurn" xml:space="preserve">
-    <value>Waiting for blue turn</value>
+    <value>Warten auf blauen Zug</value>
   </data>
   <data name="Settings_AlwaysOnTop" xml:space="preserve">
-    <value>Always on top</value>
+    <value>Immer im Vordergrund</value>
+  </data>
+  <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
+    <value>Immer kleine Symbole verwenden</value>
+  </data>
+  <data name="Settings_DisableHardwareAcceleration" xml:space="preserve">
+    <value>Hardwarebeschleunigung deaktivieren</value>
   </data>
   <data name="Settings_FontSize" xml:space="preserve">
-    <value>Font size</value>
+    <value>Schriftgröße</value>
   </data>
   <data name="Settings_MarkerDurationCactpot" xml:space="preserve">
-    <value>Marker duration: cactpot</value>
+    <value>Markierungsdauer: cactpot</value>
   </data>
   <data name="Settings_MarkerDurationCard" xml:space="preserve">
-    <value>Marker duration: card</value>
+    <value>Markierungsdauer: Karte</value>
   </data>
   <data name="Settings_MarkerDurationSwap" xml:space="preserve">
-    <value>Marker duration: swap</value>
+    <value>Markierungsdauer: Swap</value>
+  </data>
+  <data name="Settings_SkipOptionalSimulateRules" xml:space="preserve">
+    <value>Optionale Regeln in Simulation überspringen</value>
   </data>
   <data name="Settings_Title" xml:space="preserve">
-    <value>Settings</value>
+    <value>Einstellungen</value>
   </data>
 </root>
