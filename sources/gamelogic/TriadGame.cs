@@ -77,25 +77,32 @@ namespace FFTriadBuddy
         public float drawChance;
         public ETriadGameState expectedResult;
         public float compScore;
+        public float scoreCards;
 
-        public TriadGameResultChance(float winChance, float drawChance)
+        public static TriadGameResultChance Empty = new TriadGameResultChance(0.0f, 0.0f, -100.0f);
+
+        public TriadGameResultChance(float winChance, float drawChance, float scoreCards)
         {
             this.winChance = winChance;
             this.drawChance = drawChance;
+            this.scoreCards = scoreCards;
 
             if (winChance < 0.25f && drawChance < 0.25f)
             {
-                compScore = winChance / 10.0f;
+                //compScore = winChance / 10.0f;
+                compScore = scoreCards - 10.0f;
                 expectedResult = ETriadGameState.BlueLost;
             }
             else if (winChance < drawChance)
             {
-                compScore = drawChance;
+                //compScore = drawChance;
+                compScore = scoreCards;
                 expectedResult = ETriadGameState.BlueDraw;
             }
             else
             {
-                compScore = winChance + 10.0f;
+                //compScore = winChance + 10.0f;
+                compScore = scoreCards + 1.0f;
                 expectedResult = ETriadGameState.BlueWins;
             }
         }
@@ -395,6 +402,7 @@ namespace FFTriadBuddy
         {
             int numWinningWorkers = 0;
             int numDrawingWorkers = 0;
+            int numControlledCards = 0;
 
             Parallel.For(0, solverWorkers, workerIdx =>
             //for (int workerIdx = 0; workerIdx < solverWorkers; workerIdx++)
@@ -411,12 +419,20 @@ namespace FFTriadBuddy
                 {
                     Interlocked.Add(ref numDrawingWorkers, 1);
                 }
+
+                int numBlue = (gameData.deckBlue.availableCardMask != 0) ? 1 : 0;
+                foreach (TriadCardInstance card in gameDataCopy.board)
+                {
+                    numBlue += (card != null && card.owner == ETriadCardOwner.Blue) ? 1 : 0;
+                }
+
+                Interlocked.Add(ref numControlledCards, numBlue);
             });
 
-            return new TriadGameResultChance((float)numWinningWorkers / (float)solverWorkers, (float)numDrawingWorkers / (float)solverWorkers);
+            return new TriadGameResultChance((float)numWinningWorkers / solverWorkers, (float)numDrawingWorkers / solverWorkers, (float)numControlledCards / solverWorkers);
         }
 
-        public bool SolverFindBestMove(TriadGameData gameData, out int boardPos, out TriadCard card, out TriadGameResultChance probabilities)
+        public bool SolverFindBestMove(TriadGameData gameData, out int boardPos, out TriadCard card, out TriadGameResultChance probabilities, bool showLogs = true)
         {
             bool bResult = false;
             card = null;
@@ -469,7 +485,7 @@ namespace FFTriadBuddy
             if ((numAvailCards > 0) && (numAvailBoard > 0))
             {
                 int numCombinations = numAvailCards * numAvailBoard;
-                TriadGameResultChance bestProb = new TriadGameResultChance(-1.0f, 0);
+                TriadGameResultChance bestProb = TriadGameResultChance.Empty;
 
                 int cardProgressCounter = 0;
                 for (int cardIdx = 0; cardIdx < TriadDeckInstance.maxAvailableCards; cardIdx++)
@@ -508,15 +524,26 @@ namespace FFTriadBuddy
                 }
 
                 probabilities = bestProb;
-                Logger.WriteLine(namePrefix + "Solver win:" + bestProb.winChance.ToString("P2") + " (draw:" + bestProb.drawChance.ToString("P2") +
-                    "), blue[" + gameData.deckBlue + "], red[" + gameData.deckRed + "], turn:" + turnOwner + ", availBoard:" + numAvailBoard +
-                    " (" + availBoardMask.ToString("x") + ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
+                if (showLogs)
+                {
+                    Logger.WriteLine("{0}Solver win:{1:P2} (draw:{2:P2}), blue[{3}], red[{4}], turn:{5}, availBoard:{6} ({7:x}), availCards:{8} ({9}:{10:x})",
+                        namePrefix,
+                        bestProb.winChance, bestProb.drawChance,
+                        gameData.deckBlue, gameData.deckRed, turnOwner,
+                        numAvailBoard, availBoardMask,
+                        numAvailCards, useDeck == gameData.deckBlue ? "B" : "R", availCardsMask);
+                }
             }
             else
             {
-                probabilities = new TriadGameResultChance(0, 0);
-                Logger.WriteLine(namePrefix + "Can't find move! availSpots:" + numAvailBoard + " (" + availBoardMask.ToString("x") +
-                    ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
+                probabilities = TriadGameResultChance.Empty;
+                if (showLogs)
+                {
+                    Logger.WriteLine("{0}Can't find move! availBoard:{1} ({2:x}), availCards:{3} ({4}:{5:x})",
+                        namePrefix,
+                        numAvailBoard, availBoardMask,
+                        numAvailCards, useDeck == gameData.deckBlue ? "B" : "R", availCardsMask);
+                }
             }
 
             return bResult;
