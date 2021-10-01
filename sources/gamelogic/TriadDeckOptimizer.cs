@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -346,19 +345,33 @@ namespace FFTriadBuddy
             int priRarityNum = (int)commonRarity + 1;
             int[] mapAvailRarity = new int[maxRarityNum];
 
-            // special case: don't include any rare slots with reverse rule if there's enough cards in common list
-            bool hasReverseMod = false;
-            bool hasAscensionMod = false;
-            foreach (TriadGameModifier mod in modifiers)
+            var modifiersCopy = new List<TriadGameModifier>();
+            modifiersCopy.AddRange(modifiers);
+
+            int reverseModIdx = modifiersCopy.FindIndex(mod => mod.GetType() == typeof(TriadGameModifierReverse));
+            bool hasReverseMod = reverseModIdx >= 0;
+
+            int ascentionModIdx = modifiersCopy.FindIndex(mod => mod.GetType() == typeof(TriadGameModifierAscention));
+            bool hasAscensionMod = ascentionModIdx >= 0; ;
+
+            int descentionModIdx = modifiersCopy.FindIndex(mod => mod.GetType() == typeof(TriadGameModifierDescention));
+            bool hasDescentionMod = descentionModIdx >= 0; ;
+
+            // special cases:
+            // - reverse: don't include any rare slots if there's enough cards in common list
+            // - reverse + ascention: swap for descention rule to additionally penalize picking cards with type
+            // - reverse + descention: swap for ascention rule to select cards of shared type
+            if (hasReverseMod && hasAscensionMod)
             {
-                if (mod.GetType() == typeof(TriadGameModifierReverse))
-                {
-                    hasReverseMod = true;
-                }
-                else if (mod.GetType() == typeof(TriadGameModifierAscention))
-                {
-                    hasAscensionMod = true;
-                }
+                hasAscensionMod = false;
+                modifiersCopy.RemoveAt(ascentionModIdx);
+                modifiersCopy.Add(TriadGameModifierDB.Get().mods.Find(mod => mod.GetType() == typeof(TriadGameModifierDescention)));
+            }
+            else if (hasReverseMod && hasDescentionMod)
+            {
+                hasAscensionMod = true;
+                modifiersCopy.RemoveAt(descentionModIdx);
+                modifiersCopy.Add(TriadGameModifierDB.Get().mods.Find(mod => mod.GetType() == typeof(TriadGameModifierAscention)));
             }
 
             // find number of priority lists based on unique rarity limits 
@@ -469,7 +482,7 @@ namespace FFTriadBuddy
                     (cornerNum * scoreMaxCorner) +
                     ((int)card.Rarity * scoreRarity);
 
-                foreach (TriadGameModifier mod in modifiers)
+                foreach (TriadGameModifier mod in modifiersCopy)
                 {
                     mod.OnScoreCard(card, ref scoredCard.score);
                 }
