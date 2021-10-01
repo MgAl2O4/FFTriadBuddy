@@ -194,7 +194,7 @@ namespace FFTriadBuddy
         public static void RunSolverStressTest()
         {
             int numIterations = 1000 * 1000;
-            Logger.WriteLine("Solver testing start, numIterations:" + numIterations);
+            Logger.WriteLine("Solver speed testing start, numIterations:" + numIterations);
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -215,12 +215,77 @@ namespace FFTriadBuddy
             }
 
             timer.Stop();
-            Logger.WriteLine("Solver testing finished, time taken:" + timer.ElapsedMilliseconds + "ms");
+            Logger.WriteLine("Solver speed testing finished, time taken:" + timer.ElapsedMilliseconds + "ms");
 
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
             }
+        }
+
+        public static void RunSolverAccuracyTests()
+        {
+            int numIterations = 200;
+            Logger.WriteLine("Solver accuracy testing start, numIterations:" + numIterations);
+
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
+            TriadDeck testDeck = new TriadDeck(new int[] { 10, 20, 30, 40, 50 });
+            TriadNpc testNpc = TriadNpcDB.Get().Find("Garima");
+
+            TriadGameSession solver = new TriadGameSession();
+            solver.modifiers.AddRange(testNpc.Rules);
+            solver.UpdateSpecialRules();
+
+            int numControlledCards = 0;
+            int numWins = 0;
+            for (int Idx = 0; Idx < numIterations; Idx++)
+            {
+                TriadGameData testData = solver.StartGame(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
+                Random sessionRand = new Random(Idx);
+
+                if (Idx > 0 && Idx % 20 == 0)
+                {
+                    Logger.WriteLine(">> {0}/{1}", Idx, numIterations);
+                }
+
+                bool keepPlaying = true;
+                while (keepPlaying)
+                {
+                    if (testData.state == ETriadGameState.InProgressRed)
+                    {
+                        keepPlaying = solver.SolverPlayRandomTurn(testData, sessionRand);
+                    }
+                    else if (testData.state == ETriadGameState.InProgressBlue)
+                    {
+                        keepPlaying = solver.SolverFindBestMove(testData, out int boardPos, out var card, out var dummyChance, false);
+                        if (keepPlaying)
+                        {
+                            keepPlaying = solver.PlaceCard(testData, card, ETriadCardOwner.Blue, boardPos);
+                        }
+                    }
+                    else
+                    {
+                        keepPlaying = false;
+                    }
+                }
+
+                int numBlue = (testData.deckBlue.availableCardMask != 0) ? 1 : 0;
+                foreach (TriadCardInstance card in testData.board)
+                {
+                    numBlue += (card != null && card.owner == ETriadCardOwner.Blue) ? 1 : 0;
+                }
+
+                numControlledCards += numBlue;
+                numWins += (testData.state == ETriadGameState.BlueWins) ? 1 : 0;
+            }
+
+            timer.Stop();
+            Logger.WriteLine("Solver accuracy testing finished, score:{0:P2}, control:{1:0.##}, time taken:{2}s",
+                (float)numWins / numIterations,
+                (float)numControlledCards / numIterations,
+                timer.ElapsedMilliseconds / 1000.0f);
         }
     }
 }
