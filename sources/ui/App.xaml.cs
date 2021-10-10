@@ -42,10 +42,23 @@ namespace FFTriadBuddy.UI
                 TestManager.RunTests();
                 canStart = false;
             }
-            else if (Array.Find(e.Args, x => x == "-dataConvert") != null)
+
+            if (Array.Find(e.Args, x => x == "-dataConvert") != null)
             {
                 var converter = new DataConverter();
                 converter.Run();
+                canStart = false;
+            }
+
+            if (Array.Find(e.Args, x => x == "-runSolverAccTest") != null)
+            {
+                TriadGameTests.RunSolverAccuracyTests();
+                canStart = false;
+            }
+
+            if (Array.Find(e.Args, x => x == "-runSolverStressTest") != null)
+            {
+                TriadGameTests.RunSolverStressTest();
                 canStart = false;
             }
 #endif // DEBUG

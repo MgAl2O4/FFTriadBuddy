@@ -416,7 +416,7 @@ namespace FFTriadBuddy
             return new TriadGameResultChance((float)numWinningWorkers / (float)solverWorkers, (float)numDrawingWorkers / (float)solverWorkers);
         }
 
-        public bool SolverFindBestMove(TriadGameData gameData, out int boardPos, out TriadCard card, out TriadGameResultChance probabilities)
+        public bool SolverFindBestMove(TriadGameData gameData, out int boardPos, out TriadCard card, out TriadGameResultChance probabilities, bool showLogs = true)
         {
             bool bResult = false;
             card = null;
@@ -508,15 +508,26 @@ namespace FFTriadBuddy
                 }
 
                 probabilities = bestProb;
-                Logger.WriteLine(namePrefix + "Solver win:" + bestProb.winChance.ToString("P2") + " (draw:" + bestProb.drawChance.ToString("P2") +
-                    "), blue[" + gameData.deckBlue + "], red[" + gameData.deckRed + "], turn:" + turnOwner + ", availBoard:" + numAvailBoard +
-                    " (" + availBoardMask.ToString("x") + ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
+                if (showLogs)
+                {
+                    Logger.WriteLine("{0}Solver win:{1:P2} (draw:{2:P2}), blue[{3}], red[{4}], turn:{5}, availBoard:{6} ({7:x}), availCards:{8} ({9}:{10:x})",
+                        namePrefix,
+                        bestProb.winChance, bestProb.drawChance,
+                        gameData.deckBlue, gameData.deckRed, turnOwner,
+                        numAvailBoard, availBoardMask,
+                        numAvailCards, useDeck == gameData.deckBlue ? "B" : "R", availCardsMask);
+                }
             }
             else
             {
                 probabilities = new TriadGameResultChance(0, 0);
-                Logger.WriteLine(namePrefix + "Can't find move! availSpots:" + numAvailBoard + " (" + availBoardMask.ToString("x") +
-                    ") availCards:" + numAvailCards + " (" + (useDeck == gameData.deckBlue ? "B" : "R") + ":" + availCardsMask.ToString("x") + ")");
+                if (showLogs)
+                {
+                    Logger.WriteLine("{0}Can't find move! availBoard:{1} ({2:x}), availCards:{3} ({4}:{5:x})",
+                        namePrefix,
+                        numAvailBoard, availBoardMask,
+                        numAvailCards, useDeck == gameData.deckBlue ? "B" : "R", availCardsMask);
+                }
             }
 
             return bResult;

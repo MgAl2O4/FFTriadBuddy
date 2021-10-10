@@ -194,7 +194,7 @@ namespace FFTriadBuddy
         public static void RunSolverStressTest()
         {
             int numIterations = 1000 * 1000;
-            Logger.WriteLine("Solver testing start, numIterations:" + numIterations);
+            Logger.WriteLine("Solver speed testing start, numIterations:" + numIterations);
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -215,12 +215,125 @@ namespace FFTriadBuddy
             }
 
             timer.Stop();
-            Logger.WriteLine("Solver testing finished, time taken:" + timer.ElapsedMilliseconds + "ms");
+            Logger.WriteLine("Solver speed testing finished, time taken:" + timer.ElapsedMilliseconds + "ms");
 
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
             }
+        }
+
+        private static int[][] BuildDeckPermutations()
+        {
+            var permutationList = new int[120][];
+            int ListIdx = 0;
+            for (int IdxP0 = 0; IdxP0 < 5; IdxP0++)
+            {
+                for (int IdxP1 = 0; IdxP1 < 5; IdxP1++)
+                {
+                    if (IdxP1 == IdxP0) { continue; }
+                    for (int IdxP2 = 0; IdxP2 < 5; IdxP2++)
+                    {
+                        if (IdxP2 == IdxP0 || IdxP2 == IdxP1) { continue; }
+                        for (int IdxP3 = 0; IdxP3 < 5; IdxP3++)
+                        {
+                            if (IdxP3 == IdxP0 || IdxP3 == IdxP1 || IdxP3 == IdxP2) { continue; }
+                            for (int IdxP4 = 0; IdxP4 < 5; IdxP4++)
+                            {
+                                if (IdxP4 == IdxP0 || IdxP4 == IdxP1 || IdxP4 == IdxP2 || IdxP4 == IdxP3) { continue; }
+
+                                permutationList[ListIdx] = new int[5] { IdxP0, IdxP1, IdxP2, IdxP3, IdxP4 };
+                                ListIdx++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return permutationList;
+        }
+
+        public static void RunSolverAccuracyTests()
+        {
+            int numIterations = 200;
+            var deckPermutations = BuildDeckPermutations();
+
+            Logger.WriteLine("Solver accuracy testing start, numIterations:" + numIterations);
+
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
+            TriadDeck testDeck = new TriadDeck(new int[] { 61, 248, 113, 191, 87 });
+            TriadNpc testNpc = TriadNpcDB.Get().Find("Swift");
+
+            TriadGameSession solver = new TriadGameSession();
+            solver.modifiers.AddRange(testNpc.Rules);
+            solver.UpdateSpecialRules();
+
+            bool hasChaosRule = (solver.specialRules & ETriadGameSpecialMod.BlueCardSelection) != ETriadGameSpecialMod.None;
+
+            int numControlledCards = 0;
+            int numWins = 0;
+            for (int Idx = 0; Idx < numIterations; Idx++)
+            {
+                TriadGameData testData = solver.StartGame(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
+                Random sessionRand = new Random(Idx);
+
+                int[] blueDeckOrder = null;
+                int blueDeckIdx = 0;
+                if (hasChaosRule)
+                {
+                    int permIdx = sessionRand.Next() % deckPermutations.Length;
+                    blueDeckOrder = deckPermutations[permIdx];
+                }
+
+                if (Idx > 0 && Idx % 20 == 0)
+                {
+                    Logger.WriteLine(">> {0}/{1}", Idx, numIterations);
+                }
+
+                bool keepPlaying = true;
+                while (keepPlaying)
+                {
+                    if (testData.state == ETriadGameState.InProgressRed)
+                    {
+                        keepPlaying = solver.SolverPlayRandomTurn(testData, sessionRand);
+                    }
+                    else if (testData.state == ETriadGameState.InProgressBlue)
+                    {
+                        if (blueDeckOrder != null)
+                        {
+                            testData.forcedCardIdx = blueDeckOrder[blueDeckIdx];
+                            blueDeckIdx++;
+                        }
+
+                        keepPlaying = solver.SolverFindBestMove(testData, out int boardPos, out var card, out var dummyChance, false);
+                        if (keepPlaying)
+                        {
+                            keepPlaying = solver.PlaceCard(testData, card, ETriadCardOwner.Blue, boardPos);
+                        }
+                    }
+                    else
+                    {
+                        keepPlaying = false;
+                    }
+                }
+
+                int numBlue = (testData.deckBlue.availableCardMask != 0) ? 1 : 0;
+                foreach (TriadCardInstance card in testData.board)
+                {
+                    numBlue += (card != null && card.owner == ETriadCardOwner.Blue) ? 1 : 0;
+                }
+
+                numControlledCards += numBlue;
+                numWins += (testData.state == ETriadGameState.BlueWins) ? 1 : 0;
+            }
+
+            timer.Stop();
+            Logger.WriteLine("Solver accuracy testing finished, score:{0:P2}, control:{1:0.##}, time taken:{2}s",
+                (float)numWins / numIterations,
+                (float)numControlledCards / numIterations,
+                timer.ElapsedMilliseconds / 1000.0f);
         }
     }
 }
