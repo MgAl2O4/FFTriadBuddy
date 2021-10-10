@@ -10,25 +10,26 @@ namespace FFTriadBuddy.UI
         public class Move
         {
             public TriadCard Card;
+            public int CardIdx;
             public int BoardIdx;
-            public TriadGameResultChance WinChance;
+            public SolverResult WinChance;
         }
 
         public TriadNpc Npc { get; private set; }
         public TriadDeck PlayerDeck { get; private set; }
         public List<TriadGameModifier> Rules { get; } = new List<TriadGameModifier>();
 
-        public TriadGameSession Session = new TriadGameSession();
-        public TriadGameData GameState = null;
-        public TriadGameResultChance CachedWinChance;
+        public TriadGameSolver Solver = new TriadGameSolver();
+        public TriadGameSimulationState GameState = null;
+        public SolverResult CachedWinChance;
 
-        public List<TriadGameData> UndoStateRed = new List<TriadGameData>();
-        public TriadGameData UndoStateBlue = null;
+        public List<TriadGameSimulationState> UndoStateRed = new List<TriadGameSimulationState>();
+        public TriadGameSimulationState UndoStateBlue = null;
 
         public event Action<TriadNpc> OnNpcChanged;
         public event Action<TriadDeck> OnDeckChanged;
         public event Action<TriadGameModel> OnSetupChanged;
-        public event Action<TriadGameData, Move> OnGameStateChanged;
+        public event Action<TriadGameSimulationState, Move> OnGameStateChanged;
         public event Action<TriadGameModel> OnCachedWinChanceChanged;
 
         private bool isTournament = false;
@@ -99,7 +100,7 @@ namespace FFTriadBuddy.UI
             }
         }
 
-        public void SetCachedWinChance(TriadDeck deck, TriadGameResultChance winChance)
+        public void SetCachedWinChance(TriadDeck deck, SolverResult winChance)
         {
             if (PlayerDeck.Equals(deck))
             {
@@ -146,29 +147,9 @@ namespace FFTriadBuddy.UI
 
         private void UpdateSession(bool notifySetupChange = true)
         {
-            Session = new TriadGameSession();
+            Solver = new TriadGameSolver();
+            Solver.InitializeSimulation(Rules, isTournament ? null : Npc.Rules);
 
-            // create new instances of modifiers, required for things like roulette
-            foreach (var rule in Rules)
-            {
-                TriadGameModifier modCopy = (TriadGameModifier)Activator.CreateInstance(rule.GetType());
-                modCopy.OnMatchInit();
-
-                Session.modifiers.Add(modCopy);
-            }
-
-            if (!isTournament)
-            {
-                foreach (var rule in Npc.Rules)
-                {
-                    TriadGameModifier modCopy = (TriadGameModifier)Activator.CreateInstance(rule.GetType());
-                    modCopy.OnMatchInit();
-
-                    Session.modifiers.Add(modCopy);
-                }
-            }
-
-            Session.UpdateSpecialRules();
             GameReset();
 
             if (notifySetupChange)
@@ -180,12 +161,8 @@ namespace FFTriadBuddy.UI
         public void GameReset()
         {
             Logger.WriteLine("Game.Reset");
-            foreach (var rule in Session.modifiers)
-            {
-                rule.OnMatchInit();
-            }
 
-            GameState = Session.StartGame(PlayerDeck, Npc.Deck, ETriadGameState.InProgressRed);
+            GameState = Solver.StartSimulation(PlayerDeck, Npc.Deck, ETriadGameState.InProgressRed);
             UndoStateBlue = null;
             UndoStateRed.Clear();
 
@@ -217,7 +194,7 @@ namespace FFTriadBuddy.UI
             if (GameState != null && GameState.state == ETriadGameState.InProgressRed && UndoStateBlue != null)
             {
                 var blueDeckEx = GameState.deckBlue as TriadDeckInstanceManual;
-                if ((Session.specialRules & ETriadGameSpecialMod.BlueCardSelection) != ETriadGameSpecialMod.None && blueDeckEx != null)
+                if (Solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection) && blueDeckEx != null)
                 {
                     int deckSlotIdx = blueDeckEx.GetCardIndex(card);
                     if (GameState.forcedCardIdx != deckSlotIdx && !blueDeckEx.IsPlaced(deckSlotIdx))
@@ -237,11 +214,11 @@ namespace FFTriadBuddy.UI
             if (GameState != null)
             {
                 GameState.forcedCardIdx = -1;
-                TriadGameData newUndoState = new TriadGameData(GameState);
+                TriadGameSimulationState newUndoState = new TriadGameSimulationState(GameState);
 
                 Logger.WriteLine("Red> [{0}]: {1}", boardIdx, card.Name.GetCodeName());
                 GameState.bDebugRules = true;
-                bool bPlaced = Session.PlaceCard(GameState, card, ETriadCardOwner.Red, boardIdx);
+                bool bPlaced = Solver.simulation.PlaceCard(GameState, card, ETriadCardOwner.Red, boardIdx);
                 GameState.bDebugRules = false;
 
                 // additional debug logs
@@ -283,24 +260,25 @@ namespace FFTriadBuddy.UI
         {
             if (GameState.state == ETriadGameState.InProgressBlue)
             {
-                if ((Session.specialRules & ETriadGameSpecialMod.BlueCardSelection) != ETriadGameSpecialMod.None)
+                if (Solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection))
                 {
-                    UndoStateBlue = new TriadGameData(GameState);
+                    UndoStateBlue = new TriadGameSimulationState(GameState);
                 }
 
-                bool bHasMove = Session.SolverFindBestMove(GameState, out int bestNextPos, out TriadCard bestNextCard, out TriadGameResultChance bestChance);
-                if (bHasMove)
+                bool hasMove = Solver.FindNextMove(GameState, out int bestCardIdx, out int bestNextPos, out SolverResult bestChance);
+                if (hasMove)
                 {
+                    var bestCardOb = GameState.deckBlue.GetCard(bestCardIdx);
                     Logger.WriteLine("Blue> [{0}]: {1} => {2}: {3:P0}",
-                        bestNextPos, bestNextCard.Name.GetCodeName(),
+                        bestNextPos, bestCardOb.Name.GetCodeName(),
                         bestChance.expectedResult == ETriadGameState.BlueDraw ? "draw" : "win",
                         bestChance.expectedResult == ETriadGameState.BlueDraw ? bestChance.drawChance : bestChance.winChance);
 
                     GameState.bDebugRules = true;
-                    Session.PlaceCard(GameState, bestNextCard, ETriadCardOwner.Blue, bestNextPos);
+                    Solver.simulation.PlaceCard(GameState, bestCardIdx, GameState.deckBlue, ETriadCardOwner.Blue, bestNextPos);
                     GameState.bDebugRules = false;
 
-                    OnGameStateChanged?.Invoke(GameState, new Move() { Card = bestNextCard, BoardIdx = bestNextPos, WinChance = bestChance });
+                    OnGameStateChanged?.Invoke(GameState, new Move() { Card = bestCardOb, CardIdx = bestCardIdx, BoardIdx = bestNextPos, WinChance = bestChance });
                 }
                 else
                 {
@@ -312,7 +290,7 @@ namespace FFTriadBuddy.UI
         public void GameRouletteApplied()
         {
             Logger.WriteLine("Game.Roulette applied");
-            Session.UpdateSpecialRules();
+            Solver.simulation.UpdateSpecialRules();
             OnSetupChanged?.Invoke(this);
         }
     }

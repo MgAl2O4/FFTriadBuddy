@@ -89,7 +89,7 @@ namespace FFTriadBuddy.UI
         private bool optimizerHistoryOverride = false;
         private int optimizerWaitingForSolveId = -1;
 
-        private List<Tuple<TriadDeck, TriadGameResultChance>> deckOptimizerHistory = new List<Tuple<TriadDeck, TriadGameResultChance>>();
+        private List<Tuple<TriadDeck, SolverResult>> deckOptimizerHistory = new List<Tuple<TriadDeck, SolverResult>>();
 
         public ICommand CommandPickNpc { get; private set; }
         public ICommand CommandToggleTournament { get; private set; }
@@ -388,7 +388,7 @@ namespace FFTriadBuddy.UI
             }
         }
 
-        private void DeckOptimizer_OnSolved(int id, TriadDeck deck, TriadGameResultChance chance)
+        private void DeckOptimizer_OnSolved(int id, TriadDeck deck, SolverResult chance)
         {
             MainWindow.GameModel.SetCachedWinChance(deck, chance);
 
@@ -399,7 +399,7 @@ namespace FFTriadBuddy.UI
                     optimizerWaitingForSolveId = -1;
                 }
 
-                deckOptimizerHistory.Add(new Tuple<TriadDeck, TriadGameResultChance>(deck, chance));
+                deckOptimizerHistory.Add(new Tuple<TriadDeck, SolverResult>(deck, chance));
                 UpdateDeckOptimizerHistory();
             }
         }

@@ -50,14 +50,14 @@ namespace FFTriadBuddy
         public virtual bool HasLastRedReminder() { return bHasLastRedReminder; }
         public override string ToString() { return GetCodeName(); }
 
-        public virtual void OnCardPlaced(TriadGameData gameData, int boardPos) { }
-        public virtual void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList) { }
-        public virtual void OnCheckCaptureCardWeights(TriadGameData gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum) { }
-        public virtual void OnCheckCaptureCardMath(TriadGameData gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured) { }
-        public virtual void OnPostCaptures(TriadGameData gameData, int boardPos) { }
-        public virtual void OnScreenUpdate(TriadGameData gameData) { }
-        public virtual void OnAllCardsPlaced(TriadGameData gameData) { }
-        public virtual void OnFilterNextCards(TriadGameData gameData, ref int allowedCardsMask) { }
+        public virtual void OnCardPlaced(TriadGameSimulationState gameData, int boardPos) { }
+        public virtual void OnCheckCaptureNeis(TriadGameSimulationState gameData, int boardPos, int[] neiPos, List<int> captureList) { }
+        public virtual void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum) { }
+        public virtual void OnCheckCaptureCardMath(TriadGameSimulationState gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured) { }
+        public virtual void OnPostCaptures(TriadGameSimulationState gameData, int boardPos) { }
+        public virtual void OnScreenUpdate(TriadGameSimulationState gameData) { }
+        public virtual void OnAllCardsPlaced(TriadGameSimulationState gameData) { }
+        public virtual void OnFilterNextCards(TriadGameSimulationState gameData, ref int allowedCardsMask) { }
         public virtual void OnMatchInit() { }
         public virtual void OnScoreCard(TriadCard card, ref float score) { }
 
@@ -123,37 +123,37 @@ namespace FFTriadBuddy
         public override EFeature GetFeatures() { return (RuleInst != null) ? RuleInst.GetFeatures() : EFeature.None; }
         public override bool HasLastRedReminder() { return (RuleInst != null) ? RuleInst.HasLastRedReminder() : base.HasLastRedReminder(); }
 
-        public override void OnCardPlaced(TriadGameData gameData, int boardPos)
+        public override void OnCardPlaced(TriadGameSimulationState gameData, int boardPos)
         {
             if (RuleInst != null) { RuleInst.OnCardPlaced(gameData, boardPos); }
         }
 
-        public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
+        public override void OnCheckCaptureNeis(TriadGameSimulationState gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
             if (RuleInst != null) { RuleInst.OnCheckCaptureNeis(gameData, boardPos, neiPos, captureList); }
         }
 
-        public override void OnCheckCaptureCardWeights(TriadGameData gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
+        public override void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
         {
             if (RuleInst != null) { RuleInst.OnCheckCaptureCardWeights(gameData, boardPos, neiPos, ref cardNum, ref neiNum); }
         }
 
-        public override void OnCheckCaptureCardMath(TriadGameData gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured)
+        public override void OnCheckCaptureCardMath(TriadGameSimulationState gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured)
         {
             if (RuleInst != null) { RuleInst.OnCheckCaptureCardMath(gameData, boardPos, neiPos, cardNum, neiNum, ref isCaptured); }
         }
 
-        public override void OnPostCaptures(TriadGameData gameData, int boardPos)
+        public override void OnPostCaptures(TriadGameSimulationState gameData, int boardPos)
         {
             if (RuleInst != null) { RuleInst.OnPostCaptures(gameData, boardPos); }
         }
 
-        public override void OnAllCardsPlaced(TriadGameData gameData)
+        public override void OnAllCardsPlaced(TriadGameSimulationState gameData)
         {
             if (RuleInst != null) { RuleInst.OnAllCardsPlaced(gameData); }
         }
 
-        public override void OnFilterNextCards(TriadGameData gameData, ref int allowedCardsMask)
+        public override void OnFilterNextCards(TriadGameSimulationState gameData, ref int allowedCardsMask)
         {
             if (RuleInst != null) { RuleInst.OnFilterNextCards(gameData, ref allowedCardsMask); }
         }
@@ -179,7 +179,7 @@ namespace FFTriadBuddy
         }
 
         // shared with three open
-        public static void StaticMakeKnown(TriadGameData gameData, List<int> redIndices)
+        public static void StaticMakeKnown(TriadGameSimulationState gameData, List<int> redIndices)
         {
             const int deckSize = 5;
 
@@ -246,7 +246,7 @@ namespace FFTriadBuddy
             Features = EFeature.AllPlaced;
         }
 
-        public override void OnAllCardsPlaced(TriadGameData gameData)
+        public override void OnAllCardsPlaced(TriadGameSimulationState gameData)
         {
             if (gameData.state == ETriadGameState.BlueDraw && gameData.numRestarts < 3)
             {
@@ -350,7 +350,7 @@ namespace FFTriadBuddy
             Features = EFeature.CaptureMath;
         }
 
-        public override void OnCheckCaptureCardMath(TriadGameData gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured)
+        public override void OnCheckCaptureCardMath(TriadGameSimulationState gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured)
         {
             isCaptured = cardNum < neiNum;
         }
@@ -371,7 +371,7 @@ namespace FFTriadBuddy
             Features = EFeature.CaptureWeights;
         }
 
-        public override void OnCheckCaptureCardWeights(TriadGameData gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
+        public override void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
         {
             if ((cardNum == 10) && (neiNum == 1))
             {
@@ -394,7 +394,7 @@ namespace FFTriadBuddy
             Features = EFeature.CaptureNei | EFeature.CardPlaced;
         }
 
-        public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
+        public override void OnCheckCaptureNeis(TriadGameSimulationState gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
             TriadCardInstance checkCard = gameData.board[boardPos];
             int numSame = 0;
@@ -451,7 +451,7 @@ namespace FFTriadBuddy
             Features = EFeature.CaptureNei | EFeature.CardPlaced;
         }
 
-        public override void OnCheckCaptureNeis(TriadGameData gameData, int boardPos, int[] neiPos, List<int> captureList)
+        public override void OnCheckCaptureNeis(TriadGameSimulationState gameData, int boardPos, int[] neiPos, List<int> captureList)
         {
             TriadCardInstance checkCard = gameData.board[boardPos];
             for (int sideIdx = 0; sideIdx < 4; sideIdx++)
@@ -521,7 +521,7 @@ namespace FFTriadBuddy
             Features = EFeature.CardPlaced | EFeature.PostCapture;
         }
 
-        public override void OnCardPlaced(TriadGameData gameData, int boardPos)
+        public override void OnCardPlaced(TriadGameSimulationState gameData, int boardPos)
         {
             TriadCardInstance checkCard = gameData.board[boardPos];
             if (checkCard.card.Type != ETriadCardType.None)
@@ -539,7 +539,7 @@ namespace FFTriadBuddy
             }
         }
 
-        public override void OnPostCaptures(TriadGameData gameData, int boardPos)
+        public override void OnPostCaptures(TriadGameSimulationState gameData, int boardPos)
         {
             TriadCardInstance checkCard = gameData.board[boardPos];
             if (checkCard.card.Type != ETriadCardType.None)
@@ -562,7 +562,7 @@ namespace FFTriadBuddy
             }
         }
 
-        public override void OnScreenUpdate(TriadGameData gameData)
+        public override void OnScreenUpdate(TriadGameSimulationState gameData)
         {
             for (int Idx = 0; Idx < gameData.typeMods.Length; Idx++)
             {
@@ -607,7 +607,7 @@ namespace FFTriadBuddy
             Features = EFeature.CardPlaced | EFeature.PostCapture;
         }
 
-        public override void OnCardPlaced(TriadGameData gameData, int boardPos)
+        public override void OnCardPlaced(TriadGameSimulationState gameData, int boardPos)
         {
             TriadCardInstance checkCard = gameData.board[boardPos];
             if (checkCard.card.Type != ETriadCardType.None)
@@ -625,7 +625,7 @@ namespace FFTriadBuddy
             }
         }
 
-        public override void OnPostCaptures(TriadGameData gameData, int boardPos)
+        public override void OnPostCaptures(TriadGameSimulationState gameData, int boardPos)
         {
             TriadCardInstance checkCard = gameData.board[boardPos];
             if (checkCard.card.Type != ETriadCardType.None)
@@ -648,7 +648,7 @@ namespace FFTriadBuddy
             }
         }
 
-        public override void OnScreenUpdate(TriadGameData gameData)
+        public override void OnScreenUpdate(TriadGameSimulationState gameData)
         {
             for (int Idx = 0; Idx < gameData.typeMods.Length; Idx++)
             {
@@ -693,7 +693,7 @@ namespace FFTriadBuddy
             bIsDeckOrderImportant = true; Features = EFeature.FilterNext;
         }
 
-        public override void OnFilterNextCards(TriadGameData gameData, ref int allowedCardsMask)
+        public override void OnFilterNextCards(TriadGameSimulationState gameData, ref int allowedCardsMask)
         {
             if ((gameData.state == ETriadGameState.InProgressBlue) && (allowedCardsMask != 0))
             {
@@ -731,7 +731,7 @@ namespace FFTriadBuddy
         }
 
         // special logic, covered by GUI
-        public static void StaticSwapCards(TriadGameData gameData, TriadCard swapFromBlue, int blueSlotIdx, TriadCard swapFromRed, int redSlotIdx)
+        public static void StaticSwapCards(TriadGameSimulationState gameData, TriadCard swapFromBlue, int blueSlotIdx, TriadCard swapFromRed, int redSlotIdx)
         {
             // implement this rule only for manual mode, screen captures get everything automatically
             TriadDeckInstanceManual deckBlueEx = gameData.deckBlue as TriadDeckInstanceManual;
@@ -773,7 +773,7 @@ namespace FFTriadBuddy
         }
 
         // special logic, covered by GUI
-        public static void StaticRandomized(TriadGameData gameData)
+        public static void StaticRandomized(TriadGameSimulationState gameData)
         {
             if (gameData.bDebugRules)
             {

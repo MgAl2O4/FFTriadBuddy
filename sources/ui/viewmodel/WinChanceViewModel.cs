@@ -3,7 +3,7 @@
     public class WinChanceViewModel : LocalizedViewModel
     {
         public bool isInvalid = true;
-        public TriadGameResultChance chance;
+        public SolverResult chance;
 
         public bool IsDraw => chance.expectedResult == ETriadGameState.BlueDraw;
         public bool IsWin => chance.expectedResult == ETriadGameState.BlueWins;
@@ -21,7 +21,7 @@
             NotifyProperties();
         }
 
-        public void SetValue(TriadGameResultChance value)
+        public void SetValue(SolverResult value)
         {
             chance = value;
             isInvalid = false;

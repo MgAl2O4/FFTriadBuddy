@@ -54,7 +54,7 @@ namespace FFTriadBuddy
                 }
             }
 
-            public bool VerifyState(TriadGameData gameState, bool debugMode)
+            public bool VerifyState(TriadGameSimulationState gameState, bool debugMode)
             {
                 if (expectedState != null)
                 {
@@ -87,7 +87,7 @@ namespace FFTriadBuddy
             }
         }
 
-        private static void CopyGameStateToScreen(TriadGameData testGameData, ScannerTriad.GameState screenGame)
+        private static void CopyGameStateToScreen(TriadGameSimulationState testGameData, ScannerTriad.GameState screenGame)
         {
             for (int idx = 0; idx < 9; idx++)
             {
@@ -199,9 +199,9 @@ namespace FFTriadBuddy
             if (!rootOb.entries.ContainsKey("moves"))
             {
                 screenMemory.OnNewScan(screenGame, testNpc);
-                screenMemory.gameSession.SolverFindBestMove(screenMemory.gameState, out int solverBoardPos, out TriadCard solverTriadCard, out TriadGameResultChance bestChance);
+                bool hasMove = screenMemory.gameSolver.FindNextMove(screenMemory.gameState, out var dummyCardIdx, out var dummyBoardPos, out var bestChance);
 
-                if (bestChance.expectedResult == ETriadGameState.BlueLost && bestChance.winChance <= 0.0f && bestChance.drawChance <= 0.0f)
+                if (!hasMove || (bestChance.expectedResult == ETriadGameState.BlueLost && bestChance.winChance <= 0.0f && bestChance.drawChance <= 0.0f))
                 {
                     string exceptionMsg = string.Format("Test {0} failed! Can't find move!", testName);
                     throw new Exception(exceptionMsg);
@@ -211,13 +211,12 @@ namespace FFTriadBuddy
             {
                 debugMode = true;
 
-                TriadGameSession testSession = new TriadGameSession();
-                testSession.modifiers = screenGame.mods;
-                testSession.UpdateSpecialRules();
+                TriadGameSimulation testSession = new TriadGameSimulation();
+                testSession.Initialize(screenGame.mods, null);
 
-                TriadGameData testGameData = new TriadGameData() { bDebugRules = debugMode };
-                testGameData.deckBlue = new TriadDeckInstanceManual(new TriadDeck(screenGame.blueDeck));
-                testGameData.deckRed = new TriadDeckInstanceManual(testNpc.Deck);
+                TriadGameSimulationState testGameState = new TriadGameSimulationState() { bDebugRules = debugMode };
+                testGameState.deckBlue = new TriadDeckInstanceManual(new TriadDeck(screenGame.blueDeck));
+                testGameState.deckRed = new TriadDeckInstanceManual(testNpc.Deck);
 
                 bool shouldForceBlueSelection = true;
 
@@ -231,17 +230,18 @@ namespace FFTriadBuddy
 
                     if (move.owner == ETriadCardOwner.Blue)
                     {
-                        CopyGameStateToScreen(testGameData, screenGame);
+                        CopyGameStateToScreen(testGameState, screenGame);
                         if (shouldForceBlueSelection)
                         {
                             screenGame.forcedBlueCard = screenGame.blueDeck[move.cardIdx];
                         }
 
                         screenMemory.OnNewScan(screenGame, testNpc);
-                        screenMemory.gameSession.SolverFindBestMove(screenMemory.gameState, out int solverBoardPos, out TriadCard solverTriadCard, out TriadGameResultChance bestChance);
+                        screenMemory.gameSolver.FindNextMove(screenMemory.gameState, out int solverCardIdx, out int solverBoardPos, out SolverResult bestChance);
 
                         if (debugMode)
                         {
+                            var solverTriadCard = testGameState.deckBlue.GetCard(solverCardIdx);
                             Logger.WriteLine("solver: {0} -> board[{1}], chance: {2}", solverTriadCard.Name.GetCodeName(), solverBoardPos, bestChance.expectedResult);
 
                             if (solverBoardPos != move.boardPos)
@@ -251,8 +251,8 @@ namespace FFTriadBuddy
                         }
                     }
 
-                    testGameData.state = move.owner == ETriadCardOwner.Blue ? ETriadGameState.InProgressBlue : ETriadGameState.InProgressRed;
-                    testSession.PlaceCard(testGameData, move.card, move.owner, move.boardPos);
+                    testGameState.state = move.owner == ETriadCardOwner.Blue ? ETriadGameState.InProgressBlue : ETriadGameState.InProgressRed;
+                    testSession.PlaceCard(testGameState, move.card, move.owner, move.boardPos);
                 }
             }
         }

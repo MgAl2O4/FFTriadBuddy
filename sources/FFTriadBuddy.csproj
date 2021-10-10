@@ -92,11 +92,13 @@
     <Compile Include="gamelogic\TriadCard.cs" />
     <Compile Include="gamelogic\TriadDeck.cs" />
     <Compile Include="gamelogic\TriadDeckOptimizer.cs" />
-    <Compile Include="gamelogic\TriadGame.cs" />
+    <Compile Include="gamelogic\TriadGameSolver.cs" />
+    <Compile Include="gamelogic\TriadGameSimulation.cs" />
     <Compile Include="gamelogic\TriadGameModifier.cs" />
     <Compile Include="gamelogic\TriadGameScreenMemory.cs" />
-    <Compile Include="gamelogic\TriadGameScreenTests.cs" />
-    <Compile Include="gamelogic\TriadGameTests.cs" />
+    <Compile Include="gamelogic\tests\TriadGameScreenTests.cs" />
+    <Compile Include="gamelogic\tests\TriadGameTests.cs" />
+    <Compile Include="gamelogic\TriadGameAgent.cs" />
     <Compile Include="googleapi\GoogleDriveService.cs" />
     <Compile Include="googleapi\GoogleOAuth2.cs" />
     <Compile Include="loc\strings.cs" />
@@ -357,6 +359,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
     <CreateItem Include="$(ProjectDir)loc\strings*.resx">

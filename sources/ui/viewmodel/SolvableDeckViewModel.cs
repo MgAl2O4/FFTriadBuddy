@@ -29,7 +29,7 @@ namespace FFTriadBuddy.UI
             NextSolverId++;
         }
 
-        private void Solver_OnSolved(int id, TriadDeck deck, TriadGameResultChance chance)
+        private void Solver_OnSolved(int id, TriadDeck deck, SolverResult chance)
         {
             IsSolverRunning = false;
             timer?.Stop();
@@ -56,7 +56,7 @@ namespace FFTriadBuddy.UI
             InitializeFor(gameModel);
 
             int lastCalcId = solver.calcId;
-            solver.Update(gameModel.Session, gameModel.Npc);
+            solver.Update(gameModel.Solver.simulation, gameModel.Npc);
             solver.SetDeck(deck);
 
             if (lastCalcId != solver.calcId)

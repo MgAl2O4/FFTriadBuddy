@@ -84,7 +84,7 @@ namespace FFTriadBuddy.UI
         public void RequestRuleRoulette()
         {
             int numRules = 0;
-            foreach (var mod in GameModel.Session.modifiers)
+            foreach (var mod in GameModel.Solver.simulation.modifiers)
             {
                 var rouletteModOb = mod as TriadGameModifierRoulette;
                 if (rouletteModOb != null)
@@ -110,7 +110,7 @@ namespace FFTriadBuddy.UI
         private void ApplyRuleRoulette()
         {
             int readIdx = 0;
-            foreach (var mod in GameModel.Session.modifiers)
+            foreach (var mod in GameModel.Solver.simulation.modifiers)
             {
                 var rouletteModOb = mod as TriadGameModifierRoulette;
                 if (rouletteModOb != null)

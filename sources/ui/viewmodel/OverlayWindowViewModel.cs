@@ -283,10 +283,11 @@ namespace FFTriadBuddy.UI
                 updateFlags = ScreenMemory.OnNewScan(ScreenAnalyzer.scannerTriad.cachedGameState, MainWindow.GameModel.Npc);
                 if (updateFlags != TriadGameScreenMemory.EUpdateFlags.None)
                 {
-                    ScreenMemory.gameSession.SolverFindBestMove(ScreenMemory.gameState, out int solverBoardPos, out TriadCard solverTriadCard, out var bestChance);
+                    ScreenMemory.gameSolver.FindNextMove(ScreenMemory.gameState, out int solverCardIdx, out int solverBoardPos, out var bestChance);
 
-                    int blueCardIdx = ScreenMemory.deckBlue.GetCardIndex(solverTriadCard);
-                    int boardCardIdx = (blueCardIdx < 0) ? -1 : solverBoardPos;
+                    var solverTriadCard = ScreenMemory.deckBlue.GetCard(solverCardIdx);
+                    int blueCardIdx = solverCardIdx;
+                    int boardCardIdx = (solverCardIdx < 0) ? -1 : solverBoardPos;
 
                     Logger.WriteLine("  suggested move: [{0}] {1} {2} (expected: {3})",
                         boardCardIdx, ETriadCardOwner.Blue,
@@ -448,7 +449,7 @@ namespace FFTriadBuddy.UI
         private void UpdateCachedText()
         {
             string desc = "";
-            foreach (TriadGameModifier mod in ScreenMemory.gameSession.modifiers)
+            foreach (TriadGameModifier mod in ScreenMemory.gameSolver.simulation.modifiers)
             {
                 if (desc.Length > 0) { desc += ", "; }
                 desc += mod.GetLocalizedName();

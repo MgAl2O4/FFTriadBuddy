@@ -58,7 +58,7 @@ namespace FFTriadBuddy.UI
         public int SpecialRuleSwitcherIdx => (int)SpecialRules.ActiveRule;
         public int SpecialRuleSwitcherBoardIdx => (SpecialRules.ActiveRule == SimulateRulesViewModel.Rule.None) ? 0 : 1;
 
-        private TriadGameData cachedLastState;
+        private TriadGameSimulationState cachedLastState;
         private TriadGameModel.Move cachedLastMove;
 
         public ICommand CommandReset { get; private set; }
@@ -139,7 +139,7 @@ namespace FFTriadBuddy.UI
             UpdateCachedText();
         }
 
-        public void GameModel_OnGameStateChanged(TriadGameData state, TriadGameModel.Move move)
+        public void GameModel_OnGameStateChanged(TriadGameSimulationState state, TriadGameModel.Move move)
         {
             var modelProxyDB = ModelProxyDB.Get();
             cachedLastState = state;
@@ -230,7 +230,7 @@ namespace FFTriadBuddy.UI
         {
             UpdateRules();
 
-            CanSelectBlue = (model.Session.specialRules & ETriadGameSpecialMod.BlueCardSelection) != ETriadGameSpecialMod.None;
+            CanSelectBlue = model.Solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection);
         }
 
         private void GameModel_OnDeckChanged(TriadDeck deckOb)
@@ -283,9 +283,9 @@ namespace FFTriadBuddy.UI
             }
         }
 
-        private bool VerifyInteractiveRules(TriadGameData state)
+        private bool VerifyInteractiveRules(TriadGameSimulationState state)
         {
-            var pendingUIRules = (state.numCardsPlaced == 0) ? (MainWindow.GameModel.Session.specialRules & ~state.resolvedSpecial) : ETriadGameSpecialMod.None;
+            var pendingUIRules = (state.numCardsPlaced == 0) ? (MainWindow.GameModel.Solver.simulation.specialRules & ~state.resolvedSpecial) : ETriadGameSpecialMod.None;
             if (pendingUIRules != ETriadGameSpecialMod.None)
             {
                 if ((pendingUIRules & ETriadGameSpecialMod.RandomizeRule) != ETriadGameSpecialMod.None)
@@ -319,7 +319,7 @@ namespace FFTriadBuddy.UI
         private void UpdateRules()
         {
             string desc = "";
-            foreach (var rule in MainWindow.GameModel.Session.modifiers)
+            foreach (var rule in MainWindow.GameModel.Solver.simulation.modifiers)
             {
                 string ruleName = rule.GetLocalizedName();
                 if (ruleName.Length > 0)
@@ -356,7 +356,7 @@ namespace FFTriadBuddy.UI
             if (MainWindow.GameModel.GameState.numCardsPlaced == (MainWindow.GameModel.GameState.board.Length - 1) &&
                 MainWindow.GameModel.GameState.state == ETriadGameState.InProgressRed)
             {
-                foreach (TriadGameModifier mod in MainWindow.GameModel.Session.modifiers)
+                foreach (TriadGameModifier mod in MainWindow.GameModel.Solver.simulation.modifiers)
                 {
                     hasLastRedReminder = hasLastRedReminder || mod.HasLastRedReminder();
                 }

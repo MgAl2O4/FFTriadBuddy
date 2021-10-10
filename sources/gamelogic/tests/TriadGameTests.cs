@@ -53,7 +53,7 @@ namespace FFTriadBuddy
                 }
             }
 
-            public bool VerifyState(TriadGameData gameState, bool debugMode)
+            public bool VerifyState(TriadGameSimulationState gameState, bool debugMode)
             {
                 if (expectedState != null)
                 {
@@ -97,8 +97,6 @@ namespace FFTriadBuddy
                 return;
             }
 
-            TriadGameSession testSession = new TriadGameSession();
-
             // intial state
             ScannerTriad.VerifyConfig configData = new ScannerTriad.VerifyConfig();
             configData.Load(configOb);
@@ -112,13 +110,16 @@ namespace FFTriadBuddy
                 }
             }
 
+            List<TriadGameModifier> configMods = new List<TriadGameModifier>();
             foreach (string modName in configData.rules)
             {
-                testSession.modifiers.Add(mapValidationRules[modName]);
+                configMods.Add(mapValidationRules[modName]);
             }
 
-            testSession.UpdateSpecialRules();
-            TriadGameData testGameData = new TriadGameData() { bDebugRules = debugMode };
+            TriadGameSimulation testSession = new TriadGameSimulation();
+            testSession.Initialize(configMods);
+
+            TriadGameSimulationState testGameData = new TriadGameSimulationState() { bDebugRules = debugMode };
 
             if (configData.board.Length > 0)
             {
@@ -201,17 +202,16 @@ namespace FFTriadBuddy
 
             TriadDeck testDeck = new TriadDeck(new int[] { 10, 20, 30, 40, 50 });
             TriadNpc testNpc = TriadNpcDB.Get().Find("Garima");
-            Random randStream = new Random();
 
-            TriadGameSession solver = new TriadGameSession();
-            solver.modifiers.AddRange(testNpc.Rules);
-            solver.UpdateSpecialRules();
+            var solver = new TriadGameSolver();
+            solver.InitializeSimulation(testNpc.Rules);
 
             for (int Idx = 0; Idx < numIterations; Idx++)
             {
-                TriadGameData testData = solver.StartGame(testDeck, testNpc.Deck, ETriadGameState.InProgressBlue);
-                Random sessionRand = new Random(randStream.Next());
-                solver.SolverPlayRandomGame(testData, sessionRand);
+                var gameState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressBlue);
+                var agent = new TriadGameAgentRandom(solver, Idx);
+
+                solver.RunSimulation(gameState, agent, agent);
             }
 
             timer.Stop();
@@ -266,18 +266,24 @@ namespace FFTriadBuddy
             TriadDeck testDeck = new TriadDeck(new int[] { 61, 248, 113, 191, 87 });
             TriadNpc testNpc = TriadNpcDB.Get().Find("Swift");
 
-            TriadGameSession solver = new TriadGameSession();
-            solver.modifiers.AddRange(testNpc.Rules);
-            solver.UpdateSpecialRules();
+            var solver = new TriadGameSolver();
+            solver.InitializeSimulation(testNpc.Rules);
 
-            bool hasChaosRule = (solver.specialRules & ETriadGameSpecialMod.BlueCardSelection) != ETriadGameSpecialMod.None;
+            // agent to test for accuracy
+            var agentPlayer = new TriadGameAgentDerpyCarlo();
+            var agentVs = new TriadGameAgentRandom();
+
+            bool hasChaosRule = solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection);
 
             int numControlledCards = 0;
             int numWins = 0;
             for (int Idx = 0; Idx < numIterations; Idx++)
             {
-                TriadGameData testData = solver.StartGame(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
                 Random sessionRand = new Random(Idx);
+
+                var gameState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
+                agentPlayer.Initialize(solver, sessionRand.Next());
+                agentVs.Initialize(solver, sessionRand.Next());
 
                 int[] blueDeckOrder = null;
                 int blueDeckIdx = 0;
@@ -295,22 +301,28 @@ namespace FFTriadBuddy
                 bool keepPlaying = true;
                 while (keepPlaying)
                 {
-                    if (testData.state == ETriadGameState.InProgressRed)
-                    {
-                        keepPlaying = solver.SolverPlayRandomTurn(testData, sessionRand);
-                    }
-                    else if (testData.state == ETriadGameState.InProgressBlue)
+                    gameState.forcedCardIdx = -1;
+
+                    if (gameState.state == ETriadGameState.InProgressBlue)
                     {
                         if (blueDeckOrder != null)
                         {
-                            testData.forcedCardIdx = blueDeckOrder[blueDeckIdx];
+                            gameState.forcedCardIdx = blueDeckOrder[blueDeckIdx];
                             blueDeckIdx++;
                         }
 
-                        keepPlaying = solver.SolverFindBestMove(testData, out int boardPos, out var card, out var dummyChance, false);
+                        keepPlaying = agentPlayer.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
                         if (keepPlaying)
                         {
-                            keepPlaying = solver.PlaceCard(testData, card, ETriadCardOwner.Blue, boardPos);
+                            keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckBlue, ETriadCardOwner.Blue, boardPos);
+                        }
+                    }
+                    else if (gameState.state == ETriadGameState.InProgressRed)
+                    {
+                        keepPlaying = agentVs.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
+                        if (keepPlaying)
+                        {
+                            keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckRed, ETriadCardOwner.Red, boardPos);
                         }
                     }
                     else
@@ -319,14 +331,14 @@ namespace FFTriadBuddy
                     }
                 }
 
-                int numBlue = (testData.deckBlue.availableCardMask != 0) ? 1 : 0;
-                foreach (TriadCardInstance card in testData.board)
+                int numBlue = (gameState.deckBlue.availableCardMask != 0) ? 1 : 0;
+                foreach (TriadCardInstance card in gameState.board)
                 {
                     numBlue += (card != null && card.owner == ETriadCardOwner.Blue) ? 1 : 0;
                 }
 
                 numControlledCards += numBlue;
-                numWins += (testData.state == ETriadGameState.BlueWins) ? 1 : 0;
+                numWins += (gameState.state == ETriadGameState.BlueWins) ? 1 : 0;
             }
 
             timer.Stop();
@@ -334,6 +346,11 @@ namespace FFTriadBuddy
                 (float)numWins / numIterations,
                 (float)numControlledCards / numIterations,
                 timer.ElapsedMilliseconds / 1000.0f);
+
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+            }
         }
     }
 }

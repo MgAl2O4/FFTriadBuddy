@@ -384,7 +384,7 @@ namespace FFTriadBuddy
 
             if (cardIdx >= deck.knownCards.Count)
             {
-                const int maxCardsToPlace = ((TriadGameData.boardSize * TriadGameData.boardSize) / 2) + 1;
+                const int maxCardsToPlace = ((TriadGameSimulationState.boardSize * TriadGameSimulationState.boardSize) / 2) + 1;
                 int maxUnknownToPlace = maxCardsToPlace - deck.knownCards.Count;
 
                 numUnknownPlaced++;

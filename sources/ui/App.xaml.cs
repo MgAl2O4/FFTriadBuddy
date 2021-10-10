@@ -128,7 +128,7 @@ namespace FFTriadBuddy.UI
                         IconDB.Get().Load();
                         ModelProxyDB.Get().Load();
 
-                        TriadGameSession.StaticInitialize();
+                        TriadGameSimulation.StaticInitialize();
                     }
                 }
             }
