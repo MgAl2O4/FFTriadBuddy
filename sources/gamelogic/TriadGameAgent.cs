@@ -335,9 +335,9 @@ namespace FFTriadBuddy
                 bestBoardPos = -1;
                 bestActionResult = FindWinningProbability(solver, gameState);
 #if DEBUG
-                if ((debugFlags & DebugFlags.ShowMoveDetailsRng) != DebugFlags.None) 
+                if ((debugFlags & DebugFlags.ShowMoveDetailsRng) != DebugFlags.None)
                 {
-                    Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => random workers:{bestActionResult}"); 
+                    Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => random workers:{bestActionResult}");
                 }
 #endif // DEBUG
 
@@ -346,9 +346,9 @@ namespace FFTriadBuddy
 
             var result = base.SearchActionSpace(solver, gameState, searchLevel, out bestCardIdx, out bestBoardPos, out bestActionResult);
 #if DEBUG
-            if ((debugFlags & DebugFlags.ShowMoveDetails) != DebugFlags.None && searchLevel == 0) 
-            { 
-                Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => result:{bestActionResult}"); 
+            if ((debugFlags & DebugFlags.ShowMoveDetails) != DebugFlags.None && searchLevel == 0)
+            {
+                Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => result:{bestActionResult}");
             }
 #endif // DEBUG
             return result;

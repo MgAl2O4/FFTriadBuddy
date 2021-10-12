@@ -275,7 +275,7 @@ namespace FFTriadBuddy
             //agentPlayer = new TriadGameAgentDerpyCarlo();
             agentPlayer = new TriadGameAgentCarloTheExplorer();
             //agentPlayer = new TriadGameAgentCarloScored();
-            
+
             var agentVs = new TriadGameAgentRandom();
 
             // include debug info when running single iteration
