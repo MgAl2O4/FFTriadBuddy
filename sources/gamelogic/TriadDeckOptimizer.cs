@@ -45,7 +45,7 @@ namespace FFTriadBuddy
             public int[] deckSlotTypes;
         }
         private CardPool currentPool;
-        private TriadGameSession currentSolver;
+        private TriadGameSolver currentSolver;
         private bool isOrderImportant;
 
         private const int DeckSlotCommon = -1;
@@ -116,18 +116,16 @@ namespace FFTriadBuddy
 
             PlayerSettingsDB playerDB = PlayerSettingsDB.Get();
 
-            currentSolver = new TriadGameSession();
-            currentSolver.modifiers.AddRange(npc.Rules);
-            currentSolver.modifiers.AddRange(regionMods);
-            currentSolver.UpdateSpecialRules();
+            currentSolver = new TriadGameSolver();
+            currentSolver.InitializeSimulation(npc.Rules, regionMods);
 
             isOrderImportant = false;
-            foreach (TriadGameModifier mod in currentSolver.modifiers)
+            foreach (TriadGameModifier mod in currentSolver.simulation.modifiers)
             {
                 isOrderImportant = isOrderImportant || mod.IsDeckOrderImportant();
             }
 
-            bool foundCards = FindCardPool(playerDB.ownedCards, currentSolver.modifiers, lockedCards);
+            bool foundCards = FindCardPool(playerDB.ownedCards, currentSolver.simulation.modifiers, lockedCards);
             if (foundCards)
             {
                 UpdatePossibleDeckCount();
@@ -191,7 +189,7 @@ namespace FFTriadBuddy
             }
         }
 
-        private Random GetRandomStream(int Idx0, int Idx1, int Idx2, int Idx3, int Idx4)
+        private int GetRandomSeed(int Idx0, int Idx1, int Idx2, int Idx3, int Idx4)
         {
             int Hash = 13;
             Hash = (Hash * 37) + Idx0;
@@ -200,23 +198,24 @@ namespace FFTriadBuddy
             Hash = (Hash * 37) + Idx3;
             Hash = (Hash * 37) + Idx4;
 
-            return new Random(Hash);
+            return Hash;
         }
 
-        private int GetDeckScore(TriadGameSession solver, TriadDeck testDeck, Random randomGen, int numGamesDiv)
+        private int GetDeckScore(TriadGameSolver solver, TriadDeck testDeck, int randomSeed, int numGamesDiv)
         {
+            var agentRandom = new TriadGameAgentRandom(solver, randomSeed);
             int deckScore = 0;
 
             int maxGames = (numGamesToPlay / numGamesDiv) / 2;
             for (int IdxGame = 0; IdxGame < maxGames; IdxGame++)
             {
-                TriadGameData gameDataR = solver.StartGame(testDeck, npc.Deck, ETriadGameState.InProgressRed);
-                ETriadGameState gameRState = solver.SolverPlayRandomGame(gameDataR, randomGen);
-                deckScore += (gameRState == ETriadGameState.BlueWins) ? 2 : (gameRState == ETriadGameState.BlueDraw) ? 1 : 0;
+                var gameStateR = solver.StartSimulation(testDeck, npc.Deck, ETriadGameState.InProgressRed);
+                solver.RunSimulation(gameStateR, agentRandom, agentRandom);
+                deckScore += (gameStateR.state == ETriadGameState.BlueWins) ? 2 : (gameStateR.state == ETriadGameState.BlueDraw) ? 1 : 0;
 
-                TriadGameData gameDataB = solver.StartGame(testDeck, npc.Deck, ETriadGameState.InProgressBlue);
-                ETriadGameState gameBState = solver.SolverPlayRandomGame(gameDataB, randomGen);
-                deckScore += (gameBState == ETriadGameState.BlueWins) ? 2 : (gameBState == ETriadGameState.BlueDraw) ? 1 : 0;
+                var gameStateB = solver.StartSimulation(testDeck, npc.Deck, ETriadGameState.InProgressBlue);
+                solver.RunSimulation(gameStateB, agentRandom, agentRandom);
+                deckScore += (gameStateB.state == ETriadGameState.BlueWins) ? 2 : (gameStateB.state == ETriadGameState.BlueDraw) ? 1 : 0;
             }
 
             return deckScore;
@@ -719,11 +718,11 @@ namespace FFTriadBuddy
 
                     if (deckInfo.IsValid())
                     {
-                        Random randomGen = GetRandomStream(deckInfo.Idx0, deckInfo.Idx1, deckInfo.Idx2, deckInfo.Idx3, deckInfo.Idx4);
+                        int randomSeed = GetRandomSeed(deckInfo.Idx0, deckInfo.Idx1, deckInfo.Idx2, deckInfo.Idx3, deckInfo.Idx4);
                         // TODO: custom permutation lookup
                         {
                             TriadDeck testDeck = new TriadDeck(deckInfo.Cards);
-                            int testScore = GetDeckScore(currentSolver, testDeck, randomGen, 1);
+                            int testScore = GetDeckScore(currentSolver, testDeck, randomSeed, 1);
                             if (testScore > bestScore)
                             {
                                 lock (lockOb)

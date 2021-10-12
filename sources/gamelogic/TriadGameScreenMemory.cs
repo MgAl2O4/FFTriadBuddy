@@ -19,8 +19,8 @@ namespace FFTriadBuddy
             SwapHints = 32,
         }
 
-        public TriadGameData gameState;
-        public TriadGameSession gameSession;
+        public TriadGameSimulationState gameState;
+        public TriadGameSolver gameSolver;
         public TriadDeckInstanceScreen deckBlue;
         public TriadDeckInstanceScreen deckRed;
         private List<TriadCard[]> blueDeckHistory;
@@ -34,8 +34,8 @@ namespace FFTriadBuddy
 
         public TriadGameScreenMemory()
         {
-            gameSession = new TriadGameSession();
-            gameState = new TriadGameData();
+            gameSolver = new TriadGameSolver();
+            gameState = new TriadGameSimulationState();
             deckBlue = new TriadDeckInstanceScreen();
             deckRed = new TriadDeckInstanceScreen();
             blueDeckHistory = new List<TriadCard[]>();
@@ -77,19 +77,19 @@ namespace FFTriadBuddy
                 if (logScan) { Logger.WriteLine("Can't continue previous state: npc changed"); }
             }
 
-            bool bModsChanged = (gameSession.modifiers.Count != screenGame.mods.Count) || !gameSession.modifiers.All(screenGame.mods.Contains);
+            bool bModsChanged = (gameSolver.simulation.modifiers.Count != screenGame.mods.Count) || !gameSolver.simulation.modifiers.All(screenGame.mods.Contains);
             if (bModsChanged)
             {
                 bHasSwapRule = false;
                 bHasRestartRule = false;
                 bHasOpenRule = false;
-                gameSession.modifiers.Clear();
-                gameSession.modifiers.AddRange(screenGame.mods);
-                gameSession.specialRules = ETriadGameSpecialMod.None;
-                gameSession.modFeatures = TriadGameModifier.EFeature.None;
-                foreach (TriadGameModifier mod in gameSession.modifiers)
+                gameSolver.simulation.modifiers.Clear();
+                gameSolver.simulation.modifiers.AddRange(screenGame.mods);
+                gameSolver.simulation.specialRules = ETriadGameSpecialMod.None;
+                gameSolver.simulation.modFeatures = TriadGameModifier.EFeature.None;
+                foreach (TriadGameModifier mod in gameSolver.simulation.modifiers)
                 {
-                    gameSession.modFeatures |= mod.GetFeatures();
+                    gameSolver.simulation.modFeatures |= mod.GetFeatures();
 
                     // swap rule is bad for screenshot based analysis, no good way of telling what is out of place
                     if (mod is TriadGameModifierSwap)
@@ -180,7 +180,7 @@ namespace FFTriadBuddy
             {
                 updateFlags |= EUpdateFlags.Board;
 
-                foreach (TriadGameModifier mod in gameSession.modifiers)
+                foreach (TriadGameModifier mod in gameSolver.simulation.modifiers)
                 {
                     mod.OnScreenUpdate(gameState);
                 }
