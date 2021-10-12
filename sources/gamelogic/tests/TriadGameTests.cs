@@ -206,11 +206,10 @@ namespace FFTriadBuddy
             var solver = new TriadGameSolver();
             solver.InitializeSimulation(testNpc.Rules);
 
+            var agent = new TriadGameAgentRandom(solver, 0);
             for (int Idx = 0; Idx < numIterations; Idx++)
             {
                 var gameState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressBlue);
-                var agent = new TriadGameAgentRandom(solver, Idx);
-
                 solver.RunSimulation(gameState, agent, agent);
             }
 
@@ -264,14 +263,20 @@ namespace FFTriadBuddy
             timer.Start();
 
             TriadDeck testDeck = new TriadDeck(new int[] { 61, 248, 113, 191, 87 });
-            TriadNpc testNpc = TriadNpcDB.Get().Find("Swift");
+            TriadNpc testNpc = TriadNpcDB.Get().Find("Garima");
+            //TriadNpc testNpc = TriadNpcDB.Get().Find("Swift");
 
             var solver = new TriadGameSolver();
             solver.InitializeSimulation(testNpc.Rules);
 
             // agent to test for accuracy
-            var agentPlayer = new TriadGameAgentDerpyCarlo();
+            //var agentPlayer = new TriadGameAgentDerpyCarlo();
+            var agentPlayer = new TriadGameAgentCarloTheExplorer();
             var agentVs = new TriadGameAgentRandom();
+
+            var sessionRand = new Random(0);
+            agentPlayer.Initialize(solver, sessionRand.Next());
+            agentVs.Initialize(solver, sessionRand.Next());
 
             bool hasChaosRule = solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection);
 
@@ -279,11 +284,7 @@ namespace FFTriadBuddy
             int numWins = 0;
             for (int Idx = 0; Idx < numIterations; Idx++)
             {
-                Random sessionRand = new Random(Idx);
-
                 var gameState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
-                agentPlayer.Initialize(solver, sessionRand.Next());
-                agentVs.Initialize(solver, sessionRand.Next());
 
                 int[] blueDeckOrder = null;
                 int blueDeckIdx = 0;

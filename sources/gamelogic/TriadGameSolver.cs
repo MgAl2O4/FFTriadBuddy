@@ -1,49 +1,69 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FFTriadBuddy
 {
     public struct SolverResult
     {
+        public float numWins;
+        public float numDraws;
+        public long numGames;
+
         public float winChance;
         public float drawChance;
         public ETriadGameState expectedResult;
-        public float compScore;
+        public float score;
 
-        public static SolverResult Zero = new SolverResult(0.0f, 0.0f);
+        public static SolverResult Zero = new SolverResult(0, 0, 0);
 
-        public SolverResult(float winChance, float drawChance)
+        public SolverResult(float numWins, float numDraws, long numGames)
         {
-            this.winChance = winChance;
-            this.drawChance = drawChance;
+            this.numWins = numWins;
+            this.numDraws = numDraws;
+            this.numGames = numGames;
+
+            winChance = (numGames <= 0) ? 0.0f : (numWins / numGames);
+            drawChance = (numGames <= 0) ? 0.0f : (numDraws / numGames);
 
             if (winChance < 0.25f && drawChance < 0.25f)
             {
-                compScore = winChance / 10.0f;
+                score = winChance / 10.0f;
                 expectedResult = ETriadGameState.BlueLost;
             }
             else if (winChance < drawChance)
             {
-                compScore = drawChance;
+                score = drawChance;
                 expectedResult = ETriadGameState.BlueDraw;
             }
             else
             {
-                compScore = winChance + 10.0f;
+                score = winChance + 10.0f;
                 expectedResult = ETriadGameState.BlueWins;
             }
         }
 
         public bool IsBetterThan(SolverResult other)
         {
-            return compScore > other.compScore;
+            return score > other.score;
+        }
+
+        public override string ToString()
+        {
+            return $"{expectedResult}, score:{score}, win:{winChance:P0} ({numWins:0.##}/{numGames}), draw:{drawChance:P0} ({numDraws:0.##}/{numGames})";
         }
     }
 
     public class TriadGameSolver
     {
         public TriadGameSimulation simulation = new TriadGameSimulation();
-        public TriadGameAgent agent = new TriadGameAgentDerpyCarlo();
+        public TriadGameAgent agent = new TriadGameAgentCarloTheExplorer();
         public string name;
+
+        public TriadGameSolver()
+        {
+            var randGen = new Random();
+            agent.Initialize(this, randGen.Next());
+        }
 
         public void InitializeSimulation(IEnumerable<TriadGameModifier> modsA, IEnumerable<TriadGameModifier> modsB) => simulation.Initialize(modsA, modsB);
         public void InitializeSimulation(IEnumerable<TriadGameModifier> mods) => simulation.Initialize(mods, null);
@@ -64,7 +84,7 @@ namespace FFTriadBuddy
             {
                 if (gameState.state == ETriadGameState.InProgressBlue)
                 {
-                    keepPlaying = agentBlue.FindNextMove(this, gameState, out int cardIdx, out int boardPos, out var dummyResult);
+                    keepPlaying = agentBlue.FindNextMove(this, gameState, out int cardIdx, out int boardPos, out _);
                     if (keepPlaying)
                     {
                         keepPlaying = simulation.PlaceCard(gameState, cardIdx, gameState.deckBlue, ETriadCardOwner.Blue, boardPos);
@@ -72,7 +92,7 @@ namespace FFTriadBuddy
                 }
                 else if (gameState.state == ETriadGameState.InProgressRed)
                 {
-                    keepPlaying = agentRed.FindNextMove(this, gameState, out int cardIdx, out int boardPos, out var dummyResult);
+                    keepPlaying = agentRed.FindNextMove(this, gameState, out int cardIdx, out int boardPos, out _);
                     if (keepPlaying)
                     {
                         keepPlaying = simulation.PlaceCard(gameState, cardIdx, gameState.deckRed, ETriadCardOwner.Red, boardPos);
@@ -85,17 +105,15 @@ namespace FFTriadBuddy
             }
         }
 
-        public void FindAvailableActions(TriadGameSimulationState gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards)
+        public void FindAvailableActions(TriadGameSimulationState gameState, out int availBoardMask, out int availCardsMask)
         {
             // prepare available board data
             availBoardMask = 0;
-            numAvailBoard = 0;
             for (int Idx = 0; Idx < gameState.board.Length; Idx++)
             {
                 if (gameState.board[Idx] == null)
                 {
                     availBoardMask |= (1 << Idx);
-                    numAvailBoard++;
                 }
             }
 
@@ -112,11 +130,20 @@ namespace FFTriadBuddy
                     mod.OnFilterNextCards(gameState, ref availCardsMask);
                 }
             }
+        }
 
-            numAvailCards = 0;
-            for (int Idx = 0; Idx < TriadDeckInstance.maxAvailableCards; Idx++)
+        public void FindAvailableActions(TriadGameSimulationState gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards)
+        {
+            FindAvailableActions(gameState, out availBoardMask, out availCardsMask);
+
+            numAvailBoard = CountSetBits(availBoardMask);
+            numAvailCards = CountSetBits(availCardsMask);
+
+            int CountSetBits(int value)
             {
-                numAvailCards += ((availCardsMask & (1 << Idx)) != 0) ? 1 : 0;
+                value = value - ((value >> 1) & 0x55555555);
+                value = (value & 0x33333333) + ((value >> 2) & 0x33333333);
+                return (((value + (value >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
             }
         }
     }

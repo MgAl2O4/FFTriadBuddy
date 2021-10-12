@@ -1,5 +1,6 @@
 ﻿using MgAl2O4.Utils;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,11 +9,15 @@ namespace FFTriadBuddy
     public abstract class TriadGameAgent
     {
         public virtual void Initialize(TriadGameSolver solver, int sessionSeed) { }
+        public virtual bool IsInitialized() { return true; }
         public virtual float GetProgress() { return 0.0f; }
 
         public abstract bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult, bool debugMode = false);
     }
 
+    /// <summary>
+    /// Random pick from all possible actions 
+    /// </summary>
     public class TriadGameAgentRandom : TriadGameAgent
     {
         private Random randGen;
@@ -28,12 +33,34 @@ namespace FFTriadBuddy
             randGen = new Random(sessionSeed);
         }
 
+        public override bool IsInitialized()
+        {
+            return randGen != null;
+        }
+
         public override bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult, bool debugMode = false)
         {
-            const int boardPosMax = TriadGameSimulationState.boardSize * TriadGameSimulationState.boardSize;
-
+            cardIdx = -1;
             boardPos = -1;
-            if (gameState.numCardsPlaced < boardPosMax)
+            solverResult = SolverResult.Zero;
+
+            if (!IsInitialized())
+            {
+                return false;
+            }
+
+            solver.FindAvailableActions(gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards);
+            if (numAvailCards > 0 && numAvailBoard > 0)
+            {
+                cardIdx = PickBitmaskIndex(availCardsMask, numAvailCards);
+                boardPos = PickBitmaskIndex(availBoardMask, numAvailBoard);
+            }
+
+            // OLD IMPLEMENTATION for comparison
+            // doesn't guarantee equal distribution = opponent simulation is biased => reported win chance is too high
+            //
+            /*const int boardPosMax = TriadGameSimulationState.boardSizeSq;
+            if (gameState.numCardsPlaced < TriadGameSimulationState.boardSizeSq)
             {
                 int testPos = randGen.Next(boardPosMax);
                 for (int passIdx = 0; passIdx < boardPosMax; passIdx++)
@@ -61,17 +88,46 @@ namespace FFTriadBuddy
                         break;
                     }
                 }
+            }*/
+
+            return (boardPos >= 0) && (cardIdx >= 0);
+        }
+
+        protected int PickBitmaskIndex(int mask, int numSet)
+        {
+            int stepIdx = randGen.Next(numSet);
+
+            int bitIdx = 0;
+            int testMask = 1 << bitIdx;
+            while (testMask <= mask)
+            {
+                if ((testMask & mask) != 0)
+                {
+                    stepIdx--;
+                    if (stepIdx < 0)
+                    {
+                        return bitIdx;
+                    }
+                }
+
+                bitIdx++;
+                testMask <<= 1;
             }
 
-            solverResult = SolverResult.Zero;
-            return (boardPos >= 0) && (cardIdx >= 0);
+#if DEBUG
+            // more bits set than mask allows?
+            Debugger.Break();
+#endif
+            return -1;
         }
     }
 
-    public class TriadGameAgentDerpyCarlo : TriadGameAgent
+    /// <summary>
+    /// Base class for agents recursively exploring action graph
+    /// </summary>
+    public abstract class TriadGameAgentGraphExplorer : TriadGameAgent
     {
-        private const int NumWorkers = 2000;
-        private float currentProgress = 0;
+        protected float currentProgress = 0;
 
         public override float GetProgress()
         {
@@ -80,28 +136,82 @@ namespace FFTriadBuddy
 
         public override bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult, bool debugMode = false)
         {
+            //Logger.WriteLine($"FindNextMove, placed:{gameState.numCardsPlaced}");
             cardIdx = -1;
             boardPos = -1;
-            solverResult = SolverResult.Zero;
-            currentProgress = 0.0f;
+
+            bool isFinished = IsFinished(gameState, out solverResult);
+            if (!isFinished && IsInitialized())
+            {
+                _ = SearchActionSpace(solver, gameState, 0, out cardIdx, out boardPos, out solverResult, debugMode);
+            }
+
+            return (cardIdx >= 0) && (boardPos >= 0);
+        }
+
+        protected bool IsFinished(TriadGameSimulationState gameState, out SolverResult gameResult)
+        {
+            // end game conditions, owner always fixed as blue
+            switch (gameState.state)
+            {
+                case ETriadGameState.BlueWins:
+                    gameResult = new SolverResult(1, 0, 1);
+                    return true;
+
+                case ETriadGameState.BlueDraw:
+                    gameResult = new SolverResult(0, 1, 1);
+                    return true;
+
+                case ETriadGameState.BlueLost:
+                    gameResult = new SolverResult(0, 0, 1);
+                    return true;
+
+                default: break;
+            }
+
+            gameResult = SolverResult.Zero;
+            return false;
+        }
+
+        protected virtual SolverResult SearchActionSpace(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel, out int bestCardIdx, out int bestBoardPos, out SolverResult bestActionResult, bool debugMode = false)
+        {
+            // don't check finish condition at start! 
+            // this is done before caling this function (from FindNextMove / recursive), so it doesn't have to be duplicated in every derrived class
+
+            bestCardIdx = -1;
+            bestBoardPos = -1;
+            bestActionResult = SolverResult.Zero;
+
+            // game in progress, explore actions
+            bool isRootLevel = searchLevel == 0;
+            if (isRootLevel)
+            {
+                currentProgress = 0.0f;
+            }
+
+            float numWinsTotal = 0;
+            float numDrawsTotal = 0;
+            long numGamesTotal = 0;
 
             solver.FindAvailableActions(gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards);
             if (numAvailCards > 0 && numAvailBoard > 0)
             {
-                var useDeck = (gameState.state == ETriadGameState.InProgressBlue) ? gameState.deckBlue : gameState.deckRed;
                 var turnOwner = (gameState.state == ETriadGameState.InProgressBlue) ? ETriadCardOwner.Blue : ETriadCardOwner.Red;
                 int cardProgressCounter = 0;
 
-                for (int testCardIdx = 0; testCardIdx < TriadDeckInstance.maxAvailableCards; testCardIdx++)
+                for (int cardIdx = 0; cardIdx < TriadDeckInstance.maxAvailableCards; cardIdx++)
                 {
-                    bool cardNotAvailable = (availCardsMask & (1 << testCardIdx)) == 0;
+                    bool cardNotAvailable = (availCardsMask & (1 << cardIdx)) == 0;
                     if (cardNotAvailable)
                     {
                         continue;
                     }
 
-                    currentProgress = 1.0f * cardProgressCounter / numAvailCards;
-                    cardProgressCounter++;
+                    if (isRootLevel)
+                    {
+                        currentProgress = 1.0f * cardProgressCounter / numAvailCards;
+                        cardProgressCounter++;
+                    }
 
                     for (int boardIdx = 0; boardIdx < gameState.board.Length; boardIdx++)
                     {
@@ -112,16 +222,30 @@ namespace FFTriadBuddy
                         }
 
                         var gameStateCopy = new TriadGameSimulationState(gameState);
-                        bool isPlaced = solver.simulation.PlaceCard(gameStateCopy, testCardIdx, useDeck, turnOwner, boardIdx);
+                        var useDeck = (gameStateCopy.state == ETriadGameState.InProgressBlue) ? gameStateCopy.deckBlue : gameStateCopy.deckRed;
+
+                        bool isPlaced = solver.simulation.PlaceCard(gameStateCopy, cardIdx, useDeck, turnOwner, boardIdx);
                         if (isPlaced)
                         {
-                            var branchResult = FindWinningProbability(solver, gameStateCopy);
-                            if (branchResult.IsBetterThan(solverResult))
+                            // check if finished before going deeper
+                            bool isFinished = IsFinished(gameStateCopy, out var branchResult);
+                            if (!isFinished)
                             {
-                                solverResult = branchResult;
-                                cardIdx = testCardIdx;
-                                boardPos = boardIdx;
+                                gameStateCopy.forcedCardIdx = -1;
+                                branchResult = SearchActionSpace(solver, gameStateCopy, searchLevel + 1, out _, out _, out _);
                             }
+                            // if (isRootLevel) { Logger.WriteLine($"  board[{boardIdx}], card[{cardIdx}] = {branchResult}"); }
+
+                            if (branchResult.IsBetterThan(bestActionResult))
+                            {
+                                bestActionResult = branchResult;
+                                bestCardIdx = cardIdx;
+                                bestBoardPos = boardIdx;
+                            }
+
+                            numWinsTotal += branchResult.numWins;
+                            numDrawsTotal += branchResult.numDraws;
+                            numGamesTotal += branchResult.numGames;
                         }
                     }
                 }
@@ -131,7 +255,7 @@ namespace FFTriadBuddy
                     string namePrefix = string.IsNullOrEmpty(solver.name) ? "" : ("[" + solver.name + "] ");
                     Logger.WriteLine("{0}Solver win:{1:P2} (draw:{2:P2}), blue[{3}], red[{4}], turn:{5}, availBoard:{6} ({7:x}), availCards:{8} ({9}:{10:x})",
                         namePrefix,
-                        solverResult.winChance, solverResult.drawChance,
+                        bestActionResult.winChance, bestActionResult.drawChance,
                         gameState.deckBlue, gameState.deckRed, turnOwner,
                         numAvailBoard, availBoardMask,
                         numAvailCards, gameState.state == ETriadGameState.InProgressBlue ? "B" : "R", availCardsMask);
@@ -149,33 +273,143 @@ namespace FFTriadBuddy
                 }
             }
 
-            return (boardPos >= 0) && (cardIdx >= 0);
+            return new SolverResult(numWinsTotal, numDrawsTotal, numGamesTotal);
+        }
+    }
+
+    /// <summary>
+    /// Single level MCTS, each available action spins 2000 random games and best one is selected 
+    /// </summary>
+    public class TriadGameAgentDerpyCarlo : TriadGameAgentGraphExplorer
+    {
+        protected int numWorkers = 2000;
+        protected TriadGameAgentRandom[] workerAgents;
+
+        public override void Initialize(TriadGameSolver solver, int sessionSeed)
+        {
+            // initialize all random streams just once, it's enough for seeing and having unique stream for each worker
+            workerAgents = new TriadGameAgentRandom[numWorkers];
+            for (int idx = 0; idx < numWorkers; idx++)
+            {
+                workerAgents[idx] = new TriadGameAgentRandom(solver, sessionSeed + idx);
+            }
         }
 
-        private SolverResult FindWinningProbability(TriadGameSolver solver, TriadGameSimulationState gameState)
+        public override bool IsInitialized()
+        {
+            return workerAgents != null;
+        }
+
+        protected override SolverResult SearchActionSpace(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel, out int bestCardIdx, out int bestBoardPos, out SolverResult bestActionResult, bool debugMode = false)
+        {
+            bool runWorkers = CanRunRandomExploration(solver, gameState, searchLevel);
+            if (runWorkers)
+            {
+                bestCardIdx = -1;
+                bestBoardPos = -1;
+                bestActionResult = FindWinningProbability(solver, gameState);
+                //Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => random workers:{bestActionResult}");
+
+                return bestActionResult;
+            }
+
+            var result = base.SearchActionSpace(solver, gameState, searchLevel, out bestCardIdx, out bestBoardPos, out bestActionResult, debugMode);
+            //Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => result:{bestActionResult}");
+            return result;
+        }
+
+        protected virtual bool CanRunRandomExploration(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel)
+        {
+            return searchLevel > 0;
+        }
+
+        protected SolverResult FindWinningProbability(TriadGameSolver solver, TriadGameSimulationState gameState)
         {
             int numWinningWorkers = 0;
             int numDrawingWorkers = 0;
 
-            Parallel.For(0, NumWorkers, workerIdx =>
+            _ = Parallel.For(0, numWorkers, workerIdx =>
             //for (int workerIdx = 0; workerIdx < solverWorkers; workerIdx++)
             {
                 var gameStateCopy = new TriadGameSimulationState(gameState);
-                var agentRandom = new TriadGameAgentRandom(solver, workerIdx);
+                var agent = workerAgents[workerIdx];
 
-                solver.RunSimulation(gameStateCopy, agentRandom, agentRandom);
+                solver.RunSimulation(gameStateCopy, agent, agent);
 
                 if (gameStateCopy.state == ETriadGameState.BlueWins)
                 {
-                    Interlocked.Add(ref numWinningWorkers, 1);
+                    _ = Interlocked.Add(ref numWinningWorkers, 1);
                 }
                 else if (gameStateCopy.state == ETriadGameState.BlueDraw)
                 {
-                    Interlocked.Add(ref numDrawingWorkers, 1);
+                    _ = Interlocked.Add(ref numDrawingWorkers, 1);
                 }
             });
 
-            return new SolverResult((float)numWinningWorkers / (float)NumWorkers, (float)numDrawingWorkers / (float)NumWorkers);
+            // return normalized score so it can be compared 
+            return new SolverResult(1.0f * numWinningWorkers / numWorkers, 1.0f * numDrawingWorkers / numWorkers, 1);
+        }
+    }
+
+    /// <summary>
+    /// Switches between derpy MCTS and fully exploration depending on size of game space 
+    /// </summary>
+    public class TriadGameAgentCarloTheExplorer : TriadGameAgentDerpyCarlo
+    {
+        // 10k seems to be sweet spot
+        // - 1k: similar time, lower accuracy
+        // - 100k: 8x longer, similar accuracy
+        public const long MaxStatesToExplore = 10 * 1000;
+
+        private int minPlacedToExplore = 10;
+        private int minPlacedToExploreWithForced = 10;
+
+        public override void Initialize(TriadGameSolver solver, int sessionSeed)
+        {
+            base.Initialize(solver, sessionSeed);
+
+            // cache number of possible states depending on cards placed
+            // 0: (5 * 9) * (5 * 8) * (4 * 7) * (4 * 6) * ...                   = (5 * 5 * 4 * 4 * 3 * 3 * 2 * 2 * 1) * 9! = (5! * 5!) * 9!
+            // 1: (5 * 8) * (4 * 7) * (4 * 6) * ...                             = (5 * 4 * 4 * 3 * 3 * 2 * 2 * 1) * 8!     = (4! * 5!) * 8!
+            // ...
+            // 6: (2 * 3) * (1 * 2) * (1 * 1)
+            // 7: (1 * 2) * (1 * 1)
+            // 8: (1 * 1)
+            // 9: 0
+            //
+            // num states = num board positions * num cards, 
+            // - board(num placed) => x == 0 ? 0 : x!
+            // - card(num placed) => forced ? 1 : ((x + 2) / 2)! * ((x + 1) / 2)!
+
+            long numStatesForced = 1;
+            long numStates = 1;
+
+            const int maxToPlace = TriadGameSimulationState.boardSizeSq;
+            for (int numToPlace = 1; numToPlace <= maxToPlace; numToPlace++)
+            {
+                int numPlaced = maxToPlace - numToPlace;
+
+                numStatesForced *= numToPlace;
+                if (numStatesForced <= MaxStatesToExplore)
+                {
+                    minPlacedToExploreWithForced = numPlaced;
+                }
+
+                numStates *= numToPlace * ((numToPlace + 2) / 2) * ((numToPlace + 1) / 2);
+                if (numStates <= MaxStatesToExplore)
+                {
+                    minPlacedToExplore = numPlaced;
+                }
+            }
+
+            //Logger.WriteLine($"CarloTheExplorer: minPlacedToExplore:{minPlacedToExplore}, minPlacedToExploreWithForced:{minPlacedToExploreWithForced}");
+        }
+
+        protected override bool CanRunRandomExploration(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel)
+        {
+            int numPlacedThr = (gameState.forcedCardIdx < 0) ? minPlacedToExplore : minPlacedToExploreWithForced;
+
+            return (searchLevel > 0) && (gameState.numCardsPlaced < numPlacedThr);
         }
     }
 }

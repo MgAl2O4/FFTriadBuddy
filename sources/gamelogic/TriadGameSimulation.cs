@@ -27,10 +27,11 @@ namespace FFTriadBuddy
         public bool bDebugRules;
 
         public const int boardSize = 3;
+        public const int boardSizeSq = boardSize * boardSize;
 
         public TriadGameSimulationState()
         {
-            board = new TriadCardInstance[boardSize * boardSize];
+            board = new TriadCardInstance[boardSizeSq];
             typeMods = new int[Enum.GetNames(typeof(ETriadCardType)).Length];
             state = ETriadGameState.InProgressBlue;
             resolvedSpecial = ETriadGameSpecialMod.None;
