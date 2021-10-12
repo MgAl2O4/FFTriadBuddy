@@ -8,11 +8,23 @@ namespace FFTriadBuddy
 {
     public abstract class TriadGameAgent
     {
+        [Flags]
+        public enum DebugFlags
+        {
+            None = 0,
+            AgentInitialize = 0x1,
+            ShowMoveResult = 0x2,
+            ShowMoveStart = 0x4,
+            ShowMoveDetails = 0x8,
+            ShowMoveDetailsRng = 0x10,
+        }
+        public DebugFlags debugFlags;
+
         public virtual void Initialize(TriadGameSolver solver, int sessionSeed) { }
         public virtual bool IsInitialized() { return true; }
         public virtual float GetProgress() { return 0.0f; }
 
-        public abstract bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult, bool debugMode = false);
+        public abstract bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult);
     }
 
     /// <summary>
@@ -38,8 +50,12 @@ namespace FFTriadBuddy
             return randGen != null;
         }
 
-        public override bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult, bool debugMode = false)
+        public override bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult)
         {
+#if DEBUG
+            if ((debugFlags & DebugFlags.ShowMoveStart) != DebugFlags.None) { Logger.WriteLine($"FindNextMove, numPlaced:{gameState.numCardsPlaced}"); }
+#endif // DEBUG
+
             cardIdx = -1;
             boardPos = -1;
             solverResult = SolverResult.Zero;
@@ -134,16 +150,19 @@ namespace FFTriadBuddy
             return currentProgress;
         }
 
-        public override bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult, bool debugMode = false)
+        public override bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult)
         {
-            //Logger.WriteLine($"FindNextMove, placed:{gameState.numCardsPlaced}");
+#if DEBUG
+            if ((debugFlags & DebugFlags.ShowMoveStart) != DebugFlags.None) { Logger.WriteLine($"FindNextMove, numPlaced:{gameState.numCardsPlaced}"); }
+#endif // DEBUG
+
             cardIdx = -1;
             boardPos = -1;
 
             bool isFinished = IsFinished(gameState, out solverResult);
             if (!isFinished && IsInitialized())
             {
-                _ = SearchActionSpace(solver, gameState, 0, out cardIdx, out boardPos, out solverResult, debugMode);
+                _ = SearchActionSpace(solver, gameState, 0, out cardIdx, out boardPos, out solverResult);
             }
 
             return (cardIdx >= 0) && (boardPos >= 0);
@@ -173,7 +192,7 @@ namespace FFTriadBuddy
             return false;
         }
 
-        protected virtual SolverResult SearchActionSpace(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel, out int bestCardIdx, out int bestBoardPos, out SolverResult bestActionResult, bool debugMode = false)
+        protected virtual SolverResult SearchActionSpace(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel, out int bestCardIdx, out int bestBoardPos, out SolverResult bestActionResult)
         {
             // don't check finish condition at start! 
             // this is done before caling this function (from FindNextMove / recursive), so it doesn't have to be duplicated in every derrived class
@@ -234,7 +253,10 @@ namespace FFTriadBuddy
                                 gameStateCopy.forcedCardIdx = -1;
                                 branchResult = SearchActionSpace(solver, gameStateCopy, searchLevel + 1, out _, out _, out _);
                             }
-                            // if (isRootLevel) { Logger.WriteLine($"  board[{boardIdx}], card[{cardIdx}] = {branchResult}"); }
+
+#if DEBUG
+                            if ((debugFlags & DebugFlags.ShowMoveDetails) != DebugFlags.None && isRootLevel) { Logger.WriteLine($"  board[{boardIdx}], card[{cardIdx}] = {branchResult}"); }
+#endif // DEBUG
 
                             if (branchResult.IsBetterThan(bestActionResult))
                             {
@@ -250,7 +272,8 @@ namespace FFTriadBuddy
                     }
                 }
 
-                if (debugMode)
+#if DEBUG
+                if ((debugFlags & DebugFlags.ShowMoveResult) != DebugFlags.None && isRootLevel)
                 {
                     string namePrefix = string.IsNullOrEmpty(solver.name) ? "" : ("[" + solver.name + "] ");
                     Logger.WriteLine("{0}Solver win:{1:P2} (draw:{2:P2}), blue[{3}], red[{4}], turn:{5}, availBoard:{6} ({7:x}), availCards:{8} ({9}:{10:x})",
@@ -260,10 +283,12 @@ namespace FFTriadBuddy
                         numAvailBoard, availBoardMask,
                         numAvailCards, gameState.state == ETriadGameState.InProgressBlue ? "B" : "R", availCardsMask);
                 }
+#endif // DEBUG
             }
             else
             {
-                if (debugMode)
+#if DEBUG
+                if ((debugFlags & DebugFlags.ShowMoveResult) != DebugFlags.None && isRootLevel)
                 {
                     string namePrefix = string.IsNullOrEmpty(solver.name) ? "" : ("[" + solver.name + "] ");
                     Logger.WriteLine("{0}Can't find move! availBoard:{1} ({2:x}), availCards:{3} ({4}:{5:x})",
@@ -271,6 +296,7 @@ namespace FFTriadBuddy
                         numAvailBoard, availBoardMask,
                         numAvailCards, gameState.state == ETriadGameState.InProgressBlue ? "B" : "R", availCardsMask);
                 }
+#endif // DEBUG
             }
 
             return new SolverResult(numWinsTotal, numDrawsTotal, numGamesTotal);
@@ -300,7 +326,7 @@ namespace FFTriadBuddy
             return workerAgents != null;
         }
 
-        protected override SolverResult SearchActionSpace(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel, out int bestCardIdx, out int bestBoardPos, out SolverResult bestActionResult, bool debugMode = false)
+        protected override SolverResult SearchActionSpace(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel, out int bestCardIdx, out int bestBoardPos, out SolverResult bestActionResult)
         {
             bool runWorkers = CanRunRandomExploration(solver, gameState, searchLevel);
             if (runWorkers)
@@ -308,13 +334,23 @@ namespace FFTriadBuddy
                 bestCardIdx = -1;
                 bestBoardPos = -1;
                 bestActionResult = FindWinningProbability(solver, gameState);
-                //Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => random workers:{bestActionResult}");
+#if DEBUG
+                if ((debugFlags & DebugFlags.ShowMoveDetailsRng) != DebugFlags.None) 
+                {
+                    Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => random workers:{bestActionResult}"); 
+                }
+#endif // DEBUG
 
                 return bestActionResult;
             }
 
-            var result = base.SearchActionSpace(solver, gameState, searchLevel, out bestCardIdx, out bestBoardPos, out bestActionResult, debugMode);
-            //Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => result:{bestActionResult}");
+            var result = base.SearchActionSpace(solver, gameState, searchLevel, out bestCardIdx, out bestBoardPos, out bestActionResult);
+#if DEBUG
+            if ((debugFlags & DebugFlags.ShowMoveDetails) != DebugFlags.None && searchLevel == 0) 
+            { 
+                Logger.WriteLine($"level:{searchLevel}, numPlaced:{gameState.numCardsPlaced} => result:{bestActionResult}"); 
+            }
+#endif // DEBUG
             return result;
         }
 
@@ -402,7 +438,9 @@ namespace FFTriadBuddy
                 }
             }
 
-            //Logger.WriteLine($"CarloTheExplorer: minPlacedToExplore:{minPlacedToExplore}, minPlacedToExploreWithForced:{minPlacedToExploreWithForced}");
+#if DEBUG
+            if ((debugFlags & DebugFlags.AgentInitialize) != DebugFlags.None) { Logger.WriteLine($"CarloTheExplorer: minPlacedToExplore:{minPlacedToExplore}, minPlacedToExploreWithForced:{minPlacedToExploreWithForced}"); }
+#endif // DEBUG
         }
 
         protected override bool CanRunRandomExploration(TriadGameSolver solver, TriadGameSimulationState gameState, int searchLevel)

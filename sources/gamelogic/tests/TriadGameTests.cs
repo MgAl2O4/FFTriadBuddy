@@ -254,7 +254,7 @@ namespace FFTriadBuddy
 
         public static void RunSolverAccuracyTests()
         {
-            int numIterations = 200;
+            int numIterations = 1;
             var deckPermutations = BuildDeckPermutations();
 
             Logger.WriteLine("Solver accuracy testing start, numIterations:" + numIterations);
@@ -263,17 +263,26 @@ namespace FFTriadBuddy
             timer.Start();
 
             TriadDeck testDeck = new TriadDeck(new int[] { 61, 248, 113, 191, 87 });
-            TriadNpc testNpc = TriadNpcDB.Get().Find("Garima");
+            //TriadNpc testNpc = TriadNpcDB.Get().Find("Garima");
             //TriadNpc testNpc = TriadNpcDB.Get().Find("Swift");
+            TriadNpc testNpc = TriadNpcDB.Get().Find("Aurifort of the Three Clubs");
 
             var solver = new TriadGameSolver();
             solver.InitializeSimulation(testNpc.Rules);
 
             // agent to test for accuracy
-            //var agentPlayer = new TriadGameAgentDerpyCarlo();
-            var agentPlayer = new TriadGameAgentCarloTheExplorer();
-            //var agentPlayer = new TriadGameAgentCarloScored();
+            TriadGameAgent agentPlayer = null;
+            //agentPlayer = new TriadGameAgentDerpyCarlo();
+            agentPlayer = new TriadGameAgentCarloTheExplorer();
+            //agentPlayer = new TriadGameAgentCarloScored();
+            
             var agentVs = new TriadGameAgentRandom();
+
+            // include debug info when running single iteration
+            if (numIterations == 1)
+            {
+                agentPlayer.debugFlags = TriadGameAgent.DebugFlags.AgentInitialize | TriadGameAgent.DebugFlags.ShowMoveStart | TriadGameAgent.DebugFlags.ShowMoveDetails;
+            }
 
             var sessionRand = new Random(0);
             agentPlayer.Initialize(solver, sessionRand.Next());

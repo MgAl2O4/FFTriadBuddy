@@ -74,8 +74,7 @@ namespace FFTriadBuddy
 
         public float GetAgentProgress() => agent.GetProgress();
 
-        public bool FindNextMove(TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult, bool debugMode = false)
-            => agent.FindNextMove(this, gameState, out cardIdx, out boardPos, out solverResult, debugMode);
+        public bool FindNextMove(TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult) => agent.FindNextMove(this, gameState, out cardIdx, out boardPos, out solverResult);
 
         public void RunSimulation(TriadGameSimulationState gameState, TriadGameAgent agentBlue, TriadGameAgent agentRed)
         {
