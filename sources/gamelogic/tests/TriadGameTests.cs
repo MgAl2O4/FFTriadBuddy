@@ -272,6 +272,7 @@ namespace FFTriadBuddy
             // agent to test for accuracy
             //var agentPlayer = new TriadGameAgentDerpyCarlo();
             var agentPlayer = new TriadGameAgentCarloTheExplorer();
+            //var agentPlayer = new TriadGameAgentCarloScored();
             var agentVs = new TriadGameAgentRandom();
 
             var sessionRand = new Random(0);

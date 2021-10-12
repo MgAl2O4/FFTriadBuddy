@@ -323,7 +323,7 @@ namespace FFTriadBuddy
             return searchLevel > 0;
         }
 
-        protected SolverResult FindWinningProbability(TriadGameSolver solver, TriadGameSimulationState gameState)
+        protected virtual SolverResult FindWinningProbability(TriadGameSolver solver, TriadGameSimulationState gameState)
         {
             int numWinningWorkers = 0;
             int numDrawingWorkers = 0;
@@ -352,7 +352,7 @@ namespace FFTriadBuddy
     }
 
     /// <summary>
-    /// Switches between derpy MCTS and fully exploration depending on size of game space 
+    /// Switches between derpy MCTS and full exploration depending on size of game space 
     /// </summary>
     public class TriadGameAgentCarloTheExplorer : TriadGameAgentDerpyCarlo
     {
@@ -410,6 +410,87 @@ namespace FFTriadBuddy
             int numPlacedThr = (gameState.forcedCardIdx < 0) ? minPlacedToExplore : minPlacedToExploreWithForced;
 
             return (searchLevel > 0) && (gameState.numCardsPlaced < numPlacedThr);
+        }
+    }
+
+    /// <summary>
+    /// Aguments random search phase with score of game state to increase diffs between probability of initial steps
+    /// Currently scoring function is bad, it actually lowers win chance :(
+    /// </summary>
+    public class TriadGameAgentCarloScored : TriadGameAgentCarloTheExplorer
+    {
+        public const float StateWeight = 0.50f;
+
+        protected override SolverResult FindWinningProbability(TriadGameSolver solver, TriadGameSimulationState gameState)
+        {
+            var result = base.FindWinningProbability(solver, gameState);
+            var stateScore = CalculateStateScore(solver, gameState);
+
+            return new SolverResult((result.numWins / result.numGames) + (StateWeight * stateScore), result.numDraws / result.numGames, 1);
+        }
+
+        private float CalculateStateScore(TriadGameSolver solver, TriadGameSimulationState gameState)
+        {
+            // for each blue card:
+            //   for each side:
+            //     find all numbers that can capture it
+            //   normalize count of capturing numbers
+            // normalize card capturing value
+            // inverse => blue cards defensive value = state score
+
+            float capturingSum = 0.0f;
+            int numBlueCards = 0;
+
+            for (int idx = 0; idx < gameState.board.Length; idx++)
+            {
+                var cardInst = gameState.board[idx];
+                if (cardInst != null && cardInst.owner == ETriadCardOwner.Blue)
+                {
+                    int[] neis = TriadGameSimulation.cachedNeis[idx];
+
+                    int numCapturingValues = 0;
+                    for (int side = 0; side < 4; side++)
+                    {
+                        if (neis[side] >= 0)
+                        {
+                            int cardNumber = cardInst.GetNumber((ETriadGameSide)side);
+                            for (int testValue = 1; testValue <= 10; testValue++)
+                            {
+                                bool canCapture = CanBeCapturedWith(solver.simulation, cardNumber, testValue);
+                                numCapturingValues += canCapture ? 1 : 0;
+                            }
+                        }
+                    }
+
+                    capturingSum += numCapturingValues / 40.0f;
+                    numBlueCards++;
+                }
+            }
+
+            return (numBlueCards > 0) ? (1.0f - (capturingSum / numBlueCards)) : 0.0f;
+        }
+
+        private bool CanBeCapturedWith(TriadGameSimulation simulation, int cardNum, int testNum)
+        {
+            if ((simulation.modFeatures & TriadGameModifier.EFeature.CaptureWeights) != 0)
+            {
+                foreach (TriadGameModifier mod in simulation.modifiers)
+                {
+                    mod.OnCheckCaptureCardWeights(null, -1, -1, ref cardNum, ref testNum);
+                }
+            }
+
+            bool isCaptured = (cardNum > testNum);
+
+            if ((simulation.modFeatures & TriadGameModifier.EFeature.CaptureMath) != 0)
+            {
+                foreach (TriadGameModifier mod in simulation.modifiers)
+                {
+                    mod.OnCheckCaptureCardMath(null, -1, -1, cardNum, testNum, ref isCaptured);
+                }
+            }
+
+            return isCaptured;
         }
     }
 }
