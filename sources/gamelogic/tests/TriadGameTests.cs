@@ -269,7 +269,21 @@ namespace FFTriadBuddy
 
             Logger.WriteLine("Solver accuracy testing start, numIterations:" + numIterations);
 
-            TriadDeck testDeck = new TriadDeck(new int[] { 61, 248, 113, 191, 87 });
+            var deckRand = new Random(20);
+            var deckCards = new int[5] { 61, 248, 113, 191, 87 };
+            var cardDB = TriadCardDB.Get();
+            int idx = 0;
+            while (idx < deckCards.Length)
+            {
+                int cardIdx = deckRand.Next(cardDB.cards.Count);
+                if (cardDB.cards[cardIdx].IsValid())
+                {
+                    deckCards[idx] = cardIdx;
+                    idx++;
+                }
+            }
+
+            TriadDeck testDeck = new TriadDeck(deckCards);
             //TriadNpc testNpc = TriadNpcDB.Get().Find("Garima");
             //TriadNpc testNpc = TriadNpcDB.Get().Find("Swift");
             TriadNpc testNpc = TriadNpcDB.Get().Find("Aurifort of the Three Clubs");
@@ -299,7 +313,7 @@ namespace FFTriadBuddy
                 testInfo.agentRed.Initialize(solver, 0);
 
                 testInfo.predictionSteps = new List<float>();
-                for (int idx = 0; idx < 5; idx++)
+                for (idx = 0; idx < 5; idx++)
                 {
                     testInfo.predictionSteps.Add(0.0f);
                 }
@@ -391,7 +405,7 @@ namespace FFTriadBuddy
             foreach (var testInfo in testResults)
             {
                 string predictionDesc = "";
-                for (int idx = 0; idx < testInfo.predictionSteps.Count - 1; idx++)
+                for (idx = 0; idx < testInfo.predictionSteps.Count - 1; idx++)
                 {
                     if (predictionDesc.Length > 0) { predictionDesc += ", "; }
                     predictionDesc += $"{(testInfo.predictionSteps[idx] / numIterations):P0}";

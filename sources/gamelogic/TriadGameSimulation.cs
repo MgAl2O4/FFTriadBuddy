@@ -158,7 +158,9 @@ namespace FFTriadBuddy
                     gameState.deckRed.OnCardPlacedFast(cardIdx);
                     gameState.state = ETriadGameState.InProgressBlue;
                 }
-                bResult = true;
+
+                // verify owner
+                bResult = (owner == ETriadCardOwner.Red) || !HasSpecialRule(ETriadGameSpecialMod.IgnoreOwnedCheck);
 
                 bool bAllowCombo = false;
                 if ((modFeatures & TriadGameModifier.EFeature.CardPlaced) != 0)
