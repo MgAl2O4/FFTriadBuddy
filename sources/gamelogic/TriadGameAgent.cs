@@ -114,15 +114,19 @@ namespace FFTriadBuddy
         protected int PickBitmaskIndex(int mask, int numSet)
         {
             int stepIdx = randGen.Next(numSet);
+            return PickRandomBitFromMask(mask, stepIdx);
+        }
 
+        public static int PickRandomBitFromMask(int mask, int randStep)
+        {
             int bitIdx = 0;
             int testMask = 1 << bitIdx;
             while (testMask <= mask)
             {
                 if ((testMask & mask) != 0)
                 {
-                    stepIdx--;
-                    if (stepIdx < 0)
+                    randStep--;
+                    if (randStep < 0)
                     {
                         return bitIdx;
                     }
@@ -146,10 +150,17 @@ namespace FFTriadBuddy
     public abstract class TriadGameAgentGraphExplorer : TriadGameAgent
     {
         protected float currentProgress = 0;
+        protected int sessionSeed = 0;
+        private Random failsafeRandStream = null;
 
         public override float GetProgress()
         {
             return currentProgress;
+        }
+
+        public override void Initialize(TriadGameSolver solver, int sessionSeed)
+        {
+            this.sessionSeed = sessionSeed;
         }
 
         public override bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult)
@@ -219,6 +230,7 @@ namespace FFTriadBuddy
             {
                 var turnOwner = (gameState.state == ETriadGameState.InProgressBlue) ? ETriadCardOwner.Blue : ETriadCardOwner.Red;
                 int cardProgressCounter = 0;
+                bool hasValidPlacements = false;
 
                 for (int cardIdx = 0; cardIdx < TriadDeckInstance.maxAvailableCards; cardIdx++)
                 {
@@ -270,20 +282,34 @@ namespace FFTriadBuddy
                             numWinsTotal += branchResult.numWins;
                             numDrawsTotal += branchResult.numDraws;
                             numGamesTotal += branchResult.numGames;
+                            hasValidPlacements = true;
                         }
                     }
+                }
+
+                if (!hasValidPlacements)
+                {
+                    // failsafe in case simulation runs into any issues
+                    if (failsafeRandStream == null)
+                    {
+                        failsafeRandStream = new Random(sessionSeed);
+                    }
+
+                    bestCardIdx = TriadGameAgentRandom.PickRandomBitFromMask(availCardsMask, failsafeRandStream.Next(numAvailCards));
+                    bestBoardPos = TriadGameAgentRandom.PickRandomBitFromMask(availBoardMask, failsafeRandStream.Next(numAvailBoard));
                 }
 
 #if DEBUG
                 if ((debugFlags & DebugFlags.ShowMoveResult) != DebugFlags.None && isRootLevel)
                 {
                     string namePrefix = string.IsNullOrEmpty(solver.name) ? "" : ("[" + solver.name + "] ");
-                    Logger.WriteLine("{0}Solver win:{1:P2} (draw:{2:P2}), blue[{3}], red[{4}], turn:{5}, availBoard:{6} ({7:x}), availCards:{8} ({9}:{10:x})",
+                    Logger.WriteLine("{0}Solver {11}win:{1:P2} (draw:{2:P2}), blue[{3}], red[{4}], turn:{5}, availBoard:{6} ({7:x}), availCards:{8} ({9}:{10:x})",
                         namePrefix,
                         bestActionResult.winChance, bestActionResult.drawChance,
                         gameState.deckBlue, gameState.deckRed, turnOwner,
                         numAvailBoard, availBoardMask,
-                        numAvailCards, gameState.state == ETriadGameState.InProgressBlue ? "B" : "R", availCardsMask);
+                        numAvailCards, gameState.state == ETriadGameState.InProgressBlue ? "B" : "R", availCardsMask,
+                        hasValidPlacements ? "[FAILSAFE] " : "");
                 }
 #endif // DEBUG
             }
@@ -315,6 +341,7 @@ namespace FFTriadBuddy
 
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
+            base.Initialize(solver, sessionSeed);
             agentName = "DerpyCarlo";
 
             // initialize all random streams just once, it's enough for seeing and having unique stream for each worker

@@ -281,8 +281,6 @@ namespace FFTriadBuddy
             playerAgents.Add(new TriadGameAgentCarloTheExplorer());
             playerAgents.Add(new TriadGameAgentCarloScored());
 
-            var agentVs = new TriadGameAgentRandom();
-
             // single iteration: in depth testing for single agent
             if (numIterations == 1)
             {
