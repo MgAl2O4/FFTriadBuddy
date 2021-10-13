@@ -15,6 +15,7 @@ namespace FFTriadBuddy
         RandomizeBlueDeck = 0x8,
         SwapCards = 0x10,
         BlueCardSelection = 0x20,
+        IgnoreOwnedCheck = 0x40,
     }
 
     public class TriadGameModifier : IComparable
@@ -789,6 +790,7 @@ namespace FFTriadBuddy
         {
             RuleName = "Draft";
             LocRuleName = LocalizationDB.Get().FindOrAddLocString(ELocStringType.RuleName, 15);
+            SpecialMod = ETriadGameSpecialMod.IgnoreOwnedCheck;
         }
         // no special logic
     }
