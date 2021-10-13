@@ -19,6 +19,7 @@ namespace FFTriadBuddy
             ShowMoveDetailsRng = 0x10,
         }
         public DebugFlags debugFlags;
+        public string agentName = "??";
 
         public virtual void Initialize(TriadGameSolver solver, int sessionSeed) { }
         public virtual bool IsInitialized() { return true; }
@@ -43,6 +44,7 @@ namespace FFTriadBuddy
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
             randGen = new Random(sessionSeed);
+            agentName = "Random";
         }
 
         public override bool IsInitialized()
@@ -313,6 +315,8 @@ namespace FFTriadBuddy
 
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
+            agentName = "DerpyCarlo";
+
             // initialize all random streams just once, it's enough for seeing and having unique stream for each worker
             workerAgents = new TriadGameAgentRandom[numWorkers];
             for (int idx = 0; idx < numWorkers; idx++)
@@ -403,6 +407,7 @@ namespace FFTriadBuddy
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
             base.Initialize(solver, sessionSeed);
+            agentName = "CarloTheExplorer";
 
             // cache number of possible states depending on cards placed
             // 0: (5 * 9) * (5 * 8) * (4 * 7) * (4 * 6) * ...                   = (5 * 5 * 4 * 4 * 3 * 3 * 2 * 2 * 1) * 9! = (5! * 5!) * 9!
@@ -439,7 +444,7 @@ namespace FFTriadBuddy
             }
 
 #if DEBUG
-            if ((debugFlags & DebugFlags.AgentInitialize) != DebugFlags.None) { Logger.WriteLine($"CarloTheExplorer: minPlacedToExplore:{minPlacedToExplore}, minPlacedToExploreWithForced:{minPlacedToExploreWithForced}"); }
+            if ((debugFlags & DebugFlags.AgentInitialize) != DebugFlags.None) { Logger.WriteLine($"{agentName}: minPlacedToExplore:{minPlacedToExplore}, minPlacedToExploreWithForced:{minPlacedToExploreWithForced}"); }
 #endif // DEBUG
         }
 
@@ -458,6 +463,12 @@ namespace FFTriadBuddy
     public class TriadGameAgentCarloScored : TriadGameAgentCarloTheExplorer
     {
         public const float StateWeight = 0.50f;
+
+        public override void Initialize(TriadGameSolver solver, int sessionSeed)
+        {
+            base.Initialize(solver, sessionSeed);
+            agentName = "CarloScored";
+        }
 
         protected override SolverResult FindWinningProbability(TriadGameSolver solver, TriadGameSimulationState gameState)
         {

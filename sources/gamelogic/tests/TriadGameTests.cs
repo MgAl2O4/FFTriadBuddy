@@ -252,15 +252,21 @@ namespace FFTriadBuddy
             return permutationList;
         }
 
+        class SolverAccTestInfo
+        {
+            public TriadGameAgent agentBlue;
+            public TriadGameAgent agentRed;
+            public int numWins = 0;
+            public int numControlled = 0;
+            public float elapsedSeconds = 0.0f;
+        }
+
         public static void RunSolverAccuracyTests()
         {
-            int numIterations = 1;
+            int numIterations = 200;
             var deckPermutations = BuildDeckPermutations();
 
             Logger.WriteLine("Solver accuracy testing start, numIterations:" + numIterations);
-
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
 
             TriadDeck testDeck = new TriadDeck(new int[] { 61, 248, 113, 191, 87 });
             //TriadNpc testNpc = TriadNpcDB.Get().Find("Garima");
@@ -270,45 +276,67 @@ namespace FFTriadBuddy
             var solver = new TriadGameSolver();
             solver.InitializeSimulation(testNpc.Rules);
 
-            // agent to test for accuracy
-            TriadGameAgent agentPlayer = null;
-            //agentPlayer = new TriadGameAgentDerpyCarlo();
-            agentPlayer = new TriadGameAgentCarloTheExplorer();
-            //agentPlayer = new TriadGameAgentCarloScored();
+            var playerAgents = new List<TriadGameAgent>();
+            playerAgents.Add(new TriadGameAgentDerpyCarlo());
+            playerAgents.Add(new TriadGameAgentCarloTheExplorer());
+            playerAgents.Add(new TriadGameAgentCarloScored());
 
             var agentVs = new TriadGameAgentRandom();
 
-            // include debug info when running single iteration
+            // single iteration: in depth testing for single agent
             if (numIterations == 1)
             {
-                agentPlayer.debugFlags = TriadGameAgent.DebugFlags.AgentInitialize | TriadGameAgent.DebugFlags.ShowMoveStart | TriadGameAgent.DebugFlags.ShowMoveDetails;
+                playerAgents.Clear();
+                playerAgents.Add(new TriadGameAgentCarloScored());
+
+                playerAgents[0].debugFlags = TriadGameAgent.DebugFlags.AgentInitialize | TriadGameAgent.DebugFlags.ShowMoveStart | TriadGameAgent.DebugFlags.ShowMoveDetails;
             }
 
-            var sessionRand = new Random(0);
-            agentPlayer.Initialize(solver, sessionRand.Next());
-            agentVs.Initialize(solver, sessionRand.Next());
+            var testResults = new List<SolverAccTestInfo>();
+            foreach (var agent in playerAgents)
+            {
+                var testInfo = new SolverAccTestInfo() { agentBlue = agent, agentRed = new TriadGameAgentRandom() };
+                testInfo.agentBlue.Initialize(solver, 0);
+                testInfo.agentRed.Initialize(solver, 0);
+
+                testResults.Add(testInfo);
+            }
 
             bool hasChaosRule = solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection);
 
-            int numControlledCards = 0;
-            int numWins = 0;
-            for (int Idx = 0; Idx < numIterations; Idx++)
+            var iterCounter = 0;
+            foreach (var testInfo in testResults)
             {
-                var gameState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
+                var sessionRand = new Random(0);
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
 
-                int[] blueDeckOrder = null;
+                for (int Idx = 0; Idx < numIterations; Idx++)
+                {
+                    int[] blueDeckOrder = null;
+                    if (hasChaosRule)
+                    {
+                        int permIdx = sessionRand.Next() % deckPermutations.Length;
+                        blueDeckOrder = deckPermutations[permIdx];
+                    }
+
+                    iterCounter++;
+                    if (iterCounter % 20 == 0)
+                    {
+                        Logger.WriteLine(">> {0}/{1}", iterCounter, numIterations * testResults.Count);
+                    }
+
+                    var initialState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
+                    PlayTestGame(testInfo, initialState, blueDeckOrder);
+                }
+
+                timer.Stop();
+                testInfo.elapsedSeconds = timer.ElapsedMilliseconds / 1000.0f;
+            }
+
+            void PlayTestGame(SolverAccTestInfo testInfo, TriadGameSimulationState gameState, int[] blueDeckOrder)
+            {
                 int blueDeckIdx = 0;
-                if (hasChaosRule)
-                {
-                    int permIdx = sessionRand.Next() % deckPermutations.Length;
-                    blueDeckOrder = deckPermutations[permIdx];
-                }
-
-                if (Idx > 0 && Idx % 20 == 0)
-                {
-                    Logger.WriteLine(">> {0}/{1}", Idx, numIterations);
-                }
-
                 bool keepPlaying = true;
                 while (keepPlaying)
                 {
@@ -322,7 +350,7 @@ namespace FFTriadBuddy
                             blueDeckIdx++;
                         }
 
-                        keepPlaying = agentPlayer.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
+                        keepPlaying = testInfo.agentBlue.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
                         if (keepPlaying)
                         {
                             keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckBlue, ETriadCardOwner.Blue, boardPos);
@@ -330,7 +358,7 @@ namespace FFTriadBuddy
                     }
                     else if (gameState.state == ETriadGameState.InProgressRed)
                     {
-                        keepPlaying = agentVs.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
+                        keepPlaying = testInfo.agentRed.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
                         if (keepPlaying)
                         {
                             keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckRed, ETriadCardOwner.Red, boardPos);
@@ -348,15 +376,19 @@ namespace FFTriadBuddy
                     numBlue += (card != null && card.owner == ETriadCardOwner.Blue) ? 1 : 0;
                 }
 
-                numControlledCards += numBlue;
-                numWins += (gameState.state == ETriadGameState.BlueWins) ? 1 : 0;
+                testInfo.numControlled += numBlue;
+                testInfo.numWins += (gameState.state == ETriadGameState.BlueWins) ? 1 : 0;
             }
 
-            timer.Stop();
-            Logger.WriteLine("Solver accuracy testing finished, score:{0:P2}, control:{1:0.##}, time taken:{2}s",
-                (float)numWins / numIterations,
-                (float)numControlledCards / numIterations,
-                timer.ElapsedMilliseconds / 1000.0f);
+            Logger.WriteLine("Solver accuracy testing finished");
+            foreach (var testInfo in testResults)
+            {
+                Logger.WriteLine("[{0}] score:{1:P2}, control:{2:0.##}, time taken:{3}s",
+                    testInfo.agentBlue.agentName,
+                    (float)testInfo.numWins / numIterations,
+                    (float)testInfo.numControlled / numIterations,
+                    testInfo.elapsedSeconds);
+            }
 
             if (Debugger.IsAttached)
             {
