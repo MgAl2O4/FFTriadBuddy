@@ -251,6 +251,9 @@ namespace FFTriadBuddy
         {
             if (gameData.state == ETriadGameState.BlueDraw && gameData.numRestarts < 3)
             {
+                // TODO: don't follow this more than once when simulating in solver?
+                //       can get stuck in pretty long loops
+
                 // implement this rule only for manual mode, screen captures get everything automatically
                 TriadDeckInstanceManual deckBlueEx = gameData.deckBlue as TriadDeckInstanceManual;
                 TriadDeckInstanceManual deckRedEx = gameData.deckRed as TriadDeckInstanceManual;
