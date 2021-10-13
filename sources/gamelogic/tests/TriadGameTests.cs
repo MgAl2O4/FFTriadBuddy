@@ -259,6 +259,7 @@ namespace FFTriadBuddy
             public int numWins = 0;
             public int numControlled = 0;
             public float elapsedSeconds = 0.0f;
+            public List<float> predictionSteps;
         }
 
         public static void RunSolverAccuracyTests()
@@ -296,6 +297,12 @@ namespace FFTriadBuddy
                 var testInfo = new SolverAccTestInfo() { agentBlue = agent, agentRed = new TriadGameAgentRandom() };
                 testInfo.agentBlue.Initialize(solver, 0);
                 testInfo.agentRed.Initialize(solver, 0);
+
+                testInfo.predictionSteps = new List<float>();
+                for (int idx = 0; idx < 5; idx++)
+                {
+                    testInfo.predictionSteps.Add(0.0f);
+                }
 
                 testResults.Add(testInfo);
             }
@@ -348,9 +355,11 @@ namespace FFTriadBuddy
                             blueDeckIdx++;
                         }
 
-                        keepPlaying = testInfo.agentBlue.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
+                        keepPlaying = testInfo.agentBlue.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var blueResult);
                         if (keepPlaying)
                         {
+                            testInfo.predictionSteps[gameState.deckBlue.numPlaced] += blueResult.winChance;
+
                             keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckBlue, ETriadCardOwner.Blue, boardPos);
                         }
                     }
@@ -381,11 +390,19 @@ namespace FFTriadBuddy
             Logger.WriteLine("Solver accuracy testing finished");
             foreach (var testInfo in testResults)
             {
-                Logger.WriteLine("[{0}] score:{1:P2}, control:{2:0.##}, time taken:{3}s",
+                string predictionDesc = "";
+                for (int idx = 0; idx < testInfo.predictionSteps.Count - 1; idx++)
+                {
+                    if (predictionDesc.Length > 0) { predictionDesc += ", "; }
+                    predictionDesc += $"{(testInfo.predictionSteps[idx] / numIterations):P0}";
+                }
+
+                Logger.WriteLine("[{0}] score:{1:P2}, control:{2:0.##}, time taken:{3}s, predictions:{4}",
                     testInfo.agentBlue.agentName,
                     (float)testInfo.numWins / numIterations,
                     (float)testInfo.numControlled / numIterations,
-                    testInfo.elapsedSeconds);
+                    testInfo.elapsedSeconds,
+                    predictionDesc);
             }
 
             if (Debugger.IsAttached)
