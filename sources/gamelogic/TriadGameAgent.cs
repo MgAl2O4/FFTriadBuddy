@@ -67,17 +67,18 @@ namespace FFTriadBuddy
                 return false;
             }
 
-            solver.FindAvailableActions(gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards);
+            /*solver.FindAvailableActions(gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards);
             if (numAvailCards > 0 && numAvailBoard > 0)
             {
                 cardIdx = PickBitmaskIndex(availCardsMask, numAvailCards);
                 boardPos = PickBitmaskIndex(availBoardMask, numAvailBoard);
-            }
+            }*/
 
             // OLD IMPLEMENTATION for comparison
             // doesn't guarantee equal distribution = opponent simulation is biased => reported win chance is too high
+            // stays for now until i can make CarloScored usable
             //
-            /*const int boardPosMax = TriadGameSimulationState.boardSizeSq;
+            const int boardPosMax = TriadGameSimulationState.boardSizeSq;
             if (gameState.numCardsPlaced < TriadGameSimulationState.boardSizeSq)
             {
                 int testPos = randGen.Next(boardPosMax);
@@ -106,7 +107,7 @@ namespace FFTriadBuddy
                         break;
                     }
                 }
-            }*/
+            }
 
             return (boardPos >= 0) && (cardIdx >= 0);
         }
@@ -271,7 +272,6 @@ namespace FFTriadBuddy
 #if DEBUG
                             if ((debugFlags & DebugFlags.ShowMoveDetails) != DebugFlags.None && isRootLevel) { Logger.WriteLine($"  board[{boardIdx}], card[{cardIdx}] = {branchResult}"); }
 #endif // DEBUG
-
                             if (branchResult.IsBetterThan(bestActionResult))
                             {
                                 bestActionResult = branchResult;
@@ -327,7 +327,16 @@ namespace FFTriadBuddy
 #endif // DEBUG
             }
 
-            return new SolverResult(numWinsTotal, numDrawsTotal, numGamesTotal);
+            // what to do with results depend on current move owner:
+            //   Agent's player (search levels: 0, 2, 4, ...)
+            //   - result of processing this level is MAX(result branch)
+            //
+            //   opponent player (search levels: 1, 3, ...)
+            //   - min/max says MIN, but let's go with AVG instead to be more optimistic
+            //   - result of processing this level is AVG, use total counters to create chance data
+
+            bool isOwnerTurn = (searchLevel % 2) == 0;
+            return isOwnerTurn ? bestActionResult : new SolverResult(numWinsTotal, numDrawsTotal, numGamesTotal);
         }
     }
 
