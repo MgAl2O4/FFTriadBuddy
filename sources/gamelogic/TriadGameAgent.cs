@@ -489,7 +489,8 @@ namespace FFTriadBuddy
     /// </summary>
     public class TriadGameAgentCarloScored : TriadGameAgentCarloTheExplorer
     {
-        public const float StateWeight = 0.50f;
+        public const float StateWeight = 0.75f;
+        public const float StateWeightDecay = 0.2f;
 
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
@@ -501,8 +502,10 @@ namespace FFTriadBuddy
         {
             var result = base.FindWinningProbability(solver, gameState);
             var stateScore = CalculateStateScore(solver, gameState);
+            var useWeight = Math.Max(0.0f, StateWeight - (gameState.deckBlue.numPlaced * StateWeightDecay));
 
-            return new SolverResult((result.numWins / result.numGames) + (StateWeight * stateScore), result.numDraws / result.numGames, 1);
+            var numWinsModified = Math.Min(1.0f, (result.numWins / result.numGames) + (stateScore * useWeight));
+            return new SolverResult(numWinsModified, result.numDraws / result.numGames, 1);
         }
 
         private float CalculateStateScore(TriadGameSolver solver, TriadGameSimulationState gameState)
