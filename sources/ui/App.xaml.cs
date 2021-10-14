@@ -55,10 +55,14 @@ namespace FFTriadBuddy.UI
                 TriadGameTests.RunSolverAccuracyTests();
                 canStart = false;
             }
-
-            if (Array.Find(e.Args, x => x == "-runSolverStressTest") != null)
+            else if (Array.Find(e.Args, x => x == "-runSolverStressTest") != null)
             {
                 TriadGameTests.RunSolverStressTest();
+                canStart = false;
+            }
+            else if (Array.Find(e.Args, x => x == "-generateSolverTrainingData") != null)
+            {
+                TriadGameTests.GenerateAccuracyTrainingData();
                 canStart = false;
             }
 #endif // DEBUG

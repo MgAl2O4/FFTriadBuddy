@@ -252,6 +252,17 @@ namespace FFTriadBuddy
             return permutationList;
         }
 
+        private static int[][] deckPermutations;
+        private static int[] PickRandomPermutation(Random rand)
+        {
+            if (deckPermutations == null)
+            {
+                deckPermutations = BuildDeckPermutations();
+            }
+
+            return deckPermutations[rand.Next(deckPermutations.Length)];
+        }
+
         class SolverAccTestInfo
         {
             public TriadGameAgent agentBlue;
@@ -260,6 +271,51 @@ namespace FFTriadBuddy
             public int numControlled = 0;
             public float elapsedSeconds = 0.0f;
             public List<float> predictionSteps;
+        }
+
+        private static void PlayTestGame(SolverAccTestInfo testInfo, TriadGameSolver solver, TriadGameSimulationState gameState, Random sessionRand)
+        {
+            int[] blueDeckOrder = solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection) ? PickRandomPermutation(sessionRand) : null;
+
+            bool keepPlaying = true;
+            while (keepPlaying)
+            {
+                if (gameState.state == ETriadGameState.InProgressBlue)
+                {
+                    gameState.forcedCardIdx = (blueDeckOrder != null) ? blueDeckOrder[gameState.deckBlue.numPlaced] : -1;
+
+                    keepPlaying = testInfo.agentBlue.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var blueResult);
+                    if (keepPlaying)
+                    {
+                        testInfo.predictionSteps[gameState.deckBlue.numPlaced] += blueResult.winChance;
+
+                        keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckBlue, ETriadCardOwner.Blue, boardPos);
+                    }
+                }
+                else if (gameState.state == ETriadGameState.InProgressRed)
+                {
+                    gameState.forcedCardIdx = -1;
+
+                    keepPlaying = testInfo.agentRed.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
+                    if (keepPlaying)
+                    {
+                        keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckRed, ETriadCardOwner.Red, boardPos);
+                    }
+                }
+                else
+                {
+                    keepPlaying = false;
+                }
+            }
+
+            int numBlue = (gameState.deckBlue.availableCardMask != 0) ? 1 : 0;
+            foreach (TriadCardInstance card in gameState.board)
+            {
+                numBlue += (card != null && card.owner == ETriadCardOwner.Blue) ? 1 : 0;
+            }
+
+            testInfo.numControlled += numBlue;
+            testInfo.numWins += (gameState.state == ETriadGameState.BlueWins) ? 1 : 0;
         }
 
         public static void RunSolverAccuracyTests()
@@ -321,8 +377,6 @@ namespace FFTriadBuddy
                 testResults.Add(testInfo);
             }
 
-            bool hasChaosRule = solver.HasSimulationRule(ETriadGameSpecialMod.BlueCardSelection);
-
             var iterCounter = 0;
             foreach (var testInfo in testResults)
             {
@@ -332,13 +386,6 @@ namespace FFTriadBuddy
 
                 for (int Idx = 0; Idx < numIterations; Idx++)
                 {
-                    int[] blueDeckOrder = null;
-                    if (hasChaosRule)
-                    {
-                        int permIdx = sessionRand.Next() % deckPermutations.Length;
-                        blueDeckOrder = deckPermutations[permIdx];
-                    }
-
                     iterCounter++;
                     if (iterCounter % 20 == 0)
                     {
@@ -346,59 +393,11 @@ namespace FFTriadBuddy
                     }
 
                     var initialState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
-                    PlayTestGame(testInfo, initialState, blueDeckOrder);
+                    PlayTestGame(testInfo, solver, initialState, sessionRand);
                 }
 
                 timer.Stop();
                 testInfo.elapsedSeconds = timer.ElapsedMilliseconds / 1000.0f;
-            }
-
-            void PlayTestGame(SolverAccTestInfo testInfo, TriadGameSimulationState gameState, int[] blueDeckOrder)
-            {
-                int blueDeckIdx = 0;
-                bool keepPlaying = true;
-                while (keepPlaying)
-                {
-                    gameState.forcedCardIdx = -1;
-
-                    if (gameState.state == ETriadGameState.InProgressBlue)
-                    {
-                        if (blueDeckOrder != null)
-                        {
-                            gameState.forcedCardIdx = blueDeckOrder[blueDeckIdx];
-                            blueDeckIdx++;
-                        }
-
-                        keepPlaying = testInfo.agentBlue.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var blueResult);
-                        if (keepPlaying)
-                        {
-                            testInfo.predictionSteps[gameState.deckBlue.numPlaced] += blueResult.winChance;
-
-                            keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckBlue, ETriadCardOwner.Blue, boardPos);
-                        }
-                    }
-                    else if (gameState.state == ETriadGameState.InProgressRed)
-                    {
-                        keepPlaying = testInfo.agentRed.FindNextMove(solver, gameState, out int cardIdx, out int boardPos, out var dummyResult);
-                        if (keepPlaying)
-                        {
-                            keepPlaying = solver.simulation.PlaceCard(gameState, cardIdx, gameState.deckRed, ETriadCardOwner.Red, boardPos);
-                        }
-                    }
-                    else
-                    {
-                        keepPlaying = false;
-                    }
-                }
-
-                int numBlue = (gameState.deckBlue.availableCardMask != 0) ? 1 : 0;
-                foreach (TriadCardInstance card in gameState.board)
-                {
-                    numBlue += (card != null && card.owner == ETriadCardOwner.Blue) ? 1 : 0;
-                }
-
-                testInfo.numControlled += numBlue;
-                testInfo.numWins += (gameState.state == ETriadGameState.BlueWins) ? 1 : 0;
             }
 
             Logger.WriteLine("Solver accuracy testing finished");
@@ -423,6 +422,133 @@ namespace FFTriadBuddy
             {
                 Debugger.Break();
             }
+        }
+
+        private static TriadNpc PickRandomNpc(Random rand)
+        {
+            var npcList = TriadNpcDB.Get().npcs;
+            TriadNpc npcOb = null;
+            while (npcOb == null)
+            {
+                npcOb = npcList[rand.Next(npcList.Count)];
+            }
+
+            return npcOb;
+        }
+
+        private static Dictionary<int, List<TriadCard>> mapCardRarities;
+        private static TriadCard PickRandomCard(Random rand, int rarity)
+        {
+            if (mapCardRarities == null)
+            {
+                mapCardRarities = new Dictionary<int, List<TriadCard>>();
+                for (int idx = 0; idx < 5; idx++)
+                {
+                    mapCardRarities.Add(idx, new List<TriadCard>());
+                }
+
+                var cardList = TriadCardDB.Get().cards;
+                foreach (var card in cardList)
+                {
+                    if (card != null && card.IsValid())
+                    {
+                        mapCardRarities[(int)card.Rarity].Add(card);
+                    }
+                }
+            }
+
+            var rarityList = mapCardRarities[rarity];
+            return rarityList[rand.Next(rarityList.Count)];
+        }
+
+        private static TriadDeck PickRandomDeck(Random rand)
+        {
+            int[] rarityCount = new int[5];
+            int rarityType = rand.Next(10);
+            if (rarityType < 2)
+            {
+                rarityCount[0] = 4;
+                rarityCount[1] = 1;
+            }
+            else if (rarityType < 5)
+            {
+                rarityCount[0] = 1;
+                rarityCount[1] = 2;
+                rarityCount[2] = 1;
+                rarityCount[3] = 1;
+                rarityCount[4] = 0;
+            }
+            else
+            {
+                rarityCount[2] = 3;
+                rarityCount[3] = 1;
+                rarityCount[4] = 1;
+            }
+
+            var listCards = new List<TriadCard>();
+            for (int idxRarity = 0; idxRarity < rarityCount.Length; idxRarity++)
+            {
+                int numAdded = 0;
+                while (numAdded < rarityCount[idxRarity])
+                {
+                    var cardOb = PickRandomCard(rand, idxRarity);
+                    if (!listCards.Contains(cardOb))
+                    {
+                        listCards.Add(cardOb);
+                        numAdded++;
+                    }
+                }
+            }
+
+            return new TriadDeck(listCards);
+        }
+
+        public static void GenerateAccuracyTrainingData()
+        {
+            int numGames = 100;
+            int numSamples = 200;
+            int seed = 0;
+
+            TriadGameAgentRandom.UseEqualDistribution = true;
+            var rand = new Random(seed);
+            
+            var testLines = new List<string>();
+            testLines.Add("seed,deck0,deck1,deck2,deck3,deck4,npc,winChance");
+
+            for (int idxSample = 0; idxSample < numSamples; idxSample++)
+            {
+                Logger.WriteLine($">> {idxSample + 1}/{numSamples}");
+
+                var sessionSeed = rand.Next();
+                var sessionRand = new Random(sessionSeed);
+
+                var testNpc = PickRandomNpc(sessionRand);
+                var testDeck = PickRandomDeck(sessionRand);
+
+                var solver = new TriadGameSolver();
+                solver.InitializeSimulation(testNpc.Rules);
+
+                var testInfo = new SolverAccTestInfo() { agentBlue = new TriadGameAgentCarloTheExplorer(), agentRed = new TriadGameAgentRandom() };
+                testInfo.agentBlue.Initialize(solver, 0);
+                testInfo.agentRed.Initialize(solver, 0);
+
+                testInfo.predictionSteps = new List<float>();
+                for (int idx = 0; idx < 5; idx++)
+                {
+                    testInfo.predictionSteps.Add(0.0f);
+                }
+
+                for (int idxGame = 0; idxGame < numGames; idxGame++)
+                {
+                    var initialState = solver.StartSimulation(testDeck, testNpc.Deck, ETriadGameState.InProgressRed);
+                    PlayTestGame(testInfo, solver, initialState, sessionRand);
+                }
+
+                var winChance = 1.0f * testInfo.numWins / numGames;
+                testLines.Add($"{sessionSeed},{testDeck.knownCards[0].Id},{testDeck.knownCards[1].Id},{testDeck.knownCards[2].Id},{testDeck.knownCards[3].Id},{testDeck.knownCards[4].Id},{testNpc.Id},{winChance}");
+            }
+
+            System.IO.File.WriteAllLines("predictionDump.csv", testLines);
         }
     }
 }
