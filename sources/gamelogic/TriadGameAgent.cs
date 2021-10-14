@@ -33,6 +33,7 @@ namespace FFTriadBuddy
     /// </summary>
     public class TriadGameAgentRandom : TriadGameAgent
     {
+        public static bool UseEqualDistribution = false;
         private Random randGen;
 
         public TriadGameAgentRandom() { }
@@ -67,44 +68,51 @@ namespace FFTriadBuddy
                 return false;
             }
 
-            /*solver.FindAvailableActions(gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards);
-            if (numAvailCards > 0 && numAvailBoard > 0)
+            if (UseEqualDistribution)
             {
-                cardIdx = PickBitmaskIndex(availCardsMask, numAvailCards);
-                boardPos = PickBitmaskIndex(availBoardMask, numAvailBoard);
-            }*/
+                // proper solution, but ends up lowering initial win chance by A LOT
 
-            // OLD IMPLEMENTATION for comparison
-            // doesn't guarantee equal distribution = opponent simulation is biased => reported win chance is too high
-            // stays for now until i can make CarloScored usable
-            //
-            const int boardPosMax = TriadGameSimulationState.boardSizeSq;
-            if (gameState.numCardsPlaced < TriadGameSimulationState.boardSizeSq)
-            {
-                int testPos = randGen.Next(boardPosMax);
-                for (int passIdx = 0; passIdx < boardPosMax; passIdx++)
+                solver.FindAvailableActions(gameState, out int availBoardMask, out int numAvailBoard, out int availCardsMask, out int numAvailCards);
+                if (numAvailCards > 0 && numAvailBoard > 0)
                 {
-                    testPos = (testPos + 1) % boardPosMax;
-                    if (gameState.board[testPos] == null)
-                    {
-                        boardPos = testPos;
-                        break;
-                    }
+                    cardIdx = PickBitmaskIndex(availCardsMask, numAvailCards);
+                    boardPos = PickBitmaskIndex(availBoardMask, numAvailBoard);
                 }
             }
-
-            cardIdx = -1;
-            TriadDeckInstance useDeck = (gameState.state == ETriadGameState.InProgressBlue) ? gameState.deckBlue : gameState.deckRed;
-            if (useDeck.availableCardMask > 0)
+            else
             {
-                int testIdx = randGen.Next(TriadDeckInstance.maxAvailableCards);
-                for (int passIdx = 0; passIdx < TriadDeckInstance.maxAvailableCards; passIdx++)
+                // OLD IMPLEMENTATION for comparison
+                // doesn't guarantee equal distribution = opponent simulation is biased => reported win chance is too high
+                // stays for now until i can make CarloScored usable
+                //
+                const int boardPosMax = TriadGameSimulationState.boardSizeSq;
+                if (gameState.numCardsPlaced < TriadGameSimulationState.boardSizeSq)
                 {
-                    testIdx = (testIdx + 1) % TriadDeckInstance.maxAvailableCards;
-                    if ((useDeck.availableCardMask & (1 << testIdx)) != 0)
+                    int testPos = randGen.Next(boardPosMax);
+                    for (int passIdx = 0; passIdx < boardPosMax; passIdx++)
                     {
-                        cardIdx = testIdx;
-                        break;
+                        testPos = (testPos + 1) % boardPosMax;
+                        if (gameState.board[testPos] == null)
+                        {
+                            boardPos = testPos;
+                            break;
+                        }
+                    }
+                }
+
+                cardIdx = -1;
+                TriadDeckInstance useDeck = (gameState.state == ETriadGameState.InProgressBlue) ? gameState.deckBlue : gameState.deckRed;
+                if (useDeck.availableCardMask > 0)
+                {
+                    int testIdx = randGen.Next(TriadDeckInstance.maxAvailableCards);
+                    for (int passIdx = 0; passIdx < TriadDeckInstance.maxAvailableCards; passIdx++)
+                    {
+                        testIdx = (testIdx + 1) % TriadDeckInstance.maxAvailableCards;
+                        if ((useDeck.availableCardMask & (1 << testIdx)) != 0)
+                        {
+                            cardIdx = testIdx;
+                            break;
+                        }
                     }
                 }
             }
