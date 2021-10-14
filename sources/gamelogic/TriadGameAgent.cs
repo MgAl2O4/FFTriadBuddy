@@ -280,7 +280,7 @@ namespace FFTriadBuddy
 #if DEBUG
                             if ((debugFlags & DebugFlags.ShowMoveDetails) != DebugFlags.None && isRootLevel) { Logger.WriteLine($"  board[{boardIdx}], card[{cardIdx}] = {branchResult}"); }
 #endif // DEBUG
-                            if (branchResult.IsBetterThan(bestActionResult))
+                            if (branchResult.IsBetterThan(bestActionResult) || !hasValidPlacements)
                             {
                                 bestActionResult = branchResult;
                                 bestCardIdx = cardIdx;
