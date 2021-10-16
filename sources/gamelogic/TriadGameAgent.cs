@@ -506,8 +506,8 @@ namespace FFTriadBuddy
     /// </summary>
     public class TriadGameAgentCarloScored : TriadGameAgentCarloTheExplorer
     {
-        public const float StateWeight = 0.75f;
-        public const float StateWeightDecay = 0.2f;
+        public const float StateWeight = 0.66f;
+        public const float StateWeightDecay = 0.33f;
 
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
@@ -525,14 +525,22 @@ namespace FFTriadBuddy
             return new SolverResult(numWinsModified, result.numDraws / result.numGames, 1);
         }
 
-        private float CalculateStateScore(TriadGameSolver solver, TriadGameSimulationState gameState)
+        public float CalculateStateScore(TriadGameSolver solver, TriadGameSimulationState gameState)
+        {
+            var blueDefenceScore = CalculateBlueDefenceScore(solver, gameState);    // [ 0..1]
+            var relativeCardScore = CalculateRelativeCardScore(solver, gameState);  // [-1..1]
+
+            return (blueDefenceScore * 0.75f) + (relativeCardScore * 0.25f);
+        }
+
+        private float CalculateBlueDefenceScore(TriadGameSolver solver, TriadGameSimulationState gameState)
         {
             // for each blue card:
             //   for each side:
             //     find all numbers that can capture it
             //   normalize count of capturing numbers
             // normalize card capturing value
-            // inverse => blue cards defensive value = state score
+            // inverse => blue cards defensive value
 
             float capturingSum = 0.0f;
             int numBlueCards = 0;
@@ -540,49 +548,97 @@ namespace FFTriadBuddy
             for (int idx = 0; idx < gameState.board.Length; idx++)
             {
                 var cardInst = gameState.board[idx];
-                if (cardInst != null && cardInst.owner == ETriadCardOwner.Blue)
+                if (cardInst == null)
+                {
+                    continue;
+                }
+
+                if (cardInst.owner == ETriadCardOwner.Blue)
                 {
                     int[] neis = TriadGameSimulation.cachedNeis[idx];
 
                     int numCapturingValues = 0;
+                    int numValidSides = 0;
                     for (int side = 0; side < 4; side++)
                     {
-                        if (neis[side] >= 0)
+                        if ((neis[side] >= 0) && (gameState.board[neis[side]] == null))
                         {
                             int cardNumber = cardInst.GetNumber((ETriadGameSide)side);
+                            int numCaptures = 0;
                             for (int testValue = 1; testValue <= 10; testValue++)
                             {
                                 bool canCapture = CanBeCapturedWith(solver.simulation, cardNumber, testValue);
-                                numCapturingValues += canCapture ? 1 : 0;
+                                numCaptures += canCapture ? 1 : 0;
                             }
+
+                            //Logger.WriteLine($"[{idx}].side:{side} card:{cardNumber} <- captures:{numCaptures}");
+                            numValidSides++;
+                            numCapturingValues += numCaptures;
                         }
                     }
 
-                    capturingSum += numCapturingValues / 40.0f;
+                    capturingSum += (numValidSides > 0) ? (numCapturingValues / (numValidSides * 10.0f)) : 0.0f;
                     numBlueCards++;
                 }
             }
 
-            return (numBlueCards > 0) ? (1.0f - (capturingSum / numBlueCards)) : 0.0f;
+            float score = (numBlueCards > 0) ? (1.0f - (capturingSum / numBlueCards)) : 0.0f;
+            return score;
         }
 
-        private bool CanBeCapturedWith(TriadGameSimulation simulation, int cardNum, int testNum)
+        private float CalculateRelativeCardScore(TriadGameSolver solver, TriadGameSimulationState gameState)
+        {
+            // for each card, including cards in deck
+            //   sum(calc score of card)
+
+            float blueCardScore = 0.0f;
+            float redCardScore = 0.0f;
+            int numScoredBlueCards = 0;
+            int numScoredRedCards = 0;
+
+            for (int idx = 0; idx < TriadDeckInstance.maxAvailableCards; idx++)
+            {
+                if ((gameState.deckBlue.availableCardMask & (1 << idx)) != 0)
+                {
+                    var testCard = gameState.deckBlue.GetCard(idx);
+                    float cardScore = testCard.OptimizerScore;
+
+                    blueCardScore += cardScore;
+                    numScoredBlueCards++;
+                }
+
+                if ((gameState.deckRed.availableCardMask & (1 << idx)) != 0)
+                {
+                    var testCard = gameState.deckRed.GetCard(idx);
+                    float cardScore = testCard.OptimizerScore;
+
+                    redCardScore += cardScore;
+                    numScoredRedCards++;
+                }
+            }
+
+            float score = (numScoredBlueCards > 0) ? (blueCardScore / numScoredBlueCards) : 0.0f;
+            score -= (numScoredRedCards > 0) ? (redCardScore / numScoredRedCards) : 0.0f;
+            return score;
+        }
+
+        private bool CanBeCapturedWith(TriadGameSimulation simulation, int defendingNum, int capturingNum)
         {
             if ((simulation.modFeatures & TriadGameModifier.EFeature.CaptureWeights) != 0)
             {
                 foreach (TriadGameModifier mod in simulation.modifiers)
                 {
-                    mod.OnCheckCaptureCardWeights(null, -1, -1, ref cardNum, ref testNum);
+                    mod.OnCheckCaptureCardWeights(null, -1, -1, ref capturingNum, ref defendingNum);
                 }
             }
 
-            bool isCaptured = (cardNum > testNum);
+            bool isCaptured = (capturingNum > defendingNum);
 
             if ((simulation.modFeatures & TriadGameModifier.EFeature.CaptureMath) != 0)
             {
                 foreach (TriadGameModifier mod in simulation.modifiers)
                 {
-                    mod.OnCheckCaptureCardMath(null, -1, -1, cardNum, testNum, ref isCaptured);
+                    mod.OnCheckCaptureCardMath(null, -1, -1, capturingNum, defendingNum, ref isCaptured);
                 }
             }
 
