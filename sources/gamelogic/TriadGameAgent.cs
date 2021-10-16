@@ -505,8 +505,12 @@ namespace FFTriadBuddy
     /// </summary>
     public class TriadGameAgentCarloScored : TriadGameAgentCarloTheExplorer
     {
-        public const float StateWeight = 0.5f;
-        public const float StateWeightDecay = 0.05f;
+        public const float StateWeight = 0.75f;
+        public const float StateWeightDecay = 0.25f;
+
+        public const float PriorityDefense = 1.0f;
+        public const float PriorityDeck = 2.0f;
+        public const float PriorityCapture = 3.5f;
 
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
@@ -518,7 +522,7 @@ namespace FFTriadBuddy
         {
             var result = base.FindWinningProbability(solver, gameState);
             var stateScore = CalculateStateScore(solver, gameState);
-            var useWeight = Math.Max(0.0f, StateWeight - (gameState.deckBlue.numPlaced * StateWeightDecay));
+            var useWeight = Math.Max(0.0f, StateWeight - ((gameState.deckBlue.numPlaced - 1) * StateWeightDecay));
 
             var numWinsModified = ((result.numWins / result.numGames) * (1.0f - useWeight)) + (stateScore * useWeight);
             return new SolverResult(Math.Min(1.0f, numWinsModified), result.numDraws / result.numGames, 1);
@@ -527,9 +531,16 @@ namespace FFTriadBuddy
         public float CalculateStateScore(TriadGameSolver solver, TriadGameSimulationState gameState)
         {
             var (blueDefenseScore, blueCaptureScore) = CalculateBoardScore(solver, gameState);
-            var relativeCardScore = CalculateRelativeCardScore(solver, gameState);
+            var deckScore = CalculateBlueDeckScore(solver, gameState);
 
-            return (blueDefenseScore * 0.6f) + (blueCaptureScore * 0.3f) + (relativeCardScore * 0.1f);
+#if DEBUG
+            if ((debugFlags & DebugFlags.ShowMoveDetailsRng) != DebugFlags.None)
+            {
+                Logger.WriteLine($"stateScore => def:{blueDefenseScore}, capture:{blueCaptureScore}, deck:{deckScore}");
+            }
+#endif // DEBUG
+
+            return ((blueDefenseScore * PriorityDefense) + (blueCaptureScore * PriorityCapture) + (deckScore * PriorityDeck)) / (PriorityDefense + PriorityDeck + PriorityCapture);
         }
 
         private (float, float) CalculateBoardScore(TriadGameSolver solver, TriadGameSimulationState gameState)
@@ -584,22 +595,15 @@ namespace FFTriadBuddy
             }
 
             float defenseScore = (numBlueCards > 0) ? (1.0f - (capturingSum / numBlueCards)) : 0.0f;
-
-            numBlueCards += (5 - gameState.deckBlue.numPlaced);
-            float captureScore = numBlueCards / 10.0f;
+            float captureScore = Math.Min(1.0f, numBlueCards / 5.0f);
 
             return (defenseScore, captureScore);
         }
 
-        private float CalculateRelativeCardScore(TriadGameSolver solver, TriadGameSimulationState gameState)
+        private float CalculateBlueDeckScore(TriadGameSolver solver, TriadGameSimulationState gameState)
         {
-            // for each card, including cards in deck
-            //   sum(calc score of card)
-
             float blueCardScore = 0.0f;
-            float redCardScore = 0.0f;
             int numScoredBlueCards = 0;
-            int numScoredRedCards = 0;
 
             for (int idx = 0; idx < TriadDeckInstance.maxAvailableCards; idx++)
             {
@@ -608,23 +612,17 @@ namespace FFTriadBuddy
                     var testCard = gameState.deckBlue.GetCard(idx);
                     float cardScore = testCard.OptimizerScore;
 
+                    foreach (TriadGameModifier mod in solver.simulation.modifiers)
+                    {
+                        mod.OnScoreCard(testCard, ref cardScore);
+                    }
+
                     blueCardScore += cardScore;
                     numScoredBlueCards++;
                 }
-
-                if ((gameState.deckRed.availableCardMask & (1 << idx)) != 0)
-                {
-                    var testCard = gameState.deckRed.GetCard(idx);
-                    float cardScore = testCard.OptimizerScore;
-
-                    redCardScore += cardScore;
-                    numScoredRedCards++;
-                }
             }
 
-            float score = (numScoredBlueCards > 0) ? (blueCardScore / numScoredBlueCards) : 0.0f;
-            score -= (numScoredRedCards > 0) ? (redCardScore / numScoredRedCards) : 0.0f;
-            return score;
+            return (numScoredBlueCards > 0) ? (blueCardScore / numScoredBlueCards) : 0.0f;
         }
 
         private bool CanBeCapturedWith(TriadGameSimulation simulation, int defendingNum, int capturingNum)
