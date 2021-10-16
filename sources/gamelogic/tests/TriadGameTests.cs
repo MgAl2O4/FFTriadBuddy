@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace FFTriadBuddy
 {
+#if DEBUG
     public class TriadGameTests
     {
         private static Dictionary<string, TriadGameModifier> mapValidationRules;
@@ -553,4 +554,5 @@ namespace FFTriadBuddy
             System.IO.File.WriteAllLines("predictionDump.csv", testLines);
         }
     }
+#endif // DEBUG
 }
