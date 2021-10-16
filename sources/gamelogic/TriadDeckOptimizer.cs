@@ -160,13 +160,18 @@ namespace FFTriadBuddy
                 {
                     var rand = new Random();
                     skipCounter = rand.Next((int)randomSkipRange);
+
+                    Logger.WriteLine("GuessDeck: {0} / {1}", skipCounter, randomSkipRange);
                 }
 
                 var deckList = slotIterator.GetDecks(skipCounter);                
                 foreach (var deckInfo in deckList)
                 {
-                    optimizedDeck = new TriadDeck(deckInfo.Cards);
-                    break;
+                    if (deckInfo.IsValid())
+                    {
+                        optimizedDeck = new TriadDeck(deckInfo.Cards);
+                        break;
+                    }
                 }
 
                 if (optimizedDeck == null)
