@@ -31,6 +31,8 @@ namespace FFTriadBuddy
         public delegate void UpdatePossibleCount(string numPossibleDesc);
         public event FoundDeckDelegate OnFoundDeck;
 
+        public float parallelLoadPct = -1.0f;
+
         private struct CardPool
         {
             public TriadCard[][] priorityLists;
@@ -137,6 +139,41 @@ namespace FFTriadBuddy
         public bool IsAborted()
         {
             return bAbort;
+        }
+
+        public void GuessDeck(List<TriadCard> lockedCards)
+        {
+            if (currentPool.commonList == null && currentPool.priorityLists == null)
+            {
+                Logger.WriteLine("Skip deck building, everything was locked");
+
+                optimizedDeck = new TriadDeck(lockedCards);
+            }
+            else
+            {
+                SlotIterator slotIterator = new SlotIterator(currentPool, lockedCards);
+                optimizedDeck = null;
+
+                long skipCounter = 0;
+                long randomSkipRange = numPossibleDecks / 100;
+                if (randomSkipRange > 0)
+                {
+                    var rand = new Random();
+                    skipCounter = rand.Next((int)randomSkipRange);
+                }
+
+                var deckList = slotIterator.GetDecks(skipCounter);                
+                foreach (var deckInfo in deckList)
+                {
+                    optimizedDeck = new TriadDeck(deckInfo.Cards);
+                    break;
+                }
+
+                if (optimizedDeck == null)
+                {
+                    optimizedDeck = new TriadDeck(PlayerSettingsDB.Get().starterCards);
+                }
+            }
         }
 
         private void UpdatePossibleDeckCount()
@@ -663,9 +700,16 @@ namespace FFTriadBuddy
             long lowestPauseIdx = 0;
             bool canFinishLoop = false;
 
+            ParallelOptions options = new ParallelOptions();
+            if (parallelLoadPct > 0.0f)
+            {
+                options.MaxDegreeOfParallelism = Math.Max(1, (int)(Environment.ProcessorCount * parallelLoadPct));
+                Logger.WriteLine("MaxDegreeOfParallelism: {0}", options.MaxDegreeOfParallelism);
+            }
+
             do
             {
-                var loopResult = Parallel.ForEach(slotIterator.GetDecks(lowestPauseIdx), (deckInfo, state) =>
+                var loopResult = Parallel.ForEach(slotIterator.GetDecks(lowestPauseIdx), options, (deckInfo, state) =>
                 {
                     if (isPaused) { state.Break(); }
                     else if (bAbort) { state.Stop(); }
