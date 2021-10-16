@@ -150,6 +150,10 @@ namespace FFTriadBuddy.UI
             Solver = new TriadGameSolver();
             Solver.InitializeSimulation(Rules, isTournament ? null : Npc.Rules);
 
+#if DEBUG
+            Solver.agent.debugFlags = TriadGameAgent.DebugFlags.AgentInitialize | TriadGameAgent.DebugFlags.ShowMoveStart | TriadGameAgent.DebugFlags.ShowMoveDetails | TriadGameAgent.DebugFlags.ShowMoveDetailsRng;
+#endif // DEBUG
+
             GameReset();
 
             if (notifySetupChange)
