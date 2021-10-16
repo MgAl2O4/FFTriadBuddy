@@ -56,7 +56,7 @@ namespace FFTriadBuddy
     public class TriadGameSolver
     {
         public TriadGameSimulation simulation = new TriadGameSimulation();
-        public TriadGameAgent agent = new TriadGameAgentCarloTheExplorer();
+        public TriadGameAgent agent = new TriadGameAgentCarloScored();
         public string name;
 
         public TriadGameSolver()

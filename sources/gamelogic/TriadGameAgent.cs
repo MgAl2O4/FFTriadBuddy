@@ -33,7 +33,7 @@ namespace FFTriadBuddy
     /// </summary>
     public class TriadGameAgentRandom : TriadGameAgent
     {
-        public static bool UseEqualDistribution = false;
+        public static bool UseEqualDistribution = true;
         private Random randGen;
 
         public TriadGameAgentRandom() { }
@@ -502,12 +502,11 @@ namespace FFTriadBuddy
 
     /// <summary>
     /// Aguments random search phase with score of game state to increase diffs between probability of initial steps
-    /// Currently scoring function is bad, it actually lowers win chance :(
     /// </summary>
     public class TriadGameAgentCarloScored : TriadGameAgentCarloTheExplorer
     {
-        public const float StateWeight = 0.66f;
-        public const float StateWeightDecay = 0.33f;
+        public const float StateWeight = 0.5f;
+        public const float StateWeightDecay = 0.05f;
 
         public override void Initialize(TriadGameSolver solver, int sessionSeed)
         {
@@ -521,19 +520,19 @@ namespace FFTriadBuddy
             var stateScore = CalculateStateScore(solver, gameState);
             var useWeight = Math.Max(0.0f, StateWeight - (gameState.deckBlue.numPlaced * StateWeightDecay));
 
-            var numWinsModified = Math.Min(1.0f, (result.numWins / result.numGames) + (stateScore * useWeight));
-            return new SolverResult(numWinsModified, result.numDraws / result.numGames, 1);
+            var numWinsModified = ((result.numWins / result.numGames) * (1.0f - useWeight)) + (stateScore * useWeight);
+            return new SolverResult(Math.Min(1.0f, numWinsModified), result.numDraws / result.numGames, 1);
         }
 
         public float CalculateStateScore(TriadGameSolver solver, TriadGameSimulationState gameState)
         {
-            var blueDefenceScore = CalculateBlueDefenceScore(solver, gameState);    // [ 0..1]
-            var relativeCardScore = CalculateRelativeCardScore(solver, gameState);  // [-1..1]
+            var (blueDefenseScore, blueCaptureScore) = CalculateBoardScore(solver, gameState);
+            var relativeCardScore = CalculateRelativeCardScore(solver, gameState);
 
-            return (blueDefenceScore * 0.75f) + (relativeCardScore * 0.25f);
+            return (blueDefenseScore * 0.6f) + (blueCaptureScore * 0.3f) + (relativeCardScore * 0.1f);
         }
 
-        private float CalculateBlueDefenceScore(TriadGameSolver solver, TriadGameSimulationState gameState)
+        private (float, float) CalculateBoardScore(TriadGameSolver solver, TriadGameSimulationState gameState)
         {
             // for each blue card:
             //   for each side:
@@ -541,6 +540,8 @@ namespace FFTriadBuddy
             //   normalize count of capturing numbers
             // normalize card capturing value
             // inverse => blue cards defensive value
+            //
+            // pct of blue in all cards => capture score
 
             float capturingSum = 0.0f;
             int numBlueCards = 0;
@@ -582,8 +583,12 @@ namespace FFTriadBuddy
                 }
             }
 
-            float score = (numBlueCards > 0) ? (1.0f - (capturingSum / numBlueCards)) : 0.0f;
-            return score;
+            float defenseScore = (numBlueCards > 0) ? (1.0f - (capturingSum / numBlueCards)) : 0.0f;
+
+            numBlueCards += (5 - gameState.deckBlue.numPlaced);
+            float captureScore = numBlueCards / 10.0f;
+
+            return (defenseScore, captureScore);
         }
 
         private float CalculateRelativeCardScore(TriadGameSolver solver, TriadGameSimulationState gameState)
