@@ -17,12 +17,6 @@ namespace FFTriadBuddy
         private long numTestedDecks;
         private long numMsElapsed;
 
-        private float scoreAvgSides;
-        private float scoreStdSides;
-        private float scoreMaxSides;
-        private float scoreSameCorners;
-        private float scoreMaxCorner;
-        private float scoreRarity;
         private int numGamesToPlay;
         private int numPriorityToBuild;
         private int numCommonToBuild;
@@ -71,13 +65,6 @@ namespace FFTriadBuddy
 #if DEBUG
             debugMode = true;
 #endif // DEBUG
-
-            scoreAvgSides = 1.0f;
-            scoreStdSides = 0.0f;
-            scoreMaxSides = 0.1f;
-            scoreSameCorners = 0.0f;
-            scoreMaxCorner = 0.0f;
-            scoreRarity = 1.0f;
 
             // generate lookup for permutations used when deck order is important
             // num entries = 5! = 120
@@ -447,40 +434,7 @@ namespace FFTriadBuddy
             {
                 if (card == null || !card.IsValid()) { continue; }
 
-                // try to guess how good card will perform
-                // - avg of sides
-                // - std of sides
-                // - max of sides
-                // - rarity (should be reflected by sides already)
-                // - corners with same number
-                // - max corner number
-
-                int numberMax = Math.Max(Math.Max(card.Sides[0], card.Sides[1]), Math.Max(card.Sides[2], card.Sides[3]));
-                int numberSum = card.Sides[0] + card.Sides[1] + card.Sides[2] + card.Sides[3];
-                float numberAvg = numberSum / 4.0f;
-                float numberMeanSqDiff =
-                    ((card.Sides[0] - numberAvg) * (card.Sides[0] - numberAvg)) +
-                    ((card.Sides[1] - numberAvg) * (card.Sides[1] - numberAvg)) +
-                    ((card.Sides[2] - numberAvg) * (card.Sides[2] - numberAvg)) +
-                    ((card.Sides[3] - numberAvg) * (card.Sides[3] - numberAvg));
-                float numberStd = (float)Math.Sqrt(numberMeanSqDiff / 4);
-
-                int cornerNum = 0;
-                int numCorners = 0;
-                if (card.Sides[0] == card.Sides[1]) { numCorners++; cornerNum = Math.Max(cornerNum, card.Sides[0]); }
-                if (card.Sides[1] == card.Sides[2]) { numCorners++; cornerNum = Math.Max(cornerNum, card.Sides[1]); }
-                if (card.Sides[2] == card.Sides[3]) { numCorners++; cornerNum = Math.Max(cornerNum, card.Sides[2]); }
-                if (card.Sides[3] == card.Sides[0]) { numCorners++; cornerNum = Math.Max(cornerNum, card.Sides[3]); }
-
-                CardScoreData scoredCard = new CardScoreData() { card = card };
-                scoredCard.score =
-                    (numberAvg * scoreAvgSides) +
-                    (numberStd * scoreStdSides) +
-                    (numberMax * scoreMaxSides) +
-                    (numCorners * scoreSameCorners) +
-                    (cornerNum * scoreMaxCorner) +
-                    ((int)card.Rarity * scoreRarity);
-
+                CardScoreData scoredCard = new CardScoreData() { card = card, score = card.OptimizerScore };
                 foreach (TriadGameModifier mod in modifiersCopy)
                 {
                     mod.OnScoreCard(card, ref scoredCard.score);
@@ -812,6 +766,30 @@ namespace FFTriadBuddy
                 isPaused = false;
                 loopPauseEvent.Set();
             }
+        }
+
+        private const float optimizerScoreAvgSides = 1.0f;
+        private const float optimizerScoreMaxSides = 0.1f;
+        private const float optimizerScoreRarity = 1.0f;
+        private const float optimizerMaxScore = optimizerScoreAvgSides + optimizerScoreMaxSides + optimizerScoreRarity;
+
+        public static float GetCardScore(TriadCard card)
+        {
+            // try to guess how good card will perform
+            // - avg of sides
+            // - max of sides
+            // - rarity (should be reflected by sides already)
+
+            int numberMax = Math.Max(Math.Max(card.Sides[0], card.Sides[1]), Math.Max(card.Sides[2], card.Sides[3]));
+            int numberSum = card.Sides[0] + card.Sides[1] + card.Sides[2] + card.Sides[3];
+            float numberAvg = numberSum / 4.0f;
+
+            float cardScore = 
+                ((numberAvg / 10.0f) * optimizerScoreAvgSides) +
+                ((numberMax / 10.0f) * optimizerScoreMaxSides) +
+                (((int)card.Rarity / (float)ETriadCardRarity.Legendary) * optimizerScoreRarity);
+            
+            return cardScore / optimizerMaxScore;
         }
     }
 }
