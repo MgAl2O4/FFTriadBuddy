@@ -361,8 +361,9 @@ namespace FFTriadBuddy
 
         public override void OnScoreCard(TriadCard card, ref float score)
         {
+            const float MaxSum = 40.0f;
             int numberSum = card.Sides[0] + card.Sides[1] + card.Sides[2] + card.Sides[3];
-            score = 40 - numberSum;
+            score = 1.0f - (numberSum / MaxSum);
         }
     }
 
@@ -594,10 +595,13 @@ namespace FFTriadBuddy
 
         public override void OnScoreCard(TriadCard card, ref float score)
         {
+            const float ScoreMult = 0.8f;
+            score *= ScoreMult;
+
             bool bHasType = card.Type != ETriadCardType.None;
             if (bHasType)
             {
-                score += 10.0f;
+                score += (1.0f - ScoreMult);
             }
         }
     }
@@ -680,10 +684,13 @@ namespace FFTriadBuddy
 
         public override void OnScoreCard(TriadCard card, ref float score)
         {
-            bool bHasType = card.Type != ETriadCardType.None;
-            if (bHasType)
+            const float ScoreMult = 0.5f;
+            score *= ScoreMult;
+
+            bool bNoType = card.Type == ETriadCardType.None;
+            if (bNoType)
             {
-                score -= 1000.0f;
+                score += (1.0f - ScoreMult);
             }
         }
     }

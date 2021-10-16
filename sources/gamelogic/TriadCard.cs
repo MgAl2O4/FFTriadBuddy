@@ -46,6 +46,7 @@ namespace FFTriadBuddy
         public int SameNumberId;
         public int SortOrder;
         public int Group;
+        public float OptimizerScore;
 
         public TriadCard()
         {
@@ -54,6 +55,7 @@ namespace FFTriadBuddy
             SameNumberId = -1;
             SortOrder = 0;
             Group = 0;
+            OptimizerScore = 0.0f;
         }
 
         public TriadCard(int id, string iconPath, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortOrder, int group)
@@ -72,6 +74,8 @@ namespace FFTriadBuddy
             {
                 SortOrder += 1000;
             }
+
+            OptimizerScore = TriadDeckOptimizer.GetCardScore(this);
         }
 
         public override bool Equals(object obj)
