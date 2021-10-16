@@ -80,7 +80,7 @@ namespace FFTriadBuddy
                 solver = new TriadGameSolver() { name = string.Format("Solv{0}:{1}", contextId + 1, calcId) };
                 solver.InitializeSimulation(currentGame.modifiers);
 
-                var gameState = solver.StartSimulation(deck, npc.Deck, ETriadGameState.InProgressRed);
+                var gameState = solver.StartSimulation(deck, npc.Deck, ETriadGameState.InProgressBlue);
                 var calcContext = new CalcContext() { solver = solver, gameState = gameState, calcId = calcId };
 
                 Action<object> solverAction = (ctxOb) =>
