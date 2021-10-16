@@ -377,6 +377,8 @@ namespace FFTriadBuddy
                 testResults.Add(testInfo);
             }
 
+            TriadGameAgentRandom.UseEqualDistribution = true;
+
             var iterCounter = 0;
             foreach (var testInfo in testResults)
             {
