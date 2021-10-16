@@ -164,7 +164,7 @@ namespace FFTriadBuddy
                     Logger.WriteLine("GuessDeck: {0} / {1}", skipCounter, randomSkipRange);
                 }
 
-                var deckList = slotIterator.GetDecks(skipCounter);                
+                var deckList = slotIterator.GetDecks(skipCounter);
                 foreach (var deckInfo in deckList)
                 {
                     if (deckInfo.IsValid())
@@ -833,11 +833,11 @@ namespace FFTriadBuddy
             int numberSum = card.Sides[0] + card.Sides[1] + card.Sides[2] + card.Sides[3];
             float numberAvg = numberSum / 4.0f;
 
-            float cardScore = 
+            float cardScore =
                 ((numberAvg / 10.0f) * optimizerScoreAvgSides) +
                 ((numberMax / 10.0f) * optimizerScoreMaxSides) +
                 (((int)card.Rarity / (float)ETriadCardRarity.Legendary) * optimizerScoreRarity);
-            
+
             return cardScore / optimizerMaxScore;
         }
     }

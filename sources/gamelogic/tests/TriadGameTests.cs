@@ -514,7 +514,7 @@ namespace FFTriadBuddy
 
             TriadGameAgentRandom.UseEqualDistribution = true;
             var rand = new Random(seed);
-            
+
             var testLines = new List<string>();
             testLines.Add("seed,deck0,deck1,deck2,deck3,deck4,npc,winChance");
 
