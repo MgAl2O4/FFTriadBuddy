@@ -818,8 +818,8 @@ namespace FFTriadBuddy
         }
 
         private const float optimizerScoreAvgSides = 1.0f;
-        private const float optimizerScoreMaxSides = 0.1f;
-        private const float optimizerScoreRarity = 1.0f;
+        private const float optimizerScoreMaxSides = 0.75f;
+        private const float optimizerScoreRarity = 0.2f;
         private const float optimizerMaxScore = optimizerScoreAvgSides + optimizerScoreMaxSides + optimizerScoreRarity;
 
         public static float GetCardScore(TriadCard card)
