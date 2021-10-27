@@ -24,6 +24,7 @@ namespace FFTriadBuddy
         public virtual void Initialize(TriadGameSolver solver, int sessionSeed) { }
         public virtual bool IsInitialized() { return true; }
         public virtual float GetProgress() { return 0.0f; }
+        public virtual void OnSimulationStart() { }
 
         public abstract bool FindNextMove(TriadGameSolver solver, TriadGameSimulationState gameState, out int cardIdx, out int boardPos, out SolverResult solverResult);
     }
@@ -33,7 +34,7 @@ namespace FFTriadBuddy
     /// </summary>
     public class TriadGameAgentRandom : TriadGameAgent
     {
-        public static bool UseEqualDistribution = true;
+        public static bool UseEqualDistribution = false;
         private Random randGen;
 
         public TriadGameAgentRandom() { }

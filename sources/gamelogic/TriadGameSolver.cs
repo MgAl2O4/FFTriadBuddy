@@ -56,19 +56,22 @@ namespace FFTriadBuddy
     public class TriadGameSolver
     {
         public TriadGameSimulation simulation = new TriadGameSimulation();
-        public TriadGameAgent agent = new TriadGameAgentCarloScored();
+        public TriadGameAgent agent = new TriadGameAgentCarloTheExplorer();
         public string name;
 
         public TriadGameSolver()
         {
-            var randGen = new Random();
-            agent.Initialize(this, randGen.Next());
+            agent.Initialize(this, 0);
         }
 
         public void InitializeSimulation(IEnumerable<TriadGameModifier> modsA, IEnumerable<TriadGameModifier> modsB) => simulation.Initialize(modsA, modsB);
         public void InitializeSimulation(IEnumerable<TriadGameModifier> mods) => simulation.Initialize(mods, null);
 
-        public TriadGameSimulationState StartSimulation(TriadDeck deckBlue, TriadDeck deckRed, ETriadGameState state) => simulation.StartGame(deckBlue, deckRed, state);
+        public TriadGameSimulationState StartSimulation(TriadDeck deckBlue, TriadDeck deckRed, ETriadGameState state)
+        {
+            agent.OnSimulationStart();
+            return simulation.StartGame(deckBlue, deckRed, state);
+        }
 
         public bool HasSimulationRule(ETriadGameSpecialMod specialRule) => simulation.HasSpecialRule(specialRule);
 
