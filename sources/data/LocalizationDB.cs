@@ -236,6 +236,7 @@ namespace FFTriadBuddy
                                 }
                             }
 
+                            FixLocalizedNameCasing(locStr);
                             numLoaded++;
                         }
                         catch (Exception ex)
@@ -306,6 +307,53 @@ namespace FFTriadBuddy
             catch (Exception ex)
             {
                 Logger.WriteLine("Saving failed! Exception:" + ex);
+            }
+        }
+
+        private static string[] caseFixExclusions = new string[] { "the", "goe", "van", "des", "sas", "yae", "tol", "der", "rem" };
+        private void FixLocalizedNameCasing(LocString entry)
+        {
+            bool canFixCase = (entry.Type == ELocStringType.CardName) || (entry.Type == ELocStringType.NpcName);
+            if (!canFixCase)
+            {
+                return;
+            }
+
+            for (int idxLang = 0; idxLang < entry.Text.Length; idxLang++)
+            {
+                if (string.IsNullOrEmpty(entry.Text[idxLang]))
+                {
+                    continue;
+                }
+
+                string[] tokens = entry.Text[idxLang].Split(' ');
+                int numChangedTokens = 0;
+
+                for (int idx = 0; idx < tokens.Length; idx++)
+                {
+                    if (tokens[idx].Length > 2 && Array.IndexOf(caseFixExclusions, tokens[idx]) < 0)
+                    {
+                        if (tokens[idx][1] == '\'')
+                        {
+                            // don't touch, i have no idea how french capitalization work
+                            continue;
+                        }
+
+                        bool hasLowerCase = char.IsLower(tokens[idx], 0);
+                        if (hasLowerCase)
+                        {
+                            var newToken = tokens[idx].Substring(0, 1).ToUpper() + tokens[idx].Substring(1);
+                            tokens[idx] = newToken;
+                            numChangedTokens++;
+                        }
+                    }
+                }
+
+                if (numChangedTokens > 0)
+                {
+                    var newText = string.Join(" ", tokens);
+                    entry.Text[idxLang] = newText;
+                }
             }
         }
     }
