@@ -378,11 +378,11 @@ namespace FFTriadBuddy
 
         public override void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
         {
-            if ((cardNum == 10) && (neiNum == 1))
-            {
-                cardNum = 0;
-            }
-            else if ((cardNum == 1) && (neiNum == 10))
+            // note: check if cardNum at [boardPos] can capture neiNum at [neiPos]
+            // cardNum:1 vs neiNum:A => override weights to force capture
+            // cardNum:A vs neiNum:1 => capture, no need to change weights
+
+            if ((cardNum == 1) && (neiNum == 10))
             {
                 neiNum = 0;
             }
