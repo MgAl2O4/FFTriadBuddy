@@ -127,7 +127,7 @@
     <value>L:</value>
   </data>
   <data name="AdjustForm_CardList" xml:space="preserve">
-    <value>Adjusted:</value>
+    <value>Ajusté :</value>
   </data>
   <data name="AdjustForm_CardRight" xml:space="preserve">
     <value>R:</value>
@@ -148,16 +148,16 @@
     <value>Hidden</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_Locked" xml:space="preserve">
-    <value>Locked</value>
+    <value>Verrouillé</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_None" xml:space="preserve">
-    <value>None</value>
+    <value>Aucun</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_PlacedBlue" xml:space="preserve">
-    <value>Placed: Blue</value>
+    <value>Placé : Bleu</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_PlacedRed" xml:space="preserve">
-    <value>Placed: Red</value>
+    <value>Placé : Rouge</value>
   </data>
   <data name="AdjustForm_Dynamic_CardState_Visible" xml:space="preserve">
     <value>Visible</value>
@@ -166,7 +166,7 @@
     <value>automatique</value>
   </data>
   <data name="AdjustForm_Dynamic_Digit_Override" xml:space="preserve">
-    <value>custom</value>
+    <value>Personnaliser</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_Classifier" xml:space="preserve">
     <value>&lt;= Classifier based</value>
@@ -187,7 +187,7 @@
     <value>Détecter :</value>
   </data>
   <data name="AdjustForm_SaveButton" xml:space="preserve">
-    <value>Save</value>
+    <value>Sauvegarder</value>
   </data>
   <data name="AdjustForm_Title" xml:space="preserve">
     <value>Adjust detection</value>
@@ -196,19 +196,19 @@
     <value>FF Triad Buddy</value>
   </data>
   <data name="DeckCtrl_CtxMenu_LockForOptimization" xml:space="preserve">
-    <value>Lock card for deck optimization</value>
+    <value>Verrouiller les cartes pour l'optimisation du deck</value>
   </data>
   <data name="DeckCtrl_CtxMenu_PickCard" xml:space="preserve">
     <value>Pick card:</value>
   </data>
   <data name="DeckCtrl_CtxMenu_UseOnlyOwned" xml:space="preserve">
-    <value>Use only owned cards (click to change)</value>
+    <value>Utiliser uniquement les cartes détenues (cliquez pour modifier)</value>
   </data>
   <data name="FavDeckCtrl_Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Modifier</value>
   </data>
   <data name="FavDeckForm_AddButton" xml:space="preserve">
-    <value>Add</value>
+    <value>Ajouter</value>
   </data>
   <data name="FavDeckForm_Dynamic_AutoName" xml:space="preserve">
     <value>Fav #{0}</value>
@@ -217,7 +217,7 @@
     <value>Favorite deck will be removed, do you want to continue?</value>
   </data>
   <data name="FavDeckForm_Dynamic_UpdateButton" xml:space="preserve">
-    <value>Update</value>
+    <value>Mettre à jour</value>
   </data>
   <data name="FavDeckForm_Info" xml:space="preserve">
     <value>Favorite deck, click card for options:</value>
@@ -226,7 +226,7 @@
     <value>Short name:</value>
   </data>
   <data name="FavDeckForm_RemoveButton" xml:space="preserve">
-    <value>Remove</value>
+    <value>Retirer</value>
   </data>
   <data name="FavDeckForm_Title" xml:space="preserve">
     <value>Edit favorite deck</value>
