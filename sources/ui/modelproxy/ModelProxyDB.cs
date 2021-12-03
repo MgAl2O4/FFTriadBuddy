@@ -51,7 +51,7 @@ namespace FFTriadBuddy.UI
             for (int idx = 0; idx < cardDB.cards.Count; idx++)
             {
                 var cardEntry = cardDB.cards[idx];
-                if (cardEntry != null)
+                if (cardEntry != null && cardEntry.IsValid())
                 {
                     cards.Add(new CardModelProxy(cardEntry));
                 }

@@ -59,9 +59,10 @@ namespace FFTriadBuddy.UI
             TriadCardDB cardDB = TriadCardDB.Get();
             for (int idx = 0; idx < cardDB.cards.Count; idx++)
             {
-                if (cardDB.cards[idx] != null)
+                var cardOb = cardDB.cards[idx];
+                if (cardOb != null && cardOb.IsValid())
                 {
-                    string loadPath = "icons/" + cardDB.cards[idx].IconPath;
+                    string loadPath = "icons/" + cardOb.IconPath;
                     var loadedImage = LoadImageFromAsset(loadPath);
                     mapCardImages.Add(loadedImage);
 
