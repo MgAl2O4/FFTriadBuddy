@@ -72,7 +72,7 @@
   <loc type="3" id="48" de="Papalymo &amp; Yda" en="Papalymo &amp; Yda" fr="Papalymo &amp; Yda" ja="パパリモ＆イダ" cn="帕帕力莫&amp;伊达" ko="파파리모 &amp; 이다" />
   <loc type="3" id="49" de="Y'shtola" en="Y'shtola" fr="Y'shtola" ja="ヤ・シュトラ" cn="雅·修特拉" ko="야슈톨라" />
   <loc type="3" id="50" de="Urianger" en="Urianger" fr="Urianger" ja="ウリエンジェ・オギュレ" cn="于里昂热·奥居雷" ko="위리앙제 오귀레" />
-  <loc type="3" id="51" de="Ultima-Waffe" en="The Ultima Weapon" fr="Ultima Arma" ja="アルテマウェポン" cn="究极神兵" ko="알테마 웨폰" />
+  <loc type="3" id="51" de="Ultima-Waffe" en="Ultima Weapon" fr="Ultima Arma" ja="アルテマウェポン" cn="究极神兵" ko="알테마 웨폰" />
   <loc type="3" id="52" de="Odin" en="Odin" fr="Odin" ja="オーディン" cn="奥丁" ko="오딘" />
   <loc type="3" id="53" de="Ramuh" en="Ramuh" fr="Ramuh" ja="ラムウ" cn="拉姆" ko="라무" />
   <loc type="3" id="54" de="Leviathan" en="Leviathan" fr="Léviathan" ja="リヴァイアサン" cn="利维亚桑" ko="리바이어선" />
@@ -224,8 +224,8 @@
   <loc type="3" id="200" de="Lyse" en="Lyse" fr="Lyse" ja="リセ" cn="莉瑟" ko="리세" />
   <loc type="3" id="201" de="Zenos yae Galvus" en="Zenos yae Galvus" fr="Zenos yae Galvus" ja="ゼノス・イェー・ガルヴァス" cn="芝诺斯·耶·加尔乌斯" ko="제노스 예 갈부스" />
   <loc type="3" id="202" de="Hien" en="Hien" fr="Hien" ja="ヒエン" cn="飞燕" ko="히엔" />
-  <loc type="3" id="203" de="Moosling" en="mossling" fr="moussemousse" ja="モスモス" cn="苔小妖" ko="이끼이끼" />
-  <loc type="3" id="204" de="Chapuli" en="chapuli" fr="chapuli" ja="チャプリ" cn="洽普利蚱蜢" ko="큰메뚜기" />
+  <loc type="3" id="203" de="Moosling" en="Mossling" fr="moussemousse" ja="モスモス" cn="苔小妖" ko="이끼이끼" />
+  <loc type="3" id="204" de="Chapuli" en="Chapuli" fr="chapuli" ja="チャプリ" cn="洽普利蚱蜢" ko="큰메뚜기" />
   <loc type="3" id="205" de="Qiqirn-Fleischfresser" en="Qiqirn Meateater" fr="Qiqirn croque-viande" ja="キキルン・ミートイーター" cn="卢恩人食肉者" ko="키키룬 고기냠냠이" />
   <loc type="3" id="206" de="Hrodric Giftzunge" en="Hrodric Poisontongue" fr="Hrodric le Médisant" ja="直言のフロドリック" cn="直言不讳 赫罗德里克" ko="입바른 흐로드릭" />
   <loc type="3" id="207" de="Fordola rem Lupus" en="Fordola rem Lupis" fr="Fordola rem Lupus" ja="フォルドラ・レム・ルプス" cn="芙朵拉·雷姆·卢普斯" ko="포르돌라 렘 루푸스" />
@@ -312,7 +312,7 @@
   <loc type="3" id="288" de="Geläuterte Unzucht" en="Forgiven Obscenity" fr="obscénité pardonnée" ja="フォーギヴン・オブセニティー" cn="得到宽恕的猥亵" ko="면죄된 외설" />
   <loc type="3" id="289" de="Huaca" en="Huaca" fr="Huaca" ja="フアガス" cn="华迦斯" ko="후아카" />
   <loc type="3" id="290" de="Abscheuliches Monstrum" en="Unknown" fr="inconnu" ja="正体不明" cn="不明物体" ko="정체불명" />
-  <loc type="3" id="291" de="Rubin-Waffe" en="The Ruby Weapon" fr="Arme Rubis" ja="ルビーウェポン" cn="红宝石神兵" ko="루비 웨폰" />
+  <loc type="3" id="291" de="Rubin-Waffe" en="Ruby Weapon" fr="Arme Rubis" ja="ルビーウェポン" cn="红宝石神兵" ko="루비 웨폰" />
   <loc type="3" id="292" de="Therion" en="Therion" fr="Mégatherion" ja="メガセリオン" cn="至大灾兽" ko="메가테리온" />
   <loc type="3" id="293" de="Varis yae Galvus" en="Varis yae Galvus" fr="Varis yae Galvus" ja="ヴァリス・イェー・ガルヴァス" cn="瓦厉斯·耶·加尔乌斯" ko="바리스 예 갈부스" />
   <loc type="3" id="294" de="Zwerg" en="Dwarf" fr="Nain" ja="ドワーフ" cn="矮人" ko="드워프" />
@@ -323,17 +323,17 @@
   <loc type="3" id="299" de="Adrammelech" en="Adrammelech" fr="Adrammelech" ja="アドラメレク" cn="阿德拉梅里克" ko="아드람멜렉" />
   <loc type="3" id="300" de="Elidibus" en="Elidibus" fr="Elidibus" ja="アシエン・エリディブス" cn="无影艾里迪布斯" ko="아씨엔 엘리디부스" />
   <loc type="3" id="301" de="Shadowbringers Thancred" en="Shadowbringers Thancred" fr="Thancred (Shadowbringers)" ja="サンクレッド（漆黒）" cn="桑克瑞德（暗影）" ko="산크레드(칠흑)" />
-  <loc type="3" id="302" de="Saphir-Waffe" en="The Sapphire Weapon" fr="Arme Saphir" ja="サファイアウェポン" cn="蓝宝石神兵" ko="사파이어 웨폰" />
+  <loc type="3" id="302" de="Saphir-Waffe" en="Sapphire Weapon" fr="Arme Saphir" ja="サファイアウェポン" cn="蓝宝石神兵" ko="사파이어 웨폰" />
   <loc type="3" id="303" de="2P" en="2P" fr="2P" ja="２Ｐ" cn="2P" ko="2P" />
   <loc type="3" id="304" de="Shadowbringers Krieger des Lichts" en="Shadowbringers Warrior of Light" fr="Guerrier de la Lumière (Shadowbringers)" ja="ウォーリア・オブ・ライト（漆黒）" cn="光之战士（暗影）" ko="빛의 전사(칠흑)" />
-  <loc type="3" id="305" de="Blaubert Veilchenblau" en="The Great Azuro" fr="Bleuet masqué" ja="マスク・ザ・ブルー" cn="蓝色假面" ko="청가면" />
+  <loc type="3" id="305" de="Blaubert Veilchenblau" en="Great Azuro" fr="Bleuet masqué" ja="マスク・ザ・ブルー" cn="蓝色假面" ko="청가면" />
   <loc type="3" id="306" de="Muttersau" en="Mother Porxie" fr="mère porxie" ja="マザーポークシー" cn="仙子猪之母" ko="마더 포크시" />
   <loc type="3" id="307" de="Trinität der Sucher" en="Trinity Seeker" fr="trinité soudée" ja="トリニティ・シーカー" cn="求道之三位一体" ko="탐구의 삼위일체" />
   <loc type="3" id="308" de="Trinität der Eingeschworenen" en="Trinity Avowed" fr="trinité féale" ja="トリニティ・アヴァウド" cn="誓约之三位一体" ko="맹세의 삼위일체" />
   <loc type="3" id="309" de="Azulmagia" en="Azulmagia" fr="Azulmagia" ja="アポカリョープス" cn="启示者" ko="아포칼리옵스" />
   <loc type="3" id="310" de="Siegfried" en="Siegfried" fr="Siegfried" ja="ジークフリード" cn="齐格弗里德" ko="지크프리드" />
   <loc type="3" id="311" de="Gogo der Mime" en="Gogo, Master of Mimicry" fr="Gogo le mime" ja="ものまね士ゴゴ" cn="模仿师格格" ko="흉내쟁이 고고" />
-  <loc type="3" id="312" de="Smaragd-Waffe" en="The Emerald Weapon" fr="Arme Émeraude" ja="エメラルドウェポン" cn="绿宝石神兵" ko="에메랄드 웨폰" />
+  <loc type="3" id="312" de="Smaragd-Waffe" en="Emerald Weapon" fr="Arme Émeraude" ja="エメラルドウェポン" cn="绿宝石神兵" ko="에메랄드 웨폰" />
   <loc type="3" id="313" de="Ryne" en="Ryne" fr="Ryne" ja="リーン" cn="琳" ko="린" />
   <loc type="3" id="314" de="Gaia" en="Gaia" fr="Gaïa" ja="ガイア" cn="盖娅" ko="가이아" />
   <loc type="3" id="315" de="Edens Verheißung" en="Eden's Promise" fr="Promesse d'Éden" ja="プロミス・オブ・エデン" cn="伊甸之约" ko="에덴의 약속" />
@@ -341,13 +341,33 @@
   <loc type="3" id="317" de="Kerkermeister" en="Keeper of the Keys" fr="gardien hypogéen" ja="キーパー・オブ・ダンジョン" cn="宝库守护者" ko="지하미궁 수호자" />
   <loc type="3" id="318" de="Luna-Bahamut" en="Lunar Bahamut" fr="Luna-Bahamut" ja="ルナバハムート" cn="真月巴哈姆特" ko="루나 바하무트" />
   <loc type="3" id="319" de="Valens van Varro" en="Valens van Varro" fr="Valens van Varro" ja="ウァレンス・ヴァン・ウァロ" cn="瓦伦斯·范·瓦罗" ko="발렌스 반 바로" />
-  <loc type="3" id="320" de="Luna-Ifrit" en="Lunar Ifrit" fr="Luna-Ifrit" ja="ルナイフリート" cn="" ko="" />
-  <loc type="3" id="321" de="Shemhazai der IV. Legion" en="4th-make Shemhazai" fr="Shemhazai de la 4e légion" ja="IVレギオン・シュミハザ" cn="" ko="" />
-  <loc type="3" id="322" de="Cuchulainn der IV. Legion" en="4th-make Cuchulainn" fr="Cúchulainn de la 4e légion" ja="IVレギオン・キュクレイン" cn="" ko="" />
+  <loc type="3" id="320" de="Luna-Ifrit" en="Lunar Ifrit" fr="Luna-Ifrit" ja="ルナイフリート" cn="真月伊弗利特" ko="루나 이프리트" />
+  <loc type="3" id="321" de="Shemhazai der IV. Legion" en="4th-make Shemhazai" fr="Shemhazai de la 4e légion" ja="IVレギオン・シュミハザ" cn="第四军团谢米哈扎" ko="IV군단 셰미하자" />
+  <loc type="3" id="322" de="Cuchulainn der IV. Legion" en="4th-make Cuchulainn" fr="Cúchulainn de la 4e légion" ja="IVレギオン・キュクレイン" cn="第四军团丘库雷因" ko="IV군단 쿠훌린" />
   <loc type="3" id="323" de="G-Krieger" en="G-Warrior" fr="Guerrier-G" ja="Gウォリアー" cn="究极战士G型" ko="G 워리어" />
-  <loc type="3" id="324" de="Diamant-Waffe" en="The Diamond Weapon" fr="Arme Diamant" ja="ダイヤウェポン" cn="钻石神兵" ko="다이아몬드 웨폰" />
-  <loc type="3" id="325" de="Diablo-Armament" en="The Diablo Armament" fr="batterie d'artillerie Diablo" ja="ディアブロ・アーマメント" cn="" ko="" />
+  <loc type="3" id="324" de="Diamant-Waffe" en="Diamond Weapon" fr="Arme Diamant" ja="ダイヤウェポン" cn="钻石神兵" ko="다이아몬드 웨폰" />
+  <loc type="3" id="325" de="Diablo-Armament" en="Diablo Armament" fr="batterie d'artillerie Diablo" ja="ディアブロ・アーマメント" cn="迪亚布罗魔兵" ko="디아블로 아머먼트" />
   <loc type="3" id="326" de="2B" en="2B" fr="2B" ja="２Ｂ" cn="2B" ko="2B" />
+  <loc type="3" id="327" de="Troll" en="Troll" fr="troll" ja="トロル" />
+  <loc type="3" id="328" de="Pisaca" en="Pisaca" fr="pishacha" ja="ピシャーチャ" />
+  <loc type="3" id="329" de="Ea" en="Ea" fr="Éa" ja="イーア" />
+  <loc type="3" id="330" de="Arkasodara" en="Arkasodara" fr="Arkasodara" ja="アルカソーダラ" />
+  <loc type="3" id="331" de="Loporrit" en="Loporrit" fr="Loporrite" ja="レポリット" />
+  <loc type="3" id="332" de="Argos" en="Argos" fr="Argos" ja="アルゴス" />
+  <loc type="3" id="333" de="Hermes" en="Hermes" fr="Hermès" ja="ヘルメス" />
+  <loc type="3" id="334" de="Splitterseele Amon" en="Amon the Undying" fr="Amon" ja="異執のアモン" />
+  <loc type="3" id="335" de="" en="" fr="" ja="" />
+  <loc type="3" id="336" de="Magus-Schwestern" en="Magus Sisters" fr="sœurs Magus" ja="メーガス三姉妹" />
+  <loc type="3" id="337" de="Meteion" en="Meteion" fr="Météion" ja="メーティオン" />
+  <loc type="3" id="338" de="Fourchenault Leveilleur" en="Fourchenault Leveilleur" fr="Fourchenault" ja="フルシュノ・ルヴェユール" />
+  <loc type="3" id="339" de="Anima" en="Anima" fr="Anima" ja="アニマ" />
+  <loc type="3" id="340" de="Quintus van Cinna" en="Quintus van Cinna" fr="Quintus van Cinna" ja="クイントゥス・ヴァン・キンナ" />
+  <loc type="3" id="341" de="Alphinaud &amp; Alisaie (Endwalker)" en="Endwalker Alphinaud &amp; Alisaie" fr="Alphinaud &amp; Alisaie (Endwalker)" ja="アルフィノ＆アリゼー（暁月）" />
+  <loc type="3" id="342" de="Hythlodaeus" en="Hythlodaeus" fr="Hythlodaeus" ja="ヒュトロダエウス" />
+  <loc type="3" id="343" de="Vrtra" en="Vrtra" fr="Vrtra" ja="ヴリトラ" />
+  <loc type="3" id="344" de="Zodiark" en="Zodiark" fr="Zordiarche" ja="ゾディアーク" />
+  <loc type="3" id="345" de="Hydaelyn" en="Hydaelyn" fr="Hydaelyn" ja="ハイデリン" />
+  <loc type="3" id="346" de="Zenos Galvus" en="Zenos Galvus" fr="Zenos Galvus" ja="ゼノス・ガルヴァス" />
   <loc type="4" id="1" de="Aurifort Kreuz" en="Aurifort of the Three Clubs" fr="Aurifort l'As de trèfle" ja="クラブのオリフォル" cn="梅花天王欧里福" ko="오리포르" />
   <loc type="4" id="2" de="Baderon" en="Baderon" fr="Baderon" ja="バデロン" cn="巴德龙" ko="바데론" />
   <loc type="4" id="3" de="Botan" en="Botan" fr="Botan" ja="ボタン" cn="牡丹" ko="보탄" />
@@ -449,7 +469,13 @@
   <loc type="4" id="99" de="Arsieu" en="Arsieu" fr="Arsieu" ja="アルシウ" cn="阿尔希乌" ko="아르시우" />
   <loc type="4" id="100" de="Lewto-Sue" en="Lewto-Sue" fr="Lewto-Sue" ja="リュート・スー" cn="琉托·素" ko="류토 수" />
   <loc type="4" id="101" de="Droyn" en="Droyn" fr="Droyn" ja="ドロイン" cn="德罗因" ko="드로인" />
-  <loc type="4" id="102" de="Sladkey" en="Sladkey" fr="Sladkey" ja="スラッドキー" cn="" ko="" />
+  <loc type="4" id="102" de="Sladkey" en="Sladkey" fr="Sladkey" ja="スラッドキー" cn="斯莱德基" ko="슬라드키" />
+  <loc type="4" id="103" de="Aiglephine" en="Aiglephine" fr="Aiglephine" ja="エグルフィーヌ" />
+  <loc type="4" id="104" de="Qetanur" en="Qetanur" fr="Qetanur" ja="ケタヌール" />
+  <loc type="4" id="105" de="erfolgreich[a] Legionär" en="worldly imperial" fr="Garlemaldais avec de l'entregent" ja="世渡り上手な帝国兵" />
+  <loc type="4" id="106" de="Mehryde" en="Mehryde" fr="Mehryde" ja="メリード" />
+  <loc type="4" id="107" de="Cheatingway" en="Cheatingway" fr="Cheatingway" ja="チーティングウェイ" />
+  <loc type="4" id="108" de="Celia" en="Celia" fr="Celia" ja="セリア" />
   <loc type="5" id="1" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
   <loc type="5" id="2" de="Obere Decks" en="Limsa Lominsa Upper Decks" fr="Limsa Lominsa - Le Tillac" ja="リムサ・ロミンサ：上甲板層" cn="利姆萨·罗敏萨上层甲板" ko="림사 로민사 상층 갑판" />
   <loc type="5" id="3" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
@@ -552,6 +578,12 @@
   <loc type="5" id="100" de="Amh Araeng" en="Amh Araeng" fr="Amh Araeng" ja="アム・アレーン" cn="安穆·艾兰" ko="아므 아랭" />
   <loc type="5" id="101" de="Thal-Kreuzgang" en="Ul'dah - Steps of Thal" fr="Ul'dah - Faubourg de Thal" ja="ウルダハ：ザル回廊" cn="乌尔达哈来生回廊" ko="울다하 달 회랑" />
   <loc type="5" id="102" de="Gangos" en="Gangos" fr="Gangos" ja="ガンゴッシュ" cn="甘戈斯" ko="강고스" />
+  <loc type="5" id="103" de="Labyrinthos" en="Labyrinthos" fr="Le Labyrinthos" ja="ラヴィリンソス" />
+  <loc type="5" id="104" de="Thavnair" en="Thavnair" fr="Thavnair" ja="サベネア島" />
+  <loc type="5" id="105" de="Garlemald" en="Garlemald" fr="Garlemald" ja="ガレマルド" />
+  <loc type="5" id="106" de="Radz-at-Han" en="Radz-at-Han" fr="Radz-at-Han" ja="ラザハン" />
+  <loc type="5" id="107" de="Alt-Sharlayan" en="Old Sharlayan" fr="Vieille Sharlayan" ja="オールド・シャーレアン" />
+  <loc type="5" id="108" de="Alt-Sharlayan" en="Old Sharlayan" fr="Vieille Sharlayan" ja="オールド・シャーレアン" />
   <loc type="6" id="0" de="Manderville-Masters" en="the Manderville Tournament of Champions" fr="le Championnat des Manderville" ja="マンダヴィル・チャンピオンシップ" cn="曼德维尔锦标赛" ko="맨더빌배 선수권 대회" />
   <loc type="6" id="1" de="Großer Preis von Nymeia" en="the Spinner's Pull" fr="le Grand Prix de la Fileuse" ja="星神ニメーヤ賞典" cn="命运神大奖赛" ko="별의 신 니메이아배" />
   <loc type="6" id="2" de="Orran-Durai-Ehrenturnier" en="the Durai Memorial" fr="le Jubilé Orran Durai" ja="オーラン記念" cn="奥兰纪念赛" ko="오란 기념 대회" />

@@ -795,4 +795,44 @@
     <reward id="321" />
     <reward id="322" />
   </npc>
+  <npc id="103" mx="29" my="13">
+    <deckA id0="327" id1="234" id2="0" id3="0" id4="0" />
+    <deckV id0="233" id1="169" id2="111" id3="130" id4="0" />
+    <rule id="3" />
+    <reward id="327" />
+  </npc>
+  <npc id="104" mx="20" my="9">
+    <deckA id0="328" id1="1" id2="0" id3="0" id4="0" />
+    <deckV id0="188" id1="232" id2="104" id3="45" id4="102" />
+    <rule id="7" />
+    <reward id="328" />
+  </npc>
+  <npc id="105" mx="32" my="17">
+    <deckA id0="340" id1="293" id2="0" id3="0" id4="0" />
+    <deckV id0="238" id1="244" id2="180" id3="176" id4="175" />
+    <rule id="1" />
+    <reward id="340" />
+  </npc>
+  <npc id="106" mx="11" my="8">
+    <deckA id0="330" id1="336" id2="0" id3="0" id4="0" />
+    <deckV id0="224" id1="191" id2="185" id3="170" id4="328" />
+    <rule id="8" />
+    <reward id="330" />
+  </npc>
+  <npc id="107" mx="11" my="9">
+    <deckA id0="331" id1="332" id2="0" id3="0" id4="0" />
+    <deckV id0="130" id1="94" id2="46" id3="269" id4="268" />
+    <rule id="13" />
+    <rule id="8" />
+    <reward id="331" />
+    <reward id="332" />
+  </npc>
+  <npc id="108" mx="16" my="7">
+    <deckA id0="338" id1="92" id2="233" id3="0" id4="0" />
+    <deckV id0="341" id1="251" id2="59" id3="60" id4="0" />
+    <rule id="8" />
+    <rule id="4" />
+    <reward id="338" />
+    <reward id="341" />
+  </npc>
 </root>
