@@ -153,13 +153,16 @@ namespace FFTriadBuddy
                 if (cardOb != null)
                 {
                     // ensure side numbers are the same
-                    if (cardOb.Sides[0] != cardData.sideTop ||
-                        cardOb.Sides[1] != cardData.sideLeft ||
-                        cardOb.Sides[2] != cardData.sideBottom ||
-                        cardOb.Sides[3] != cardData.sideRight)
+                    if (cardOb.IsValid())
                     {
-                        Logger.WriteLine("FAILED card update, id:{0} name:{1} is not matching side numbers!", cardData.Id, cardData.LinkedName.Name.GetCodeName());
-                        return false;
+                        if (cardOb.Sides[0] != cardData.sideTop ||
+                            cardOb.Sides[1] != cardData.sideLeft ||
+                            cardOb.Sides[2] != cardData.sideBottom ||
+                            cardOb.Sides[3] != cardData.sideRight)
+                        {
+                            Logger.WriteLine("FAILED card update, id:{0} name:{1} is not matching side numbers!", cardData.Id, cardData.LinkedName.Name.GetCodeName());
+                            return false;
+                        }
                     }
                 }
                 else
