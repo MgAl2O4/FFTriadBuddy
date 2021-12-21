@@ -150,19 +150,16 @@ namespace FFTriadBuddy
             foreach (var cardData in gameDataLists.cards)
             {
                 TriadCard cardOb = (cardData.Id < cardDB.cards.Count) ? cardDB.cards[cardData.Id] : null;
-                if (cardOb != null)
+                if (cardOb != null && cardOb.IsValid())
                 {
                     // ensure side numbers are the same
-                    if (cardOb.IsValid())
-                    {
-                        if (cardOb.Sides[0] != cardData.sideTop ||
+                    if (cardOb.Sides[0] != cardData.sideTop ||
                             cardOb.Sides[1] != cardData.sideLeft ||
                             cardOb.Sides[2] != cardData.sideBottom ||
                             cardOb.Sides[3] != cardData.sideRight)
-                        {
-                            Logger.WriteLine("FAILED card update, id:{0} name:{1} is not matching side numbers!", cardData.Id, cardData.LinkedName.Name.GetCodeName());
-                            return false;
-                        }
+                    {
+                        Logger.WriteLine("FAILED card update, id:{0} name:{1} is not matching side numbers!", cardData.Id, cardData.LinkedName.Name.GetCodeName());
+                        return false;
                     }
                 }
                 else

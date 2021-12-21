@@ -334,7 +334,7 @@
   <card id="332" icon="082832.png" rarity="1" type="0" up="7" lt="3" dn="7" rt="1" sort="318" group="0" />
   <card id="333" icon="082833.png" rarity="2" type="0" up="6" lt="8" dn="7" rt="1" sort="319" group="0" />
   <card id="334" icon="082834.png" rarity="2" type="0" up="8" lt="7" dn="3" rt="3" sort="320" group="0" />
-  <card id="335" icon="082835.png" rarity="-1" type="0" up="-1" lt="-1" dn="-1" rt="-1" sort="0" group="0" />
+  <card id="335" icon="082835.png" rarity="2" type="0" up="5" lt="8" dn="5" rt="6" sort="332" group="0" />
   <card id="336" icon="082836.png" rarity="2" type="2" up="4" lt="1" dn="8" rt="8" sort="321" group="0" />
   <card id="337" icon="082837.png" rarity="2" type="0" up="7" lt="1" dn="8" rt="6" sort="322" group="0" />
   <card id="338" icon="082838.png" rarity="2" type="0" up="7" lt="7" dn="3" rt="7" sort="323" group="0" />
