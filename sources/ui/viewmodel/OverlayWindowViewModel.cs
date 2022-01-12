@@ -286,6 +286,21 @@ namespace FFTriadBuddy.UI
                     ScreenMemory.gameSolver.FindNextMove(ScreenMemory.gameState, out int solverCardIdx, out int solverBoardPos, out var bestChance);
 
                     var solverTriadCard = ScreenMemory.deckBlue.GetCard(solverCardIdx);
+                    if ((ScreenMemory.gameState.forcedCardIdx >= 0) && (solverCardIdx != ScreenMemory.gameState.forcedCardIdx))
+                    {
+                        // swap + chaos may cause selecting wrong instance of duplicated card?
+                        // it really, really shouldn't unless solver's agent is broken
+
+                        var forcedCardOb = ScreenMemory.deckBlue.GetCard(ScreenMemory.gameState.forcedCardIdx);
+
+                        var solverCardDesc = solverTriadCard != null ? solverTriadCard.Name.GetCodeName() : "??";
+                        var forcedCardDesc = forcedCardOb != null ? forcedCardOb.Name.GetCodeName() : "??";
+                        Logger.WriteLine($"Solver selected card [{solverCardIdx}]:{solverCardDesc}, but game wants: [{ScreenMemory.gameState.forcedCardIdx}]:{forcedCardDesc} !");
+
+                        solverCardIdx = ScreenMemory.gameState.forcedCardIdx;
+                        solverTriadCard = forcedCardOb;
+                    }
+
                     int blueCardIdx = solverCardIdx;
                     int boardCardIdx = (solverCardIdx < 0) ? -1 : solverBoardPos;
 
