@@ -347,8 +347,8 @@
   <card id="345" icon="082845.png" rarity="4" type="2" up="10" lt="3" dn="10" rt="5" sort="330" group="0" />
   <card id="346" icon="082846.png" rarity="4" type="4" up="6" lt="6" dn="9" rt="9" sort="331" group="0" />
   <card id="347" icon="082847.png" rarity="0" type="0" up="1" lt="6" dn="5" rt="1" sort="333" group="0" />
-  <card id="348" icon="082848.png" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
-  <card id="349" icon="082849.png" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="348" icon="082848.png" rarity="0" type="0" up="1" lt="1" dn="7" rt="4" sort="341" group="0" />
+  <card id="349" icon="082849.png" rarity="1" type="1" up="4" lt="7" dn="4" rt="4" sort="342" group="0" />
   <card id="350" icon="082850.png" rarity="2" type="0" up="6" lt="8" dn="1" rt="7" sort="334" group="0" />
   <card id="351" icon="082851.png" rarity="2" type="0" up="7" lt="6" dn="1" rt="8" sort="335" group="0" />
   <card id="352" icon="082852.png" rarity="2" type="0" up="8" lt="1" dn="6" rt="7" sort="336" group="0" />

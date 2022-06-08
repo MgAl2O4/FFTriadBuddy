@@ -304,7 +304,7 @@
     <value>보상 (눌러서 추가/삭제)</value>
   </data>
   <data name="MainForm_CtxMenu_SelectNpc_Select" xml:space="preserve">
-    <value>Select npc to play</value>
+    <value>Npc를 고르세요</value>
   </data>
   <data name="MainForm_Dynamic_CardOwnedColumn" xml:space="preserve">
     <value>Yes</value>
@@ -349,10 +349,10 @@
     <value>Red {0}</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardNotDetected" xml:space="preserve">
-    <value>not detected!</value>
+    <value>검출되지 않았습니다.</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_HashType_Card" xml:space="preserve">
-    <value>Card</value>
+    <value>카드</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_HashType_Number" xml:space="preserve">
     <value>Number</value>
@@ -367,31 +367,31 @@
     <value>Exact</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_MatchType_Similar" xml:space="preserve">
-    <value>Similar</value>
+    <value>유사</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_SelectDetectionMatch" xml:space="preserve">
-    <value>(select match)</value>
+    <value>(일치를 선택)</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_Disabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>무효</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_FailedCardMatching" xml:space="preserve">
-    <value>Failed to recognize some of cards! Game state won't be accurate</value>
+    <value>일부 카드를 검출하지 못했습니다! 대전 상태가 올바르지 않을 경우가 있습니다.</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_MissingGridOrCards" xml:space="preserve">
-    <value>Can't find board! Try resetting UI position, turning off reshade, etc...</value>
+    <value>보드를 검출할 수 없습니다. UI 위치의 리셋 또는 Reshade를 무효로 하는 등 시도해주세요.</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_Status_UnknownHash" xml:space="preserve">
-    <value>Can't recognize pattern! See details below</value>
+    <value>패턴을 검출할 수 없습니다. 상세 사항은 아래를 참조해주세요.</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudSave_Loaded" xml:space="preserve">
-    <value>Cloud save applied</value>
+    <value>클라우드 데이터가 적용되었습니다</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_ApiFailure" xml:space="preserve">
     <value>API call failed</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_AuthInProgress" xml:space="preserve">
-    <value>authorizing...</value>
+    <value>인증중...</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_Disabled" xml:space="preserve">
     <value>disabled, local only</value>
@@ -412,7 +412,7 @@
     <value>synchronized</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_Uploaded" xml:space="preserve">
-    <value>stored</value>
+    <value>보존됨</value>
   </data>
   <data name="MainForm_Dynamic_Setup_OptimizerProgressAborted" xml:space="preserve">
     <value>aborted at {0:P0}</value>
@@ -427,10 +427,10 @@
     <value>Click to change card</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_EndGame_BlueDraw" xml:space="preserve">
-    <value>draw</value>
+    <value>동점</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_EndGame_BlueLost" xml:space="preserve">
-    <value>lost</value>
+    <value>패배</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_EndGame_BlueWin" xml:space="preserve">
     <value>이겼다!</value>
@@ -612,7 +612,7 @@
     <value>Region rule 2:</value>
   </data>
   <data name="MainForm_Setup_Rules_Tournament" xml:space="preserve">
-    <value>Tournament:</value>
+    <value>토너먼트:</value>
   </data>
   <data name="MainForm_Setup_Rules_TournamentRules" xml:space="preserve">
     <value>Rules:</value>
