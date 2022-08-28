@@ -630,9 +630,11 @@ namespace FFTriadBuddy
         {
             if ((simulation.modFeatures & TriadGameModifier.EFeature.CaptureWeights) != 0)
             {
+                bool isReverseActive = (simulation.modFeatures & TriadGameModifier.EFeature.CaptureMath) != 0;
+
                 foreach (TriadGameModifier mod in simulation.modifiers)
                 {
-                    mod.OnCheckCaptureCardWeights(null, -1, -1, ref capturingNum, ref defendingNum);
+                    mod.OnCheckCaptureCardWeights(null, -1, -1, isReverseActive, ref capturingNum, ref defendingNum);
                 }
             }
 

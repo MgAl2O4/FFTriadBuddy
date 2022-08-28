@@ -53,7 +53,7 @@ namespace FFTriadBuddy
 
         public virtual void OnCardPlaced(TriadGameSimulationState gameData, int boardPos) { }
         public virtual void OnCheckCaptureNeis(TriadGameSimulationState gameData, int boardPos, int[] neiPos, List<int> captureList) { }
-        public virtual void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum) { }
+        public virtual void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, bool isReverseActive, ref int cardNum, ref int neiNum) { }
         public virtual void OnCheckCaptureCardMath(TriadGameSimulationState gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured) { }
         public virtual void OnPostCaptures(TriadGameSimulationState gameData, int boardPos) { }
         public virtual void OnScreenUpdate(TriadGameSimulationState gameData) { }
@@ -134,9 +134,9 @@ namespace FFTriadBuddy
             if (RuleInst != null) { RuleInst.OnCheckCaptureNeis(gameData, boardPos, neiPos, captureList); }
         }
 
-        public override void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
+        public override void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, bool isReverseActive, ref int cardNum, ref int neiNum)
         {
-            if (RuleInst != null) { RuleInst.OnCheckCaptureCardWeights(gameData, boardPos, neiPos, ref cardNum, ref neiNum); }
+            if (RuleInst != null) { RuleInst.OnCheckCaptureCardWeights(gameData, boardPos, neiPos, isReverseActive, ref cardNum, ref neiNum); }
         }
 
         public override void OnCheckCaptureCardMath(TriadGameSimulationState gameData, int boardPos, int neiPos, int cardNum, int neiNum, ref bool isCaptured)
@@ -376,15 +376,27 @@ namespace FFTriadBuddy
             Features = EFeature.CaptureWeights;
         }
 
-        public override void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, ref int cardNum, ref int neiNum)
+        public override void OnCheckCaptureCardWeights(TriadGameSimulationState gameData, int boardPos, int neiPos, bool isReverseActive, ref int cardNum, ref int neiNum)
         {
             // note: check if cardNum at [boardPos] can capture neiNum at [neiPos]
             // cardNum:1 vs neiNum:A => override weights to force capture
             // cardNum:A vs neiNum:1 => capture, no need to change weights
+            //
+            // due to asymetry, it needs to know about active reverse rule and swap sides
 
-            if ((cardNum == 1) && (neiNum == 10))
+            if (isReverseActive)
             {
-                neiNum = 0;
+                if ((cardNum == 10) && (neiNum == 1))
+                {
+                    cardNum = 0;
+                }
+            }
+            else
+            {
+                if ((cardNum == 1) && (neiNum == 10))
+                {
+                    neiNum = 0;
+                }
             }
         }
     }

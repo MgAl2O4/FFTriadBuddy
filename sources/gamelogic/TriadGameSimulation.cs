@@ -259,6 +259,9 @@ namespace FFTriadBuddy
                 }
             }
 
+            // CaptureMath: used only by reverse rule
+            bool isReverseActive = allowMods && ((modFeatures & TriadGameModifier.EFeature.CaptureMath) != 0);
+
             TriadCardInstance checkCard = gameState.board[boardPos];
             for (int sideIdx = 0; sideIdx < 4; sideIdx++)
             {
@@ -273,9 +276,10 @@ namespace FFTriadBuddy
 
                         if (allowMods && (modFeatures & TriadGameModifier.EFeature.CaptureWeights) != 0)
                         {
+                            // CaptureWeights: use only by fallen ace = asymetric rule, needs to know about active reverse
                             foreach (TriadGameModifier mod in modifiers)
                             {
-                                mod.OnCheckCaptureCardWeights(gameState, boardPos, neiPos, ref numPos, ref numOther);
+                                mod.OnCheckCaptureCardWeights(gameState, boardPos, neiPos, isReverseActive, ref numPos, ref numOther);
                             }
                         }
 
