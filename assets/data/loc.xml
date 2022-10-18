@@ -389,6 +389,11 @@
   <loc type="3" id="365" de="Barbarizia" en="Barbariccia" fr="Barbariccia" ja="バルバリシア" />
   <loc type="3" id="366" de="Lahabrea" en="Chief Keyward Lahabrea" fr="Lahabrea (passé)" ja="ラハブレア" />
   <loc type="3" id="367" de="Hephaistos" en="Hephaistos" fr="Héphaïstos" ja="ヘファイストス" />
+  <loc type="3" id="368" de="N-7000" en="N-7000" fr="N-7000" ja="N-7000" />
+  <loc type="3" id="369" de="Geryon der Gewaltsame" en="Geryon the Steer" fr="Géryon le Dominateur" ja="覇道のゲーリュオン" />
+  <loc type="3" id="370" de="Gladiator von Sil'dih" en="Gladiator of Sil'dih" fr="Gladiateur Sildien" ja="シラディハ・グラディアトル" />
+  <loc type="3" id="371" de="Ritter der Thorne" en="Thorne Knight" fr="Chevalier Mage Des Thorne" ja="ソーン・マジックナイト" />
+  <loc type="3" id="372" de="Zeless Gah" en="Shadowcaster Zeless Gah" fr="Zeless Gah" ja="影火のゼレズ・ガー" />
   <loc type="4" id="1" de="Aurifort Kreuz" en="Aurifort of the Three Clubs" fr="Aurifort l'As de trèfle" ja="クラブのオリフォル" cn="梅花天王欧里福" ko="오리포르" />
   <loc type="4" id="2" de="Baderon" en="Baderon" fr="Baderon" ja="バデロン" cn="巴德龙" ko="바데론" />
   <loc type="4" id="3" de="Botan" en="Botan" fr="Botan" ja="ボタン" cn="牡丹" ko="보탄" />
@@ -499,6 +504,7 @@
   <loc type="4" id="108" de="Celia" en="Celia" fr="Celia" ja="セリア" cn="赛丽亚" ko="셀리아" />
   <loc type="4" id="109" de="Prudence" en="Prudence" fr="Prudence" ja="プルーデンス" cn="普鲁登斯" />
   <loc type="4" id="110" de="Ghasa" en="Ghasa" fr="Ghasa" ja="ガーサ" cn="" />
+  <loc type="4" id="111" de="Kilfufu" en="Kilfufu" fr="Kilfufu" ja="キルフフ" cn="" />
   <loc type="5" id="1" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
   <loc type="5" id="2" de="Obere Decks" en="Limsa Lominsa Upper Decks" fr="Limsa Lominsa - Le Tillac" ja="リムサ・ロミンサ：上甲板層" cn="利姆萨·罗敏萨上层甲板" ko="림사 로민사 상층 갑판" />
   <loc type="5" id="3" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
@@ -609,6 +615,7 @@
   <loc type="5" id="108" de="Alt-Sharlayan" en="Old Sharlayan" fr="Vieille Sharlayan" ja="オールド・シャーレアン" cn="旧萨雷安" ko="올드 샬레이안" />
   <loc type="5" id="109" de="Mor Dhona" en="Mor Dhona" fr="Mor Dhona" ja="モードゥナ" cn="摩杜纳" ko="모르도나" />
   <loc type="5" id="110" de="Thavnair" en="Thavnair" fr="Thavnair" ja="サベネア島" cn="萨维奈岛" ko="사베네어 섬" />
+  <loc type="5" id="111" de="Nald-Kreuzgang" en="Ul'dah - Steps of Nald" fr="Ul'dah - Faubourg de Nald" ja="ウルダハ：ナル回廊" cn="乌尔达哈现世回廊" ko="울다하 날 회랑" />
   <loc type="6" id="0" de="Manderville-Masters" en="the Manderville Tournament of Champions" fr="le Championnat des Manderville" ja="マンダヴィル・チャンピオンシップ" cn="曼德维尔锦标赛" ko="맨더빌배 선수권 대회" />
   <loc type="6" id="1" de="Großer Preis von Nymeia" en="the Spinner's Pull" fr="le Grand Prix de la Fileuse" ja="星神ニメーヤ賞典" cn="命运神大奖赛" ko="별의 신 니메이아배" />
   <loc type="6" id="2" de="Orran-Durai-Ehrenturnier" en="the Durai Memorial" fr="le Jubilé Orran Durai" ja="オーラン記念" cn="奥兰纪念赛" ko="오란 기념 대회" />
