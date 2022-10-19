@@ -63,20 +63,15 @@ namespace MgAl2O4.Utils
             ReqTree.Timeout = -1;
 
             WebResponse RespTree = ReqTree.GetResponse();
-            using (Stream dataStream = RespTree.GetResponseStream())
+            var respAbsUri = RespTree.ResponseUri.AbsoluteUri;
+            var matchPattern = "/releases/tag/v";
+            int patternPos = respAbsUri.IndexOf(matchPattern);
+            if (patternPos != 0)
             {
-                StreamReader reader = new StreamReader(dataStream);
-                string responseFromServer = reader.ReadToEnd();
+                var versionStr = respAbsUri.Substring(patternPos + matchPattern.Length);
+                latestVersion = int.Parse(versionStr);
 
-                string pattern = "href=\\\".+\\/(releases\\/download\\/.+v(\\d+)\\.zip)\\\"";
-                Match match = new Regex(pattern).Match(responseFromServer);
-                if (match.Success)
-                {
-                    downloadLink = match.Groups[1].Value;
-
-                    string versionStr = match.Groups[2].Value;
-                    latestVersion = int.Parse(versionStr);
-                }
+                downloadLink = $"releases/download/v{versionStr}/release-v{versionStr}.zip";
             }
 
             return latestVersion;
