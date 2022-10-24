@@ -31,14 +31,17 @@ namespace FFTriadBuddy.UI
             {
                 using (var memStream = new MemoryStream())
                 {
-                    fileStream.CopyTo(memStream);
-                    memStream.Position = 0;
+                    if (fileStream != null)
+                    {
+                        fileStream.CopyTo(memStream);
+                        memStream.Position = 0;
 
-                    image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.StreamSource = memStream;
-                    image.EndInit();
-                    image.Freeze();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = memStream;
+                        image.EndInit();
+                        image.Freeze();
+                    }
                 }
             }
 
