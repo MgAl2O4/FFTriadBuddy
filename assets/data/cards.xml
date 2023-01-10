@@ -367,4 +367,14 @@
   <card id="365" icon="082865.png" rarity="3" type="0" up="6" lt="7" dn="7" rt="8" sort="346" group="0" />
   <card id="366" icon="082866.png" rarity="3" type="0" up="5" lt="9" dn="5" rt="8" sort="347" group="0" />
   <card id="367" icon="082867.png" rarity="4" type="0" up="9" lt="4" dn="10" rt="5" sort="348" group="0" />
+  <card id="368" icon="082868.png" rarity="0" type="0" up="6" lt="3" dn="1" rt="3" sort="354" group="0" />
+  <card id="369" icon="082869.png" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="370" icon="082870.png" rarity="1" type="0" up="5" lt="5" dn="7" rt="1" sort="355" group="0" />
+  <card id="371" icon="082871.png" rarity="1" type="0" up="4" lt="1" dn="6" rt="7" sort="356" group="0" />
+  <card id="372" icon="082872.png" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="373" icon="082873.png" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="374" icon="082874.png" rarity="2" type="0" up="1" lt="7" dn="6" rt="8" sort="357" group="0" />
+  <card id="375" icon="082875.png" rarity="3" type="0" up="8" lt="6" dn="7" rt="7" sort="358" group="0" />
+  <card id="376" icon="082876.png" rarity="3" type="0" up="7" lt="8" dn="6" rt="7" sort="359" group="0" />
+  <card id="377" icon="082877.png" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
 </root>
