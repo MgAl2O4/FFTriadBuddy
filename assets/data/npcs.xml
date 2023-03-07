@@ -857,4 +857,10 @@
     <rule id="8" />
     <reward id="358" />
   </npc>
+  <npc id="113" mx="18" my="16">
+    <deckA id0="369" id1="331" id2="269" id3="0" id4="0" />
+    <deckV id0="344" id1="4" id2="125" id3="173" id4="0" />
+    <rule id="13" />
+    <reward id="369" />
+  </npc>
 </root>
