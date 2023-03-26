@@ -121,22 +121,22 @@
     <value>취소</value>
   </data>
   <data name="AdjustForm_CardDown" xml:space="preserve">
-    <value>D:</value>
+    <value>하:</value>
   </data>
   <data name="AdjustForm_CardLeft" xml:space="preserve">
-    <value>L:</value>
+    <value>좌:</value>
   </data>
   <data name="AdjustForm_CardList" xml:space="preserve">
     <value>조정됨:</value>
   </data>
   <data name="AdjustForm_CardRight" xml:space="preserve">
-    <value>R:</value>
+    <value>우:</value>
   </data>
   <data name="AdjustForm_CardStatus" xml:space="preserve">
     <value>상태:</value>
   </data>
   <data name="AdjustForm_CardUp" xml:space="preserve">
-    <value>U:</value>
+    <value>상:</value>
   </data>
   <data name="AdjustForm_Current" xml:space="preserve">
     <value>현재:</value>
@@ -172,7 +172,7 @@
     <value>&lt;= 분류 기반</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_DefaultHint" xml:space="preserve">
-    <value>&lt;= 낮은쪽이 더 정확</value>
+    <value>&lt;= 낮은 쪽이 더 정확</value>
   </data>
   <data name="AdjustForm_Dynamic_Distance_Exact" xml:space="preserve">
     <value>&lt;= 정확히 일치</value>
@@ -307,46 +307,46 @@
     <value>Npc를 고르세요</value>
   </data>
   <data name="MainForm_Dynamic_CardOwnedColumn" xml:space="preserve">
-    <value>Yes</value>
+    <value>네</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_HasDuplicates" xml:space="preserve">
-    <value>Found duplicate cards!</value>
+    <value>중복 카드 발견!</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_MissingCards" xml:space="preserve">
-    <value>Missing cards!</value>
+    <value>보유하지 않은 카드</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_TooMany4Star" xml:space="preserve">
-    <value>More than two 4+ star!</value>
+    <value>4성카드가 2개보다 많습니다.</value>
   </data>
   <data name="MainForm_Dynamic_DeckState_TooMany5Star" xml:space="preserve">
-    <value>Only one 5 star allowed!</value>
+    <value>5성카드 한 개만 덱에 넣을 수 있습니다.</value>
   </data>
   <data name="MainForm_Dynamic_NpcCompletedColumn" xml:space="preserve">
-    <value>Yes</value>
+    <value>네</value>
   </data>
   <data name="MainForm_Dynamic_RuleListEmpty" xml:space="preserve">
-    <value>(none)</value>
+    <value>(없음)</value>
   </data>
   <data name="MainForm_Dynamic_Screenhot_Status_NoErrors" xml:space="preserve">
-    <value>Active</value>
+    <value>활성화</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_BoardRow_Bottom" xml:space="preserve">
-    <value>bot</value>
+    <value>밑</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_BoardRow_Middle" xml:space="preserve">
-    <value>mid</value>
+    <value>중앙</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_BoardRow_Top" xml:space="preserve">
-    <value>top</value>
+    <value>위</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardLocation_BlueDeck" xml:space="preserve">
-    <value>Blue {0}</value>
+    <value>파랑 {0}</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardLocation_Board" xml:space="preserve">
-    <value>Board {0} {1}</value>
+    <value>보드 {0} {1}</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardLocation_RedDeck" xml:space="preserve">
-    <value>Red {0}</value>
+    <value>빨강 {0}</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_CardNotDetected" xml:space="preserve">
     <value>검출되지 않았습니다.</value>
@@ -355,16 +355,16 @@
     <value>카드</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_HashType_Number" xml:space="preserve">
-    <value>Number</value>
+    <value>숫자</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_HashType_Rule" xml:space="preserve">
-    <value>Rule</value>
+    <value>규칙</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_MatchType_Auto" xml:space="preserve">
-    <value>Auto</value>
+    <value>자동</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_MatchType_Exact" xml:space="preserve">
-    <value>Exact</value>
+    <value>정확한</value>
   </data>
   <data name="MainForm_Dynamic_Screenshot_MatchType_Similar" xml:space="preserve">
     <value>유사</value>
@@ -388,43 +388,43 @@
     <value>클라우드 데이터가 적용되었습니다</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_ApiFailure" xml:space="preserve">
-    <value>API call failed</value>
+    <value>API 액세스 실패</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_AuthInProgress" xml:space="preserve">
     <value>인증중...</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_Disabled" xml:space="preserve">
-    <value>disabled, local only</value>
+    <value>무효, 로컬만 가능</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_NoDatabase" xml:space="preserve">
-    <value>database failure</value>
+    <value>데이터베이스 에러</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_NoErrors" xml:space="preserve">
-    <value>active</value>
+    <value>활성화</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_NotAuthorized" xml:space="preserve">
-    <value>Auth required</value>
+    <value>인증이 필요합니다.</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_NotInitialized" xml:space="preserve">
-    <value>scanning...</value>
+    <value>검색 중...</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_Synced" xml:space="preserve">
-    <value>synchronized</value>
+    <value>동기화 성공!</value>
   </data>
   <data name="MainForm_Dynamic_Setup_CloudStatus_Uploaded" xml:space="preserve">
     <value>보존됨</value>
   </data>
   <data name="MainForm_Dynamic_Setup_OptimizerProgressAborted" xml:space="preserve">
-    <value>aborted at {0:P0}</value>
+    <value>{0:P0}에 종료</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_BlueStartButton" xml:space="preserve">
-    <value>Blue starts</value>
+    <value>파란색 우선시작</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_ChanceIsDraw" xml:space="preserve">
-    <value>(DRAW)</value>
+    <value>(무승부)</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_ChangeBlueHint" xml:space="preserve">
-    <value>Click to change card</value>
+    <value>바꿀 카드를 선택</value>
   </data>
   <data name="MainForm_Dynamic_Simulate_EndGame_BlueDraw" xml:space="preserve">
     <value>동점</value>
@@ -457,7 +457,7 @@
     <value>정보 &amp; 설정</value>
   </data>
   <data name="MainForm_Info_TranslatorLove" xml:space="preserve">
-    <value>모든 번역 제공자분들에게 감사드립니다! 당신은 대단해요!</value>
+    <value>모든 번역 제공자분들에게 감사드립니다! 다들 멋져요!</value>
   </data>
   <data name="MainForm_Info_TranslatorNeeded" xml:space="preserve">
     <value>(봉사자가 아직 필요해요 😵)</value>
@@ -540,13 +540,13 @@
     <value>형식:</value>
   </data>
   <data name="MainForm_Screenshot_ListHint" xml:space="preserve">
-    <value>^ Right click on lists for options</value>
+    <value>옵션 목록에서 마우스 우클릭</value>
   </data>
   <data name="MainForm_Screenshot_RemovePatternsButton" xml:space="preserve">
     <value>로컬 패턴 해제</value>
   </data>
   <data name="MainForm_Screenshot_RemovePatternsTitle" xml:space="preserve">
-    <value>Use to clear all custom patterns and start from scratch:</value>
+    <value>모든 커스텀 패턴을 지우고 검출기능을 리셋합니다:</value>
   </data>
   <data name="MainForm_Screenshot_Title" xml:space="preserve">
     <value>플레이: 스크린샷</value>
@@ -564,70 +564,70 @@
     <value>NPC용 덱 최적화</value>
   </data>
   <data name="MainForm_Setup_Deck_Title" xml:space="preserve">
-    <value>Active deck, click card for options:</value>
+    <value>활성화 덱, 옵션을 보려면 카드를 클릭하세요</value>
   </data>
   <data name="MainForm_Setup_Fav_AddSlotButton" xml:space="preserve">
-    <value>Add favorite deck slot</value>
+    <value>즐겨찾기에 덱 추가</value>
   </data>
   <data name="MainForm_Setup_NPC" xml:space="preserve">
     <value>NPC:</value>
   </data>
   <data name="MainForm_Setup_NPC_DeckPower" xml:space="preserve">
-    <value>Deck power:</value>
+    <value>덱 파워</value>
   </data>
   <data name="MainForm_Setup_NPC_Location" xml:space="preserve">
-    <value>Location:</value>
+    <value>위치</value>
   </data>
   <data name="MainForm_Setup_NPC_Rules" xml:space="preserve">
-    <value>Rules:</value>
+    <value>규칙</value>
   </data>
   <data name="MainForm_Setup_NPC_WinChance" xml:space="preserve">
-    <value>Win chance:</value>
+    <value>승률:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumOwned" xml:space="preserve">
-    <value>Num owned cards:</value>
+    <value>갖고 있는 카드 수:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumPossible" xml:space="preserve">
-    <value>Num possible decks:</value>
+    <value>가능한 덱 수:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_NumTested" xml:space="preserve">
-    <value>Num tested decks:</value>
+    <value>테스트한 덱 수:</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_Progress" xml:space="preserve">
-    <value>Progress:</value>
+    <value>진행 상황</value>
   </data>
   <data name="MainForm_Setup_OptimizerStats_TimeLeft" xml:space="preserve">
-    <value>Time left:</value>
+    <value>남은 시간:</value>
   </data>
   <data name="MainForm_Setup_OptimizeStats_Title" xml:space="preserve">
-    <value>Optimization stats:</value>
+    <value>통계:</value>
   </data>
   <data name="MainForm_Setup_RulesToggle" xml:space="preserve">
-    <value>Toggle npc rules, disable for tournament</value>
+    <value>Npc 규칙 표시, 토너먼트에 사용안함</value>
   </data>
   <data name="MainForm_Setup_Rules_Region1" xml:space="preserve">
-    <value>Region rule 1:</value>
+    <value>유행 규칙 1:</value>
   </data>
   <data name="MainForm_Setup_Rules_Region2" xml:space="preserve">
-    <value>Region rule 2:</value>
+    <value>유행 규칙 2:</value>
   </data>
   <data name="MainForm_Setup_Rules_Tournament" xml:space="preserve">
     <value>토너먼트:</value>
   </data>
   <data name="MainForm_Setup_Rules_TournamentRules" xml:space="preserve">
-    <value>Rules:</value>
+    <value>규칙:</value>
   </data>
   <data name="MainForm_Setup_Title" xml:space="preserve">
-    <value>Setup</value>
+    <value>설정</value>
   </data>
   <data name="MainForm_Simulate_Debug_ForceCached" xml:space="preserve">
-    <value>Force using cached image</value>
+    <value>강제로 캐시 이미지 사용</value>
   </data>
   <data name="MainForm_Simulate_Debug_Info" xml:space="preserve">
-    <value>Take game screenshot: DEBUG mode</value>
+    <value>스크린 샷 찍기: 디버그 모드</value>
   </data>
   <data name="MainForm_Simulate_Game_ApplyRuleButton" xml:space="preserve">
-    <value>Apply rule</value>
+    <value>규칙 적용</value>
   </data>
   <data name="MainForm_Simulate_Game_KnownCards" xml:space="preserve">
     <value>알고 있는 카드:</value>
@@ -705,19 +705,19 @@
     <value>빨강 덱 자세히 보기:</value>
   </data>
   <data name="OverlayForm_Details_RedInfo" xml:space="preserve">
-    <value>&lt; Potential red cards, not including visible ones below:</value>
+    <value>&lt; 가능한 상대방의 카드입니다. 아래에 표시되는 카드는 포함되지 않습니다.</value>
   </data>
   <data name="OverlayForm_Details_RedPlacedAll" xml:space="preserve">
-    <value>All placed: {0}</value>
+    <value>모두 배치됨: {0}</value>
   </data>
   <data name="OverlayForm_Details_RedPlacedVariable" xml:space="preserve">
-    <value>Var placed: {0}</value>
+    <value>휴대 가능: {0}</value>
   </data>
   <data name="OverlayForm_Details_Rules" xml:space="preserve">
     <value>규칙: {0}</value>
   </data>
   <data name="OverlayForm_Details_ScanId" xml:space="preserve">
-    <value>Scan Id: {0}</value>
+    <value>스캔 ID: {0}</value>
   </data>
   <data name="OverlayForm_Dynamic_NpcUnknown" xml:space="preserve">
     <value>알 수 없음</value>
@@ -771,10 +771,10 @@
     <value>언제나 맨 위</value>
   </data>
   <data name="Settings_AlwaysSmallIcons" xml:space="preserve">
-    <value>Always use small icons</value>
+    <value>항상 작은 아이콘 사용</value>
   </data>
   <data name="Settings_DisableHardwareAcceleration" xml:space="preserve">
-    <value>Disable hardware acceleration</value>
+    <value>하드웨어 가속 비활성화</value>
   </data>
   <data name="Settings_FontSize" xml:space="preserve">
     <value>글꼴 크기</value>
@@ -789,7 +789,7 @@
     <value>마거 길이: 서로바꿈</value>
   </data>
   <data name="Settings_SkipOptionalSimulateRules" xml:space="preserve">
-    <value>Skip optional rules in simulate</value>
+    <value>시뮬레이션에서 옵션 규칙 건너뛰기</value>
   </data>
   <data name="Settings_Title" xml:space="preserve">
     <value>설정</value>
