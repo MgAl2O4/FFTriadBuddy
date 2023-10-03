@@ -39,7 +39,6 @@ namespace FFTriadBuddy
     {
         public int Id;
         public LocString Name;
-        public string IconPath;
         public ETriadCardRarity Rarity;
         public ETriadCardType Type;
         public int[] Sides;
@@ -47,6 +46,9 @@ namespace FFTriadBuddy
         public int SortOrder;
         public int Group;
         public float OptimizerScore;
+
+        public int SmallIconId => 88000 + Id;
+        public int BigIconId => 87000 + Id;
 
         public TriadCard()
         {
@@ -58,11 +60,10 @@ namespace FFTriadBuddy
             OptimizerScore = 0.0f;
         }
 
-        public TriadCard(int id, string iconPath, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortOrder, int group)
+        public TriadCard(int id, ETriadCardRarity rarity, ETriadCardType type, int numUp, int numDown, int numLeft, int numRight, int sortOrder, int group)
         {
             Id = id;
             Name = LocalizationDB.Get().FindOrAddLocString(ELocStringType.CardName, id);
-            IconPath = iconPath;
             Rarity = rarity;
             Type = type;
             Sides = new int[4] { numUp, numLeft, numDown, numRight };

@@ -9,7 +9,7 @@ if %GamePath%=="" goto MISSING_PATH
 echo Game path: %GamePath%
 echo.
 echo Export data using commands:
-echo   ui 82100 82999
+echo   ui 87000 88999
 echo   allexd
 echo   exit
 echo.
@@ -30,7 +30,8 @@ echo Copying exported data from: %DataPath%
 xcopy SaintCoinach\%DataPath%\*.* export\ /e > nul
 
 del ..\assets\icons\*.png
-xcopy export\ui\icon\082000\*.png ..\assets\icons\ /s > nul
+xcopy export\ui\icon\087000\*.png ..\assets\icons\ /s > nul
+xcopy export\ui\icon\088000\*.png ..\assets\icons\ /s > nul
 
 rmdir SaintCoinach\%DataPath% /s /q > nul
 

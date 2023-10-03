@@ -169,11 +169,7 @@ namespace FFTriadBuddy
                         cardDB.cards.Add(null);
                     }
 
-                    int iconId = 82500 + cardData.Id;
-                    string iconPath = iconId.ToString("000000") + ".png";
-
                     cardOb = new TriadCard(cardData.Id,
-                        iconPath,
                         (ETriadCardRarity)(cardData.rarityIdx - 1),
                         mapCardTypes[cardData.LinkedType == null ? "" : cardData.LinkedType.Type.GetCodeName()],
                         cardData.sideTop,
@@ -275,7 +271,7 @@ namespace FFTriadBuddy
                     var listRewards = new List<TriadCard>();
                     foreach (var rewardData in npcData.LinkedRewards)
                     {
-                        listRewards.Add(cardDB.cards[rewardData.LinkedCard.Id]);
+                        listRewards.Add(cardDB.cards[rewardData.Id]);
                     }
 
                     npcOb = new TriadNpc(npcId, listMods, listRewards, npcDataDeck);

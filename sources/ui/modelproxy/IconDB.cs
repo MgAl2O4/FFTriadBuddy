@@ -53,10 +53,10 @@ namespace FFTriadBuddy.UI
             mapCardImages = new List<BitmapImage>();
             mapCardImagesBig = new List<BitmapImage>();
 
-            string nullImagePath = "icons/082500.png";
+            string nullImagePath = "icons/088001.png";
             var nullImg = LoadImageFromAsset(nullImagePath);
 
-            string nullImageBigPath = "icons/082100.png";
+            string nullImageBigPath = "icons/087000.png";
             var nullImgBig = LoadImageFromAsset(nullImageBigPath);
 
             TriadCardDB cardDB = TriadCardDB.Get();
@@ -65,16 +65,11 @@ namespace FFTriadBuddy.UI
                 var cardOb = cardDB.cards[idx];
                 if (cardOb != null && cardOb.IsValid())
                 {
-                    string loadPath = "icons/" + cardOb.IconPath;
-                    var loadedImage = LoadImageFromAsset(loadPath);
+                    string loadPathSmall = "icons/" + cardOb.SmallIconId.ToString("000000") + ".png";
+                    var loadedImage = LoadImageFromAsset(loadPathSmall);
                     mapCardImages.Add(loadedImage);
 
-                    var loadPathIdStr = loadPath.Substring(loadPath.Length - 7, 3);
-                    int loadPathId = int.Parse(loadPathIdStr);
-
-                    string loadPathBig = loadPath.Substring(0, loadPath.Length - 7);
-                    loadPathBig += (loadPathId - 400);
-                    loadPathBig += ".png";
+                    string loadPathBig = "icons/" + cardOb.BigIconId.ToString("000000") + ".png";
                     loadedImage = LoadImageFromAsset(loadPathBig);
                     mapCardImagesBig.Add(loadedImage);
                 }

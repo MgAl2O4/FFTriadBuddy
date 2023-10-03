@@ -237,12 +237,6 @@ namespace FFTriadBuddy.Datamine
                 return false;
             }
 
-            if (LinkedName.Name.GetCodeName().StartsWith("Wyra"))
-            {
-                int a = 1;
-                a++;
-            }
-
             return true;
         }
     }
@@ -331,7 +325,7 @@ namespace FFTriadBuddy.Datamine
         public List<GameDataCard> LinkedCardsFixed;
         public List<GameDataCard> LinkedCardsVariable;
         public List<GameDataRule> LinkedRules;
-        public List<GameDataReward> LinkedRewards;
+        public List<GameDataCard> LinkedRewards;
 
         public override string ToString() { return string.Format("{0}: {1}", Id.ToString(), LinkedNpcId != null && LinkedNpcId.LinkedName != null ? LinkedNpcId.LinkedName.Name.GetCodeName() : ""); }
         public override bool IsRawDataValid(CsvLocalizedData rawData) { return rawData.GetNumColumns() == 31; }
@@ -482,19 +476,19 @@ namespace FFTriadBuddy.Datamine
                 LinkedRules.Add(LinkedRule);
             }
 
-            LinkedRewards = new List<GameDataReward>();
+            LinkedRewards = new List<GameDataCard>();
             foreach (var itemName in Rewards)
             {
-                var LinkedReward = lists.rewards.Find(x => (x.CardName == itemName));
+                var LinkedReward = lists.cards.Find(x => (x.LinkedName.Name.GetCodeName() == itemName));
                 if (LinkedReward == null && itemName.EndsWith(" Card"))
                 {
                     var itemName2 = itemName.Substring(0, itemName.Length - 5);
 
-                    LinkedReward = lists.rewards.Find(x => (x.CardName == itemName2));
+                    LinkedReward = lists.cards.Find(x => (x.LinkedName.Name.GetCodeName() == itemName2));
                     if (LinkedReward == null)
                     {
                         var itemName3 = "The " + itemName2;
-                        LinkedReward = lists.rewards.Find(x => (x.CardName == itemName3));
+                        LinkedReward = lists.cards.Find(x => (x.LinkedName.Name.GetCodeName() == itemName3));
                     }
                 }
 
@@ -505,42 +499,6 @@ namespace FFTriadBuddy.Datamine
                 }
 
                 LinkedRewards.Add(LinkedReward);
-            }
-
-            return true;
-        }
-    }
-
-    public class GameDataReward : GameData
-    {
-        public static readonly string CardItemType = "Triple Triad Card";
-
-        public string CardName;
-
-        public GameDataCard LinkedCard;
-
-        public override string ToString() { return Id + ": " + CardName; }
-        public override bool IsRawDataValid(CsvLocalizedData rawData) { return rawData.GetNumColumns() >= 90; }
-        public override bool IsValid() { return CardName != null; }
-
-        public override void Parse(CsvLocalizedData rawData, int rowIdx)
-        {
-            string[] defRow = rawData.data.rows[rowIdx];
-
-            if (defRow[16] == CardItemType)
-            {
-                Id = int.Parse(defRow[0]);
-                CardName = defRow[15];
-            }
-        }
-
-        public override bool Link(GameDataLists lists)
-        {
-            LinkedCard = lists.cards.Find(x => (x.LinkedName.Name.GetCodeName() == CardName));
-            if (LinkedCard == null)
-            {
-                Logger.WriteLine("FAILED link: GameDataReward, Id:{0}, Card:{1}, no matching card name", Id, CardName);
-                return false;
             }
 
             return true;
@@ -708,7 +666,6 @@ namespace FFTriadBuddy.Datamine
         public List<GameDataNpcName> npcNames;
         public List<GameDataNpcLocation> npcLocations;
         public List<GameDataNpc> npcs;
-        public List<GameDataReward> rewards;
         public List<GameDataMap> maps;
         public List<GameDataPlaceName> placeNames;
         public List<GameDataTournamentName> tournamentNames;
@@ -726,7 +683,6 @@ namespace FFTriadBuddy.Datamine
             npcNames = LoadGameData<GameDataNpcName>(folderPath, "ENpcResident");
             npcLocations = LoadGameData<GameDataNpcLocation>(folderPath, "Level");
             npcs = LoadGameData<GameDataNpc>(folderPath, "TripleTriad");
-            rewards = LoadGameData<GameDataReward>(folderPath, "Item");
             maps = LoadGameData<GameDataMap>(folderPath, "Map");
             placeNames = LoadGameData<GameDataPlaceName>(folderPath, "PlaceName");
 
@@ -747,7 +703,6 @@ namespace FFTriadBuddy.Datamine
             result = result && LinkGameData(npcTriadIds);
             result = result && LinkGameData(npcNames);
             result = result && LinkGameData(npcs);
-            result = result && LinkGameData(rewards);
             result = result && LinkGameData(npcLocations); // must be after npcs
             result = result && LinkGameData(maps);
             result = result && LinkGameData(placeNames);

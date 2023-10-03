@@ -18,7 +18,7 @@ namespace FFTriadBuddy
         {
             DBPath = "data/cards.xml";
             cards = new List<TriadCard>();
-            hiddenCard = new TriadCard(0, null, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0, 0);
+            hiddenCard = new TriadCard(0, ETriadCardRarity.Common, ETriadCardType.None, 0, 0, 0, 0, 0, 0);
             hiddenCard.Name.Text[LocalizationDB.CodeLanguageIdx] = "(hidden)";
 
             sameNumberMap = new Dictionary<int, List<TriadCard>>();
@@ -51,7 +51,6 @@ namespace FFTriadBuddy
 
                             TriadCard newCard = new TriadCard(
                                 int.Parse(cardElem.GetAttribute("id")),
-                                cardElem.GetAttribute("icon"),
                                 cardRarity,
                                 cardType,
                                 ParseCardSideNum(cardElem.GetAttribute("up")),
@@ -144,7 +143,6 @@ namespace FFTriadBuddy
                     {
                         xmlWriter.WriteStartElement("card");
                         xmlWriter.WriteAttributeString("id", card.Id.ToString());
-                        xmlWriter.WriteAttributeString("icon", card.IconPath);
                         xmlWriter.WriteAttributeString("rarity", ((int)card.Rarity).ToString());
                         xmlWriter.WriteAttributeString("type", ((int)card.Type).ToString());
                         xmlWriter.WriteAttributeString("up", card.Sides[(int)ETriadGameSide.Up].ToString());
