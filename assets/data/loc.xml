@@ -378,27 +378,58 @@
   <loc type="3" id="354" de="Chi" en="Chi" fr="Khi" ja="カイ" cn="希" ko="키" />
   <loc type="3" id="355" de="Daivadipa" en="Daivadipa" fr="Daivadipa" ja="ダイヴァディーパ" cn="明灯天王" ko="다이바디파" />
   <loc type="3" id="356" de="Endsängerin" en="Endsinger" fr="chantre de l'anéantissement" ja="終焉を謳うもの" cn="讴歌终结之物" ko="종언을 노래하는 자" />
-  <loc type="3" id="357" de="N-7000" en="N-7000" fr="N-7000" ja="N-7000" cn="N-7000" ko="" />
-  <loc type="3" id="358" de="Geryon der Gewaltsame" en="Geryon the Steer" fr="Géryon le Dominateur" ja="覇道のゲーリュオン" cn="征服者革律翁" ko="" />
-  <loc type="3" id="359" de="Gladiator von Sil'dih" en="Gladiator of Sil'dih" fr="gladiateur sildien" ja="シラディハ・グラディアトル" cn="希拉狄哈剑斗士" ko="" />
-  <loc type="3" id="360" de="Ritter der Thorne" en="Thorne Knight" fr="chevalier-mage des Thorne" ja="ソーン・マジックナイト" cn="索恩自走人偶" ko="" />
+  <loc type="3" id="357" de="N-7000" en="N-7000" fr="N-7000" ja="N-7000" cn="N-7000" ko="N-7000" />
+  <loc type="3" id="358" de="Geryon der Gewaltsame" en="Geryon the Steer" fr="Géryon le Dominateur" ja="覇道のゲーリュオン" cn="征服者革律翁" ko="패도의 게리온" />
+  <loc type="3" id="359" de="Gladiator von Sil'dih" en="Gladiator of Sil'dih" fr="gladiateur sildien" ja="シラディハ・グラディアトル" cn="希拉狄哈剑斗士" ko="실디하 검투사" />
+  <loc type="3" id="360" de="Ritter der Thorne" en="Thorne Knight" fr="chevalier-mage des Thorne" ja="ソーン・マジックナイト" cn="索恩自走人偶" ko="손 마법기사" />
   <loc type="3" id="361" de="Beatrice" en="Beatrice" fr="Béatrice" ja="ベアトリーチェ" cn="贝雅特丽齐" ko="베아트리체" />
   <loc type="3" id="362" de="Byregot" en="Byregot" fr="Byregot" ja="ビエルゴ" cn="比尔格" ko="비레고" />
-  <loc type="3" id="363" de="Zeless Gah" en="Shadowcaster Zeless Gah" fr="Zeless Gah" ja="影火のゼレズ・ガー" cn="鬼阴火泽雷斯·夏" ko="" />
+  <loc type="3" id="363" de="Zeless Gah" en="Shadowcaster Zeless Gah" fr="Zeless Gah" ja="影火のゼレズ・ガー" cn="鬼阴火泽雷斯·夏" ko="그림자불 젤레즈 가" />
   <loc type="3" id="364" de="Scarmiglione" en="Scarmiglione" fr="Scarmiglione" ja="スカルミリョーネ" cn="斯卡米留尼" ko="스카르밀리오네" />
   <loc type="3" id="365" de="Barbarizia" en="Barbariccia" fr="Barbariccia" ja="バルバリシア" cn="巴尔巴莉希娅" ko="바르바리차" />
   <loc type="3" id="366" de="Leiter Lahabrea" en="Chief Keyward Lahabrea" fr="Lahabrea (passé)" ja="ラハブレア" cn="拉哈布雷亚" ko="라하브레아" />
   <loc type="3" id="367" de="Hephaistos" en="Hephaistos" fr="Héphaïstos" ja="ヘファイストス" cn="赫淮斯托斯" ko="헤파이스토스" />
-  <loc type="3" id="368" de="Mechanik-Onmyoji &amp; -Yojinbo" en="Clockwork Onmyoji &amp; Clockwork Yojimbo" fr="prêtre onmyo mécanique &amp; garde du corps mécanique" ja="からくり陰陽師＆からくり用心棒" />
-  <loc type="3" id="369" de="Dreamingway" en="Dreamingway" fr="Dreamingway" ja="ドリーミングウェイ" />
-  <loc type="3" id="370" de="Miaurizius" en="Felicitous Furball" fr="Chamoiselle" ja="ねこみみさん" />
-  <loc type="3" id="371" de="Anden" en="Anden" fr="Anden" ja="アンデン" />
-  <loc type="3" id="372" de="Suprae-Lugae" en="Suprae-Lugae" fr="Super Lugae" ja="スーパールゲイエ" />
-  <loc type="3" id="373" de="Gancanagh" en="Gancanagh" fr="Gancanagh" ja="ガンカナグー" />
-  <loc type="3" id="374" de="Menphina" en="Menphina" fr="Menphina" ja="メネフィナ" />
-  <loc type="3" id="375" de="Cagnazzo" en="Cagnazzo" fr="Cagnazzo" ja="カイナッツォ" />
-  <loc type="3" id="376" de="Rubicante" en="Rubicante" fr="Rubicante" ja="ルビカンテ" />
-  <loc type="3" id="377" de="Venat" en="Venat" fr="Venat" ja="ヴェーネス" />
+  <loc type="3" id="368" de="Mechanik-Onmyoji &amp; -Yojinbo" en="Clockwork Onmyoji &amp; Clockwork Yojimbo" fr="prêtre onmyo mécanique &amp; garde du corps mécanique" ja="からくり陰陽師＆からくり用心棒" cn="机关阴阳师＆机关保镖" ko="꼭두각시 음양사 ＆ 꼭두각시 경호원" />
+  <loc type="3" id="369" de="Dreamingway" en="Dreamingway" fr="Dreamingway" ja="ドリーミングウェイ" cn="梦明威" ko="드리밍웨이" />
+  <loc type="3" id="370" de="Miaurizius" en="Felicitous Furball" fr="Chamoiselle" ja="ねこみみさん" cn="猫耳小员" ko="야옹 선생" />
+  <loc type="3" id="371" de="Anden" en="Anden" fr="Anden" ja="アンデン" cn="安登" ko="안덴" />
+  <loc type="3" id="372" de="Suprae-Lugae" en="Suprae-Lugae" fr="Super Lugae" ja="スーパールゲイエ" cn="超威卢格" ko="슈퍼 루게이에" />
+  <loc type="3" id="373" de="Gancanagh" en="Gancanagh" fr="Gancanagh" ja="ガンカナグー" cn="蜜言妖" ko="간카나" />
+  <loc type="3" id="374" de="Menphina" en="Menphina" fr="Menphina" ja="メネフィナ" cn="梅茵菲娜" ko="메느피나" />
+  <loc type="3" id="375" de="Cagnazzo" en="Cagnazzo" fr="Cagnazzo" ja="カイナッツォ" cn="凯纳槽" ko="카냐초" />
+  <loc type="3" id="376" de="Rubicante" en="Rubicante" fr="Rubicante" ja="ルビカンテ" cn="卢比坎特" ko="루비칸테" />
+  <loc type="3" id="377" de="Venat" en="Venat" fr="Venat" ja="ヴェーネス" cn="维涅斯" ko="베네스" />
+  <loc type="3" id="378" de="Kleiner Laternengeist" en="Okuri Chochin" fr="bake-chôchin" ja="バケチョウチン" cn="" />
+  <loc type="3" id="379" de="Gorai der Entfesselte" en="Gorai the Uncaged" fr="Gôrai le fureteur" ja="鉄鼠ゴウライ" cn="" />
+  <loc type="3" id="380" de="Moko der Rastlose" en="Moko the Restless" fr="Môko le tourmenté" ja="怨霊モウコ" cn="" />
+  <loc type="3" id="381" de="Oktomammut" en="Octomammoth" fr="octomammouth" ja="オクトマンモス" cn="八足巨妖" />
+  <loc type="3" id="382" de="Proto-Karfunkel" en="Proto-Carbuncle" fr="Proto-Carbuncle" ja="プロトカーバンクル" cn="原型宝石兽" />
+  <loc type="3" id="383" de="Goldor der Güldene" en="Goldor" fr="Goldor" ja="ゴールドル" cn="" />
+  <loc type="3" id="384" de="Shishio" en="Shishio" fr="Shishiô" ja="獅子王" cn="" />
+  <loc type="3" id="385" de="Themis" en="Themis" fr="Thémis" ja="テミス" cn="特弥斯" />
+  <loc type="3" id="386" de="Enenra" en="Enenra" fr="Enenra" ja="煙々羅" cn="" />
+  <loc type="3" id="387" de="Golbez" en="Golbez" fr="Golbez" ja="ゴルベーザ" cn="高贝扎" />
+  <loc type="3" id="388" de="Athena" en="Athena" fr="Athéna" ja="アテナ" cn="雅典娜" />
+  <loc type="3" id="389" de="" en="" fr="" ja="" />
+  <loc type="3" id="390" de="" en="" fr="" ja="" />
+  <loc type="3" id="391" de="" en="" fr="" ja="" />
+  <loc type="3" id="392" de="" en="" fr="" ja="" />
+  <loc type="3" id="393" de="" en="" fr="" ja="" />
+  <loc type="3" id="394" de="Nophica" en="Nophica" fr="Nophica" ja="ノフィカ" />
+  <loc type="3" id="395" de="Althyk" en="Althyk" fr="Althyk" ja="アルジク" />
+  <loc type="3" id="396" de="Nymeia" en="Nymeia" fr="Nymeia" ja="ニメーヤ" />
+  <loc type="3" id="397" de="Halone" en="Halone" fr="Halone" ja="ハルオーネ" />
+  <loc type="3" id="398" de="Thaliak" en="Thaliak" fr="Thaliak" ja="サリャク" />
+  <loc type="3" id="399" de="Llymlaen" en="Llymlaen" fr="Llymlaen" ja="リムレーン" />
+  <loc type="3" id="400" de="Oschon" en="Oschon" fr="Oschon" ja="オシュオン" />
+  <loc type="3" id="401" de="Durante" en="Durante" fr="Durante" ja="ドゥランテ" />
+  <loc type="3" id="402" de="Eulogia" en="Eulogia" fr="Eulogie" ja="エウロギア" />
+  <loc type="3" id="403" de="" en="" fr="" ja="" />
+  <loc type="3" id="404" de="Zeromus" en="Zeromus" fr="Zeromus" ja="ゼロムス" />
+  <loc type="3" id="405" de="" en="" fr="" ja="" />
+  <loc type="3" id="406" de="" en="" fr="" ja="" />
+  <loc type="3" id="407" de="" en="" fr="" ja="" />
+  <loc type="3" id="408" de="" en="" fr="" ja="" />
   <loc type="4" id="1" de="Aurifort Kreuz" en="Aurifort of the Three Clubs" fr="Aurifort l'As de trèfle" ja="クラブのオリフォル" cn="梅花天王欧里福" ko="오리포르" />
   <loc type="4" id="2" de="Baderon" en="Baderon" fr="Baderon" ja="バデロン" cn="巴德龙" ko="바데론" />
   <loc type="4" id="3" de="Botan" en="Botan" fr="Botan" ja="ボタン" cn="牡丹" ko="보탄" />
@@ -510,8 +541,12 @@
   <loc type="4" id="109" de="Prudence" en="Prudence" fr="Prudence" ja="プルーデンス" cn="普鲁登斯" ko="프루덴스" />
   <loc type="4" id="110" de="Ghasa" en="Ghasa" fr="Ghasa" ja="ガーサ" cn="伽娑" ko="가사" />
   <loc type="4" id="111" de="Kilfufu" en="Kilfufu" fr="Kilfufu" ja="キルフフ" cn="" />
-  <loc type="4" id="112" de="Kilfufu" en="Kilfufu" fr="Kilfufu" ja="キルフフ" cn="奇尔芙芙" ko="" />
-  <loc type="4" id="113" de="Gamingway" en="Gamingway" fr="Gamingway" ja="ゲーミングウェイ" />
+  <loc type="4" id="112" de="Kilfufu" en="Kilfufu" fr="Kilfufu" ja="キルフフ" cn="奇尔芙芙" ko="킬푸푸" />
+  <loc type="4" id="113" de="Gamingway" en="Gamingway" fr="Gamingway" ja="ゲーミングウェイ" cn="游兴威" ko="게이밍웨이" />
+  <loc type="4" id="114" de="Ruissenaud" en="Ruissenaud" fr="Ruissenaud" ja="ルイスノ" cn="吕斯诺" ko="루이스노" />
+  <loc type="4" id="115" de="Tokimori" en="Tokimori" fr="Tokimori" ja="トキモリ" cn="" ko="" />
+  <loc type="4" id="116" de="Ylaire" en="Ylaire" fr="Ylaire" ja="イレアー" cn="" ko="" />
+  <loc type="4" id="117" de="Maillart" en="Maillart" fr="Maillart" ja="マリアルト" cn="" ko="" />
   <loc type="5" id="1" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
   <loc type="5" id="2" de="Obere Decks" en="Limsa Lominsa Upper Decks" fr="Limsa Lominsa - Le Tillac" ja="リムサ・ロミンサ：上甲板層" cn="利姆萨·罗敏萨上层甲板" ko="림사 로민사 상층 갑판" />
   <loc type="5" id="3" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
@@ -625,6 +660,10 @@
   <loc type="5" id="111" de="Nald-Kreuzgang" en="Ul'dah - Steps of Nald" fr="Ul'dah - Faubourg de Nald" ja="ウルダハ：ナル回廊" cn="乌尔达哈现世回廊" ko="울다하 날 회랑" />
   <loc type="5" id="112" de="Nald-Kreuzgang" en="Ul'dah - Steps of Nald" fr="Ul'dah - Faubourg de Nald" ja="ウルダハ：ナル回廊" cn="乌尔达哈现世回廊" ko="울다하 날 회랑" />
   <loc type="5" id="113" de="Mare Lamentorum" en="Mare Lamentorum" fr="Mare Lamentorum" ja="嘆きの海" cn="叹息海" ko="비탄의 바다" />
+  <loc type="5" id="114" de="Labyrinthos" en="Labyrinthos" fr="Le Labyrinthos" ja="ラヴィリンソス" cn="迷津" ko="라비린토스" />
+  <loc type="5" id="115" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
+  <loc type="5" id="116" de="Alt-Gridania" en="Old Gridania" fr="Vieille Gridania" ja="グリダニア：旧市街" cn="格里达尼亚旧街" ko="그리다니아 구시가지" />
+  <loc type="5" id="117" de="Alt-Sharlayan" en="Old Sharlayan" fr="Vieille Sharlayan" ja="オールド・シャーレアン" cn="旧萨雷安" ko="올드 샬레이안" />
   <loc type="6" id="0" de="Manderville-Masters" en="the Manderville Tournament of Champions" fr="le Championnat des Manderville" ja="マンダヴィル・チャンピオンシップ" cn="曼德维尔锦标赛" ko="맨더빌배 선수권 대회" />
   <loc type="6" id="1" de="Großer Preis von Nymeia" en="the Spinner's Pull" fr="le Grand Prix de la Fileuse" ja="星神ニメーヤ賞典" cn="命运神大奖赛" ko="별의 신 니메이아배" />
   <loc type="6" id="2" de="Orran-Durai-Ehrenturnier" en="the Durai Memorial" fr="le Jubilé Orran Durai" ja="オーラン記念" cn="奥兰纪念赛" ko="오란 기념 대회" />

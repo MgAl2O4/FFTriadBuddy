@@ -863,4 +863,36 @@
     <rule id="13" />
     <reward id="369" />
   </npc>
+  <npc id="114" mx="9" my="27">
+    <deckA id0="382" id1="385" id2="335" id3="338" id4="0" />
+    <deckV id0="388" id1="367" id2="0" id3="0" id4="0" />
+    <rule id="7" />
+    <rule id="10" />
+    <reward id="382" />
+    <reward id="385" />
+  </npc>
+  <npc id="115" mx="9" my="9">
+    <deckA id0="378" id1="239" id2="0" id3="0" id4="0" />
+    <deckV id0="221" id1="222" id2="235" id3="246" id4="0" />
+    <rule id="6" />
+    <rule id="8" />
+    <reward id="378" />
+  </npc>
+  <npc id="116" mx="8" my="11">
+    <deckA id0="394" id1="395" id2="0" id3="0" id4="0" />
+    <deckV id0="396" id1="208" id2="340" id3="21" id4="0" />
+    <rule id="13" />
+    <rule id="7" />
+    <reward id="394" />
+    <reward id="395" />
+    <reward id="396" />
+  </npc>
+  <npc id="117" mx="9" my="15">
+    <deckA id0="398" id1="399" id2="0" id3="0" id4="0" />
+    <deckV id0="112" id1="209" id2="55" id3="198" id4="0" />
+    <rule id="12" />
+    <rule id="8" />
+    <reward id="398" />
+    <reward id="399" />
+  </npc>
 </root>
