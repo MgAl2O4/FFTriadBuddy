@@ -150,7 +150,7 @@ namespace FFTriadBuddy.UI
 
         private void FindCardOnline(CardModelProxy cardProxy)
         {
-            Process.Start(new ProcessStartInfo("https://triad.raelys.com/cards/" + cardProxy.cardOb.Id) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo("https://ffxivcollect.com/triad/cards/" + cardProxy.cardOb.Id) { UseShellExecute = true });
         }
 
         private void SelectCardNpc(NpcModelProxy npcProxy)
