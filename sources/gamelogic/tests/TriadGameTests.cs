@@ -60,6 +60,11 @@ namespace FFTriadBuddy
                 {
                     for (int idx = 0; idx < expectedState.Length; idx++)
                     {
+                        if (gameState.board[idx] == null && expectedState[idx] == ETriadCardOwner.Unknown)
+                        {
+                            continue;
+                        }
+
                         if (gameState.board[idx].owner != expectedState[idx])
                         {
                             if (debugMode)
@@ -72,7 +77,7 @@ namespace FFTriadBuddy
                                 {
                                     if (codeIdx == 3 || codeIdx == 6) { expectedCode += ' '; currentCode += ' '; }
 
-                                    expectedCode += GetOwnerCode(gameState.board[codeIdx].owner);
+                                    expectedCode += GetOwnerCode(gameState.board[codeIdx]?.owner ?? ETriadCardOwner.Unknown);
                                     currentCode += GetOwnerCode(expectedState[codeIdx]);
                                 }
 

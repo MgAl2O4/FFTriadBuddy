@@ -245,6 +245,7 @@ namespace FFTriadBuddy
         {
             // combo:
             // - modifiers are active only in intial placement
+            // - ...except for reverse, this one stays active in chains too...
             // - only card captured via modifiers can initiate combo (same, plus)
             // - type modifiers (ascention, descention) values are baked in card and influence combo
             // - can't proc another plus/same as a result of combo
@@ -284,7 +285,7 @@ namespace FFTriadBuddy
                         }
 
                         bool bIsCaptured = (numPos > numOther);
-                        if (allowMods && (modFeatures & TriadGameModifier.EFeature.CaptureMath) != 0)
+                        // special case: always allow CaptureMath (= reverse mod) during combo chain, see comments above
                         {
                             foreach (TriadGameModifier mod in modifiers)
                             {
