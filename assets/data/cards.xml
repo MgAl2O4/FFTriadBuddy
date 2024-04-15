@@ -388,11 +388,11 @@
   <card id="386" rarity="3" type="0" up="8" lt="5" dn="5" rt="9" sort="374" group="0" />
   <card id="387" rarity="4" type="0" up="10" lt="5" dn="2" rt="10" sort="367" group="0" />
   <card id="388" rarity="4" type="0" up="9" lt="5" dn="10" rt="4" sort="368" group="0" />
-  <card id="389" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
-  <card id="390" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
-  <card id="391" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
-  <card id="392" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
-  <card id="393" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="389" rarity="0" type="0" up="2" lt="3" dn="4" rt="3" sort="385" group="0" />
+  <card id="390" rarity="1" type="0" up="5" lt="6" dn="2" rt="3" sort="386" group="0" />
+  <card id="391" rarity="1" type="0" up="4" lt="4" dn="5" rt="5" sort="387" group="0" />
+  <card id="392" rarity="1" type="0" up="5" lt="7" dn="4" rt="3" sort="389" group="0" />
+  <card id="393" rarity="2" type="0" up="5" lt="5" dn="7" rt="5" sort="388" group="0" />
   <card id="394" rarity="2" type="0" up="8" lt="6" dn="7" rt="1" sort="375" group="0" />
   <card id="395" rarity="2" type="0" up="1" lt="7" dn="8" rt="6" sort="376" group="0" />
   <card id="396" rarity="2" type="0" up="1" lt="8" dn="6" rt="7" sort="377" group="0" />
@@ -402,9 +402,9 @@
   <card id="400" rarity="2" type="0" up="7" lt="6" dn="8" rt="1" sort="381" group="0" />
   <card id="401" rarity="2" type="0" up="7" lt="6" dn="6" rt="6" sort="382" group="0" />
   <card id="402" rarity="3" type="0" up="6" lt="9" dn="6" rt="7" sort="383" group="0" />
-  <card id="403" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="403" rarity="3" type="2" up="9" lt="5" dn="7" rt="6" sort="390" group="0" />
   <card id="404" rarity="4" type="0" up="9" lt="9" dn="9" rt="1" sort="384" group="0" />
-  <card id="405" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="405" rarity="4" type="0" up="10" lt="7" dn="8" rt="5" sort="1015" group="5" />
   <card id="406" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
   <card id="407" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
   <card id="408" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
