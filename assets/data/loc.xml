@@ -83,7 +83,7 @@
   <loc type="3" id="59" de="Alphinaud &amp; Alisaie" en="Alphinaud &amp; Alisaie" fr="Alphinaud &amp; Alisaie" ja="アルフィノ＆アリゼー" cn="阿尔菲诺&amp;阿莉塞" ko="알피노 &amp; 알리제" />
   <loc type="3" id="60" de="Louisoix Leveilleur" en="Louisoix Leveilleur" fr="Louisoix" ja="ルイゾワ・ルヴェユール" cn="路易索瓦·莱韦耶勒尔" ko="루이수아 르베유르" />
   <loc type="3" id="61" de="Bahamut" en="Bahamut" fr="Bahamut" ja="バハムート" cn="巴哈姆特" ko="바하무트" />
-  <loc type="3" id="62" de="Hildibrand &amp; Nashu" en="Hildibrand &amp; Nashu Mhakaracca" fr="Hildibrand &amp; Nashu" ja="ヒルディブランド＆ナシュ・マカラッカ" cn="希尔迪布兰德&amp;娜修·玛卡拉卡" ko="힐디브랜드 &amp; 나슈 마카라카" />
+  <loc type="3" id="62" de="Hildibrand &amp; Nashu" en="Hildibrand &amp; Nashu Mhakaracca" fr="Hildibrand &amp; Nashu Mhakaracca" ja="ヒルディブランド＆ナシュ・マカラッカ" cn="希尔迪布兰德&amp;娜修·玛卡拉卡" ko="힐디브랜드 &amp; 나슈 마카라카" />
   <loc type="3" id="63" de="Nanamo" en="Nanamo Ul Namo" fr="Nanamo" ja="ナナモ・ウル・ナモ" cn="娜娜莫·乌尔·娜莫" ko="나나모 울 나모" />
   <loc type="3" id="64" de="Gaius van Baelsar" en="Gaius van Baelsar" fr="Gaius" ja="ガイウス・ヴァン・バエサル" cn="盖乌斯·范·巴埃萨" ko="가이우스 반 바일사르" />
   <loc type="3" id="65" de="Merlwyb" en="Merlwyb Bloefhiswyn" fr="Merlwyb" ja="メルウィブ・ブルーフィスウィン" cn="梅尔维布·布鲁菲斯维因" ko="멜위브 블루피쉰" />
@@ -92,7 +92,7 @@
   <loc type="3" id="68" de="Krieger des Lichts" en="Warrior of Light" fr="Guerrier de la Lumière" ja="ウォーリア・オブ・ライト" cn="光之战士" ko="빛의 전사" />
   <loc type="3" id="69" de="Firion" en="Firion" fr="Firion" ja="フリオニール" cn="弗利奥尼尔" ko="프리오닐" />
   <loc type="3" id="70" de="Zwiebelritter" en="Onion Knight" fr="chevalier Oignon" ja="オニオンナイト" cn="洋葱剑士" ko="양파 기사" />
-  <loc type="3" id="71" de="Cecil Harvey" en="Cecil Harvey" fr="Cécil" ja="セシル・ハーヴィ" cn="塞西尔·哈维" ko="세실 하비" />
+  <loc type="3" id="71" de="Cecil Harvey" en="Cecil Harvey" fr="Cécil Harvey" ja="セシル・ハーヴィ" cn="塞西尔·哈维" ko="세실 하비" />
   <loc type="3" id="72" de="Bartz Klauser" en="Bartz Klauser" fr="Bartz" ja="バッツ・クラウザー" cn="巴兹·克劳泽" ko="바츠 클라우저" />
   <loc type="3" id="73" de="Terra Branford" en="Terra Branford" fr="Terra" ja="ティナ・ブランフォード" cn="蒂娜·布兰福德" ko="티나 브랜포드" />
   <loc type="3" id="74" de="Cloud Strife" en="Cloud Strife" fr="Cloud" ja="クラウド・ストライフ" cn="克劳德·斯特莱夫" ko="클라우드 스트라이프" />
@@ -110,7 +110,7 @@
   <loc type="3" id="86" de="Greif" en="Griffin" fr="griffon" ja="グリフィン" cn="狮鹫" ko="그리핀" />
   <loc type="3" id="87" de="Tioman" en="Tioman" fr="Tioman" ja="ティオマン" cn="刁曼" ko="티오만" />
   <loc type="3" id="88" de="Estinien" en="Estinien" fr="Estinien" ja="エスティニアン" cn="埃斯蒂尼安" ko="에스티니앙" />
-  <loc type="3" id="89" de="Lucia goe Junius" en="Lucia goe Junius" fr="Lucia goe Junius" ja="ルキア" cn="露琪亚" ko="루키아" />
+  <loc type="3" id="89" de="Lucia goe Junius" en="Lucia goe Junius" fr="Lucia" ja="ルキア" cn="露琪亚" ko="루키아" />
   <loc type="3" id="90" de="Ysayle" en="Ysayle" fr="Ysayle" ja="イゼル" cn="伊塞勒" ko="이젤" />
   <loc type="3" id="91" de="Hilda" en="Hilda" fr="Hilda" ja="ヒルダ" cn="希尔达" ko="힐다" />
   <loc type="3" id="92" de="Matoya" en="Matoya" fr="Matoya" ja="マトーヤ" cn="玛托雅" ko="마토야" />
@@ -262,7 +262,7 @@
   <loc type="3" id="238" de="Asahi sas Brutus" en="Asahi sas Brutus" fr="Asahi sas Brutus" ja="アサヒ・サス・ブルトゥス" cn="朝阳·萨斯·布鲁图斯" ko="아사히 사스 브루투스" />
   <loc type="3" id="239" de="Yojinbo &amp; Daigoro" en="Yojimbo &amp; Daigoro" fr="Yojimbo &amp; Daigoro" ja="ヨウジンボウ&amp;ダイゴロウ" cn="保镖&amp;大五郎" ko="요우진보 &amp; 다이고로" />
   <loc type="3" id="240" de="Omega" en="Omega" fr="Oméga" ja="オメガ" cn="欧米茄" ko="오메가" />
-  <loc type="3" id="241" de="Stormblood Tataru" en="Stormblood Tataru Taru" fr="Tataru (Stormblood)" ja="タタル・タル（紅蓮）" cn="塔塔露·塔露（红莲）" ko="타타루 타루(홍련)" />
+  <loc type="3" id="241" de="Tataru (Stormblood)" en="Stormblood Tataru Taru" fr="Tataru (Stormblood)" ja="タタル・タル（紅蓮）" cn="塔塔露·塔露（红莲）" ko="타타루 타루(홍련)" />
   <loc type="3" id="242" de="Dvergr" en="Dvergr" fr="Dvergr" ja="ドゥエルグ" cn="矮儒" ko="드베르그" />
   <loc type="3" id="243" de="Ejika Tsunjika" en="Ejika Tsunjika" fr="Ejika Tsunjika" ja="エジカ・ツンジカ" cn="艾吉卡·岑吉卡" ko="에지카 츤지카" />
   <loc type="3" id="244" de="Prometheus" en="Prometheus" fr="Prometheus" ja="プロメテウス" cn="普罗米修斯" ko="프로메테우스" />
@@ -270,9 +270,9 @@
   <loc type="3" id="246" de="Seiryu" en="Seiryu" fr="Seiryû" ja="青龍" cn="青龙" ko="청룡" />
   <loc type="3" id="247" de="Alpha" en="Alpha" fr="Alpha" ja="アルファ" cn="阿尔法" ko="알파" />
   <loc type="3" id="248" de="Majestät Goldbartel" en="Great Gold Whisker" fr="Altesse namazu nain doré" ja="ナマキン大王" cn="金鲶大王" ko="금마즈오 대왕" />
-  <loc type="3" id="249" de="Stormblood Gilgamesch" en="Stormblood Gilgamesh" fr="Gilgamesh (Stormblood)" ja="ギルガメッシュ（紅蓮）" cn="吉尔伽美什（红莲）" ko="길가메시(홍련)" />
+  <loc type="3" id="249" de="Gilgamesch (Stormblood)" en="Stormblood Gilgamesh" fr="Gilgamesh (Stormblood)" ja="ギルガメッシュ（紅蓮）" cn="吉尔伽美什（红莲）" ko="길가메시(홍련)" />
   <loc type="3" id="250" de="Cherub Ultima" en="Ultima, the High Seraph" fr="Ultima, la Grande Séraphine" ja="聖天使アルテマ" cn="圣天使阿尔蒂玛" ko="성천사 알테마" />
-  <loc type="3" id="251" de="Stormblood Alphinaud &amp; Alisaie" en="Stormblood Alphinaud &amp; Alisaie" fr="Alphinaud &amp; Alisaie (Stormblood)" ja="アルフィノ＆アリゼー（紅蓮）" cn="阿尔菲诺&amp;阿莉塞（红莲）" ko="알피노 &amp; 알리제(홍련)" />
+  <loc type="3" id="251" de="Alphinaud &amp; Alisaie (Stormblood)" en="Stormblood Alphinaud &amp; Alisaie" fr="Alphinaud &amp; Alisaie (Stormblood)" ja="アルフィノ＆アリゼー（紅蓮）" cn="阿尔菲诺&amp;阿莉塞（红莲）" ko="알피노 &amp; 알리제(홍련)" />
   <loc type="3" id="252" de="Noctis Lucis Caelum" en="Noctis Lucis Caelum" fr="Noctis Lucis Caelum" ja="ノクティス・ルシス・チェラム" cn="诺克提斯·路西斯·切拉姆" ko="녹티스 루시스 카일룸" />
   <loc type="3" id="253" de="Amaro" en="Amaro" fr="amaro" ja="アマロ" cn="阿马罗" ko="아마로" />
   <loc type="3" id="254" de="Böse Waffe" en="Evil Weapon" fr="arme maligne" ja="イビルウェポン" cn="恶魔兵装" ko="무기마" />
@@ -322,10 +322,10 @@
   <loc type="3" id="298" de="Dawon" en="Dawon" fr="Dawon" ja="ドゥン" cn="达温" ko="다우언" />
   <loc type="3" id="299" de="Adrammelech" en="Adrammelech" fr="Adrammelech" ja="アドラメレク" cn="阿德拉梅里克" ko="아드람멜렉" />
   <loc type="3" id="300" de="Elidibus" en="Elidibus" fr="Elidibus" ja="アシエン・エリディブス" cn="无影艾里迪布斯" ko="아씨엔 엘리디부스" />
-  <loc type="3" id="301" de="Shadowbringers Thancred" en="Shadowbringers Thancred" fr="Thancred (Shadowbringers)" ja="サンクレッド（漆黒）" cn="桑克瑞德（暗影）" ko="산크레드(칠흑)" />
+  <loc type="3" id="301" de="Thancred (Shadowbringers)" en="Shadowbringers Thancred" fr="Thancred (Shadowbringers)" ja="サンクレッド（漆黒）" cn="桑克瑞德（暗影）" ko="산크레드(칠흑)" />
   <loc type="3" id="302" de="Saphir-Waffe" en="Sapphire Weapon" fr="Arme Saphir" ja="サファイアウェポン" cn="蓝宝石神兵" ko="사파이어 웨폰" />
   <loc type="3" id="303" de="2P" en="2P" fr="2P" ja="２Ｐ" cn="2P" ko="2P" />
-  <loc type="3" id="304" de="Shadowbringers Krieger des Lichts" en="Shadowbringers Warrior of Light" fr="Guerrier de la Lumière (Shadowbringers)" ja="ウォーリア・オブ・ライト（漆黒）" cn="光之战士（暗影）" ko="빛의 전사(칠흑)" />
+  <loc type="3" id="304" de="Krieger des Lichts (Shadowbringers)" en="Shadowbringers Warrior of Light" fr="Guerrier de la Lumière (Shadowbringers)" ja="ウォーリア・オブ・ライト（漆黒）" cn="光之战士（暗影）" ko="빛의 전사(칠흑)" />
   <loc type="3" id="305" de="Blaubert Veilchenblau" en="Great Azuro" fr="Bleuet masqué" ja="マスク・ザ・ブルー" cn="蓝色假面" ko="청가면" />
   <loc type="3" id="306" de="Muttersau" en="Mother Porxie" fr="mère porxie" ja="マザーポークシー" cn="仙子猪之母" ko="마더 포크시" />
   <loc type="3" id="307" de="Trinität der Sucher" en="Trinity Seeker" fr="trinité soudée" ja="トリニティ・シーカー" cn="求道之三位一体" ko="탐구의 삼위일체" />
@@ -410,11 +410,11 @@
   <loc type="3" id="386" de="Enenra" en="Enenra" fr="Enenra" ja="煙々羅" cn="烟烟罗" ko="엔엔라" />
   <loc type="3" id="387" de="Golbez" en="Golbez" fr="Golbez" ja="ゴルベーザ" cn="高贝扎" ko="골베자" />
   <loc type="3" id="388" de="Athena" en="Athena" fr="Athéna" ja="アテナ" cn="雅典娜" ko="아테나" />
-  <loc type="3" id="389" de="Ketuduke" en="Ketuduke" fr="Ketuduke" ja="ケトゥドゥケ" cn="凯图嘟凯" ko="" />
-  <loc type="3" id="390" de="Lala" en="Lala" fr="Lala" ja="ララ" cn="拉拉鲁" ko="" />
-  <loc type="3" id="391" de="Statice" en="Statice" fr="Statice" ja="スターチス" cn="斯塔缇丝" ko="" />
-  <loc type="3" id="392" de="Koyo-Koyo" en="PuPu" fr="Koyo K" ja="コヨコヨ" cn="" ko="" />
-  <loc type="3" id="393" de="Loquloqui" en="Loquloqui" fr="Loquloqui" ja="ロクロクイ" cn="罗库罗库伊" ko="" />
+  <loc type="3" id="389" de="Ketuduke" en="Ketuduke" fr="Ketuduke" ja="ケトゥドゥケ" cn="凯图嘟凯" ko="케투두케" />
+  <loc type="3" id="390" de="Lala" en="Lala" fr="Lala" ja="ララ" cn="拉拉鲁" ko="랄랄" />
+  <loc type="3" id="391" de="Statice" en="Statice" fr="Statice" ja="スターチス" cn="斯塔缇丝" ko="스타티스" />
+  <loc type="3" id="392" de="Koyo-Koyo" en="PuPu" fr="Koyo K" ja="コヨコヨ" cn="可幽可幽" ko="코요코요" />
+  <loc type="3" id="393" de="Loquloqui" en="Loquloqui" fr="Loquloqui" ja="ロクロクイ" cn="罗库罗库伊" ko="로쿠로쿠이" />
   <loc type="3" id="394" de="Nophica" en="Nophica" fr="Nophica" ja="ノフィカ" cn="诺菲卡" ko="노피카" />
   <loc type="3" id="395" de="Althyk" en="Althyk" fr="Althyk" ja="アルジク" cn="阿尔基克" ko="알디크" />
   <loc type="3" id="396" de="Nymeia" en="Nymeia" fr="Nymeia" ja="ニメーヤ" cn="妮美雅" ko="니메이아" />
@@ -424,12 +424,29 @@
   <loc type="3" id="400" de="Oschon" en="Oschon" fr="Oschon" ja="オシュオン" cn="奥修昂" ko="오쉬온" />
   <loc type="3" id="401" de="Durante" en="Durante" fr="Durante" ja="ドゥランテ" cn="杜兰特" ko="두란테" />
   <loc type="3" id="402" de="Eulogia" en="Eulogia" fr="Eulogie" ja="エウロギア" cn="欧罗基亚" ko="에울로기아" />
-  <loc type="3" id="403" de="Asura" en="Asura" fr="Asura" ja="アスラ" cn="" ko="" />
+  <loc type="3" id="403" de="Asura" en="Asura" fr="Asura" ja="アスラ" cn="阿修罗" ko="아수라" />
   <loc type="3" id="404" de="Zeromus" en="Zeromus" fr="Zeromus" ja="ゼロムス" cn="泽罗姆斯" ko="제로무스" />
   <loc type="3" id="405" de="Clive Rosfield" en="Clive Rosfield" fr="Clive Rosfield" ja="クライヴ・ロズフィールド" cn="" ko="" />
-  <loc type="3" id="406" de="" en="" fr="" ja="" cn="" ko="" />
-  <loc type="3" id="407" de="" en="" fr="" ja="" cn="" ko="" />
-  <loc type="3" id="408" de="" en="" fr="" ja="" cn="" ko="" />
+  <loc type="3" id="406" de="Pelupelu" en="Pelupelu" fr="Pelupelu" ja="ペルペル" cn="" ko="" />
+  <loc type="3" id="407" de="Alpaka" en="Alpaca" fr="alpaga" ja="アルパカ" cn="" ko="" />
+  <loc type="3" id="408" de="Moblin" en="Moblin" fr="Mobelin" ja="モブリン" cn="" ko="" />
+  <loc type="3" id="409" de="Zweigträger" en="Branchbearer" fr="sylveplume" ja="ブランチベアラー" />
+  <loc type="3" id="410" de="Rroneek" en="Rroneek" fr="rroneek" ja="ロネーク" />
+  <loc type="3" id="411" de="Maschineneinheit R" en="Sentry R8" fr="sentinelle R" ja="セントリーR" />
+  <loc type="3" id="412" de="Auskunftsdrohne" en="Outrunner" fr="trékhoïde" ja="アウトランナー" />
+  <loc type="3" id="413" de="Gulool Ja Ja" en="Gulool Ja Ja" fr="Gulool Ja Ja" ja="グルージャジャ" />
+  <loc type="3" id="414" de="Schläfrich" en="Drowsie" fr="Somnolent" ja="ドラウジー" />
+  <loc type="3" id="415" de="Ryoqor Terteh" en="Ryoqor Terteh" fr="Ryoqor Terteh" ja="リョコー・テーテ" />
+  <loc type="3" id="416" de="Hammerschädel" en="Maulskull" fr="Cabosseur" ja="モールスカル" />
+  <loc type="3" id="417" de="Ambrose" en="Ambrose" fr="Ambrose" ja="アンブローズ" />
+  <loc type="3" id="418" de="Valigarmanda" en="Valigarmanda" fr="Valigarmanda" ja="ヴァリガルマンダ" />
+  <loc type="3" id="419" de="Zoraal Ja" en="Zoraal Ja" fr="Zoraal Ja" ja="ゾラージャ" />
+  <loc type="3" id="420" de="Ewige Königin" en="Queen Eternal" fr="Reine Éternité" ja="エターナルクイーン" />
+  <loc type="3" id="421" de="" en="" fr="" ja="" />
+  <loc type="3" id="422" de="Otis" en="Otis" fr="Otis" ja="オーティス" />
+  <loc type="3" id="423" de="Cahciua" en="Cahciua" fr="Cahciua" ja="カフキワ" />
+  <loc type="3" id="424" de="Wuk Lamat" en="Wuk Lamat" fr="Wuk Lamat" ja="ウクラマト" />
+  <loc type="3" id="425" de="Sphene" en="Sphene" fr="Sphene" ja="スフェーン" />
   <loc type="4" id="1" de="Aurifort Kreuz" en="Aurifort of the Three Clubs" fr="Aurifort l'As de trèfle" ja="クラブのオリフォル" cn="梅花天王欧里福" ko="오리포르" />
   <loc type="4" id="2" de="Baderon" en="Baderon" fr="Baderon" ja="バデロン" cn="巴德龙" ko="바데론" />
   <loc type="4" id="3" de="Botan" en="Botan" fr="Botan" ja="ボタン" cn="牡丹" ko="보탄" />
@@ -547,6 +564,14 @@
   <loc type="4" id="115" de="Tokimori" en="Tokimori" fr="Tokimori" ja="トキモリ" cn="时守" ko="토키모리" />
   <loc type="4" id="116" de="Ylaire" en="Ylaire" fr="Ylaire" ja="イレアー" cn="伊莱尔" ko="일레어" />
   <loc type="4" id="117" de="Maillart" en="Maillart" fr="Maillart" ja="マリアルト" cn="马利亚尔特" ko="마야르" />
+  <loc type="4" id="118" de="Nyikweni" en="Nyikweni" fr="Nyikweni" ja="ニーケニ" cn="" ko="" />
+  <loc type="4" id="119" de="Wopli" en="Wopli" fr="Wopli" ja="ウォーペリ" cn="" ko="" />
+  <loc type="4" id="120" de="Warsowok" en="Warsowok" fr="Warsowok" ja="ワーソウォク" cn="" ko="" />
+  <loc type="4" id="121" de="Br'uk Noq" en="Br'uk Noq'" fr="Br'uk Noq" ja="ブルクノック" cn="" ko="" />
+  <loc type="4" id="122" de="Luwyawa" en="Luwyawa" fr="Luwyawa" ja="ルーヤワ" cn="" ko="" />
+  <loc type="4" id="123" de="Uataaye" en="Uataaye" fr="Uataaye" ja="ワターエ" cn="" ko="" />
+  <loc type="4" id="124" de="Larisa" en="Larisa" fr="Larisa" ja="ラリサ" cn="" ko="" />
+  <loc type="4" id="125" de="Kanilokka" en="Kanilokka" fr="Kanilokka" ja="カニロッカ" cn="" ko="" />
   <loc type="5" id="1" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
   <loc type="5" id="2" de="Obere Decks" en="Limsa Lominsa Upper Decks" fr="Limsa Lominsa - Le Tillac" ja="リムサ・ロミンサ：上甲板層" cn="利姆萨·罗敏萨上层甲板" ko="림사 로민사 상층 갑판" />
   <loc type="5" id="3" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
@@ -664,6 +689,14 @@
   <loc type="5" id="115" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
   <loc type="5" id="116" de="Alt-Gridania" en="Old Gridania" fr="Vieille Gridania" ja="グリダニア：旧市街" cn="格里达尼亚旧街" ko="그리다니아 구시가지" />
   <loc type="5" id="117" de="Alt-Sharlayan" en="Old Sharlayan" fr="Vieille Sharlayan" ja="オールド・シャーレアン" cn="旧萨雷安" ko="올드 샬레이안" />
+  <loc type="5" id="118" de="Tuliyollal" en="Tuliyollal" fr="Tuliyollal" ja="トライヨラ" />
+  <loc type="5" id="119" de="Urqopacha" en="Urqopacha" fr="Urqopacha" ja="オルコ・パチャ" />
+  <loc type="5" id="120" de="Kozama'uka" en="Kozama'uka" fr="Kozama'uka" ja="コザマル・カ" />
+  <loc type="5" id="121" de="Yak T'el" en="Yak T'el" fr="Yak T'el" ja="ヤクテル樹海" />
+  <loc type="5" id="122" de="Shaaloani" en="Shaaloani" fr="Shaaloani" ja="シャーローニ荒野" />
+  <loc type="5" id="123" de="Ewiges Erbe" en="Heritage Found" fr="L'Hoirie recouvrée" ja="ヘリテージファウンド" />
+  <loc type="5" id="124" de="Lösung Neun" en="Solution Nine" fr="Solution Neuf" ja="ソリューション・ナイン" />
+  <loc type="5" id="125" de="Tuliyollal" en="Tuliyollal" fr="Tuliyollal" ja="トライヨラ" />
   <loc type="6" id="0" de="Manderville-Masters" en="the Manderville Tournament of Champions" fr="le Championnat des Manderville" ja="マンダヴィル・チャンピオンシップ" cn="曼德维尔锦标赛" ko="맨더빌배 선수권 대회" />
   <loc type="6" id="1" de="Großer Preis von Nymeia" en="the Spinner's Pull" fr="le Grand Prix de la Fileuse" ja="星神ニメーヤ賞典" cn="命运神大奖赛" ko="별의 신 니메이아배" />
   <loc type="6" id="2" de="Orran-Durai-Ehrenturnier" en="the Durai Memorial" fr="le Jubilé Orran Durai" ja="オーラン記念" cn="奥兰纪念赛" ko="오란 기념 대회" />
