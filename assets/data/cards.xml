@@ -420,7 +420,7 @@
   <card id="418" rarity="3" type="0" up="7" lt="5" dn="6" rt="8" sort="403" group="0" />
   <card id="419" rarity="4" type="0" up="9" lt="8" dn="5" rt="7" sort="404" group="0" />
   <card id="420" rarity="4" type="0" up="3" lt="10" dn="9" rt="5" sort="405" group="0" />
-  <card id="421" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="421" rarity="2" type="0" up="7" lt="3" dn="3" rt="8" sort="410" group="0" />
   <card id="422" rarity="3" type="0" up="5" lt="7" dn="8" rt="6" sort="406" group="0" />
   <card id="423" rarity="3" type="0" up="8" lt="8" dn="5" rt="5" sort="407" group="0" />
   <card id="424" rarity="4" type="0" up="5" lt="5" dn="10" rt="9" sort="408" group="0" />

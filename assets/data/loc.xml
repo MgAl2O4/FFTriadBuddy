@@ -442,7 +442,7 @@
   <loc type="3" id="418" de="Valigarmanda" en="Valigarmanda" fr="Valigarmanda" ja="ヴァリガルマンダ" />
   <loc type="3" id="419" de="Zoraal Ja" en="Zoraal Ja" fr="Zoraal Ja" ja="ゾラージャ" />
   <loc type="3" id="420" de="Ewige Königin" en="Queen Eternal" fr="Reine Éternité" ja="エターナルクイーン" />
-  <loc type="3" id="421" de="" en="" fr="" ja="" />
+  <loc type="3" id="421" de="Schwarze Katze" en="Black Cat" fr="Black Cat" ja="ブラックキャット" />
   <loc type="3" id="422" de="Otis" en="Otis" fr="Otis" ja="オーティス" />
   <loc type="3" id="423" de="Cahciua" en="Cahciua" fr="Cahciua" ja="カフキワ" />
   <loc type="3" id="424" de="Wuk Lamat" en="Wuk Lamat" fr="Wuk Lamat" ja="ウクラマト" />
@@ -571,7 +571,7 @@
   <loc type="4" id="122" de="Luwyawa" en="Luwyawa" fr="Luwyawa" ja="ルーヤワ" cn="" ko="" />
   <loc type="4" id="123" de="Uataaye" en="Uataaye" fr="Uataaye" ja="ワターエ" cn="" ko="" />
   <loc type="4" id="124" de="Larisa" en="Larisa" fr="Larisa" ja="ラリサ" cn="" ko="" />
-  <loc type="4" id="125" de="Kanilokka" en="Kanilokka" fr="Kanilokka" ja="カニロッカ" cn="" ko="" />
+  <loc type="4" id="125" de="Gavoll Ja" en="Gavoll Ja" fr="Gavoll Ja" ja="ガヴォージャ" cn="" ko="" />
   <loc type="5" id="1" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
   <loc type="5" id="2" de="Obere Decks" en="Limsa Lominsa Upper Decks" fr="Limsa Lominsa - Le Tillac" ja="リムサ・ロミンサ：上甲板層" cn="利姆萨·罗敏萨上层甲板" ko="림사 로민사 상층 갑판" />
   <loc type="5" id="3" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
