@@ -947,4 +947,20 @@
     <rule id="6" />
     <reward id="413" />
   </npc>
+  <npc id="126" mx="7" my="7">
+    <deckA id0="428" id1="429" id2="197" id3="66" id4="0" />
+    <deckV id0="193" id1="318" id2="236" id3="0" id4="0" />
+    <rule id="7" />
+    <rule id="13" />
+    <reward id="428" />
+    <reward id="429" />
+  </npc>
+  <npc id="127" mx="6" my="6">
+    <deckA id0="430" id1="431" id2="269" id3="65" id4="0" />
+    <deckV id0="93" id1="146" id2="190" id3="0" id4="0" />
+    <rule id="8" />
+    <rule id="6" />
+    <reward id="430" />
+    <reward id="431" />
+  </npc>
 </root>
