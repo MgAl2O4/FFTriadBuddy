@@ -529,7 +529,7 @@ namespace FFTriadBuddy.Datamine
         }
 
         public override string ToString() { return MapCode + ": " + Name; }
-        public override bool IsRawDataValid(CsvLocalizedData rawData) { return rawData.GetNumColumns() == 21; }
+        public override bool IsRawDataValid(CsvLocalizedData rawData) { return rawData.GetNumColumns() == 22; }
         public override bool IsValid() { return !string.IsNullOrEmpty(Name); }
 
         public override void Parse(CsvLocalizedData rawData, int rowIdx)

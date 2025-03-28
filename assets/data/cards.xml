@@ -435,4 +435,13 @@
   <card id="433" rarity="3" type="0" up="8" lt="2" dn="9" rt="6" sort="418" group="0" />
   <card id="434" rarity="3" type="0" up="6" lt="8" dn="8" rt="5" sort="419" group="0" />
   <card id="435" rarity="4" type="0" up="10" lt="10" dn="4" rt="4" sort="420" group="0" />
+  <card id="436" rarity="1" type="0" up="3" lt="6" dn="5" rt="4" sort="421" group="0" />
+  <card id="437" rarity="2" type="0" up="8" lt="5" dn="6" rt="3" sort="422" group="0" />
+  <card id="438" rarity="3" type="0" up="7" lt="7" dn="7" rt="7" sort="423" group="0" />
+  <card id="439" rarity="4" type="0" up="7" lt="9" dn="1" rt="10" sort="424" group="0" />
+  <card id="440" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="441" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="442" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="443" rarity="-1" type="0" up="0" lt="0" dn="0" rt="0" sort="0" group="0" />
+  <card id="444" rarity="3" type="0" up="7" lt="4" dn="7" rt="9" sort="9999" group="0" />
 </root>

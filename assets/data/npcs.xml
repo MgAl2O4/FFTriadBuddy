@@ -963,4 +963,11 @@
     <reward id="430" />
     <reward id="431" />
   </npc>
+  <npc id="128" mx="5" my="6">
+    <deckA id0="437" id1="49" id2="53" id3="62" id4="0" />
+    <deckV id0="46" id1="45" id2="38" id3="0" id4="0" />
+    <rule id="8" />
+    <rule id="12" />
+    <reward id="437" />
+  </npc>
 </root>
