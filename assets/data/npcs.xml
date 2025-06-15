@@ -970,4 +970,12 @@
     <rule id="12" />
     <reward id="437" />
   </npc>
+  <npc id="129" mx="33" my="37">
+    <deckA id0="442" id1="443" id2="98" id3="119" id4="0" />
+    <deckV id0="217" id1="318" id2="394" id3="0" id4="0" />
+    <rule id="9" />
+    <rule id="7" />
+    <reward id="442" />
+    <reward id="443" />
+  </npc>
 </root>

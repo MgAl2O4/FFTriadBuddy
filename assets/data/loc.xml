@@ -461,10 +461,10 @@
   <loc type="3" id="437" de="Ollier" en="Ollier" fr="Ollier" ja="オリアー" />
   <loc type="3" id="438" de="Zelenia" en="Zelenia" fr="Zelenia" ja="ゼレニア" />
   <loc type="3" id="439" de="Heulende Klinge" en="Howling Blade" fr="Howling Blade" ja="ハウリングブレード" />
-  <loc type="3" id="440" de="" en="" fr="" ja="" />
-  <loc type="3" id="441" de="" en="" fr="" ja="" />
-  <loc type="3" id="442" de="" en="" fr="" ja="" />
-  <loc type="3" id="443" de="" en="" fr="" ja="" />
+  <loc type="3" id="440" de="Magitaurus" en="Magitaur" fr="Magitaure" ja="マギタウロス" />
+  <loc type="3" id="441" de="Blauer Blättrich" en="Blue Leafkin" fr="sangfeuille bleu" ja="ブルーリフキン" />
+  <loc type="3" id="442" de="Wivre" en="Wivre" fr="wivre" ja="ウィヴル" />
+  <loc type="3" id="443" de="Doppro" en="Doppro" fr="Doppro" ja="ドプロ族" />
   <loc type="3" id="444" de="König Elmer III." en="King Elmer III" fr="Elmer le Roi" ja="キングのエルマー" />
   <loc type="4" id="1" de="Aurifort Kreuz" en="Aurifort of the Three Clubs" fr="Aurifort l'As de trèfle" ja="クラブのオリフォル" cn="梅花天王欧里福" ko="오리포르" />
   <loc type="4" id="2" de="Baderon" en="Baderon" fr="Baderon" ja="バデロン" cn="巴德龙" ko="바데론" />
@@ -594,6 +594,7 @@
   <loc type="4" id="126" de="Pawkukwe" en="Pawkukwe" fr="Pawkukwe" ja="パークケ" cn="帕库凯" ko="파쿠퀘" />
   <loc type="4" id="127" de="Miitso" en="Miitso" fr="Miitso" ja="ミーゾ" cn="密泽" ko="미이조" />
   <loc type="4" id="128" de="Heimtückisches Wiesel" en="Malevolent Weasel" fr="Malevolent Weasel" ja="マレヴォレント・ウィーゼル" cn="" ko="" />
+  <loc type="4" id="129" de="Pudeel Ja" en="Pudeel Ja" fr="Pudeel Ja" ja="プデージャ" />
   <loc type="5" id="1" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
   <loc type="5" id="2" de="Obere Decks" en="Limsa Lominsa Upper Decks" fr="Limsa Lominsa - Le Tillac" ja="リムサ・ロミンサ：上甲板層" cn="利姆萨·罗敏萨上层甲板" ko="림사 로민사 상층 갑판" />
   <loc type="5" id="3" de="Kugane" en="Kugane" fr="Kugane" ja="クガネ市街" cn="黄金港城区" ko="쿠가네" />
@@ -722,6 +723,7 @@
   <loc type="5" id="126" de="Unter-Jeuno" en="Lower Jeuno" fr="Bas Jeuno" ja="ジュノ下層" cn="朱诺下层" ko="쥬노 하층" />
   <loc type="5" id="127" de="Unter-Jeuno" en="Lower Jeuno" fr="Bas Jeuno" ja="ジュノ下層" cn="朱诺下层" ko="쥬노 하층" />
   <loc type="5" id="128" de="Gold Saucer" en="The Gold Saucer" fr="Gold Saucer" ja="ゴールドソーサー" cn="金碟游乐场" ko="골드 소서" />
+  <loc type="5" id="129" de="Yak T'el" en="Yak T'el" fr="Yak T'el" ja="ヤクテル樹海" cn="亚克特尔树海" ko="야크텔 밀림" />
   <loc type="6" id="0" de="Manderville-Masters" en="the Manderville Tournament of Champions" fr="le Championnat des Manderville" ja="マンダヴィル・チャンピオンシップ" cn="曼德维尔锦标赛" ko="맨더빌배 선수권 대회" />
   <loc type="6" id="1" de="Großer Preis von Nymeia" en="the Spinner's Pull" fr="le Grand Prix de la Fileuse" ja="星神ニメーヤ賞典" cn="命运神大奖赛" ko="별의 신 니메이아배" />
   <loc type="6" id="2" de="Orran-Durai-Ehrenturnier" en="the Durai Memorial" fr="le Jubilé Orran Durai" ja="オーラン記念" cn="奥兰纪念赛" ko="오란 기념 대회" />
